@@ -1,0 +1,78 @@
+/*
+ * Common Solution Register: extensions to the Scottish Government Design
+ * System, limited to the layout details it does not provide (specification
+ * 6.13): tag rows, the fictional-example panel, unstated values, the actions
+ * column, the results heading row, filters and wide tables. Values follow the
+ * design system's spacing, colour and type.
+ */
+
+.csr-tags {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+  margin: 0 0 1.5rem;
+}
+
+.ds_search-result .csr-tags {
+  margin: 0.5rem 0 0;
+}
+
+.csr-tags .ds_tag {
+  margin: 0;
+}
+
+.csr-fiction {
+  background: #f3eef8;
+  border: 0.125rem dashed #6a3d8f;
+  margin: 0 0 2rem;
+  padding: 1rem 1.25rem;
+}
+
+.csr-fiction p {
+  margin: 0;
+}
+
+.csr-unstated {
+  color: #5e5e5e;
+  font-style: italic;
+}
+
+.csr-actions {
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+  margin-bottom: 1.5rem;
+}
+
+.csr-actions .ds_button {
+  margin: 0;
+  width: 100%;
+}
+
+.csr-results-head {
+  align-items: baseline;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 1rem;
+  justify-content: space-between;
+}
+
+.csr-filter {
+  border: 0;
+  margin: 0 0 1.5rem;
+  padding: 0;
+}
+
+.csr-table {
+  margin: 0 0 2rem;
+  overflow-x: auto;
+}
+
+.csr-table code {
+  word-break: break-all;
+}
+
+/* Filters and sorting need JavaScript (slice S7); without it the full list is shown. */
+html:not(.js-enabled) .csr-js-only {
+  display: none !important;
+}

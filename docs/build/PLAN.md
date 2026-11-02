@@ -197,3 +197,42 @@ Newest last. One line per checkpoint; a fuller entry when a session ends.
     >
     > - [x] `CHANGELOG.md` updated under Unreleased
     > - [x] No secrets or personal data
+- 2026-11-02 — S4 merged.
+- 2026-11-02 — S5a done: `tools/vendor-sgds.py` downloads `@scottish-government/design-system@4.3.0` from npm, checks the npm integrity hash, and writes `design-system.min.css`, `design-system.js` (the package's `main`: an ES module bundle that sets `window.DS`), `LICENSE.txt`, `SOURCE.md` and `SHA256SUMS` to `src/csr/static/vendor/sgds/4.3.0/`; R13 now checks them. `.gitattributes` keeps vendored files byte for byte.
+- 2026-11-02 — S5b–d done (one commit): `site.toml`; `src/csr/config.py`; `src/csr/register.py` (records with derived fields: hosting, currency and next due date, last changed and merged-in pull request from git, history URL; pointers whose source is a file in this repository are read from the working tree, other sources wait for the harvester; invalid or mismatched sources are not published); `src/csr/build.py` and `csr build [--out] [--base-url] [--date]`; templates `base.html`, `partials/` (header with the design system's mobile menu, banner, footer, tags, values), `index.html` (full list without JavaScript; filters and sort generated with counts but hidden until S7), `record.html`, `record-withdrawn.html`; `static/csr.css`; `static/js/init.js`; `docs/ui-requirements.md` (departures D1–D9); `tests/test_build.py`; `site.yml` builds the site and uploads the `site-preview` artifact. Checked in Chromium at 1280 and 375 pixels: no console errors, mobile menu opens and closes.
+- 2026-11-02 — **S5 ready for pull request.**
+  - **Done:** S5a–d. `pytest -q`: 223 passed. `csr validate --base origin/main`: 0 errors, 2 warnings. `csr build --base-url http://localhost:8000/`: 9 pages; `csr-9007` not published.
+  - **Next:** author opens the pull request from `robbie/wizardly-dijkstra-2sjib7`, checks the `site-preview` artifact against the wireframes, decides D1–D9 in `docs/ui-requirements.md`, and merges. Then S6 (remaining static pages, API and CSV). S6 must build the pages the record page already links to (`sectors/`, `service-areas/`, `capabilities/<id>/`, `contribute/#corrections` and `#removal`, `reference/publiccode/`, `api/v0/assets/<id>.json`, `harvest/`), and decide how example currency avoids drift (S4 note).
+  - **Blockers:** none.
+  - **For the author:** the departures D1–D9 in `docs/ui-requirements.md`, especially D1 (banner wording: specification 6.8 and the wireframes disagree), D2 and D3 (the three record wireframes disagree with each other, so one template takes their union) and D5 (no web font: Roboto from Google Fonts would send visitors' addresses to a third party). The site must be served over HTTP to see it locally, because its scripts are JavaScript modules (README).
+  - **Pull request title:** Add the site generator, layout, home and record pages (S5)
+  - **Pull request description:**
+
+    > ## What this changes
+    >
+    > Adds the walking skeleton of the site (slice S5 of `docs/build/PLAN.md`).
+    >
+    > - Vendors the Scottish Government Design System 4.3.0 (CSS, JavaScript and licence, unchanged from the npm package, with `SOURCE.md` and pinned hashes checked by R13), and the script that refreshes it.
+    > - `csr build` generates the site from the register, configured by `site.toml`. Owner-hosted records whose `solution.yml` is in this repository are read at build time; a source that fails validation (`csr-9007`) is not published.
+    > - Base layout: the design system's site header with its mobile menu, the demonstrator banner and the footer.
+    > - Home page: the full list of records, which works without JavaScript. The filters and sort are generated with their counts and hidden until S7 makes them work.
+    > - Record pages, one template for every provenance, hosting, status and currency, plus the withdrawn-record page and a downloadable `solution.yml` for each record.
+    > - `docs/ui-requirements.md` records how the build applies the wireframes, and nine departures for the author to decide.
+    > - The `Validate` job builds the site and uploads it as the `site-preview` artifact.
+    >
+    > ## Why
+    >
+    > Specification 6.2, 6.8 and 6.13: something to see early, on which the remaining pages are built.
+    >
+    > Points for review are the departures D1 to D9 in `docs/ui-requirements.md`: the banner wording, the record page sidebar and sections where the three record wireframes differ, and the font.
+    >
+    > ## How it was tested
+    >
+    > `pytest -q` (223 passed), `csr validate --base origin/main` and `csr build` on Python 3.12. The built site was checked in Chromium at 1280 and 375 pixels: no console errors, and the mobile menu opens and closes. Compare the `site-preview` artifact with `ui/baseline/`.
+    >
+    > ## Checklist
+    >
+    > - [x] `CHANGELOG.md` updated under Unreleased
+    > - [x] No secrets or personal data
+    > - [x] Actions pinned by SHA
+

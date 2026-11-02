@@ -1,0 +1,13 @@
+<footer class="ds_site-footer">
+<div class="ds_wrapper">
+<div class="ds_site-footer__content">
+<ul class="ds_site-footer__site-items">
+{% for label, href in FOOTER %}
+<li class="ds_site-items__item"><a href="{{ root }}{{ href }}">{{ label }}</a></li>
+{% endfor %}
+</ul>
+<div class="ds_site-footer__copyright"><p>Content available under the Open Government Licence v3.0. Code under the MIT licence.</p></div>
+<div class="ds_site-footer__org"><p>Hosted for demonstration by {{ config.host_organisation }}.</p></div>
+</div>
+</div>
+</footer>

@@ -1,0 +1,34 @@
+{% macro nav_items(mobile) %}
+<ul class="ds_site-navigation__list">
+{% for key, label, href in NAVIGATION %}
+<li class="ds_site-navigation__item"><a class="ds_site-navigation__link{% if key == nav %} ds_current{% endif %}"{% if key == nav %} aria-current="page"{% endif %} href="{{ root }}{{ href }}">{{ label }}</a></li>
+{% endfor %}
+</ul>
+{% endmacro %}
+<header class="ds_site-header" role="banner">
+<div class="ds_wrapper">
+<div class="ds_site-header__content">
+<div class="ds_site-branding">
+<a class="ds_site-branding__link" href="{{ root }}"><span class="ds_site-branding__title">{{ config.title }}</span></a>
+</div>
+<div class="ds_site-header__controls">
+<label aria-controls="mobile-navigation" class="ds_site-header__control js-toggle-menu" for="menu">
+<span class="ds_site-header__control-text">Menu</span>
+<svg class="ds_icon ds_site-header__control-icon" aria-hidden="true" role="img" viewBox="0 0 24 24" width="24" height="24" fill="currentColor"><path d="M3 18h18v-2H3v2zm0-5h18v-2H3v2zm0-7v2h18V6H3z"/></svg>
+<svg class="ds_icon ds_site-header__control-icon ds_site-header__control-icon--active-icon" aria-hidden="true" role="img" viewBox="0 0 24 24" width="24" height="24" fill="currentColor"><path d="M19 6.41 17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z"/></svg>
+</label>
+</div>
+<input class="ds_site-navigation__toggle" id="menu" type="checkbox">
+<nav id="mobile-navigation" class="ds_site-navigation ds_site-navigation--mobile" data-module="ds-mobile-navigation-menu" aria-label="Main navigation">
+{{ nav_items(true) }}
+</nav>
+</div>
+</div>
+<div class="ds_site-header__navigation">
+<div class="ds_wrapper">
+<nav class="ds_site-navigation" aria-label="Main navigation">
+{{ nav_items(false) }}
+</nav>
+</div>
+</div>
+</header>

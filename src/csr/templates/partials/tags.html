@@ -1,0 +1,13 @@
+{# Provenance, currency, status and hosting tags for a record. #}
+{% macro record_tags(entry, show_status=true) %}
+{% set r = entry.data %}
+{% if r.record_status in PROVENANCE_TAGS %}{% set label, colour = PROVENANCE_TAGS[r.record_status] %}<strong class="ds_tag ds_tag--{{ colour }}">{{ label }}</strong>
+{% endif %}
+{% if entry.currency %}{% set label, colour = CURRENCY_TAGS[entry.currency] %}<strong class="ds_tag ds_tag--{{ colour }}">{{ label }}</strong>
+{% endif %}
+{% if entry.withdrawn %}<strong class="ds_tag ds_tag--grey">Withdrawn</strong>
+{% elif show_status and r.status == "deprecated" %}<strong class="ds_tag ds_tag--orange">Deprecated</strong>
+{% endif %}
+{% if entry.hosting == "owner-hosted" %}<strong class="ds_tag ds_tag--darkblue">Owner-hosted</strong>
+{% endif %}
+{% endmacro %}

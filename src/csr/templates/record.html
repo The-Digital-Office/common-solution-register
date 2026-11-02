@@ -1,0 +1,230 @@
+{% extends "base.html" %}
+{% from "partials/tags.html" import record_tags with context %}
+{% from "partials/values.html" import unstated, link, term_links, row with context %}
+{% set title = r.name %}
+{% set demonstration = r.record_status == "demonstration" %}
+{% set example = r.record_status == "example" %}
+{% set hosted = entry.hosting == "owner-hosted" %}
+{% set type_noun = TYPE_LABELS[r.asset_type] | lower if r.asset_type != "api" else "API" %}
+{% block title %}{{ r.name }}{% endblock %}
+{% block before_main %}
+<nav aria-label="Breadcrumb">
+<ol class="ds_breadcrumbs">
+<li class="ds_breadcrumbs__item"><a class="ds_breadcrumbs__link" href="{{ root }}">Home</a></li>
+<li class="ds_breadcrumbs__item"><a class="ds_breadcrumbs__link" href="{{ root }}">Solutions</a></li>
+<li class="ds_breadcrumbs__item">{{ entry.id }}</li>
+</ol>
+</nav>
+{% endblock %}
+{% block main %}
+<main class="ds_layout ds_layout--article" id="main-content">
+<div class="ds_layout__header">
+{% if example %}
+<div class="csr-fiction" role="note">
+<p><strong>Fictional example.</strong> This record does not describe a real {{ type_noun }}. It shows how the register displays a record like this.</p>
+</div>
+{% endif %}
+<header class="ds_page-header">
+<span class="ds_page-header__label ds_content-label">{{ TYPE_LABELS[r.asset_type] }}</span>
+<h1 class="ds_page-header__title">{{ r.name }}</h1>
+<dl class="ds_page-header__metadata ds_metadata">
+<div class="ds_metadata__item"><dt class="ds_metadata__key">Owner</dt><dd class="ds_metadata__value">{{ r.owner.organisation }}</dd></div>
+<div class="ds_metadata__item"><dt class="ds_metadata__key">Status</dt><dd class="ds_metadata__value">{{ STATUS_LABELS[r.status] }}</dd></div>
+<div class="ds_metadata__item"><dt class="ds_metadata__key">Record</dt><dd class="ds_metadata__value">{{ entry.id }}</dd></div>
+</dl>
+</header>
+<div class="csr-tags">
+{{ record_tags(entry) }}
+</div>
+</div>
+
+<div class="ds_layout__content">
+{% if hosted %}
+<div class="ds_notification-panel ds_notification-panel--neutral">
+<h2 class="ds_notification-panel__title">Hosted by its owner</h2>
+<div class="ds_notification-panel__content"><p>This record is published from the owner's own <code>solution.yml</code>, which passed validation when the site was built.</p></div>
+</div>
+{% endif %}
+{% if demonstration %}
+<div class="ds_warning-text">
+<strong class="ds_warning-text__icon" aria-hidden="true"></strong>
+<strong class="visually-hidden">Warning</strong>
+<div class="ds_warning-text__text">This is a demonstration entry. It was compiled from the public sources listed below and has not been confirmed by {{ r.owner.organisation }}.{% if SENTINEL in (r | tojson) %} Some details are not stated in public sources.{% endif %}</div>
+</div>
+{% endif %}
+{% if r.status == "deprecated" and r.deprecation %}
+{% set replacements = related | selectattr("1", "equalto", "replaced-by") | list %}
+<div class="ds_notification-message ds_notification-message--warning">
+<div class="ds_notification-message__body">
+<h2 class="ds_notification-message__title ds_h3">This {{ type_noun }} is deprecated</h2>
+<p>Deprecated on {{ r.deprecation.date | long_date }}.{% if replacements %} New adopters should use {% for e, rel in replacements %}<a href="{{ root }}assets/{{ e.id }}/">{{ e.data.name }}</a>{{ " or " if not loop.last }}{% endfor %} instead.{% endif %}
+{% if r.deprecation.migration_guidance.startswith("https://") %} <a href="{{ r.deprecation.migration_guidance }}">Read the migration guidance</a>.{% else %} {{ r.deprecation.migration_guidance }}{% endif %}</p>
+</div>
+</div>
+{% endif %}
+{% if entry.currency == "stale" %}
+<div class="ds_notification-message ds_notification-message--error">
+<div class="ds_notification-message__body">
+<h2 class="ds_notification-message__title ds_h3">This record may be out of date</h2>
+<p>The owner last confirmed it on {{ r.confirmation.last_confirmed | long_date }}, more than {{ config.stale_after_months }} months ago. Check details with the owner before relying on them.</p>
+</div>
+</div>
+{% elif entry.currency == "due" %}
+<div class="ds_notification-message ds_notification-message--info">
+<div class="ds_notification-message__body">
+<h2 class="ds_notification-message__title ds_h3">This record is due for confirmation</h2>
+<p>The owner last confirmed it on {{ r.confirmation.last_confirmed | long_date }}. They have been asked to confirm it is still accurate.</p>
+</div>
+</div>
+{% endif %}
+
+<h2>About this solution</h2>
+<p class="ds_leader">{{ r.summary }}</p>
+<p>{{ r.purpose }}</p>
+
+<h2 id="owner">Owner and contact</h2>
+<dl class="ds_summary-list">
+{% call row("Owning organisation") %}{{ r.owner.organisation }}{% endcall %}
+{% call row("Owning sector") %}{{ term_links("sectors", [r.owner.sector], "sectors") }}{% endcall %}
+{% call row("Contact") %}{% set c = r.contact %}{% if c.type == "role-mailbox" %}<a href="mailto:{{ c.value }}">{{ c.value }}</a>{% elif c.value.startswith("https://") %}<a href="{{ c.value }}">{{ c.value | display_url }}</a>{% else %}{{ c.value }}{% endif %} ({{ CONTACT_LABELS[c.type] }}){% endcall %}
+</dl>
+
+<h2 id="classification">Classification</h2>
+<dl class="ds_summary-list">
+{% call row("Service areas") %}{{ term_links("service-areas", r.service_areas, "service-areas") }}{% endcall %}
+{% call row("Capabilities") %}{{ term_links("capabilities", r.capabilities, "capabilities") }}{% endcall %}
+{% call row("Intended for") %}{{ term_links("sectors", r.intended_adopters, "sectors") }}{% endcall %}
+</dl>
+
+<h2 id="adopt">Using this solution</h2>
+<dl class="ds_summary-list">
+{% if r.service_url %}{% call row("Service address") %}{{ link(r.service_url) }}{% endcall %}{% endif %}
+{% if r.service_page_url %}{% call row("Information from the owner") %}{{ link(r.service_page_url) }}{% endcall %}{% endif %}
+{% if r.documentation_url %}{% call row("Documentation") %}{{ link(r.documentation_url) }}{% endcall %}{% endif %}
+{% call row("Terms of use") %}{% set t = r.terms_of_use %}{% if t.type == SENTINEL %}{{ unstated() }}{% else %}{{ TERMS_LABELS[t.type] }}:{% if t.licence %} {{ t.licence }}{% endif %}{% if t.url %} {{ link(t.url) }}{% endif %}{% if t.summary %}. {{ t.summary }}{% endif %}{% endif %}{% endcall %}
+{% call row("How to adopt") %}{% set a = r.adoption_route %}{% if a.summary == SENTINEL %}{{ unstated() }}{% else %}{{ a.summary }}{% if a.url %} {{ link(a.url, "Adoption guide") }}{% endif %}{% endif %}{% endcall %}
+{% call row("Charges") %}{% set ch = r.charging %}{% if ch.applies == SENTINEL %}{{ unstated() }}{% elif not ch.applies %}No charge{% else %}{{ CHARGING_LABELS[ch.model] }}{% if ch.summary %}: {{ ch.summary[0] | lower }}{{ ch.summary[1:] }}{% endif %}{% if ch.url %} (<a href="{{ ch.url }}">charging details</a>){% endif %}{% endif %}{% endcall %}
+{% if r.support %}{% call row("Support") %}{% if r.support.summary == SENTINEL %}{{ unstated() }}{% else %}{{ r.support.summary }}{% if r.support.url %} {{ link(r.support.url, "Support details") }}{% endif %}{% endif %}{% endcall %}{% endif %}
+{% if r.interfaces %}{% call row("Interfaces") %}{% for i in r.interfaces %}{{ INTERFACE_LABELS[i.type] }}: <a href="{{ i.documentation_url }}">documentation</a>{% if i.description %} ({{ i.description[0] | lower }}{{ i.description[1:] | trim(".") }}){% endif %}{{ "; " if not loop.last }}{% endfor %}{% endcall %}{% endif %}
+{% if r.deprecation %}{% call row("Deprecation") %}{{ r.deprecation.date | long_date }}{% if r.deprecation.migration_guidance.startswith("https://") %}, with <a href="{{ r.deprecation.migration_guidance }}">migration guidance</a>{% else %}: {{ r.deprecation.migration_guidance }}{% endif %}{% endcall %}{% endif %}
+{% if r.access_restriction %}{% call row("Access") %}{{ r.access_restriction }}{% endcall %}{% endif %}
+{% call row("Known adopters") %}{% for a in r.adopters or [] %}{{ a.organisation }} ({{ a.evidence }}){{ "; " if not loop.last }}{% else %}None recorded{% endfor %}{% endcall %}
+</dl>
+
+<h2 id="technical">Codebases</h2>
+<p>The code that implements this solution. Each codebase is described by its own publiccode.yml. <a href="{{ root }}reference/publiccode/">How solutions and codebases relate</a></p>
+{% if r.codebases %}
+<div class="csr-table">
+<table class="ds_table">
+<thead><tr><th scope="col">Repository</th><th scope="col">publiccode.yml</th><th scope="col">Maintenance</th><th scope="col">Version</th></tr></thead>
+<tbody>
+{% for cb in r.codebases %}
+<tr>
+<td>{% if cb.repository_url %}<a href="{{ cb.repository_url }}">{{ cb.repository_url | display_url }}</a> ({{ cb.visibility }}){% else %}Private repository{% endif %}
+{% if cb.role or cb.maintainers %}<br><span class="ds_hint-text">{% if cb.role %}{{ cb.role }}.{% endif %}{% if cb.maintainers %} Maintainers: {% for m in cb.maintainers %}{{ m.name }}{% if m.affiliation %}, {{ m.affiliation }}{% endif %}{{ "; " if not loop.last }}{% endfor %}{% endif %}</span>{% endif %}</td>
+<td>{% if cb.publiccode_url %}<a href="{{ cb.publiccode_url }}">publiccode.yml</a><br><strong class="ds_tag ds_tag--grey">Not yet checked</strong>{% else %}<strong class="ds_tag ds_tag--grey">None linked</strong>{% endif %}</td>
+<td>{{ MAINTENANCE_LABELS[cb.maintenance] }}{% if cb.maintenance == "none" %}. No active maintenance.{% endif %}</td>
+<td>{{ cb.version or "Not stated" }}</td>
+</tr>
+{% endfor %}
+</tbody>
+</table>
+</div>
+{% else %}
+<p>No codebases are listed.</p>
+{% endif %}
+
+{% if r.open_data %}
+<h2 id="data">Open data</h2>
+<ul>
+{% for d in r.open_data %}
+<li><a href="{{ d.url }}">{{ d.title }}</a>{% if d.catalogue %} ({{ d.catalogue }}){% endif %}</li>
+{% endfor %}
+</ul>
+{% endif %}
+
+{% if r.sources %}
+<h2 id="sources">Sources</h2>
+<ul>
+{% for s in r.sources %}
+<li><a href="{{ s.url }}">{{ s.title }}</a>{% if s.publisher %}, {{ s.publisher }}{% endif %}, accessed {{ s.accessed | long_date }}</li>
+{% endfor %}
+</ul>
+{% endif %}
+
+<h2 id="record">About this record</h2>
+<dl class="ds_summary-list">
+{% call row("Record ID") %}<code>{{ entry.id }}</code>{% endcall %}
+{% call row("Provenance") %}{% if example %}Fictional example{% elif demonstration %}Demonstration entry, compiled from public sources{% if r.sources %} accessed up to {{ r.sources | map(attribute="accessed") | max | long_date }}{% endif %}{% else %}Confirmed by owner on {{ r.confirmation.last_confirmed | long_date }} ({{ r.confirmation.method }}){% endif %}{% endcall %}
+{% if example %}{% call row("Last confirmed") %}{{ r.confirmation.last_confirmed | long_date }} (fictional){% endcall %}{% endif %}
+{% call row("Currency") %}{% if entry.currency == "current" %}Current: next confirmation due by {{ entry.next_due | long_date }}{% elif entry.currency == "due" %}Due for confirmation since {{ entry.next_due | long_date }}{% elif entry.currency == "stale" %}Stale: confirmation overdue since {{ entry.stale_from | long_date }}{% else %}Not confirmed by owner{% endif %}{% endcall %}
+{% call row("Hosting") %}{% if hosted %}Owner-hosted: <code>{{ entry.source }}</code>{% else %}Held in the register{% endif %}{% endcall %}
+{% if entry.last_changed %}{% call row("Last changed") %}{{ entry.last_changed | long_date }}{% endcall %}{% endif %}
+{% if entry.merged_in %}{% call row("Registered in" if hosted else "Merged in") %}<a href="{{ config.repository_url }}/pull/{{ entry.merged_in }}">Merged in pull request #{{ entry.merged_in }}</a>{% endcall %}{% endif %}
+{% if related %}{% call row("Related") %}{% for e, rel in related %}<a href="{{ root }}assets/{{ e.id }}/">{{ e.data.name }}</a> ({{ RELATIONSHIP_LABELS[rel] }}){{ "; " if not loop.last }}{% endfor %}{% endcall %}{% endif %}
+{% call row("Schema version") %}{{ r.schema_version }}{% endcall %}
+</dl>
+<hr>
+<p><a href="{{ root }}contribute/#corrections">Report a problem with this page</a></p>
+</div>
+
+<div class="ds_layout__sidebar">
+{% set go = r.service_url and r.service_url != SENTINEL %}
+{% set more = r.service_page_url and r.service_page_url != SENTINEL %}
+{% if go or more %}
+<aside class="ds_article-aside">
+<h2 class="ds_h3">Service links</h2>
+<div class="csr-actions">
+{% if go %}<a class="ds_button" href="{{ r.service_url }}">Go to the service</a>{% endif %}
+{% if more %}<a class="ds_button{% if go %} ds_button--secondary{% endif %}" href="{{ r.service_page_url }}">More information from the owner</a>{% endif %}
+</div>
+</aside>
+{% endif %}
+{% if demonstration %}
+<aside class="ds_article-aside">
+<h2 class="ds_h3">Is this your {{ type_noun }}?</h2>
+<p>You can confirm this entry, correct it, host it yourself, or ask for it to be removed.</p>
+<div class="csr-actions">
+<a class="ds_button" href="{{ root }}draft/?from={{ entry.id }}">Confirm or correct</a>
+<a class="ds_button ds_button--secondary" href="{{ root }}contribute/#removal">Ask for removal</a>
+</div>
+</aside>
+{% endif %}
+<aside class="ds_article-aside">
+<h2 class="ds_h3">Use this record</h2>
+<ul class="ds_no-bullets">
+<li><a href="solution.yml" download="{{ entry.id }}.yml">Download solution.yml</a></li>
+<li><a href="{{ root }}api/v0/assets/{{ entry.id }}.json">View as JSON</a></li>
+{% if not demonstration %}<li><a href="{{ root }}draft/?from={{ entry.id }}">Suggest a correction</a></li>{% endif %}
+</ul>
+</aside>
+<nav class="ds_contents-nav" aria-label="Contents">
+<h2 class="ds_contents-nav__title" id="contents">Contents</h2>
+<ul class="ds_contents-nav__list">
+<li class="ds_contents-nav__item"><a class="ds_contents-nav__link" href="#owner">Owner and contact</a></li>
+<li class="ds_contents-nav__item"><a class="ds_contents-nav__link" href="#classification">Classification</a></li>
+<li class="ds_contents-nav__item"><a class="ds_contents-nav__link" href="#adopt">Using this solution</a></li>
+<li class="ds_contents-nav__item"><a class="ds_contents-nav__link" href="#technical">Codebases</a></li>
+{% if r.open_data %}<li class="ds_contents-nav__item"><a class="ds_contents-nav__link" href="#data">Open data</a></li>{% endif %}
+{% if r.sources %}<li class="ds_contents-nav__item"><a class="ds_contents-nav__link" href="#sources">Sources</a></li>{% endif %}
+<li class="ds_contents-nav__item"><a class="ds_contents-nav__link" href="#record">About this record</a></li>
+</ul>
+</nav>
+{% if example and other_examples %}
+<aside class="ds_article-aside">
+<h2 class="ds_h3">Other states shown by examples</h2>
+<ul class="ds_no-bullets">
+{% for label, href, record_id in other_examples %}
+<li><a href="{{ root }}{{ href }}">{{ label }} ({{ record_id }})</a></li>
+{% endfor %}
+</ul>
+</aside>
+{% endif %}
+<aside class="ds_article-aside">
+<h2 class="ds_h3">Record history</h2>
+{% if hosted %}<p><a href="{{ root }}harvest/#{{ entry.id }}">Harvest history</a></p>{% endif %}
+<p><a href="{{ entry.history_url }}">{{ "Registration history" if hosted else "Change history" }} on GitHub</a></p>
+</aside>
+</div>
+</main>
+{% endblock %}

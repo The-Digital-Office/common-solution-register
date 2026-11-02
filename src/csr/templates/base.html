@@ -1,0 +1,22 @@
+<!doctype html>
+<html lang="en-GB">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>{% block title %}{{ title }}{% endblock %} - {{ config.title }}</title>
+{% block meta %}{% endblock %}
+<link rel="stylesheet" href="{{ root }}static/vendor/sgds/{{ SGDS_VERSION }}/design-system.min.css">
+<link rel="stylesheet" href="{{ root }}static/csr.css">
+<script type="module" src="{{ root }}static/js/init.js"></script>
+</head>
+<body>
+<div class="ds_skip-links"><ul class="ds_skip-links__list"><li class="ds_skip-links__item"><a class="ds_skip-links__link" href="#main-content">Skip to main content</a></li></ul></div>
+{% include "partials/header.html" %}
+{% include "partials/banner.html" %}
+<div class="ds_wrapper">
+{% block before_main %}{% endblock %}
+{% block main %}{% endblock %}
+</div>
+{% include "partials/footer.html" %}
+</body>
+</html>
