@@ -1,0 +1,29 @@
+# The smallest valid record: an owner-confirmed component at concept stage.
+schema_version: "0.1"
+id: csr-9100
+record_status: example
+name: "Example: Minimal Component"
+summary: A fictional component used to test the smallest valid record.
+purpose: Shows which fields every record must have, and nothing more, so that tests can add or remove one field at a time.
+asset_type: component
+owner:
+  organisation: Example Council
+  sector: local-government
+contact:
+  type: role-mailbox
+  value: digital@example.gov.uk
+service_areas: [corporate-and-cross-cutting]
+capabilities: [integration-and-apis]
+status: concept
+intended_adopters: [local-government]
+terms_of_use:
+  type: open-licence
+  licence: MIT
+adoption_route:
+  summary: Copy the component into your own service and configure it.
+charging:
+  applies: false
+confirmation:
+  last_confirmed: "2026-10-01"
+  method: pull request
+  reference: https://example.gov.uk/confirmation/1

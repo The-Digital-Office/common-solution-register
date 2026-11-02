@@ -16,6 +16,7 @@ and this project uses [Semantic Versioning](https://semver.org/spec/v2.0.0.html)
 - Python package skeleton for the `csr` command-line tool, with `pytest` tests.
 - `Site` workflow with a `Validate` job that runs the tests.
 - Dependabot updates for `pip`.
+- Descriptor schema v0.1 (`schema/asset.schema.json`) with its eight conditions, the pointer record schema and `schema/README.md`.
 
 ### Changed
 

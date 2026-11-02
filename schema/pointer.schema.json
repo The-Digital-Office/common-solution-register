@@ -1,0 +1,25 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://the-digital-office.github.io/common-solution-register/schema/pointer.schema.json",
+  "title": "Pointer record",
+  "description": "Registers an owner-hosted solution.yml. The harvested file must contain the full descriptor, with the same id and an owner.organisation equal to expected_owner.",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["id", "source", "expected_owner"],
+  "properties": {
+    "id": { "type": "string", "pattern": "^csr-[0-9]{4}$" },
+    "source": {
+      "description": "HTTPS URL of the owner's solution.yml.",
+      "type": "string",
+      "format": "uri",
+      "pattern": "^https://[^\\s/$.?#][^\\s]*$",
+      "maxLength": 2000
+    },
+    "expected_owner": {
+      "description": "Must match owner.organisation in the harvested file.",
+      "type": "string",
+      "minLength": 2,
+      "maxLength": 200
+    }
+  }
+}

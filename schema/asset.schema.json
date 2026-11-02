@@ -1,0 +1,434 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://the-digital-office.github.io/common-solution-register/schema/asset.schema.json",
+  "title": "Common solution descriptor (solution.yml)",
+  "description": "Describes a common solution: a capability that an accountable owner offers to other public bodies for reuse. Schema version 0.1. Fields added by the register at build time (last_changed, history_url, merged_in, currency, hosting, source, harvested_at, content_hash, source_state) are never written in a record.",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "schema_version",
+    "id",
+    "record_status",
+    "name",
+    "summary",
+    "purpose",
+    "asset_type",
+    "owner",
+    "contact",
+    "service_areas",
+    "capabilities",
+    "status",
+    "intended_adopters",
+    "terms_of_use",
+    "adoption_route",
+    "charging"
+  ],
+  "properties": {
+    "schema_version": {
+      "description": "Version of this schema.",
+      "const": "0.1"
+    },
+    "id": {
+      "description": "Stable identifier, allocated when the record is registered. csr-9000 to csr-9999 are reserved for fictional examples.",
+      "$ref": "#/$defs/recordId"
+    },
+    "record_status": {
+      "description": "Provenance of the record.",
+      "enum": ["owner-confirmed", "demonstration", "example", "withdrawn"]
+    },
+    "name": {
+      "description": "Official or common name. Fictional examples begin \"Example:\".",
+      "type": "string",
+      "minLength": 3,
+      "maxLength": 100
+    },
+    "summary": {
+      "description": "Plain-English description, shown in search results.",
+      "type": "string",
+      "minLength": 20,
+      "maxLength": 200
+    },
+    "purpose": {
+      "description": "What it does, the problem it solves and who it is for.",
+      "type": "string",
+      "minLength": 50,
+      "maxLength": 2000
+    },
+    "asset_type": {
+      "description": "Kind of asset. software means software offered for other bodies to deploy themselves.",
+      "enum": ["service", "platform", "component", "api", "standard", "pattern", "software", "artefact"]
+    },
+    "owner": {
+      "description": "The accountable organisation and its sector.",
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["organisation", "sector"],
+      "properties": {
+        "organisation": { "$ref": "#/$defs/shortText" },
+        "sector": { "$ref": "#/$defs/termId", "description": "A term from taxonomy/sectors.yaml." }
+      }
+    },
+    "contact": {
+      "description": "Role-based contact route: a role mailbox, service desk or web form, never a named person.",
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["type", "value"],
+      "properties": {
+        "type": { "enum": ["role-mailbox", "service-desk", "web-form"] },
+        "value": { "type": "string", "minLength": 3, "maxLength": 300 }
+      },
+      "allOf": [
+        {
+          "if": { "properties": { "type": { "const": "role-mailbox" } } },
+          "then": { "properties": { "value": { "$ref": "#/$defs/email" } } }
+        },
+        {
+          "if": { "properties": { "type": { "const": "web-form" } } },
+          "then": { "properties": { "value": { "$ref": "#/$defs/httpsUrl" } } }
+        }
+      ]
+    },
+    "service_areas": {
+      "description": "Terms from taxonomy/service-areas.yaml.",
+      "$ref": "#/$defs/termList"
+    },
+    "capabilities": {
+      "description": "Terms from taxonomy/capabilities.yaml.",
+      "$ref": "#/$defs/termList"
+    },
+    "status": {
+      "description": "Lifecycle stage.",
+      "enum": ["concept", "in-development", "beta", "live", "deprecated"]
+    },
+    "intended_adopters": {
+      "description": "Sectors that reuse is intended for: terms from taxonomy/sectors.yaml.",
+      "$ref": "#/$defs/termList"
+    },
+    "terms_of_use": {
+      "description": "Licence or service terms: a type, plus an SPDX licence expression or a URL.",
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["type"],
+      "properties": {
+        "type": {
+          "anyOf": [
+            { "enum": ["open-licence", "service-terms", "commercial-terms", "other"] },
+            { "$ref": "#/$defs/sentinel" }
+          ]
+        },
+        "licence": {
+          "description": "SPDX licence expression, for example MIT AND OGL-UK-3.0.",
+          "type": "string",
+          "pattern": "^[A-Za-z0-9.+-]+( (AND|OR|WITH) [A-Za-z0-9.+-]+)*$"
+        },
+        "url": { "$ref": "#/$defs/httpsUrl" },
+        "summary": { "$ref": "#/$defs/text500" }
+      },
+      "if": { "properties": { "type": { "$ref": "#/$defs/sentinel" } } },
+      "else": { "anyOf": [{ "required": ["licence"] }, { "required": ["url"] }] }
+    },
+    "adoption_route": {
+      "description": "How another organisation can adopt it.",
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["summary"],
+      "properties": {
+        "summary": {
+          "anyOf": [
+            { "type": "string", "minLength": 20, "maxLength": 500, "not": { "$ref": "#/$defs/sentinel" } },
+            { "$ref": "#/$defs/sentinel" }
+          ]
+        },
+        "url": { "$ref": "#/$defs/httpsUrl" }
+      }
+    },
+    "charging": {
+      "description": "Whether adopters may be charged, and if so how.",
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["applies"],
+      "properties": {
+        "applies": { "anyOf": [{ "type": "boolean" }, { "$ref": "#/$defs/sentinel" }] },
+        "model": { "enum": ["recharge", "subscription", "per-transaction", "other"] },
+        "url": { "$ref": "#/$defs/httpsUrl" },
+        "summary": { "$ref": "#/$defs/text500" }
+      }
+    },
+    "support": {
+      "description": "Support arrangements for adopters.",
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["summary"],
+      "properties": {
+        "summary": {
+          "anyOf": [
+            { "type": "string", "minLength": 10, "maxLength": 500, "not": { "$ref": "#/$defs/sentinel" } },
+            { "$ref": "#/$defs/sentinel" }
+          ]
+        },
+        "url": { "$ref": "#/$defs/httpsUrl" }
+      }
+    },
+    "service_url": {
+      "description": "The live service itself: where people start using it (start page, sign-in, application, or base API address).",
+      "anyOf": [{ "$ref": "#/$defs/httpsUrl" }, { "$ref": "#/$defs/sentinel" }]
+    },
+    "service_page_url": {
+      "description": "The owner's own public page describing the service.",
+      "anyOf": [{ "$ref": "#/$defs/httpsUrl" }, { "$ref": "#/$defs/sentinel" }]
+    },
+    "documentation_url": {
+      "description": "Technical or implementation documentation.",
+      "$ref": "#/$defs/httpsUrl"
+    },
+    "sources": {
+      "description": "Public sources a demonstration record is compiled from.",
+      "type": "array",
+      "minItems": 1,
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": ["url", "title", "accessed"],
+        "properties": {
+          "url": { "$ref": "#/$defs/httpsUrl" },
+          "title": { "$ref": "#/$defs/shortText" },
+          "publisher": { "$ref": "#/$defs/shortText" },
+          "accessed": { "$ref": "#/$defs/date" }
+        }
+      }
+    },
+    "confirmation": {
+      "description": "The owner's confirmation of the record.",
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["last_confirmed", "method", "reference"],
+      "properties": {
+        "last_confirmed": { "$ref": "#/$defs/date" },
+        "method": {
+          "description": "How the owner confirmed it, for example \"pull request\" or \"owner-hosted solution.yml\".",
+          "$ref": "#/$defs/shortText"
+        },
+        "reference": {
+          "description": "Where the confirmation can be found, for example a pull request or issue URL.",
+          "$ref": "#/$defs/shortText"
+        }
+      }
+    },
+    "withdrawal": {
+      "description": "Why and when the solution was withdrawn.",
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["date", "reason"],
+      "properties": {
+        "date": { "$ref": "#/$defs/date" },
+        "reason": { "$ref": "#/$defs/text500" }
+      }
+    },
+    "deprecation": {
+      "description": "When the solution was deprecated, and how adopters should move away from it.",
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["date", "migration_guidance"],
+      "properties": {
+        "date": { "$ref": "#/$defs/date" },
+        "migration_guidance": {
+          "description": "Guidance text, or the URL of the guidance.",
+          "$ref": "#/$defs/text500"
+        }
+      }
+    },
+    "interfaces": {
+      "description": "Interfaces the solution offers.",
+      "type": "array",
+      "minItems": 1,
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": ["type", "documentation_url"],
+        "properties": {
+          "type": { "enum": ["rest", "soap", "graphql", "file", "event", "other"] },
+          "documentation_url": { "$ref": "#/$defs/httpsUrl" },
+          "description": { "$ref": "#/$defs/text500" }
+        }
+      }
+    },
+    "codebases": {
+      "description": "The code that implements this solution, if any. Each public codebase is described by its own publiccode.yml.",
+      "type": "array",
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": ["visibility", "maintenance"],
+        "properties": {
+          "repository_url": { "$ref": "#/$defs/httpsUrl" },
+          "visibility": { "enum": ["public", "private"] },
+          "publiccode_url": { "$ref": "#/$defs/httpsUrl" },
+          "maintenance": {
+            "description": "As in publiccode.yml maintenance.type.",
+            "enum": ["internal", "contract", "community", "none"]
+          },
+          "version": { "type": "string", "minLength": 1, "maxLength": 50 },
+          "kind": { "enum": ["implementation", "reference-implementation"], "default": "implementation" },
+          "role": { "$ref": "#/$defs/shortText" },
+          "maintainers": {
+            "type": "array",
+            "items": {
+              "type": "object",
+              "additionalProperties": false,
+              "required": ["name"],
+              "properties": {
+                "name": { "$ref": "#/$defs/shortText" },
+                "affiliation": { "$ref": "#/$defs/shortText" },
+                "email": { "$ref": "#/$defs/email" }
+              }
+            }
+          }
+        },
+        "if": { "properties": { "visibility": { "const": "public" } } },
+        "then": { "required": ["repository_url"] }
+      }
+    },
+    "open_data": {
+      "description": "Data this solution publishes: links to catalogue entries only.",
+      "type": "array",
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": ["title", "url"],
+        "properties": {
+          "title": { "$ref": "#/$defs/shortText" },
+          "url": { "$ref": "#/$defs/httpsUrl" },
+          "catalogue": { "$ref": "#/$defs/shortText" }
+        }
+      }
+    },
+    "access_restriction": {
+      "description": "Who may access a private codebase or restricted service, and how.",
+      "$ref": "#/$defs/text500"
+    },
+    "current_version": { "type": "string", "minLength": 1, "maxLength": 50 },
+    "roadmap_url": { "$ref": "#/$defs/httpsUrl" },
+    "dependencies": {
+      "description": "Other products or services this solution depends on.",
+      "type": "array",
+      "items": { "$ref": "#/$defs/shortText" }
+    },
+    "related_assets": {
+      "description": "Other records in the register this one relates to.",
+      "type": "array",
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": ["id"],
+        "properties": {
+          "id": { "$ref": "#/$defs/recordId" },
+          "relationship": { "enum": ["replaced-by", "replaces", "uses", "used-by", "alternative", "related"] }
+        }
+      }
+    },
+    "adopters": {
+      "description": "Organisations that use the solution.",
+      "type": "array",
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": ["organisation", "evidence"],
+        "properties": {
+          "organisation": { "$ref": "#/$defs/shortText" },
+          "evidence": { "enum": ["self-reported", "verified"] }
+        }
+      }
+    },
+    "standards_alignment": {
+      "description": "Standards the solution follows.",
+      "type": "array",
+      "items": { "$ref": "#/$defs/shortText" }
+    },
+    "accessibility_statement_url": { "$ref": "#/$defs/httpsUrl" },
+    "funding_model": { "$ref": "#/$defs/text500" }
+  },
+  "allOf": [
+    {
+      "$comment": "Condition 1: demonstration records cite their sources. Sentinel values are allowed only in demonstration records.",
+      "if": { "properties": { "record_status": { "const": "demonstration" } } },
+      "then": { "required": ["sources"] },
+      "else": {
+        "properties": {
+          "terms_of_use": { "properties": { "type": { "not": { "$ref": "#/$defs/sentinel" } } } },
+          "adoption_route": { "properties": { "summary": { "not": { "$ref": "#/$defs/sentinel" } } } },
+          "support": { "properties": { "summary": { "not": { "$ref": "#/$defs/sentinel" } } } },
+          "charging": { "properties": { "applies": { "not": { "$ref": "#/$defs/sentinel" } } } },
+          "service_url": { "not": { "$ref": "#/$defs/sentinel" } },
+          "service_page_url": { "not": { "$ref": "#/$defs/sentinel" } }
+        }
+      }
+    },
+    {
+      "$comment": "Condition 2: owner-confirmed and example records carry a confirmation.",
+      "if": { "properties": { "record_status": { "enum": ["owner-confirmed", "example"] } }, "required": ["record_status"] },
+      "then": { "required": ["confirmation"] }
+    },
+    {
+      "$comment": "Condition 3: withdrawn records say when and why.",
+      "if": { "properties": { "record_status": { "const": "withdrawn" } }, "required": ["record_status"] },
+      "then": { "required": ["withdrawal"] }
+    },
+    {
+      "$comment": "Condition 4: software offered for others to deploy lists at least one codebase.",
+      "if": { "properties": { "asset_type": { "const": "software" } }, "required": ["asset_type"] },
+      "then": { "required": ["codebases"], "properties": { "codebases": { "minItems": 1 } } }
+    },
+    {
+      "$comment": "Condition 5: an API lists its interfaces (the interfaces items require type and documentation_url whenever present).",
+      "if": { "properties": { "asset_type": { "const": "api" } }, "required": ["asset_type"] },
+      "then": { "required": ["interfaces"] }
+    },
+    {
+      "$comment": "Condition 6: if charges apply, give the model and a URL or summary.",
+      "if": {
+        "properties": { "charging": { "properties": { "applies": { "const": true } }, "required": ["applies"] } },
+        "required": ["charging"]
+      },
+      "then": {
+        "properties": {
+          "charging": { "required": ["model"], "anyOf": [{ "required": ["url"] }, { "required": ["summary"] }] }
+        }
+      }
+    },
+    {
+      "$comment": "Condition 7: services and platforms in beta or live give support and both web addresses.",
+      "if": {
+        "properties": {
+          "asset_type": { "enum": ["service", "platform"] },
+          "status": { "enum": ["beta", "live"] }
+        },
+        "required": ["asset_type", "status"]
+      },
+      "then": { "required": ["support", "service_url", "service_page_url"] }
+    },
+    {
+      "$comment": "Condition 8: deprecated solutions give a date and migration guidance.",
+      "if": { "properties": { "status": { "const": "deprecated" } }, "required": ["status"] },
+      "then": { "required": ["deprecation"] }
+    }
+  ],
+  "$defs": {
+    "recordId": { "type": "string", "pattern": "^csr-[0-9]{4}$" },
+    "termId": { "type": "string", "pattern": "^[a-z0-9]+(-[a-z0-9]+)*$" },
+    "termList": {
+      "type": "array",
+      "minItems": 1,
+      "uniqueItems": true,
+      "items": { "$ref": "#/$defs/termId" }
+    },
+    "sentinel": {
+      "description": "\"Not stated in public sources\": allowed only in demonstration records.",
+      "const": "not-publicly-stated"
+    },
+    "httpsUrl": { "type": "string", "format": "uri", "pattern": "^https://[^\\s/$.?#][^\\s]*$", "maxLength": 2000 },
+    "email": { "type": "string", "format": "email", "pattern": "^[^@\\s]+@[^@\\s]+\\.[^@\\s]+$", "maxLength": 254 },
+    "date": { "type": "string", "format": "date", "pattern": "^[0-9]{4}-[0-9]{2}-[0-9]{2}$" },
+    "shortText": { "type": "string", "minLength": 2, "maxLength": 200 },
+    "text500": { "type": "string", "minLength": 2, "maxLength": 500 }
+  }
+}
