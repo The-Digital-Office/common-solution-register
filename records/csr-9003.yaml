@@ -1,0 +1,63 @@
+# Fictional example: shows a deprecated service with migration guidance, and
+# a record whose confirmation is more than 12 months old (stale).
+schema_version: "0.1"
+id: csr-9003
+record_status: example
+name: "Example: Legacy Waste Booking Service"
+summary: Fictional example of a deprecated service with migration guidance.
+purpose: >-
+  Lets residents book bulky waste collections online. Being replaced by a
+  reusable booking component, which new adopters should use instead.
+asset_type: service
+owner:
+  organisation: Example Council
+  sector: local-government
+contact:
+  type: role-mailbox
+  value: digital.services@example.gov.uk
+service_areas:
+  - environment-and-waste
+capabilities:
+  - booking-and-scheduling
+  - payments
+status: deprecated
+intended_adopters:
+  - local-government
+terms_of_use:
+  type: service-terms
+  url: https://example.gov.uk/terms
+adoption_route:
+  summary: Not open to new adopters. Existing adopters should follow the migration guidance.
+charging:
+  applies: true
+  model: recharge
+  summary: Annual fee per adopting organisation.
+  url: https://example.gov.uk/bulky-waste-booking/charges
+support:
+  summary: Service desk, Monday to Friday 9am to 5pm. Ends with the service.
+service_url: https://waste-booking.example.gov.uk/
+service_page_url: https://example.gov.uk/bulky-waste-booking
+deprecation:
+  date: "2026-03-31"
+  migration_guidance: https://example.gov.uk/bulky-waste-booking/migration
+adopters:
+  - organisation: Example Council
+    evidence: verified
+  - organisation: Second Example Council
+    evidence: self-reported
+codebases:
+  - visibility: private
+    maintenance: none
+    role: Booking front end
+access_restriction: Private repository, available to adopting councils on request.
+open_data:
+  - title: "Example: Bulky waste collection requests"
+    url: https://data.example.gov.uk/dataset/bulky-waste-collection-requests
+    catalogue: Example Council open data
+related_assets:
+  - id: csr-9006
+    relationship: replaced-by
+confirmation:
+  last_confirmed: "2025-09-02"
+  method: email from the service owner
+  reference: https://example.gov.uk/confirmations/csr-9003

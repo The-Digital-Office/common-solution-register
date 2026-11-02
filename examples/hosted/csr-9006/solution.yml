@@ -1,0 +1,50 @@
+# Fictional example of an owner-hosted solution.yml (record csr-9006).
+schema_version: "0.1"
+id: csr-9006
+record_status: example
+name: "Example: Hosted Booking Component"
+summary: Fictional example of a booking component whose owner hosts its own solution.yml.
+purpose: >-
+  Lets council services offer online booking for collections, appointments and
+  rooms through one reusable component. The owner publishes this file in the
+  component's own repository, and the register harvests it daily.
+asset_type: component
+owner:
+  organisation: Example Council
+  sector: local-government
+contact:
+  type: role-mailbox
+  value: booking@example.gov.uk
+service_areas:
+  - environment-and-waste
+  - corporate-and-cross-cutting
+capabilities:
+  - booking-and-scheduling
+status: live
+intended_adopters:
+  - local-government
+terms_of_use:
+  type: open-licence
+  licence: MIT
+adoption_route:
+  summary: Deploy the component from its repository and configure your bookable resources.
+  url: https://docs.example.gov.uk/booking/adopt
+charging:
+  applies: false
+support:
+  summary: Community support through the repository's issues, with the owner's team reviewing weekly.
+documentation_url: https://docs.example.gov.uk/booking/
+codebases:
+  - repository_url: https://code.example.gov.uk/booking
+    visibility: public
+    publiccode_url: https://code.example.gov.uk/booking/raw/main/publiccode.yml
+    maintenance: internal
+    version: "2.1.0"
+    kind: implementation
+related_assets:
+  - id: csr-9003
+    relationship: replaces
+confirmation:
+  last_confirmed: "2026-10-20"
+  method: owner-hosted solution.yml
+  reference: https://code.example.gov.uk/booking/raw/main/solution.yml

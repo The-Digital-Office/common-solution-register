@@ -158,3 +158,42 @@ Newest last. One line per checkpoint; a fuller entry when a session ends.
     > - [x] `CHANGELOG.md` updated under Unreleased
     > - [x] No secrets or personal data
     > - [x] Actions pinned by SHA
+- 2026-11-02 — S3 merged. S4 inputs from the author: `csr-0002` passes inclusion test 1 (include it); contact for `csr-0001` and `csr-0002` is the repository's issues page (`web-form`) until a role mailbox is chosen (spec I3).
+- 2026-11-02 — S4a done: root `solution.yml` (`csr-0001`, owner-confirmed, `service`, `in-development` because the site is not yet published, so condition 7 does not yet require `service_url`) and pointer `records/csr-0001.yaml`; `records/csr-0002.yaml` (pattern, two codebases), described only from the two repositories' own README and GOVERNANCE files. Neither codebase has a usable `publiccode.yml` (`.github` has none; `repository-template`'s is the template with placeholders), so `csr-0002` gives two R12 warnings.
+- 2026-11-02 — S4b done: `records/csr-9001`–`csr-9005` (local examples), pointers `csr-9006` and `csr-9007`, and `examples/hosted/csr-9006/solution.yml` (valid) and `examples/hosted/csr-9007/solution.yml` (fails on purpose: schema, R03, R09, R10, R18). `tests/test_records.py` checks the record set, pointer id and owner match, what each example exercises, and the currency states.
+- 2026-11-02 — **S4 ready for pull request.**
+  - **Done:** S4a–b. `pytest -q`: 206 passed, 1 skipped (R13, nothing vendored). `csr validate --base origin/main`: 10 files, 0 errors, 2 warnings (R12 on `csr-0002`). `csr-9007`'s hosted file fails as intended.
+  - **Next:** author opens and merges the pull request from `robbie/wizardly-dijkstra-2sjib7`. Then S5 (walking skeleton).
+  - **Blockers:** none.
+  - **For the author:**
+    - **Currency drifts with time.** The fictional confirmation dates show `due` (`csr-9004`, 2025-12-01) and `stale` (`csr-9003`, 2025-09-02) as of 2 November 2026. `csr-9004` becomes stale after 1 December 2026, and the current examples become due 11 months after their dates. `test_example_currency_states` uses a fixed date, so it will not catch this. Before publication, move the dates forward, or decide in S6 to compute example currency against a fixed date in `site.toml`. Add to the S16 runbook either way.
+    - **`csr-0002` intended adopters** are `local-government` only, as the Digital Office's own audience; widen if the offer is to the whole public sector.
+    - **`csr-0002` R12 warnings** stay until `.github` and `repository-template` have their own `publiccode.yml` describing those repositories (the template's file describes the repositories created from it).
+    - **`csr-0001` status** is `in-development` until the site is published; then change it to `beta` and add `service_url` and `service_page_url` (condition 7).
+    - **Contact** for `csr-0001` and `csr-0002` is the issues page until a role mailbox is chosen (I3).
+  - **Pull request title:** Add the owner and example records (S4)
+  - **Pull request description:**
+
+    > ## What this changes
+    >
+    > Adds the register's first records (slice S4 of `docs/build/PLAN.md`).
+    >
+    > - `solution.yml`: this demonstrator as a common solution (`csr-0001`, a service whose codebase is this repository), registered by the pointer `records/csr-0001.yaml`.
+    > - `records/csr-0002.yaml`: the Digital Office repository baseline, a pattern with two codebases.
+    > - Fictional examples `csr-9001` to `csr-9007`, each showing a condition or state from specification 5.2, including two owner-hosted examples under `examples/hosted/`. `csr-9007`'s file fails validation on purpose.
+    > - Tests of the record set and what each example shows.
+    >
+    > ## Why
+    >
+    > Specification 5.1 and 5.2. The site, harvester and UI tests need records to work with.
+    >
+    > Points for the author's review (currency drift in the example dates, `csr-0002`'s intended adopters and warnings, `csr-0001`'s status, the contact) are in the S4 entry of the build plan's progress log.
+    >
+    > ## How it was tested
+    >
+    > `pytest -q` (206 passed, 1 skipped until files are vendored in S5) and `csr validate --base origin/main` (0 errors; 2 expected warnings on `csr-0002`) on Python 3.12.
+    >
+    > ## Checklist
+    >
+    > - [x] `CHANGELOG.md` updated under Unreleased
+    > - [x] No secrets or personal data

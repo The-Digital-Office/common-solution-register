@@ -22,6 +22,8 @@ and this project uses [Semantic Versioning](https://semver.org/spec/v2.0.0.html)
 - `csr validate`: checks records, files or HTTPS URLs against the schema and validation rules R01 to R12 and R18 (R08 and R19 with `--check-links`), with `--base` to catch ids already taken on the base branch, and text, JSON or GitHub output.
 - R13 test for vendored file hashes.
 - The `Validate` job runs `csr validate`.
+- Owner records: `csr-0001` (this demonstrator, owner-hosted in `solution.yml`) and `csr-0002` (the Digital Office repository baseline).
+- Fictional example records `csr-9001` to `csr-9007`, with owner-hosted examples in `examples/hosted/`.
 
 ### Changed
 
