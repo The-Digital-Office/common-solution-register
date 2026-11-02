@@ -235,4 +235,37 @@ Newest last. One line per checkpoint; a fuller entry when a session ends.
     > - [x] `CHANGELOG.md` updated under Unreleased
     > - [x] No secrets or personal data
     > - [x] Actions pinned by SHA
+- 2026-11-02 — S5 merged; author confirmed the site runs locally.
+- 2026-11-02 — S6a–c done (one commit). Pages: `browse/`, every term page under `sectors/`, `service-areas/` and `capabilities/`, `contribute/`, `about/`, `accessibility/`, `privacy/`, `404.html` (root-relative links), `reference/` (generated from the schema, with all 19 rules from `csr.rules.RULES`), `reference/publiccode/` (the real files as the worked example), `data/`, `currency/`. `src/csr/api.py`: `api/v0/index.json`, `assets.json`, `assets/<id>.json`, `taxonomy/<name>.json`, `schema/*.schema.json`, `data/register.json`, `data/register.csv` (dotted columns, `; `-joined value lists, compact JSON for lists of objects). `site.toml` gains `currency.examples_as_of` (fixes the example currency drift noted in S4) and `[publication]` (inputs I3, I4, I8 and the statements' dates and contacts; pages show a highlighted placeholder until filled, and `csr build` lists them). `solution.yml` gains `open_data` (the register's own data page). Departures D10–D15 added to `docs/ui-requirements.md`. Checked in Chromium at 1280 and 375 pixels: no errors, no horizontal overflow; no broken internal links except to `draft/`, `validate/` and `harvest/` (later slices).
+- 2026-11-02 — **S6 ready for pull request.**
+  - **Done:** S6a–c. `pytest -q`: 255 passed. `csr validate --base origin/main`: 0 errors, 2 warnings. `csr build`: 55 pages, the API and the extracts.
+  - **Next:** author opens and merges the pull request from `robbie/wizardly-dijkstra-2sjib7`. Then S7 (search, filters and sort).
+  - **Blockers:** none.
+  - **For the author:** D10–D15 in `docs/ui-requirements.md`, especially D10 (fictional examples judged as on a fixed date) and D11 (publication inputs: fill in `contact_mailbox` and `[publication]` in `site.toml` before publication; the site shows highlighted placeholders until then).
+  - **Pull request title:** Add the remaining pages, the API and the extracts (S6)
+  - **Pull request description:**
+
+    > ## What this changes
+    >
+    > Builds every remaining page in the page-to-template map, the API and the bulk extracts (slice S6 of `docs/build/PLAN.md`).
+    >
+    > - Browse, and a page for every sector, service area and capability, with counts and related terms.
+    > - Contribute, About, Accessibility, Privacy and Not found. Inputs not yet decided (the role mailbox, the feedback route, the Data Protection Officer's details and the statements' dates) come from a new `[publication]` section of `site.toml`; until they are filled in, the pages show a highlighted placeholder and `csr build` lists them.
+    > - Field reference, generated from the schema; Solutions and codebases, with this demonstrator's own files as the worked example; Data and API, with file sizes and a real sample response; and Currency.
+    > - `api/v0/` (index, all records, each record, taxonomies and schemas), `data/register.json` and `data/register.csv`.
+    > - `examples_as_of` in `site.toml`, so the fictional examples keep showing the current, due and stale states they were written to show.
+    > - `docs/ui-requirements.md` gains departures D10 to D15 for the author to decide.
+    >
+    > ## Why
+    >
+    > Specification 6.8 and 6.13: every page in the map, and the open data and API.
+    >
+    > ## How it was tested
+    >
+    > `pytest -q` (255 passed), `csr validate --base origin/main` and `csr build` on Python 3.12. Tests check that every page in the map is built, that internal links resolve, and that published records still match the schema. The site was checked in Chromium at 1280 and 375 pixels with no errors or horizontal overflow.
+    >
+    > ## Checklist
+    >
+    > - [x] `CHANGELOG.md` updated under Unreleased
+    > - [x] No secrets or personal data
 

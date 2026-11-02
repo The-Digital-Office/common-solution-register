@@ -58,6 +58,8 @@ def test_static_files_and_relative_links(site):
     assert (site.out / "static/vendor/sgds/4.3.0/design-system.min.css").is_file()
     assert (site.out / "static/js/init.js").is_file()
     for path in site.pages:
+        if path == "404.html":  # links from the site root: see test_pages.py
+            continue
         html = page(site, path)
         depth = path.count("/")
         assert f'href="{"../" * depth or "./"}static/csr.css"' in html
@@ -85,8 +87,8 @@ def test_home_lists_records_without_javascript(site):
 
 def test_record_page_structure(site):
     p = Parsed(page(site, "assets/csr-0001/index.html"))
-    assert p.h2[:7] == ["Hosted by its owner", "About this solution", "Owner and contact", "Classification",
-                        "Using this solution", "Codebases", "About this record"]  # fmt: skip
+    assert p.h2[:8] == ["Hosted by its owner", "About this solution", "Owner and contact", "Classification",
+                        "Using this solution", "Codebases", "Open data", "About this record"]  # fmt: skip
     assert "Owner-hosted" in p.text and "Confirmed by owner" in p.text and "Current" in p.text
     assert "solution.yml" in p.links and "../../draft/?from=csr-0001" in p.links
     assert "../../sectors/local-government/" in p.links

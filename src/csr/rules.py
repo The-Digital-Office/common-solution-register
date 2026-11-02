@@ -219,3 +219,28 @@ RECORD_RULES: tuple[Rule, ...] = (
 
 #: Rules for pointer records.
 POINTER_RULES: tuple[Rule, ...] = (r09_todo,)
+
+
+#: The validation rules (appendix C), as listed in schema/README.md and on the field reference page.
+RULES: tuple[tuple[str, str, str], ...] = (
+    ("R01", "id matches the file name and is unique, including against the base branch", "Error"),
+    ("R02", "ID range matches provenance: example records use csr-9000 to csr-9999", "Error"),
+    ("R03", "Taxonomy references exist", "Error"),
+    ("R04", "A referenced taxonomy term is deprecated", "Warning"),
+    ("R05", "related_assets ids exist", "Error"),
+    ("R06", "last_confirmed is not in the future", "Error"),
+    ("R07", "A contact value that looks personal", "Warning"),
+    ("R08", "Repository and source URLs respond (checked separately; never blocks a merge)", "Warning"),
+    ("R09", "No value starts with TODO", "Error"),
+    ("R10", "\"Not stated in public sources\" is used outside a demonstration record", "Error"),
+    ("R11", "An example record's name does not begin \"Example:\"", "Error"),
+    ("R12", "A public codebase has no publiccode_url", "Warning"),
+    ("R13", "Vendored files match their pinned hashes", "Test failure"),
+    ("R14", "A harvested id and owner match the pointer's id and expected_owner", "Error (not published)"),
+    ("R15", "A source is not HTTPS, is too large, times out, or redirects to an address that is not HTTPS",
+     "Error (last valid version kept)"),
+    ("R16", "A pointer resolves to a record that is not owner-confirmed or withdrawn (or an example)", "Error"),
+    ("R17", "A codebase's publiccode.yml fails the official parser", "Warning"),
+    ("R18", "A service, documentation, repository or open data address is not an HTTPS URL", "Error"),
+    ("R19", "A codebase's publiccode.yml disagrees with the record's repository URL or maintenance", "Warning"),
+)

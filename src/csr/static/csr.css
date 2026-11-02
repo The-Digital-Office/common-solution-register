@@ -76,3 +76,91 @@
 html:not(.js-enabled) .csr-js-only {
   display: none !important;
 }
+
+/* Columns, cards and tiles on the Browse, Contribute, Data, Publiccode and Currency pages. */
+.csr-cols,
+.csr-routes,
+.csr-dl,
+.csr-pair,
+.csr-stats {
+  display: grid;
+  gap: 1.5rem;
+  margin: 0 0 2.5rem;
+}
+
+@media (min-width: 768px) {
+  .csr-cols {
+    gap: 2rem;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+  }
+
+  .csr-routes,
+  .csr-dl,
+  .csr-pair {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+
+  .csr-stats {
+    gap: 1rem;
+    grid-template-columns: repeat(4, minmax(0, 1fr));
+  }
+}
+
+.csr-cols > *,
+.csr-routes > *,
+.csr-dl > *,
+.csr-pair > *,
+.csr-stats > * {
+  min-width: 0;
+}
+
+.csr-count {
+  color: #5e5e5e;
+  font-size: 1rem;
+}
+
+.csr-route,
+.csr-file,
+.csr-stat {
+  border: 0.0625rem solid #b3b3b3;
+  padding: 1.25rem;
+}
+
+.csr-route {
+  padding: 1.5rem;
+}
+
+.csr-route h3,
+.csr-file h3 {
+  margin-top: 0;
+}
+
+.csr-route .ds_button {
+  margin-bottom: 0;
+}
+
+.csr-n {
+  display: block;
+  font-size: 2.5rem;
+  font-weight: 700;
+  line-height: 1.1;
+  margin: 0.75rem 0 0.25rem;
+}
+
+.csr-pre {
+  background: #f8f8f8;
+  border: 0.0625rem solid #b3b3b3;
+  font-family: "Courier New", monospace;
+  font-size: 0.875rem;
+  line-height: 1.5;
+  margin: 0 0 1.5rem;
+  overflow-x: auto;
+  padding: 1rem;
+  white-space: pre;
+}
+
+/* An input the author completes before publication (site.toml [publication]). */
+.csr-pending {
+  background: #fff4cc;
+  font-style: italic;
+}

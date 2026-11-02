@@ -1,0 +1,43 @@
+{% extends "base.html" %}
+{% block title %}How current are the records?{% endblock %}
+{% set counts = {} %}
+{% block main %}
+{% set n = namespace(current=0, due=0, stale=0, unconfirmed=0) %}
+{% for e in entries %}{% if e.currency == "current" %}{% set n.current = n.current + 1 %}{% elif e.currency == "due" %}{% set n.due = n.due + 1 %}{% elif e.currency == "stale" %}{% set n.stale = n.stale + 1 %}{% else %}{% set n.unconfirmed = n.unconfirmed + 1 %}{% endif %}{% endfor %}
+<main class="ds_layout ds_layout--search-results" id="main-content">
+<div class="ds_layout__header">
+<header class="ds_page-header"><h1 class="ds_page-header__title">How current are the records?</h1></header>
+<p class="ds_leader">Owners are asked to confirm their record at least once a year. Records not confirmed in time are marked, not hidden, so you can judge how far to rely on them.</p>
+</div>
+<div class="ds_layout__content">
+<div class="csr-stats">
+<div class="csr-stat"><strong class="ds_tag ds_tag--teal">Current</strong><span class="csr-n">{{ n.current }}</span><span>confirmed in the last {{ config.due_after_months }} months</span></div>
+<div class="csr-stat"><strong class="ds_tag ds_tag--orange">Due</strong><span class="csr-n">{{ n.due }}</span><span>confirmation due within {{ "a month" if config.stale_after_months - config.due_after_months == 1 else (config.stale_after_months - config.due_after_months) ~ " months" }}</span></div>
+<div class="csr-stat"><strong class="ds_tag ds_tag--red">Stale</strong><span class="csr-n">{{ n.stale }}</span><span>not confirmed for over {{ config.stale_after_months }} months</span></div>
+<div class="csr-stat"><strong class="ds_tag ds_tag--grey">Not confirmed</strong><span class="csr-n">{{ n.unconfirmed }}</span><span>demonstration entries from public sources</span></div>
+</div>
+
+<h2>Records needing attention</h2>
+{% if attention %}
+<div class="csr-table"><table class="ds_table">
+<thead><tr><th scope="col">Record</th><th scope="col">Owner</th><th scope="col">Last confirmed</th><th scope="col">State</th></tr></thead>
+<tbody>
+{% for e in attention | sort(attribute="currency", reverse=true) %}
+{% set label, colour = {"stale": ("Stale", "red"), "due": ("Due", "orange"), "unconfirmed": ("Not confirmed", "grey")}[e.currency] %}
+<tr><td><a href="{{ root }}assets/{{ e.id }}/">{{ e.data.name }}</a></td><td>{{ e.data.owner.organisation }}</td><td>{{ e.data.confirmation.last_confirmed | long_date if e.data.confirmation else "Never" }}</td><td><strong class="ds_tag ds_tag--{{ colour }}">{{ label }}</strong></td></tr>
+{% endfor %}
+</tbody></table></div>
+{% else %}
+<p>Every record is current.</p>
+{% endif %}
+
+<h2>How confirmation works</h2>
+<ol>
+<li>When a record is due, a full register would remind the owner. This demonstrator shows the states but sends no reminders.</li>
+<li>The owner confirms the record is still accurate, or corrects it. Owner-hosted records are confirmed by updating the date in their own solution.yml.</li>
+<li>After {{ config.stale_after_months }} months without confirmation the record is marked stale. It stays visible.</li>
+</ol>
+<p class="ds_hint-text">In this demonstrator the thresholds are {{ config.due_after_months }} and {{ config.stale_after_months }} months. The working group may choose different ones.{% if config.examples_as_of %} Fictional examples are shown as they would be on {{ config.examples_as_of | long_date }}, so that each keeps showing the state it was written to show.{% endif %}</p>
+</div>
+</main>
+{% endblock %}

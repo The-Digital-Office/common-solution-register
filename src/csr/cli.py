@@ -16,6 +16,7 @@ from pathlib import Path
 
 from csr import __version__
 from csr.build import build
+from csr.config import load_config
 from csr.findings import Finding
 from csr.validate import BaseError, Result, validate
 
@@ -70,6 +71,9 @@ def main(argv: Sequence[str] | None = None) -> int:
         print(f"Built {len(result.pages)} pages into {result.out}.")
         for item in result.register.unpublished:
             print(f"Not published: {item.id} ({item.reason})")
+        pending = load_config(base_url=args.base_url).pending_publication_inputs
+        if pending:
+            print("To be completed before publication (site.toml): " + ", ".join(pending))
         return 0
     return 0  # pragma: no cover - argparse rejects unknown commands
 

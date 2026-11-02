@@ -1,0 +1,40 @@
+{% extends "base.html" %}
+{% from "partials/values.html" import pending, mailbox with context %}
+{% block title %}Accessibility statement{% endblock %}
+{% block main %}
+<main class="ds_layout ds_layout--article" id="main-content">
+<div class="ds_layout__header">
+<header class="ds_page-header"><h1 class="ds_page-header__title">Accessibility statement</h1></header>
+</div>
+<div class="ds_layout__content">
+<p>This statement applies to the Common Solution Register demonstrator. We want as many people as possible to be able to use it. You should be able to:</p>
+<ul>
+<li>change colours, contrast levels and fonts</li>
+<li>zoom in up to 400% without the text spilling off the screen</li>
+<li>navigate the whole site using just a keyboard</li>
+<li>use the site with a screen reader</li>
+</ul>
+<p>The site is built with the Scottish Government Design System, which is designed to meet the Web Content Accessibility Guidelines (WCAG) 2.2 at level AA.</p>
+
+<h2>How accessible this site is</h2>
+<p>{{ pending("accessibility_assessment", "the result of the self-assessment and manual testing") }} We know of these limitations:</p>
+<ul>
+<li>The <a href="{{ root }}draft/">Add a solution</a> and <a href="{{ root }}validate/">Validate</a> pages need JavaScript. Every other page works without it. Without JavaScript you can still submit a solution by email or GitHub issue.</li>
+<li>Code examples and YAML files are shown as preformatted text, which may need horizontal scrolling on small screens.</li>
+</ul>
+
+<h2>Feedback and contact information</h2>
+<p>If you find a problem or need information in a different format, contact {{ mailbox() }}. We will reply within {{ pending("accessibility_reply_days", "number of") }} working days.</p>
+
+<h2>Enforcement procedure</h2>
+<p>The Equality and Human Rights Commission is responsible for enforcing the Public Sector Bodies (Websites and Mobile Applications) (No. 2) Accessibility Regulations 2018. If you are not happy with how we respond to your complaint, contact the Equality Advisory and Support Service.</p>
+
+<h2>Technical information</h2>
+<p>This site is partially compliant with WCAG 2.2 AA, due to the limitations listed above.</p>
+
+<h2>How we tested this site</h2>
+<p>Automated testing with axe-core on every change, and a manual keyboard and screen-reader check on {{ pending("accessibility_tested_on", "date") }} before publication.</p>
+<p class="ds_hint-text">This statement was prepared on {{ pending("statements_prepared_on", "date") }}.</p>
+</div>
+</main>
+{% endblock %}

@@ -38,7 +38,12 @@ actions column, the results heading row, filters and wide tables. Wireframe
 | Main | `index.html` | `./` | S5 (list), S7 (search, filters, sort) |
 | Record-Hosted, Record-Demonstration, Record-Example | `record.html` | `assets/<id>/` | S5 |
 | Record-Withdrawn | `record-withdrawn.html` | `assets/<id>/` | S5 |
-| Browse, Term, Contribute, Reference, Publiccode, Data, Currency, About, Accessibility, Privacy, NotFound | as in section 6.13 | as in section 6.13 | S6 |
+| Browse | `browse.html` | `browse/` | S6 |
+| Term | `term.html` | `sectors/<id>/`, `service-areas/<id>/`, `capabilities/<id>/` (every term) | S6 |
+| Contribute, About, Accessibility, Privacy | `contribute.html`, `about.html`, `accessibility.html`, `privacy.html` | `contribute/`, `about/`, `accessibility/`, `privacy/` | S6 |
+| Reference, Publiccode | `reference.html`, `publiccode.html` | `reference/`, `reference/publiccode/` | S6 |
+| Data, Currency | `data.html`, `currency.html` | `data/`, `currency/` | S6 |
+| NotFound | `404.html` | `404.html` (links from the site root, because GitHub Pages serves it at any missing address) | S6 |
 | Draft | `draft.html` | `draft/` | S8, S9 |
 | Validate | `validate.html` | `validate/` | S10 |
 | Harvest | `harvest.html` | `harvest/` | S11 |
@@ -59,3 +64,10 @@ current choice until the author decides.
 | D7 | publiccode.yml column | "Valid (official parser)" | "Not yet checked" | The official parser runs in the harvester (S11) |
 | D8 | Home page without JavaScript | Not shown | Filters and sorting are hidden; the full list of current (not withdrawn) records is shown, sorted by name | Section 6.13 parity table; withdrawn records stay reachable at their address |
 | D9 | "Due for confirmation" notice | No wireframe | An information message, "This record is due for confirmation", in the same place as the stale warning | So that the due state is visible on the record page as well as in its tag |
+| D10 | Example currency | Not shown | Fictional examples are judged as on `examples_as_of` in `site.toml` (2 November 2026), so they keep showing current, due and stale; real records are judged on the build date. The Currency page says so | Otherwise the examples drift: `csr-9004` would turn stale after 1 December 2026, and the current examples would become due (S4 note) |
+| D11 | Inputs not yet decided | `[role mailbox]`, `[Data Protection Officer]`, `[date]` and similar placeholders on Contribute, About, Accessibility and Privacy | Filled from `site.toml`; until then a highlighted "[To be completed before publication: …]" is shown, and `csr build` lists what is outstanding. Without a mailbox, Contribute leaves out the "Email us" route, and corrections and removal point to GitHub | Nothing is invented; the author completes inputs I3, I4 and I8 before publication |
+| D12 | Term page "Related terms" | Shown, with no source for the relation | Terms of the same taxonomy that appear on the same records, most frequent first; the section is left out when there are none | The taxonomy has no "related" field |
+| D13 | Data page | The harvest state row links to the file | The row is shown without a link until the harvester publishes `api/v0/harvest-state.json` (S11) | So that no link leads nowhere |
+| D14 | Reference page | Optional fields as a paragraph; "17 rules (R01 to R17)" | Mandatory and optional fields as tables generated from the schema (sub-fields of required objects listed separately); all 19 rules listed with severity | The specification's appendix C has 19 rules; generating from the schema keeps the page true to it |
+| D15 | Contribute "Contributing guide", About "ask for your record to be moved", feedback on GitHub | Links | Link to `docs/contributing-records.md` and the `move-to-owner-hosting` and `feedback` issue forms | Those files arrive in S13 and S16; the links work once they exist |
+
