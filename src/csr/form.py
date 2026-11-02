@@ -68,4 +68,5 @@ def draft_context() -> dict[str, Any]:
         "limits": {path: limits(schema, path) for path in ("name", "summary", "purpose", "adoption_route.summary")},
         "order": list(schema["properties"]),
         "schema_version": schema["properties"]["schema_version"]["const"],
+        "schema": schema,
     }

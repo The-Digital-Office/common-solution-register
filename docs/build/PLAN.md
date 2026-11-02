@@ -41,7 +41,7 @@ Rules: never push to `main`; never rewrite pushed history; do not start the next
 | S10 | Validate page: paste, upload and URL modes; results table | 6.8, 6.13 | a) modes; b) results | Matches wireframe, with real validation |
 | S11 | Harvester: pointer records, fetch limits, owner match, last-valid state, harvest report; `publiccode-parser-go` for each codebase; R14–R17 | 6.11 | a) fetch and owner match; b) state; c) parser; d) report page | Harvest of `csr-0001` and the examples behaves as specified |
 | S12 | Tools: `csr import-publiccode --to/--new`, `move-to-source`, `move-to-local`, `new --from-issue` | 6.6, 6.12, Appendix A | a) importer; b) move commands | Tests for each command |
-| S13 | Workflows and community files: daily and on-demand harvest, deploy (disabled until `PAGES_ENABLED`), concurrency; reusable `validate-solution.yml`; issue forms; pull request template | 6.10, 6.6 | a) workflows; b) forms and template | Workflows pass; deploy is skipped |
+| S13 | Workflows and community files: daily and on-demand harvest, deploy (disabled until `PAGES_ENABLED`), concurrency; reusable `validate-solution.yml`; issue forms (`suggest-asset.yml` must use the field ids the draft form pre-fills: `solution-yml`, `asset-name`, `organisation`, `contact`); pull request template | 6.10, 6.6 | a) workflows; b) forms and template | Workflows pass; deploy is skipped |
 | S14 | UI tests: fixtures reproducing the wireframes; visual comparison at 1280 and 375 pixels; behaviour tests; `axe-core`; required `UI tests` job; `npm` entry in `dependabot.yml` (removed after S1 because there was no `package.json` to read); **author** adds `UI tests` to the "CSR: required checks" ruleset | 6.13 | a) visual; b) behaviour; c) accessibility | `UI tests` passes in CI |
 | S15 | Demonstration records: research, cited sources, sentinels where facts are not public | 5.2 | a) one record per checkpoint | Author verifies every statement against its source |
 | S16 | Documentation and readiness: adopting guide, decision points (including the S2 schema choices, which the author wants reviewed as part of the demonstrator), editorial model, maintenance, runbook; manual accessibility pass | 8, 9 | a) documents; b) checklist | Ready for courtesy notes, sign-off and enabling Pages (author steps) |
@@ -329,6 +329,41 @@ Newest last. One line per checkpoint; a fuller entry when a session ends.
     > ## How it was tested
     >
     > `pytest -q` (270 passed) and `csr build` on Python 3.12 and Node 22. Every condition, the repeaters, the preview and the pre-fill were checked in Chromium at 1280 and 375 pixels, and without JavaScript.
+    >
+    > ## Checklist
+    >
+    > - [x] `CHANGELOG.md` updated under Unreleased
+    > - [x] No secrets or personal data
+- 2026-11-02 — S8 merged; author confirmed the draft form runs locally.
+- 2026-11-02 — S9a done: Ajv 8.17.1 vendored (`ajv-dist`, the Ajv project's browser bundle; `LICENSE` from `ajv@8.17.1`, as `ajv-dist` has none; `tools/vendor.py` can take a file from a second package); `static/js/record-check.js` (Ajv against the real schema, embedded in the page; plain messages, one per field; R06 and R09; `csr-NNNN` accepted as the draft id), checked against every schema fixture in `tests/js/record-check.test.mjs`; error summary and inline errors in `draft.js`, placed by schema path (`buildDraft` reports which form group each list entry came from). Schema fix: condition 1's `if` now requires `record_status`. `csr validate` accepts `csr-NNNN` outside `records/` with an R01 warning, so the browser and the command line agree.
+- 2026-11-02 — S9b done: Copy YAML, Download (`solution.yml`), Open as a GitHub issue (new tab; pre-fills `solution-yml`, `asset-name`, `organisation` and `contact`; over about 8 KB the file is downloaded to attach instead), Send by email (downloads the file, then a `mailto:` with a subject and a two-line body; shown only when `contact_mailbox` is set). Every hand-off validates first. Checked in Chromium, including a build with a mailbox configured; the downloaded file passes `csr validate`. Departures D23–D27 added.
+- 2026-11-02 — **S9 ready for pull request.**
+  - **Done:** S9a–b. `pytest -q`: 273 passed. `csr validate --base origin/main`: 0 errors, 2 warnings. `csr build`: 56 pages.
+  - **Next:** author opens and merges the pull request from `robbie/wizardly-dijkstra-2sjib7`. Then S10 (validate page), which can reuse `record-check.js` and the vendored Ajv and `js-yaml`.
+  - **Blockers:** none.
+  - **Pull request title:** Add validation and the hand-off to the draft form (S9)
+  - **Pull request description:**
+
+    > ## What this changes
+    >
+    > Completes the draft form (slice S9 of `docs/build/PLAN.md`).
+    >
+    > - Validation in the browser against the real schema, with the vendored Ajv 8.17.1 (JSON Schema 2020-12) runtime, plus rules R06 and R09. Problems are shown in the design system's error summary, in the order of the form, and inline on each field, with one plain message per field.
+    > - Copy YAML and Download (`solution.yml`).
+    > - Open as a GitHub issue: opens in a new tab, pre-filling the `suggest-asset.yml` form. A draft too long for GitHub's address limit is downloaded to attach instead.
+    > - Send by email: downloads the file and opens an email with a subject and a two-line body asking for it to be attached. It appears once the role mailbox is set in `site.toml`.
+    > - Every hand-off checks the draft first, so every route produces a validated record.
+    > - `csr validate` accepts the draft's placeholder id `csr-NNNN` outside `records/`, with a warning, so a file that passes in the browser also passes on the command line.
+    > - Fixes schema condition 1, which asked for sources when `record_status` was missing.
+    > - `docs/ui-requirements.md` gains departures D23 to D27.
+    >
+    > ## Why
+    >
+    > Specification 6.6, 6.9 and 6.13: the form validates every field against the schema, with an error summary and inline errors, and its hand-off routes work.
+    >
+    > ## How it was tested
+    >
+    > `pytest -q` (273 passed), including JavaScript tests that check the browser validator agrees with the Python one on every schema fixture. In Chromium: the error summary and inline errors, focus, copy, download, the issue link (and the too-long case), and email on a build with a mailbox configured; the downloaded file passes `csr validate`.
     >
     > ## Checklist
     >

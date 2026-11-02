@@ -82,9 +82,24 @@ const orSentinel = (value, show) => (trim(value) ? trim(value) : show.unstated ?
  * Build the record. `base` is the record being corrected, if any; `order` is
  * the schema's field order; `today` is an ISO date.
  */
-export function buildRecord(answers, { base = {}, order = [], today = '', schemaVersion = '0.1' } = {}) {
+export function buildRecord(answers, options = {}) {
+  return buildDraft(answers, options).record;
+}
+
+/**
+ * Build the record, and say which group in the form each list entry came
+ * from: rows.codebases[0] is the position, among the form's codebase
+ * groups, of the record's first codebase (empty groups are left out).
+ */
+export function buildDraft(answers, { base = {}, order = [], today = '', schemaVersion = '0.1' } = {}) {
   const show = sections(answers, base);
   const record = {};
+  const rows = {};
+  const keep = (group, list, filled) => {
+    const kept = list.map((item, index) => [item, index]).filter(([item]) => filled(item));
+    rows[group] = kept.map(([, index]) => index);
+    return kept.map(([item]) => item);
+  };
   const ownerConfirmed = answers.own === 'yes';
   const recordStatus = show.withdrawal ? 'withdrawn' : answers.own === 'yes' ? 'owner-confirmed'
     : answers.own === 'no' ? 'demonstration' : base.record_status;
@@ -125,9 +140,9 @@ export function buildRecord(answers, { base = {}, order = [], today = '', schema
   record.service_page_url = orSentinel(answers.service_page_url, { unstated: show.unstated && show.support });
 
   if (show.sources) {
-    record.sources = answers.sources.map((s) => compact({
+    record.sources = keep('sources', answers.sources.map((s) => compact({
       url: trim(s.url), title: trim(s.title), publisher: trim(s.publisher), accessed: isoDate(s.accessed) || today,
-    })).filter((s) => s.url || s.title);
+    })), (s) => s.url || s.title);
   }
   if (ownerConfirmed) {
     record.confirmation = { last_confirmed: today, method: 'draft form', reference: 'Submitted with the draft form' };
@@ -141,23 +156,23 @@ export function buildRecord(answers, { base = {}, order = [], today = '', schema
     record.deprecation = compact({ date: isoDate(answers.deprecation_date), migration_guidance: trim(answers.migration_guidance) });
   }
   if (show.interfaces) {
-    record.interfaces = answers.interfaces.map((i, n) => compact({
+    record.interfaces = keep('interfaces', answers.interfaces.map((i, n) => compact({
       ...((base.interfaces || [])[n] || {}), type: i.type, documentation_url: trim(i.documentation_url),
-    })).filter((i) => i.documentation_url);
+    })), (i) => i.documentation_url);
   }
-  record.codebases = answers.codebases.map((c, n) => compact({
+  record.codebases = keep('codebases', answers.codebases.map((c, n) => compact({
     ...((base.codebases || [])[n] || {}), repository_url: trim(c.repository_url), visibility: c.visibility,
     publiccode_url: trim(c.publiccode_url), maintenance: c.maintenance,
-  })).filter((c) => c.repository_url || c.publiccode_url || c.visibility);
-  record.open_data = answers.open_data.map((d, n) => compact({
+  })), (c) => c.repository_url || c.publiccode_url || c.visibility);
+  record.open_data = keep('open_data', answers.open_data.map((d, n) => compact({
     ...((base.open_data || [])[n] || {}), title: trim(d.title), url: trim(d.url),
-  })).filter((d) => d.title || d.url);
+  })), (d) => d.title || d.url);
 
   // Fields the form does not show are kept from the record being corrected.
   for (const [key, value] of Object.entries(base)) {
     if (!FORM_FIELDS.includes(key) && !(key in record) && !DERIVED.includes(key)) record[key] = value;
   }
-  return ordered(compact(record), order);
+  return { record: ordered(compact(record), order), rows };
 }
 
 /** Fields the register adds when publishing, which are never part of a solution.yml. */

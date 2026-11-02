@@ -9,7 +9,7 @@ from dataclasses import dataclass, field
 from pathlib import Path
 
 from csr import links
-from csr.findings import Finding, error, has_errors
+from csr.findings import Finding, error, has_errors, warning
 from csr.records import RECORD_FILE, Record, parse, read_file, read_register, read_url
 from csr.rules import POINTER_RULES, RECORD_RULES, Context
 from csr.schema import ROOT, check
@@ -38,11 +38,21 @@ class Result:
         return sum(1 for f in self.findings if f.severity == severity)
 
 
+#: The id a draft carries until the register allocates one (the draft form writes it).
+PLACEHOLDER_ID = "csr-NNNN"
+
+
 def check_record(record: Record, context: Context) -> list[Finding]:
     """Check one record: its schema, then the rules. Returns all findings, including read errors."""
     findings = list(record.findings)
     if record.data is None:
         return findings
+    if not record.in_register and isinstance(record.data, dict) and record.data.get("id") == PLACEHOLDER_ID:
+        # A draft: check it as if it had an id in the right range, and say the id is still to come.
+        stand_in = "csr-9000" if record.data.get("record_status") == "example" else "csr-0001"
+        findings.append(warning(record.label, "R01", "id", "the id is allocated when the record is registered",
+                                "Nothing to do: a maintainer gives the record its id."))  # fmt: skip
+        record = Record(record.label, {**record.data, "id": stand_in}, record.in_register, record.filename)
     schema = "pointer" if record.is_pointer else "asset"
     findings += [
         error(record.label, "SCHEMA", e.path, e.message, _schema_fix(schema)) for e in check(record.data, schema)
