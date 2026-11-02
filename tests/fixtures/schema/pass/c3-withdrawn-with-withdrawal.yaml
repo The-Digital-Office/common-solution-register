@@ -1,0 +1,36 @@
+# Condition 3: a withdrawn record says when and why.
+schema_version: '0.1'
+id: csr-9301
+record_status: withdrawn
+name: 'Example: Withdrawn Component'
+summary: A fictional record used as a schema test fixture, never published.
+purpose: Exercises one condition of the descriptor schema, so that the tests show the condition both passing
+  and failing.
+asset_type: component
+owner:
+  organisation: Example Council
+  sector: local-government
+contact:
+  type: role-mailbox
+  value: digital@example.gov.uk
+service_areas:
+- corporate-and-cross-cutting
+capabilities:
+- integration-and-apis
+status: deprecated
+intended_adopters:
+- local-government
+- nhs-scotland
+terms_of_use:
+  type: open-licence
+  licence: MIT
+adoption_route:
+  summary: Ask the owner for access, then follow the onboarding guide.
+charging:
+  applies: false
+deprecation:
+  date: '2026-01-31'
+  migration_guidance: Use the replacement component instead.
+withdrawal:
+  date: '2026-06-30'
+  reason: The pilot ended and the component is no longer offered.

@@ -1,0 +1,75 @@
+# Service areas: the public services a solution supports (service_areas).
+# A draft for the short-life working group to critique.
+taxonomy: service-areas
+version: "0.1"
+terms:
+  - id: health-and-care
+    label: Health and care
+    definition: Healthcare, public health, and integrated health and social care services.
+    synonyms: [health, public health, health and social care]
+    status: active
+  - id: social-care-and-social-work
+    label: Social care and social work
+    definition: Adult and children's social work, care assessment, and care and support services.
+    synonyms: [social services, adult social care]
+    status: active
+  - id: children-and-families
+    label: Children and families
+    definition: Services for children, young people and families, including early years, child protection and family support.
+    synonyms: [early years, youth services]
+    status: active
+  - id: education-and-skills
+    label: Education and skills
+    definition: Schools, further and higher education, training, and employability services.
+    synonyms: [schools, learning, employability]
+    status: active
+  - id: housing
+    label: Housing
+    definition: Social housing, homelessness, housing advice, and private sector housing services.
+    synonyms: [homelessness, tenancy]
+    status: active
+  - id: social-security-and-benefits
+    label: Social security and benefits
+    definition: Benefits, grants and financial support paid to people, and the advice that goes with them.
+    synonyms: [benefits, welfare, grants]
+    status: active
+  - id: revenues-and-tax
+    label: Revenues and tax
+    definition: Collecting taxes, rates and charges, such as council tax and non-domestic rates.
+    synonyms: [council tax, business rates, revenues]
+    status: active
+  - id: justice-and-community-safety
+    label: Justice and community safety
+    definition: Policing, fire and rescue, courts, community justice, licensing and community safety services.
+    synonyms: [justice, community safety, licensing]
+    status: active
+  - id: environment-and-waste
+    label: Environment and waste
+    definition: Waste collection and recycling, environmental health, and environmental protection.
+    synonyms: [waste, recycling, environmental health]
+    status: active
+  - id: planning-and-building-standards
+    label: Planning and building standards
+    definition: Development planning, planning applications, and building warrants and standards.
+    synonyms: [planning, building control, building warrants]
+    status: active
+  - id: transport-and-roads
+    label: Transport and roads
+    definition: Roads, parking, public transport, active travel and transport planning.
+    synonyms: [roads, parking, travel]
+    status: active
+  - id: economy-and-business
+    label: Economy and business
+    definition: Business support, economic development, trading standards and procurement with suppliers.
+    synonyms: [economic development, business support, trading standards]
+    status: active
+  - id: culture-and-communities
+    label: Culture and communities
+    definition: Libraries, leisure, culture, heritage and community development.
+    synonyms: [libraries, leisure, community engagement]
+    status: active
+  - id: corporate-and-cross-cutting
+    label: Corporate and cross-cutting
+    definition: Services that support an organisation as a whole, or many service areas at once, such as finance, people, technology and customer service.
+    synonyms: [corporate services, back office, cross-cutting]
+    status: active

@@ -1,0 +1,30 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://the-digital-office.github.io/common-solution-register/schema/taxonomy.schema.json",
+  "title": "Taxonomy file",
+  "description": "A list of taxonomy terms: sectors, service areas or capabilities.",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["taxonomy", "version", "terms"],
+  "properties": {
+    "taxonomy": { "enum": ["sectors", "service-areas", "capabilities"] },
+    "version": { "type": "string", "pattern": "^[0-9]+\\.[0-9]+$" },
+    "terms": {
+      "type": "array",
+      "minItems": 1,
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": ["id", "label", "definition", "synonyms", "status"],
+        "properties": {
+          "id": { "type": "string", "pattern": "^[a-z0-9]+(-[a-z0-9]+)*$" },
+          "label": { "type": "string", "minLength": 2, "maxLength": 60 },
+          "definition": { "type": "string", "minLength": 20, "maxLength": 300 },
+          "synonyms": { "type": "array", "uniqueItems": true, "items": { "type": "string", "minLength": 2, "maxLength": 60 } },
+          "status": { "enum": ["active", "deprecated"] },
+          "replaced_by": { "type": "string", "pattern": "^[a-z0-9]+(-[a-z0-9]+)*$" }
+        }
+      }
+    }
+  }
+}

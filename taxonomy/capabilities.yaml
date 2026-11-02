@@ -1,0 +1,75 @@
+# Capabilities: what a solution does (capabilities).
+# A draft for the short-life working group to critique.
+taxonomy: capabilities
+version: "0.1"
+terms:
+  - id: identity-and-access
+    label: Identity and access
+    definition: Proving who a person or organisation is, signing in, and controlling what they can access.
+    synonyms: [authentication, sign-in, login, verification]
+    status: active
+  - id: payments
+    label: Payments
+    definition: Taking and making payments, and reconciling them.
+    synonyms: [card payments, online payments]
+    status: active
+  - id: booking-and-scheduling
+    label: Booking and scheduling
+    definition: Booking appointments, rooms, collections or other resources, and managing schedules.
+    synonyms: [appointments, bookings, scheduling]
+    status: active
+  - id: case-management
+    label: Case management
+    definition: Recording and progressing cases, applications or requests through their stages to an outcome.
+    synonyms: [workflow, casework]
+    status: active
+  - id: forms-and-transactions
+    label: Forms and transactions
+    definition: Online forms and transactional services through which people apply, report or request something.
+    synonyms: [e-forms, online forms, digital transactions]
+    status: active
+  - id: notifications
+    label: Notifications
+    definition: Sending emails, text messages, letters and other messages to people.
+    synonyms: [messaging, email, SMS, letters]
+    status: active
+  - id: document-and-records-management
+    label: Document and records management
+    definition: Creating, storing, retaining and disposing of documents and records.
+    synonyms: [EDRMS, records management, document management]
+    status: active
+  - id: integration-and-apis
+    label: Integration and APIs
+    definition: Connecting systems and exchanging data between them, including application programming interfaces.
+    synonyms: [APIs, interoperability, integration]
+    status: active
+  - id: data-and-analytics
+    label: Data and analytics
+    definition: Collecting, managing, sharing and analysing data, including reference data and reporting.
+    synonyms: [analytics, reporting, reference data, data sharing]
+    status: active
+  - id: mapping-and-location
+    label: Mapping and location
+    definition: Maps, addresses, geographic data and location-based services.
+    synonyms: [GIS, geospatial, addresses, gazetteer]
+    status: active
+  - id: content-and-publishing
+    label: Content and publishing
+    definition: Publishing and managing website and other content, including design systems and content standards.
+    synonyms: [websites, content management, CMS, design system]
+    status: active
+  - id: cyber-security
+    label: Cyber security
+    definition: Protecting systems, networks and data from attack, and responding to incidents.
+    synonyms: [security, cyber resilience]
+    status: active
+  - id: information-governance
+    label: Information governance
+    definition: Data protection, freedom of information, information sharing agreements and information risk.
+    synonyms: [data protection, FOI, privacy]
+    status: active
+  - id: collaboration-and-productivity
+    label: Collaboration and productivity
+    definition: Tools and practices that help people work together, such as shared workspaces, communication and code sharing.
+    synonyms: [collaboration, productivity, ways of working]
+    status: active

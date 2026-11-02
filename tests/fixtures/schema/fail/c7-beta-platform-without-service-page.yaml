@@ -1,0 +1,39 @@
+# Condition 7: a beta platform must give the owner's service page.
+# expect-error-at: (record)
+# expect-message: 'service_page_url' is a required property
+schema_version: '0.1'
+id: csr-9703
+record_status: example
+name: 'Example: Hosting Platform'
+summary: A fictional record used as a schema test fixture, never published.
+purpose: Exercises one condition of the descriptor schema, so that the tests show the condition both passing
+  and failing.
+asset_type: platform
+owner:
+  organisation: Example Council
+  sector: local-government
+contact:
+  type: role-mailbox
+  value: digital@example.gov.uk
+service_areas:
+- corporate-and-cross-cutting
+capabilities:
+- integration-and-apis
+status: beta
+intended_adopters:
+- local-government
+- nhs-scotland
+terms_of_use:
+  type: open-licence
+  licence: MIT
+adoption_route:
+  summary: Ask the owner for access, then follow the onboarding guide.
+charging:
+  applies: false
+confirmation:
+  last_confirmed: '2026-10-01'
+  method: pull request
+  reference: https://example.gov.uk/confirmation/1
+service_url: https://service.example.gov.uk/
+support:
+  summary: Service desk, Monday to Friday 9am to 5pm.

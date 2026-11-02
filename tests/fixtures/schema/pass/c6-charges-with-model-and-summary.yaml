@@ -1,0 +1,36 @@
+# Condition 6: if charges apply, the model and a summary or URL are given.
+schema_version: '0.1'
+id: csr-9601
+record_status: example
+name: 'Example: Payments Gateway'
+summary: A fictional record used as a schema test fixture, never published.
+purpose: Exercises one condition of the descriptor schema, so that the tests show the condition both passing
+  and failing.
+asset_type: component
+owner:
+  organisation: Example Council
+  sector: local-government
+contact:
+  type: role-mailbox
+  value: digital@example.gov.uk
+service_areas:
+- corporate-and-cross-cutting
+capabilities:
+- integration-and-apis
+status: live
+intended_adopters:
+- local-government
+- nhs-scotland
+terms_of_use:
+  type: open-licence
+  licence: MIT
+adoption_route:
+  summary: Ask the owner for access, then follow the onboarding guide.
+charging:
+  applies: true
+  model: recharge
+  summary: Annual fee per adopting organisation.
+confirmation:
+  last_confirmed: '2026-10-01'
+  method: pull request
+  reference: https://example.gov.uk/confirmation/1
