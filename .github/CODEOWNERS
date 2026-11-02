@@ -2,3 +2,9 @@
 # Add a second maintainer on the same line if there is one, e.g.
 #   * @first-maintainer @second-maintainer
 * @robbieharris
+
+# Register content: maintainers are requested for review (spec 6.7).
+# Review is requested, not enforced.
+/records/ @robbieharris
+/taxonomy/ @robbieharris
+/schema/ @robbieharris
