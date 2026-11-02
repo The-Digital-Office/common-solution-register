@@ -268,4 +268,37 @@ Newest last. One line per checkpoint; a fuller entry when a session ends.
     >
     > - [x] `CHANGELOG.md` updated under Unreleased
     > - [x] No secrets or personal data
+- 2026-11-02 — S6 merged. **Author:** UI decisions (the departures in `docs/ui-requirements.md`) are deferred until leaving them would make change harder. The build flags that point; expected before S14, whose visual baselines would lock the pages in.
+- 2026-11-02 — S7a–c done (one commit): `static/js/search-core.js` (pure functions: URL state, word-prefix matching, faceted counts, sorting) and `static/js/search.js` (wires them to the page; announces the count through a status message after typing pauses); the home page renders every record with withdrawn ones hidden, embeds a search index, and hides search, filters and sort without JavaScript; `tests/js/search-core.test.mjs` run by `tests/test_js.py`. Parity rows 1 to 6 checked in Chromium with a scripted run (the committed Playwright tests come in S14). Departures D16–D18 added.
+- 2026-11-02 — **S7 ready for pull request.**
+  - **Done:** S7a–c. `pytest -q`: 256 passed (including the JavaScript tests). `csr validate --base origin/main`: 0 errors, 2 warnings. `csr build`: 55 pages.
+  - **Next:** author opens and merges the pull request from `robbie/wizardly-dijkstra-2sjib7`. Then S8 (draft form, part 1).
+  - **Blockers:** none.
+  - **Pull request title:** Add search, filters and sorting to the home page (S7)
+  - **Pull request description:**
+
+    > ## What this changes
+    >
+    > Makes the home page's search, filters and sort work (slice S7 of `docs/build/PLAN.md`; parity rows 1 to 6 of specification 6.13).
+    >
+    > - Search as you type, matching the start of words in each record's name, summary, owner, purpose, ID and asset type, and the labels and synonyms of its taxonomy terms.
+    > - Provenance, asset type, sector, service area, capability, currency and withdrawn filters, each with counts that reflect the query and the other filters.
+    > - Sort by name, recently changed or recently confirmed.
+    > - The query, filters and sort are kept in the address, so results can be shared; Clear all filters resets them; the result count is announced to screen readers once typing pauses.
+    > - Without JavaScript the full list is shown, and search, filters and sort are hidden.
+    > - The logic is in a small module of pure functions with unit tests, which `pytest` runs with Node's built-in test runner.
+    > - `docs/ui-requirements.md` gains departures D16 to D18.
+    >
+    > ## Why
+    >
+    > Specification 6.13: the wireframe shows these controls, and the parity table requires them to work, with counts, and the page to work without JavaScript.
+    >
+    > ## How it was tested
+    >
+    > `pytest -q` (256 passed) and `csr build` on Python 3.12 and Node 22. Each of parity rows 1 to 6 was checked in Chromium against the built site, with JavaScript on and off; the committed browser tests come in S14.
+    >
+    > ## Checklist
+    >
+    > - [x] `CHANGELOG.md` updated under Unreleased
+    > - [x] No secrets or personal data
 

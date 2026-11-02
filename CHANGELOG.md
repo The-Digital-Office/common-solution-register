@@ -31,6 +31,8 @@ and this project uses [Semantic Versioning](https://semver.org/spec/v2.0.0.html)
 - API and extracts: `api/v0/` (index, all records, each record, taxonomies and schemas) and `data/register.json` and `data/register.csv`.
 - `site.toml`: `examples_as_of`, so fictional examples keep their currency states, and a `[publication]` section for the inputs the author completes before publication.
 - `csr-0001` links to the register's own open data.
+- Home page search, filters and sorting: search by name, summary, owner, purpose, record ID and taxonomy synonyms; provenance, asset type, sector, service area, capability, currency and withdrawn filters with counts; sort by name, recently changed or recently confirmed; the state kept in the URL; the result count announced to screen readers. Without JavaScript the full list is shown.
+- JavaScript unit tests, run by `pytest` with Node's built-in test runner when Node is installed.
 - The `Validate` job builds the site and uploads it as the `site-preview` artifact.
 
 ### Changed
