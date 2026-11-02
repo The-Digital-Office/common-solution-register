@@ -44,7 +44,7 @@ Rules: never push to `main`; never rewrite pushed history; do not start the next
 | S13 | Workflows and community files: daily and on-demand harvest, deploy (disabled until `PAGES_ENABLED`), concurrency; reusable `validate-solution.yml`; issue forms; pull request template | 6.10, 6.6 | a) workflows; b) forms and template | Workflows pass; deploy is skipped |
 | S14 | UI tests: fixtures reproducing the wireframes; visual comparison at 1280 and 375 pixels; behaviour tests; `axe-core`; required `UI tests` job; `npm` entry in `dependabot.yml` (removed after S1 because there was no `package.json` to read); **author** adds `UI tests` to the "CSR: required checks" ruleset | 6.13 | a) visual; b) behaviour; c) accessibility | `UI tests` passes in CI |
 | S15 | Demonstration records: research, cited sources, sentinels where facts are not public | 5.2 | a) one record per checkpoint | Author verifies every statement against its source |
-| S16 | Documentation and readiness: adopting guide, decision points, editorial model, maintenance, runbook; manual accessibility pass | 8, 9 | a) documents; b) checklist | Ready for courtesy notes, sign-off and enabling Pages (author steps) |
+| S16 | Documentation and readiness: adopting guide, decision points (including the S2 schema choices, which the author wants reviewed as part of the demonstrator), editorial model, maintenance, runbook; manual accessibility pass | 8, 9 | a) documents; b) checklist | Ready for courtesy notes, sign-off and enabling Pages (author steps) |
 
 ## Progress log
 
@@ -122,3 +122,39 @@ Newest last. One line per checkpoint; a fuller entry when a session ends.
     >
     > - [x] `CHANGELOG.md` updated under Unreleased
     > - [x] No secrets or personal data
+- 2026-11-02 — S2 merged. Author: the S2 schema choices should all be reviewed as part of the demonstrator; S16 lists them in `docs/decision-points.md`.
+- 2026-11-02 — S3a and S3b done: `csr validate [path-or-url ...] [--base REF] [--check-links] [--format text|json|github]`. `src/csr/records.py` (reading files, URLs and `records/`; YAML errors and repeated keys reported), `findings.py` (rule, severity, field, message, fix), `rules.py` (R02–R07, R09–R12, R18), `links.py` (R08, R19, warnings only, behind `--check-links`), `validate.py` (schema, R01 file name and uniqueness, `--base`). With no targets it checks `records/` and the root `solution.yml`. R13 is a `pytest` test (S3c).
+- 2026-11-02 — S3c done: `tests/test_rules.py` (each rule, pass and fail), `tests/test_validate.py` (R01 in the register, `--base` against a temporary git repository, YAML errors and repeated keys, pointer and URL targets, R08 and R19 with a fake network, CLI formats and exit codes), `tests/test_vendor.py` (R13: `SHA256SUMS` beside each vendored package; nothing vendored yet, so its hash check is skipped until S5). `site.yml` `Validate` job now also runs `csr validate --base origin/<base>` on pull requests (full history checked out).
+- 2026-11-02 — **S3 ready for pull request.**
+  - **Done:** S3a–c. `pytest -q`: 186 passed, 1 skipped (R13 hash check, nothing vendored). `csr validate --base origin/main` passes (no records yet).
+  - **Next:** author opens and merges the pull request from `robbie/wizardly-dijkstra-2sjib7`. Then S4 (owner and example records). S5 must write `src/csr/static/vendor/sgds/4.3.0/SHA256SUMS` (format of `sha256sum`) so R13 covers the design system; S9 does the same for Ajv and `js-yaml`.
+  - **Blockers:** none.
+  - **Interpretations for the decision-points review (S16):** R02 lets `withdrawn` records use either ID range (spec 5.1); `--base` reports a record added on the branch whose id the base branch has since taken (the concurrent-pull-request case); R07 flags `firstname.lastname@` addresses unless either part is a role word; R08 checks codebase repository and `publiccode.yml` URLs, demonstration `sources[]` URLs and pointer sources; R09 checks values that start with `TODO`, not `TODO` inside text; R18 is also enforced by the schema, so a non-HTTPS URL gives two findings; schema messages are those of the `jsonschema` library and may need plainer wording for the validate page (S10). With no targets, `csr validate` checks `records/` and the root `solution.yml`; `examples/hosted/` is left to the harvester, because `csr-9007` fails on purpose.
+  - **Pull request title:** Add the csr validate command (S3)
+  - **Pull request description:**
+
+    > ## What this changes
+    >
+    > Adds the validator (slice S3 of `docs/build/PLAN.md`).
+    >
+    > - `csr validate [path-or-url ...]` checks the register's records, or given files and HTTPS URLs, against the schema and the rules in appendix C: R01 to R07, R09 to R12 and R18, with R08 and R19 behind `--check-links` (warnings only).
+    > - `--base REF` reports a new record whose id the base branch has already taken.
+    > - Each finding gives the rule, field, message and a fix, as text, JSON or GitHub annotations. The exit status is 1 when there are errors.
+    > - R13 is a `pytest` test of the hashes of vendored files, ready for S5 and S9.
+    > - The `Validate` job now also runs `csr validate`, with `--base` on pull requests.
+    >
+    > ## Why
+    >
+    > Appendix C. Every later slice (records, harvester, site, validate page) relies on the validator.
+    >
+    > Interpretations of the rules are listed in the S3 entry of the build plan's progress log, for the decision-points review.
+    >
+    > ## How it was tested
+    >
+    > `pytest -q` (186 passed, 1 skipped until files are vendored in S5) and `csr validate --base origin/main` on Python 3.12. Each rule has passing and failing tests; `--base` is tested against a temporary git repository, and the network rules with a fake network.
+    >
+    > ## Checklist
+    >
+    > - [x] `CHANGELOG.md` updated under Unreleased
+    > - [x] No secrets or personal data
+    > - [x] Actions pinned by SHA

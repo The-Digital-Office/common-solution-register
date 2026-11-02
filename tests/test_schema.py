@@ -23,11 +23,6 @@ DERIVED = [
 ]
 
 
-@pytest.fixture
-def minimal():
-    return load_yaml_file(FIXTURES / "pass" / "minimal.yaml")
-
-
 @pytest.mark.parametrize("path", sorted(SCHEMA_DIR.glob("*.schema.json")), ids=lambda p: p.name)
 def test_schemas_are_valid_draft_2020_12(path):
     Draft202012Validator.check_schema(load_schema(path.name.removesuffix(".schema.json")))

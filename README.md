@@ -33,9 +33,19 @@ pytest -q
 csr --version
 ```
 
-The `csr` command-line tool will validate records (`csr validate`), harvest
-owner-hosted descriptors (`csr harvest`) and build the static site
-(`csr build`). These commands are added in later build slices.
+To check the register's records, or any `solution.yml` file or HTTPS URL:
+
+```bash
+csr validate
+csr validate path/to/solution.yml
+csr validate --check-links
+```
+
+`--check-links` also checks that linked addresses respond and that each
+codebase's `publiccode.yml` agrees with the record. The checks are listed in
+[`schema/README.md`](schema/README.md). Harvesting owner-hosted descriptors
+(`csr harvest`) and building the site (`csr build`) are added in later build
+slices.
 
 A failed build or deployment notifies the person whose commit triggered it,
 through GitHub. Maintainers watch the repository.

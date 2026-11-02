@@ -19,6 +19,9 @@ and this project uses [Semantic Versioning](https://semver.org/spec/v2.0.0.html)
 - Descriptor schema v0.1 (`schema/asset.schema.json`) with its eight conditions, the pointer record schema and `schema/README.md`.
 - Draft taxonomy: 8 sectors, 14 service areas and 14 capabilities, with definitions and synonyms.
 - Passing and failing schema fixtures for each of the eight conditions.
+- `csr validate`: checks records, files or HTTPS URLs against the schema and validation rules R01 to R12 and R18 (R08 and R19 with `--check-links`), with `--base` to catch ids already taken on the base branch, and text, JSON or GitHub output.
+- R13 test for vendored file hashes.
+- The `Validate` job runs `csr validate`.
 
 ### Changed
 
