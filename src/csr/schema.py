@@ -17,8 +17,24 @@ SCHEMA_DIR = ROOT / "schema"
 SENTINEL = "not-publicly-stated"
 
 
+class DuplicateKeyError(yaml.constructor.ConstructorError):
+    """A YAML mapping repeats a key, which would silently lose a value."""
+
+
 class _Loader(yaml.SafeLoader):
-    """Safe YAML loader that keeps dates as strings, as JSON Schema expects."""
+    """Safe YAML loader that keeps dates as strings, as JSON Schema expects,
+    and rejects repeated keys."""
+
+    def construct_mapping(self, node, deep=False):
+        seen = set()
+        for key_node, _ in node.value:
+            key = self.construct_object(key_node, deep=deep)
+            if key in seen:
+                raise DuplicateKeyError(
+                    None, None, f"repeated key {key!r}", key_node.start_mark
+                )
+            seen.add(key)
+        return super().construct_mapping(node, deep=deep)
 
 
 _Loader.yaml_implicit_resolvers = {

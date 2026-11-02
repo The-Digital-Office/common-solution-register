@@ -44,7 +44,7 @@ Rules: never push to `main`; never rewrite pushed history; do not start the next
 | S13 | Workflows and community files: daily and on-demand harvest, deploy (disabled until `PAGES_ENABLED`), concurrency; reusable `validate-solution.yml`; issue forms; pull request template | 6.10, 6.6 | a) workflows; b) forms and template | Workflows pass; deploy is skipped |
 | S14 | UI tests: fixtures reproducing the wireframes; visual comparison at 1280 and 375 pixels; behaviour tests; `axe-core`; required `UI tests` job; `npm` entry in `dependabot.yml` (removed after S1 because there was no `package.json` to read); **author** adds `UI tests` to the "CSR: required checks" ruleset | 6.13 | a) visual; b) behaviour; c) accessibility | `UI tests` passes in CI |
 | S15 | Demonstration records: research, cited sources, sentinels where facts are not public | 5.2 | a) one record per checkpoint | Author verifies every statement against its source |
-| S16 | Documentation and readiness: adopting guide, decision points, editorial model, maintenance, runbook; manual accessibility pass | 8, 9 | a) documents; b) checklist | Ready for courtesy notes, sign-off and enabling Pages (author steps) |
+| S16 | Documentation and readiness: adopting guide, decision points (including the S2 schema choices, which the author wants reviewed as part of the demonstrator), editorial model, maintenance, runbook; manual accessibility pass | 8, 9 | a) documents; b) checklist | Ready for courtesy notes, sign-off and enabling Pages (author steps) |
 
 ## Progress log
 
@@ -122,3 +122,5 @@ Newest last. One line per checkpoint; a fuller entry when a session ends.
     >
     > - [x] `CHANGELOG.md` updated under Unreleased
     > - [x] No secrets or personal data
+- 2026-11-02 — S2 merged. Author: the S2 schema choices should all be reviewed as part of the demonstrator; S16 lists them in `docs/decision-points.md`.
+- 2026-11-02 — S3a and S3b done: `csr validate [path-or-url ...] [--base REF] [--check-links] [--format text|json|github]`. `src/csr/records.py` (reading files, URLs and `records/`; YAML errors and repeated keys reported), `findings.py` (rule, severity, field, message, fix), `rules.py` (R02–R07, R09–R12, R18), `links.py` (R08, R19, warnings only, behind `--check-links`), `validate.py` (schema, R01 file name and uniqueness, `--base`). With no targets it checks `records/` and the root `solution.yml`. R13 is a `pytest` test (S3c). **Next:** S3c.
