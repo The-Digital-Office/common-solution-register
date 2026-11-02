@@ -1,4 +1,4 @@
-# Scottish Government Design System 4.3.0
+# @scottish-government/design-system 4.3.0
 
 | | |
 |---|---|
@@ -7,9 +7,7 @@
 | npm integrity | `sha512-1Pb4nPAYiJlTqydC/YMe2VxskTA5c4Eo46f2vndNSwLlnUyeimxgGG45wRjtytjHF3yuruE2e3Euk+7fdGcFVw==` |
 | Licence | MIT ([`LICENSE.txt`](LICENSE.txt)) |
 
-Files taken unchanged from the package: `dist/css/design-system.min.css`,
-`dist/scripts/design-system.js` and `LICENSE.txt`. Their SHA-256 hashes are in
-[`SHA256SUMS`](SHA256SUMS), checked by the R13 test. No graphic assets are
-vendored, and no Scottish Government logo or brand asset is used.
+Files taken unchanged from the package: `dist/css/design-system.min.css`, `dist/scripts/design-system.js`, `LICENSE.txt`. Their SHA-256 hashes are in
+[`SHA256SUMS`](SHA256SUMS), checked by the R13 test. No graphic assets are vendored, and no Scottish Government logo or brand asset is used.
 
-Refresh with `python tools/vendor-sgds.py 4.3.0`.
+Refresh with `python tools/vendor.py sgds 4.3.0`.

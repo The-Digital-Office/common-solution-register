@@ -13,3 +13,7 @@ DS.components.skipLinks.init();
 document.querySelectorAll('[data-module="ds-details"]').forEach((element) => {
   new DS.components.Details(element).init();
 });
+
+document.querySelectorAll('[data-module="ds-character-count"]').forEach((element) => {
+  new DS.components.CharacterCount(element).init();
+});

@@ -15,6 +15,7 @@ import yaml
 
 from csr import __version__, api
 from csr.config import Config, load_config
+from csr.form import draft_context
 from csr.register import Entry, Register, load_register
 from csr.rules import RULES
 from csr.schema import ROOT, SENTINEL, load_schema
@@ -209,6 +210,9 @@ def build(
     _static_pages(site)
     _reference_pages(site, root)
     _data_pages(site)
+    form = draft_context()
+    form["sectors"] = [(t.id, t.label) for t in site.taxonomies["sectors"].terms]
+    site.page("draft/", "draft.html", nav="contribute", form=form)
     return BuildResult(out=out, pages=site.pages, register=register)
 
 

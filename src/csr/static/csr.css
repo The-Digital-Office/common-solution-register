@@ -164,3 +164,55 @@ html:not(.js-enabled) .csr-js-only {
   background: #fff4cc;
   font-style: italic;
 }
+
+/* The draft form (specification 6.13): question groups, conditional sections, and the YAML preview. */
+.csr-fieldset {
+  border: 0;
+  margin: 0 0 2.5rem;
+  padding: 0;
+}
+
+.csr-fieldset > legend {
+  font-size: 1.5rem;
+  font-weight: 700;
+  margin: 0 0 1rem;
+  padding: 0;
+}
+
+.csr-cond {
+  border-left: 0.25rem solid #b3b3b3;
+  margin: 0 0 1.5rem;
+  padding: 0 0 0 1.25rem;
+}
+
+.csr-yaml {
+  background: #f8f8f8;
+  border: 0.0625rem solid #b3b3b3;
+  font-family: "Courier New", monospace;
+  font-size: 0.9375rem;
+  line-height: 1.5;
+  margin: 0 0 1.5rem;
+  max-height: 40rem;
+  overflow: auto;
+  padding: 1rem;
+  white-space: pre-wrap;
+  word-break: break-word;
+}
+
+.csr-btns {
+  align-items: center;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.75rem;
+}
+
+.csr-btns .ds_button {
+  margin: 0;
+}
+
+@media (min-width: 992px) {
+  .csr-sticky {
+    position: sticky;
+    top: 1rem;
+  }
+}

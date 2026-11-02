@@ -37,7 +37,7 @@ Rules: never push to `main`; never rewrite pushed history; do not start the next
 | S6 | Remaining static pages, API and CSV: browse, term, contribute, about, accessibility, privacy, 404, withdrawn, field reference, solutions-and-codebases, data, currency | 6.8, 6.13 | a) pages, part 1; b) part 2; c) API and CSV | Every page in the 6.13 map is built; `api/v0/` and extracts are generated |
 | S7 | Search, filter and sort script; query in URL; result count announced | 6.13 parity rows 1–6 | a) search; b) filters and counts; c) sort | Behaves as the parity table; works without JavaScript |
 | S8 | Draft form, part 1: form generated from schema and taxonomy; conditional sections; codebases and open data repeaters; live YAML preview | 6.6, 6.13 | a) template; b) conditions; c) preview | Matches the Draft wireframe |
-| S9 | Draft form, part 2: vendored Ajv and `js-yaml`; full validation; error summary and inline errors; copy, download, issue and email hand-off | 6.6, 6.9 | a) validation; b) hand-off | Parity rows for the form pass |
+| S9 | Draft form, part 2: vendored Ajv (`js-yaml` was vendored in S8 for the preview); full validation; error summary and inline errors; copy, download, issue and email hand-off | 6.6, 6.9 | a) validation; b) hand-off | Parity rows for the form pass |
 | S10 | Validate page: paste, upload and URL modes; results table | 6.8, 6.13 | a) modes; b) results | Matches wireframe, with real validation |
 | S11 | Harvester: pointer records, fetch limits, owner match, last-valid state, harvest report; `publiccode-parser-go` for each codebase; R14–R17 | 6.11 | a) fetch and owner match; b) state; c) parser; d) report page | Harvest of `csr-0001` and the examples behaves as specified |
 | S12 | Tools: `csr import-publiccode --to/--new`, `move-to-source`, `move-to-local`, `new --from-issue` | 6.6, 6.12, Appendix A | a) importer; b) move commands | Tests for each command |
@@ -296,6 +296,39 @@ Newest last. One line per checkpoint; a fuller entry when a session ends.
     > ## How it was tested
     >
     > `pytest -q` (256 passed) and `csr build` on Python 3.12 and Node 22. Each of parity rows 1 to 6 was checked in Chromium against the built site, with JavaScript on and off; the committed browser tests come in S14.
+    >
+    > ## Checklist
+    >
+    > - [x] `CHANGELOG.md` updated under Unreleased
+    > - [x] No secrets or personal data
+- 2026-11-02 — S7 merged.
+- 2026-11-02 — S8a–c done (one commit). `src/csr/form.py` (options and limits from the schema, with the wireframe's labels); `templates/draft.html` (generated from the schema and taxonomy: every option list, length limit and taxonomy term; conditional sections for conditions 1 and 3 to 8, condition 2 written automatically; repeaters for interfaces, sources, codebases and open data); `static/js/draft-core.js` (pure: answers to record in schema order, sections shown, record back to answers for "Suggest a correction", keeping fields the form does not show) and `static/js/draft.js` (repeaters, conditions, live preview, `?from=<id>` pre-fill); `js-yaml` 5.5.0 vendored for the preview (moved forward from S9; `tools/vendor-sgds.py` generalised to `tools/vendor.py`); the design system's character count initialised; `tests/js/draft-core.test.mjs` and `tests/test_draft.py`. Checked in Chromium: every condition, repeaters, start again, pre-fill from `csr-9003` and `csr-9005`, 375 pixels, no JavaScript. Departures D19–D22 added.
+- 2026-11-02 — **S8 ready for pull request.**
+  - **Done:** S8a–c. `pytest -q`: 270 passed. `csr validate --base origin/main`: 0 errors, 2 warnings. `csr build`: 56 pages.
+  - **Next:** author opens and merges the pull request from `robbie/wizardly-dijkstra-2sjib7`. Then S9: Ajv, full validation with the error summary and inline errors (each control carries the field it fills, so schema errors can be placed), and the hand-off (copy, download, GitHub issue, email; Copy and Download are inert until then). S9 also decides how validation treats the `csr-NNNN` placeholder id.
+  - **Blockers:** none.
+  - **Pull request title:** Add the draft form with conditional sections and a live preview (S8)
+  - **Pull request description:**
+
+    > ## What this changes
+    >
+    > Adds the first part of the draft form at `draft/` (slice S8 of `docs/build/PLAN.md`).
+    >
+    > - The form is generated at build time from the schema and the taxonomy: every option list, length limit and taxonomy term comes from them, with the Draft wireframe's labels and layout.
+    > - Conditional sections for the conditions in specification 6.4: sources and "not stated in public sources" for people who are not from the owning organisation, interfaces for APIs, support for live and beta services and platforms, charging details, deprecation, and withdrawal when correcting a withdrawn record. The owner's confirmation is written automatically.
+    > - Add and remove codebases, open data links, interfaces and sources.
+    > - A live, complete `solution.yml` preview, written with the vendored `js-yaml` 5.5.0 (moved forward from S9).
+    > - "Suggest a correction" fills the form from the record, and keeps fields the form does not show.
+    > - The logic is in a module of pure functions with unit tests, run by `pytest` through Node's test runner.
+    > - Validation and the hand-off (copy, download, GitHub issue and email) follow in S9.
+    >
+    > ## Why
+    >
+    > Specification 6.2, 6.6 and 6.13: a friendly route to a valid record for people who do not use GitHub.
+    >
+    > ## How it was tested
+    >
+    > `pytest -q` (270 passed) and `csr build` on Python 3.12 and Node 22. Every condition, the repeaters, the preview and the pre-fill were checked in Chromium at 1280 and 375 pixels, and without JavaScript.
     >
     > ## Checklist
     >
