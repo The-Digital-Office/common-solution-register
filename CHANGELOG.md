@@ -25,6 +25,9 @@ and this project uses [Semantic Versioning](https://semver.org/spec/v2.0.0.html)
 - Owner records: `csr-0001` (this demonstrator, owner-hosted in `solution.yml`) and `csr-0002` (the Digital Office repository baseline).
 - Fictional example records `csr-9001` to `csr-9007`, with owner-hosted examples in `examples/hosted/`.
 - Scottish Government Design System 4.3.0 (CSS and JavaScript), vendored with its licence, source and pinned hashes, and a script to refresh it.
+- `csr build`: generates the static site from the register, with `site.toml` for the site's configuration. This slice builds the base layout (header with the design system's mobile menu, banner and footer), the home page (the full list without JavaScript) and the record pages, including the withdrawn-record page and a downloadable `solution.yml` for each record.
+- `docs/ui-requirements.md`: how the build applies the wireframes, and its departures from them.
+- The `Validate` job builds the site and uploads it as the `site-preview` artifact.
 
 ### Changed
 

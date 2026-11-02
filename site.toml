@@ -1,0 +1,24 @@
+# Site configuration (specification 6.3). A new host changes these values and
+# the repository settings listed in section 8 of the specification.
+
+title = "Common Solution Register: Demonstrator"
+base_url = "https://the-digital-office.github.io/common-solution-register/"
+# Where the harvester reads last-valid copies and hashes; empty means
+# <base_url>api/v0/harvest-state.json.
+state_url = ""
+repository_url = "https://github.com/The-Digital-Office/common-solution-register"
+default_branch = "main"
+host_organisation = "The Digital Office for Scottish Local Government"
+# Input I3: the role mailbox for the site and emailed drafts, not yet chosen.
+contact_mailbox = ""
+# Input I4: the feedback route for people without GitHub accounts, not yet
+# chosen; the repository's issues until then.
+feedback_url = "https://github.com/The-Digital-Office/common-solution-register/issues"
+
+[currency]
+due_after_months = 11
+stale_after_months = 12
+
+[harvest]
+max_bytes = 262144
+timeout_seconds = 10

@@ -1,0 +1,46 @@
+{% extends "base.html" %}
+{% from "partials/tags.html" import record_tags with context %}
+{% from "partials/values.html" import row with context %}
+{% set title = r.name %}
+{% block title %}{{ r.name }} (withdrawn){% endblock %}
+{% block before_main %}
+<nav aria-label="Breadcrumb">
+<ol class="ds_breadcrumbs">
+<li class="ds_breadcrumbs__item"><a class="ds_breadcrumbs__link" href="{{ root }}">Home</a></li>
+<li class="ds_breadcrumbs__item"><a class="ds_breadcrumbs__link" href="{{ root }}">Solutions</a></li>
+<li class="ds_breadcrumbs__item">{{ entry.id }}</li>
+</ol>
+</nav>
+{% endblock %}
+{% block main %}
+{% set replacements = related | selectattr("1", "equalto", "replaced-by") | list %}
+<main class="ds_layout ds_layout--article" id="main-content">
+<div class="ds_layout__header">
+<header class="ds_page-header">
+<span class="ds_page-header__label ds_content-label">Withdrawn record</span>
+<h1 class="ds_page-header__title">{{ r.name }}</h1>
+</header>
+<div class="csr-tags">
+{{ record_tags(entry) }}
+</div>
+</div>
+<div class="ds_layout__content">
+<div class="ds_notification-message ds_notification-message--info">
+<div class="ds_notification-message__body">
+<h2 class="ds_notification-message__title ds_h3">This record has been withdrawn</h2>
+<p>It is kept so that links and the record ID continue to work. Its details are no longer maintained.</p>
+</div>
+</div>
+<dl class="ds_summary-list">
+{% call row("Withdrawn on") %}{{ r.withdrawal.date | long_date }}{% endcall %}
+{% call row("Reason") %}{{ r.withdrawal.reason }}{% endcall %}
+{% call row("Owner at withdrawal") %}{{ r.owner.organisation }}{% endcall %}
+{% if replacements %}{% call row("Replacement") %}{% for e, rel in replacements %}<a href="{{ root }}assets/{{ e.id }}/">{{ e.data.name }}</a>{{ ", " if not loop.last }}{% endfor %}{% endcall %}{% endif %}
+{% call row("Record ID") %}<code>{{ entry.id }}</code>{% endcall %}
+</dl>
+<p><a href="{{ entry.history_url }}">Record history</a></p>
+<hr>
+<p><a href="{{ root }}contribute/#corrections">Report a problem with this page</a></p>
+</div>
+</main>
+{% endblock %}

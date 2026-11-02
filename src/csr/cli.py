@@ -12,7 +12,10 @@ import json
 import sys
 from collections.abc import Sequence
 
+from pathlib import Path
+
 from csr import __version__
+from csr.build import build
 from csr.findings import Finding
 from csr.validate import BaseError, Result, validate
 
@@ -39,6 +42,17 @@ def build_parser() -> argparse.ArgumentParser:
     )
     check.add_argument("--format", choices=("text", "json", "github"), default="text", help="output format")
     check.add_argument("--today", type=dt.date.fromisoformat, help=argparse.SUPPRESS)
+
+    site = commands.add_parser(
+        "build",
+        help="generate the static site",
+        description="Generate the static site from the register into site/ (or --out).",
+    )
+    site.add_argument("--out", type=Path, help="output folder (default: site/ in the repository)")
+    site.add_argument("--base-url", help="the address the site will be served from (default: base_url in site.toml)")
+    site.add_argument(
+        "--date", type=dt.date.fromisoformat, help="build as on this date, for currency (default: today)"
+    )
     return parser
 
 
@@ -51,6 +65,12 @@ def main(argv: Sequence[str] | None = None) -> int:
         return 0
     if args.command == "validate":
         return _validate(args)
+    if args.command == "build":
+        result = build(out=args.out, base_url=args.base_url, today=args.date)
+        print(f"Built {len(result.pages)} pages into {result.out}.")
+        for item in result.register.unpublished:
+            print(f"Not published: {item.id} ({item.reason})")
+        return 0
     return 0  # pragma: no cover - argparse rejects unknown commands
 
 

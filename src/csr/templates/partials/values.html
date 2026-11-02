@@ -1,0 +1,12 @@
+{# Small renderers for record values. #}
+{% macro unstated() %}<span class="csr-unstated">Not stated in public sources</span>{% endmacro %}
+
+{% macro link(url, text=none) %}{% if url == SENTINEL %}{{ unstated() }}{% else %}<a href="{{ url }}">{{ text or (url | display_url) }}</a>{% endif %}{% endmacro %}
+
+{% macro term_links(taxonomy, ids, folder) %}
+{% for id in ids %}{% set term = site.term(taxonomy, id) %}<a href="{{ root }}{{ folder }}/{{ id }}/">{{ term.label if term else id }}</a>{{ ", " if not loop.last }}{% endfor %}
+{% endmacro %}
+
+{% macro row(key, id=none) %}
+<div class="ds_summary-list__item"><dt class="ds_summary-list__key">{{ key }}</dt><dd class="ds_summary-list__value">{{ caller() }}</dd></div>
+{% endmacro %}

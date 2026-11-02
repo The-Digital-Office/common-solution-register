@@ -1,0 +1,119 @@
+{% extends "base.html" %}
+{% from "partials/tags.html" import record_tags with context %}
+{% set title = "Find a common solution" %}
+{% block title %}Find a common solution{% endblock %}
+{% macro checkbox(id, label, count) %}
+<div class="ds_checkbox ds_checkbox--small">
+<input class="ds_checkbox__input" id="{{ id }}" type="checkbox">
+<label class="ds_checkbox__label" for="{{ id }}">{{ label }}{% if count is not none %} ({{ count }}){% endif %}</label>
+</div>
+{% endmacro %}
+{% macro select(id, label, any_label, taxonomy) %}
+<div class="ds_question">
+<label class="ds_label" for="{{ id }}">{{ label }}</label>
+<div class="ds_select-wrapper">
+<select class="ds_select" id="{{ id }}">
+<option value="">{{ any_label }}</option>
+{% for term in site.taxonomies[taxonomy].terms %}
+<option value="{{ term.id }}">{{ term.label }}</option>
+{% endfor %}
+</select>
+<span class="ds_select-arrow" aria-hidden="true"></span>
+</div>
+</div>
+{% endmacro %}
+{% block main %}
+<main class="ds_layout ds_layout--search-results--filters" id="main-content">
+<div class="ds_layout__header">
+<header class="ds_page-header">
+<h1 class="ds_page-header__title">Find a common solution</h1>
+</header>
+<p class="ds_leader">Reusable digital services, platforms, components, APIs and standards for the Scottish public sector.</p>
+</div>
+
+<div class="ds_layout__content">
+<div class="ds_site-search">
+<form class="ds_site-search__form" role="search" action="{{ root }}" method="get">
+<label class="ds_label visually-hidden" for="q">Search solutions</label>
+<div class="ds_input__wrapper ds_input__wrapper--has-icon">
+<input class="ds_input ds_site-search__input" id="q" name="q" type="search" placeholder="Search by name, purpose or keyword" autocomplete="off">
+<button class="ds_button" type="submit"><span class="visually-hidden">Search</span><svg class="ds_icon" aria-hidden="true" viewBox="0 0 24 24" width="24" height="24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><circle cx="10.5" cy="10.5" r="6.5"></circle><line x1="15.5" y1="15.5" x2="21" y2="21"></line></svg></button>
+</div>
+</form>
+</div>
+</div>
+
+<div class="ds_layout__sidebar">
+<section class="ds_search-filters csr-js-only" aria-labelledby="filters-title">
+<h2 class="ds_search-filters__title ds_h3" id="filters-title">Filter by</h2>
+
+<fieldset class="csr-filter">
+<legend class="ds_label">Provenance</legend>
+<div class="ds_checkboxes ds_field-group">
+{% for key, (label, colour) in PROVENANCE_TAGS.items() %}
+{{ checkbox("p-" ~ key, label, entries | selectattr("data.record_status", "equalto", key) | list | length) }}
+{% endfor %}
+</div>
+</fieldset>
+
+<fieldset class="csr-filter">
+<legend class="ds_label">Asset type</legend>
+<div class="ds_checkboxes ds_field-group">
+{% for key, label in TYPE_LABELS.items() %}
+{{ checkbox("t-" ~ key, label, entries | selectattr("data.asset_type", "equalto", key) | list | length) }}
+{% endfor %}
+</div>
+</fieldset>
+
+{{ select("f-sector", "Owning sector", "Any sector", "sectors") }}
+{{ select("f-area", "Service area", "Any service area", "service-areas") }}
+{{ select("f-cap", "Capability", "Any capability", "capabilities") }}
+
+<fieldset class="csr-filter">
+<legend class="ds_label">Currency</legend>
+<div class="ds_checkboxes ds_field-group">
+{{ checkbox("c-current", "Current", none) }}
+{{ checkbox("c-due", "Due for confirmation", none) }}
+{{ checkbox("c-stale", "Stale", none) }}
+{{ checkbox("c-unconfirmed", "Not confirmed by owner", none) }}
+</div>
+</fieldset>
+
+{{ checkbox("show-withdrawn", "Include withdrawn records", none) }}
+
+<button class="ds_button ds_button--secondary ds_button--small" type="button" id="clear-filters">Clear all filters</button>
+</section>
+</div>
+
+<div class="ds_layout__list">
+<div class="csr-results-head">
+<h2 class="ds_search-results__title ds_h3" aria-live="polite">{{ entries | length }} solution{{ "" if entries | length == 1 else "s" }}</h2>
+<div class="ds_sort-options csr-js-only">
+<label class="ds_label" for="sort-by">Sort by</label>
+<div class="ds_select-wrapper">
+<select class="ds_select" id="sort-by"><option value="name">Name (A to Z)</option><option value="changed">Recently changed</option><option value="confirmed">Recently confirmed</option></select>
+<span class="ds_select-arrow" aria-hidden="true"></span>
+</div>
+</div>
+</div>
+
+<ol class="ds_search-results__list">
+{% for entry in entries %}
+{% set r = entry.data %}
+<li class="ds_search-result" data-id="{{ entry.id }}">
+<h3 class="ds_search-result__title"><a class="ds_search-result__link" href="{{ root }}assets/{{ entry.id }}/">{{ r.name }}</a></h3>
+<p class="ds_search-result__summary">{{ r.summary }}</p>
+<dl class="ds_search-result__metadata ds_metadata ds_metadata--inline">
+<div class="ds_metadata__item"><dt class="ds_metadata__key">Owner</dt><dd class="ds_metadata__value">{{ r.owner.organisation }}</dd></div>
+<div class="ds_metadata__item"><dt class="ds_metadata__key">Type</dt><dd class="ds_metadata__value">{{ TYPE_LABELS[r.asset_type] }}</dd></div>
+<div class="ds_metadata__item"><dt class="ds_metadata__key">Status</dt><dd class="ds_metadata__value">{{ STATUS_LABELS[r.status] }}</dd></div>
+</dl>
+<div class="csr-tags">
+{{ record_tags(entry, show_status=false) }}
+</div>
+</li>
+{% endfor %}
+</ol>
+</div>
+</main>
+{% endblock %}

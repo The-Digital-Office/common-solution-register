@@ -43,9 +43,20 @@ csr validate --check-links
 
 `--check-links` also checks that linked addresses respond and that each
 codebase's `publiccode.yml` agrees with the record. The checks are listed in
-[`schema/README.md`](schema/README.md). Harvesting owner-hosted descriptors
-(`csr harvest`) and building the site (`csr build`) are added in later build
-slices.
+[`schema/README.md`](schema/README.md).
+
+To build the site into `site/` and look at it:
+
+```bash
+csr build --base-url http://localhost:8000/
+python -m http.server 8000 --directory site
+```
+
+Then open http://localhost:8000/. The site needs to be served over HTTP, not
+opened from the file system, because its scripts are JavaScript modules.
+Each pull request also builds the site and attaches it to the workflow run as
+the `site-preview` artifact. Harvesting owner-hosted descriptors
+(`csr harvest`) is added in a later build slice.
 
 A failed build or deployment notifies the person whose commit triggered it,
 through GitHub. Maintainers watch the repository.
