@@ -197,3 +197,6 @@ Newest last. One line per checkpoint; a fuller entry when a session ends.
     >
     > - [x] `CHANGELOG.md` updated under Unreleased
     > - [x] No secrets or personal data
+- 2026-11-02 — S4 merged.
+- 2026-11-02 — S5a done: `tools/vendor-sgds.py` downloads `@scottish-government/design-system@4.3.0` from npm, checks the npm integrity hash, and writes `design-system.min.css`, `design-system.js` (the package's `main`: an ES module bundle that sets `window.DS`), `LICENSE.txt`, `SOURCE.md` and `SHA256SUMS` to `src/csr/static/vendor/sgds/4.3.0/`; R13 now checks them. `.gitattributes` keeps vendored files byte for byte. **Next:** S5b.
+

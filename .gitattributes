@@ -2,3 +2,7 @@
 # scripts with LF endings so they run in bash on Windows (Git Bash) too.
 * text=auto
 *.sh text eol=lf
+
+# Vendored files are kept byte for byte, so their pinned hashes (R13) hold on
+# every platform.
+src/csr/static/vendor/** -text
