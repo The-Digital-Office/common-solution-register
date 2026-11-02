@@ -16,15 +16,15 @@ from csr.build import build, reference_fields
 from csr.rules import RULES
 from csr.schema import ROOT, check, load_schema
 
-#: Built paths from the page-to-template map in section 6.13. Draft (S8), Validate (S10) and Harvest (S11) come later.
+#: Built paths from the page-to-template map in section 6.13. Harvest (S11) comes later.
 PAGE_MAP = [
     "index.html", "browse/index.html", "sectors/local-government/index.html",
     "service-areas/housing/index.html", "capabilities/payments/index.html", "assets/csr-0001/index.html",
     "assets/csr-9005/index.html", "contribute/index.html", "reference/index.html",
     "reference/publiccode/index.html", "data/index.html", "currency/index.html", "about/index.html",
-    "accessibility/index.html", "privacy/index.html", "404.html",
+    "accessibility/index.html", "privacy/index.html", "404.html", "draft/index.html", "validate/index.html",
 ]  # fmt: skip
-LATER = ("draft/", "validate/", "harvest/")
+LATER = ("harvest/",)
 
 
 @pytest.fixture(scope="module")
@@ -173,3 +173,14 @@ def test_data_page_lists_sizes_and_a_real_sample(site):
     html = read(site, "data/index.html")
     assert re.search(r"JSON, [\d.]+ KB", html)
     assert "&#34;id&#34;: &#34;csr-0001&#34;" in html or '"id": "csr-0001"' in html
+
+
+def test_validate_page_carries_what_the_checker_needs(site):
+    html = read(site, "validate/index.html")
+    config = json.loads(re.search(r'id="csr-validate-config">(.*?)</script>', html, re.S).group(1))
+    assert config["schemas"]["asset"] == load_schema("asset")
+    assert config["schemas"]["pointer"] == load_schema("pointer")
+    assert "csr-0001" in config["known_ids"] and "csr-9007" in config["known_ids"]
+    assert [t["id"] for t in config["taxonomies"]["capabilities"]][0] == "identity-and-access"
+    assert config["max_bytes"] == 262144
+    assert "ajv2020.min.js" in html and "This page needs JavaScript" in html

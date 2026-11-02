@@ -213,6 +213,13 @@ def build(
     form = draft_context()
     form["sectors"] = [(t.id, t.label) for t in site.taxonomies["sectors"].terms]
     site.page("draft/", "draft.html", nav="contribute", form=form)
+    site.page("validate/", "validate.html", nav="validate", checker={
+        "schemas": {"asset": load_schema("asset"), "pointer": load_schema("pointer")},
+        "taxonomies": {name: [{"id": t.id, "status": t.status, "replaced_by": t.replaced_by} for t in tax.terms]
+                       for name, tax in site.taxonomies.items()},
+        "known_ids": sorted({e.id for e in register.entries} | {u.id for u in register.unpublished}),
+        "max_bytes": config.harvest_max_bytes,
+    })  # fmt: skip
     return BuildResult(out=out, pages=site.pages, register=register)
 
 

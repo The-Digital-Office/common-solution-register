@@ -193,12 +193,11 @@ def r18_https(record: Record, context: Context) -> list[Finding]:
     candidates = [(f, data.get(f)) for f in ("service_url", "service_page_url", "documentation_url")]
     candidates += [(f"codebases[{i}].repository_url", c.get("repository_url")) for i, c in list_items(data, "codebases")]
     candidates += [(f"open_data[{i}].url", d.get("url")) for i, d in list_items(data, "open_data")]
-    demonstration = record.record_status == "demonstration"
     return [
         error(record.label, "R18", path, f"'{value}' is not an HTTPS URL", "Use a full address starting https://.")
         for path, value in candidates
         if value is not None
-        and not (demonstration and value == SENTINEL)
+        and value != SENTINEL  # the sentinel is R10's concern, not an address
         and not (isinstance(value, str) and re.match(r"^https://[^\s/$.?#][^\s]*$", value))
     ]
 
