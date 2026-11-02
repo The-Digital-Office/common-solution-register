@@ -35,7 +35,7 @@ actions column, the results heading row, filters and wide tables. Wireframe
 
 | Wireframe | Template | Built path | Slice |
 |---|---|---|---|
-| Main | `index.html` | `./` | S5 (list), S7 (search, filters, sort) |
+| Main | `index.html` | `./` | S5 (list), S7 (search, filters, sort: `static/js/search-core.js` and `search.js`) |
 | Record-Hosted, Record-Demonstration, Record-Example | `record.html` | `assets/<id>/` | S5 |
 | Record-Withdrawn | `record-withdrawn.html` | `assets/<id>/` | S5 |
 | Browse | `browse.html` | `browse/` | S6 |
@@ -70,4 +70,7 @@ current choice until the author decides.
 | D13 | Data page | The harvest state row links to the file | The row is shown without a link until the harvester publishes `api/v0/harvest-state.json` (S11) | So that no link leads nowhere |
 | D14 | Reference page | Optional fields as a paragraph; "17 rules (R01 to R17)" | Mandatory and optional fields as tables generated from the schema (sub-fields of required objects listed separately); all 19 rules listed with severity | The specification's appendix C has 19 rules; generating from the schema keeps the page true to it |
 | D15 | Contribute "Contributing guide", About "ask for your record to be moved", feedback on GitHub | Links | Link to `docs/contributing-records.md` and the `move-to-owner-hosting` and `feedback` issue forms | Those files arrive in S13 and S16; the links work once they exist |
+| D16 | Home page without JavaScript | Not shown | The search box is hidden as well as the filters and sort, because a static site cannot search without the script; the full list is shown, as the parity table requires | A search box that silently did nothing would mislead |
+| D17 | Filter counts | Provenance and asset-type counts reflect the search query only | Every count (provenance, type, sector, service area, capability, currency) is faceted: the number of results that option would give, with the query and the other filter groups applied | With several working filter groups, counts that ignored the other groups would promise results that are not there |
+| D18 | Search matching | Substring of name, summary and owner | Every query word must start a word in the name, summary, owner, purpose, record ID, asset type, or the labels and synonyms of the record's terms; accents and punctuation are ignored | Substring matching let short words match inside others ("gis" in "register") |
 

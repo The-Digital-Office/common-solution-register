@@ -2,20 +2,22 @@
 {% from "partials/tags.html" import record_tags with context %}
 {% set title = "Find a common solution" %}
 {% block title %}Find a common solution{% endblock %}
-{% macro checkbox(id, label, count) %}
+{% block scripts %}<script type="module" src="{{ root }}static/js/search.js"></script>{% endblock %}
+{% set listed = entries | rejectattr("withdrawn") | list %}
+{% macro checkbox(id, label, count, group=none, value=none) %}
 <div class="ds_checkbox ds_checkbox--small">
-<input class="ds_checkbox__input" id="{{ id }}" type="checkbox">
-<label class="ds_checkbox__label" for="{{ id }}">{{ label }}{% if count is not none %} ({{ count }}){% endif %}</label>
+<input class="ds_checkbox__input" id="{{ id }}" type="checkbox"{% if group %} data-group="{{ group }}" value="{{ value }}"{% endif %}>
+<label class="ds_checkbox__label" for="{{ id }}" data-label="{{ label }}">{{ label }}{% if count is not none %} ({{ count }}){% endif %}</label>
 </div>
 {% endmacro %}
-{% macro select(id, label, any_label, taxonomy) %}
+{% macro select(id, label, any_label, taxonomy, group) %}
 <div class="ds_question">
 <label class="ds_label" for="{{ id }}">{{ label }}</label>
 <div class="ds_select-wrapper">
-<select class="ds_select" id="{{ id }}">
+<select class="ds_select" id="{{ id }}" data-group="{{ group }}">
 <option value="">{{ any_label }}</option>
 {% for term in site.taxonomies[taxonomy].terms %}
-<option value="{{ term.id }}">{{ term.label }}</option>
+<option value="{{ term.id }}" data-label="{{ term.label }}">{{ term.label }}</option>
 {% endfor %}
 </select>
 <span class="ds_select-arrow" aria-hidden="true"></span>
@@ -32,7 +34,7 @@
 </div>
 
 <div class="ds_layout__content">
-<div class="ds_site-search">
+<div class="ds_site-search csr-js-only">
 <form class="ds_site-search__form" role="search" action="{{ root }}" method="get">
 <label class="ds_label visually-hidden" for="q">Search solutions</label>
 <div class="ds_input__wrapper ds_input__wrapper--has-icon">
@@ -51,7 +53,7 @@
 <legend class="ds_label">Provenance</legend>
 <div class="ds_checkboxes ds_field-group">
 {% for key, (label, colour) in PROVENANCE_TAGS.items() %}
-{{ checkbox("p-" ~ key, label, entries | selectattr("data.record_status", "equalto", key) | list | length) }}
+{{ checkbox("p-" ~ key, label, listed | selectattr("data.record_status", "equalto", key) | list | length, "provenance", key) }}
 {% endfor %}
 </div>
 </fieldset>
@@ -60,22 +62,21 @@
 <legend class="ds_label">Asset type</legend>
 <div class="ds_checkboxes ds_field-group">
 {% for key, label in TYPE_LABELS.items() %}
-{{ checkbox("t-" ~ key, label, entries | selectattr("data.asset_type", "equalto", key) | list | length) }}
+{{ checkbox("t-" ~ key, label, listed | selectattr("data.asset_type", "equalto", key) | list | length, "type", key) }}
 {% endfor %}
 </div>
 </fieldset>
 
-{{ select("f-sector", "Owning sector", "Any sector", "sectors") }}
-{{ select("f-area", "Service area", "Any service area", "service-areas") }}
-{{ select("f-cap", "Capability", "Any capability", "capabilities") }}
+{{ select("f-sector", "Owning sector", "Any sector", "sectors", "sector") }}
+{{ select("f-area", "Service area", "Any service area", "service-areas", "area") }}
+{{ select("f-cap", "Capability", "Any capability", "capabilities", "capability") }}
 
 <fieldset class="csr-filter">
 <legend class="ds_label">Currency</legend>
 <div class="ds_checkboxes ds_field-group">
-{{ checkbox("c-current", "Current", none) }}
-{{ checkbox("c-due", "Due for confirmation", none) }}
-{{ checkbox("c-stale", "Stale", none) }}
-{{ checkbox("c-unconfirmed", "Not confirmed by owner", none) }}
+{% for key, (label, colour) in CURRENCY_TAGS.items() %}
+{{ checkbox("c-" ~ key, label, listed | selectattr("currency", "equalto", key) | list | length, "currency", key) }}
+{% endfor %}
 </div>
 </fieldset>
 
@@ -87,7 +88,7 @@
 
 <div class="ds_layout__list">
 <div class="csr-results-head">
-<h2 class="ds_search-results__title ds_h3" aria-live="polite">{{ entries | length }} solution{{ "" if entries | length == 1 else "s" }}</h2>
+<h2 class="ds_search-results__title ds_h3" aria-live="polite">{{ listed | length }} solution{{ "" if listed | length == 1 else "s" }}</h2>
 <div class="ds_sort-options csr-js-only">
 <label class="ds_label" for="sort-by">Sort by</label>
 <div class="ds_select-wrapper">
@@ -97,10 +98,13 @@
 </div>
 </div>
 
+<div class="visually-hidden" role="status" id="results-status"></div>
+<div class="ds_inset-text" id="no-results" hidden><div class="ds_inset-text__text">No solutions match. Try removing a filter or searching for a capability such as "payments".</div></div>
+
 <ol class="ds_search-results__list">
 {% for entry in entries %}
 {% set r = entry.data %}
-<li class="ds_search-result" data-id="{{ entry.id }}">
+<li class="ds_search-result" data-id="{{ entry.id }}"{% if entry.withdrawn %} hidden{% endif %}>
 <h3 class="ds_search-result__title"><a class="ds_search-result__link" href="{{ root }}assets/{{ entry.id }}/">{{ r.name }}</a></h3>
 <p class="ds_search-result__summary">{{ r.summary }}</p>
 <dl class="ds_search-result__metadata ds_metadata ds_metadata--inline">
@@ -114,6 +118,7 @@
 </li>
 {% endfor %}
 </ol>
+<script type="application/json" id="csr-search-index">{{ search_index | tojson }}</script>
 </div>
 </main>
 {% endblock %}

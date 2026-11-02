@@ -202,7 +202,7 @@ def build(
 
     site = Site(out, config, register, today)
     listed = [e for e in register.entries if not e.withdrawn]
-    site.page("", "index.html", nav="home", entries=listed)
+    site.page("", "index.html", nav="home", entries=register.entries, search_index=search_index(site))
     for entry in register.entries:
         _record_pages(site, entry)
     _taxonomy_pages(site, listed)
@@ -210,6 +210,35 @@ def build(
     _reference_pages(site, root)
     _data_pages(site)
     return BuildResult(out=out, pages=site.pages, register=register)
+
+
+def search_index(site: Site) -> list[dict[str, Any]]:
+    """What the home page script needs for each record: its facets, dates and search text
+    (name, summary, owner, purpose, id, type and the labels and synonyms of its terms)."""
+    index = []
+    for entry in site.register.entries:
+        r = entry.data
+        terms = [site.term("sectors", r["owner"]["sector"])]
+        terms += [site.term("service-areas", t) for t in r["service_areas"]]
+        terms += [site.term("capabilities", t) for t in r["capabilities"]]
+        words = [r["name"], r["summary"], r["owner"]["organisation"], r["purpose"], entry.id, TYPE_LABELS[r["asset_type"]]]
+        for term in filter(None, terms):
+            words += [term.label, *term.synonyms]
+        index.append({
+            "id": entry.id,
+            "name": r["name"],
+            "text": " ".join(" ".join(words).casefold().split()),
+            "provenance": r["record_status"],
+            "type": r["asset_type"],
+            "sector": r["owner"]["sector"],
+            "areas": r["service_areas"],
+            "capabilities": r["capabilities"],
+            "currency": entry.currency,
+            "withdrawn": entry.withdrawn,
+            "changed": entry.last_changed.isoformat() if entry.last_changed else None,
+            "confirmed": r.get("confirmation", {}).get("last_confirmed"),
+        })  # fmt: skip
+    return index
 
 
 #: Taxonomy name, the folder of its term pages, the record field it classifies, and wording.
