@@ -158,3 +158,5 @@ Newest last. One line per checkpoint; a fuller entry when a session ends.
     > - [x] `CHANGELOG.md` updated under Unreleased
     > - [x] No secrets or personal data
     > - [x] Actions pinned by SHA
+- 2026-11-02 — S3 merged. S4 inputs from the author: `csr-0002` passes inclusion test 1 (include it); contact for `csr-0001` and `csr-0002` is the repository's issues page (`web-form`) until a role mailbox is chosen (spec I3).
+- 2026-11-02 — S4a done: root `solution.yml` (`csr-0001`, owner-confirmed, `service`, `in-development` because the site is not yet published, so condition 7 does not yet require `service_url`) and pointer `records/csr-0001.yaml`; `records/csr-0002.yaml` (pattern, two codebases), described only from the two repositories' own README and GOVERNANCE files. Neither codebase has a usable `publiccode.yml` (`.github` has none; `repository-template`'s is the template with placeholders), so `csr-0002` gives two R12 warnings. **Next:** S4b.

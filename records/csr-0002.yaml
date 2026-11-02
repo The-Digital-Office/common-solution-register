@@ -1,0 +1,57 @@
+schema_version: "0.1"
+id: csr-0002
+record_status: owner-confirmed
+name: Digital Office repository baseline
+summary: >-
+  Organisation defaults, a repository template and a shared standards workflow
+  for running public repositories with a light, consistent baseline.
+purpose: >-
+  Gives a GitHub organisation a proportionate baseline for its repositories.
+  Organisation-wide community health files, issue forms and a pull request
+  template apply to every repository. A shared workflow checks required files
+  and validates publiccode.yml. A repository template supplies the files each
+  repository needs, with a setup workflow that fills them in. A script applies
+  branch rules, merge settings, security settings and labels. Most of the
+  baseline is supplied or enforced automatically, to keep the burden on
+  maintainers low.
+asset_type: pattern
+owner:
+  organisation: The Digital Office for Scottish Local Government
+  sector: local-government
+contact:
+  type: web-form
+  value: https://github.com/The-Digital-Office/common-solution-register/issues
+service_areas:
+  - corporate-and-cross-cutting
+capabilities:
+  - collaboration-and-productivity
+status: live
+intended_adopters:
+  - local-government
+terms_of_use:
+  type: open-licence
+  licence: MIT AND OGL-UK-3.0
+  summary: Code under the MIT licence; documentation under the Open Government Licence v3.0.
+adoption_route:
+  summary: >-
+    Copy the two repositories into your own GitHub organisation, adapt the
+    organisation names and defaults, then create repositories from the template
+    and call the shared standards workflow.
+charging:
+  applies: false
+documentation_url: https://github.com/The-Digital-Office/.github/blob/main/GOVERNANCE.md
+codebases:
+  - repository_url: https://github.com/The-Digital-Office/.github
+    visibility: public
+    maintenance: internal
+    kind: implementation
+    role: Organisation defaults, shared standards workflow and baseline script
+  - repository_url: https://github.com/The-Digital-Office/repository-template
+    visibility: public
+    maintenance: internal
+    kind: implementation
+    role: Repository template and setup workflow
+confirmation:
+  last_confirmed: "2026-11-02"
+  method: pull request
+  reference: Pull request that added csr-0002 to the register

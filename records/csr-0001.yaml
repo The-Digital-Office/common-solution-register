@@ -1,0 +1,4 @@
+# Owner-hosted record: the full descriptor is the repository's own solution.yml.
+id: csr-0001
+source: https://github.com/The-Digital-Office/common-solution-register/raw/main/solution.yml
+expected_owner: The Digital Office for Scottish Local Government
