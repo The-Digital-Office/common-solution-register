@@ -372,7 +372,7 @@ Newest last. One line per checkpoint; a fuller entry when a session ends.
 - 2026-11-02 — S9 merged. Author will check the build locally after the next couple of slices.
 - 2026-11-02 — S10a–b done (one commit). `templates/validate.html` and `static/js/validate.js`: paste, upload and URL modes (HTTPS only, the harvest size limit, a plain message when a host refuses cross-site reads), `?url=` to open URL mode, YAML 1.1 parsing to match `csr validate` (dates kept as written), pointer records checked against the pointer schema; a results table of severity, rule, field and "problem and fix". `record-check.js` gains R02, R03, R04, R05, R07, R11, R12 and R18 with fix texts; `tests/js/record-check.test.mjs` now checks, against `tests/js_corpus.py`, that the browser finds exactly what `csr validate` finds, rule by rule and field by field, on every schema fixture, every record and each rule's trigger. R18 (Python and JavaScript) now skips the sentinel, which is R10's concern. Checked in Chromium: every mode, pass, warnings only, pointer, YAML errors, no JavaScript, 375 pixels. Departures D28–D30 added.
 - 2026-11-02 — **S10 ready for pull request.**
-  - **Done:** S10a–b. `pytest -q`: 274 passed. `csr validate --base origin/main`: 0 errors, 2 warnings. `csr build`: 57 pages.
+  - **Done:** S10a–b. `pytest -q`: 276 passed. `csr validate --base origin/main`: 0 errors, 2 warnings. `csr build`: 57 pages.
   - **Next:** author opens and merges the pull request from `robbie/wizardly-dijkstra-2sjib7`. Then S11 (harvester), a larger slice with four checkpoints; it brings the harvest report page, the harvest state that record pages and the Data page already mention, and the official `publiccode-parser-go`.
   - **Blockers:** none.
   - **Pull request title:** Add the validate page (S10)
@@ -395,7 +395,7 @@ Newest last. One line per checkpoint; a fuller entry when a session ends.
     >
     > ## How it was tested
     >
-    > `pytest -q` (274 passed) on Python 3.12 and Node 22. In Chromium, each mode, a passing file, a file with only warnings, a pointer, broken YAML, a URL whose host refuses cross-site reads, without JavaScript, and at 375 pixels.
+    > `pytest -q` (276 passed) on Python 3.12 and Node 22. In Chromium, each mode, a passing file, a file with only warnings, a pointer, broken YAML, a URL whose host refuses cross-site reads, without JavaScript, and at 375 pixels.
     >
     > ## Checklist
     >
