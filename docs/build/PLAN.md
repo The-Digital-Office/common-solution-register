@@ -88,4 +88,37 @@ Newest last. One line per checkpoint; a fuller entry when a session ends.
 - 2026-11-02 — S1 merged; setup issue closed and About panel completed. Follow-up: `npm` entry removed from `dependabot.yml` (its weekly run failed with no `package.json`); S14 adds it back. **Next:** S2.
 - 2026-11-02 — Author created the "CSR: required checks" ruleset (default branch, requires `Validate`), alongside "DO baseline: main".
 - 2026-11-02 — S2a done: `schema/asset.schema.json` (all 6.4 fields, eight conditions, sentinel only in demonstration records, derived fields rejected), `schema/pointer.schema.json`, `schema/README.md`, `src/csr/schema.py` (YAML loader that keeps dates as strings; `check()`), schema tests. Branch `robbie/wizardly-dijkstra-2sjib7` (environment-assigned).
-- 2026-11-02 — S2b done: `taxonomy/` (8 sectors, 14 service areas, 14 capabilities, each with label, definition, synonyms and status), `schema/taxonomy.schema.json`, `src/csr/taxonomy.py`, taxonomy tests. **Next:** S2c.
+- 2026-11-02 — S2b done: `taxonomy/` (8 sectors, 14 service areas, 14 capabilities, each with label, definition, synonyms and status), `schema/taxonomy.schema.json`, `src/csr/taxonomy.py`, taxonomy tests.
+- 2026-11-02 — S2c done: `tests/fixtures/schema/` with 26 fixtures (`pass/` and `fail/`, named `cN-…` by condition; each failing fixture declares `expect-error-at` and must fail only there) and `tests/test_schema_conditions.py`.
+- 2026-11-02 — **S2 ready for pull request.**
+  - **Done:** S2a–c. `pytest -q` passes (127 tests). Every condition has passing and failing fixtures.
+  - **Next:** author opens and merges the pull request from `robbie/wizardly-dijkstra-2sjib7`. Then S3 (validator). S3 should build on `src/csr/schema.py` (`load_yaml_file`, `check`, `is_pointer`) and `src/csr/taxonomy.py` (`load_all`), and can reuse the fixtures in `tests/fixtures/schema/`.
+  - **Blockers:** none.
+  - **Decisions for the author to confirm** (not fixed by the spec; taken from the Draft and Reference wireframes where possible): `terms_of_use` has `type` (`open-licence`, `service-terms`, `commercial-terms`, `other`) plus `licence` (SPDX) or `url`, and an optional `summary`; `contact.value` must be an email for `role-mailbox` and an HTTPS URL for `web-form`; `sources[]` items have `url`, `title`, `accessed` and optional `publisher`; `charging.model` is `recharge`, `subscription`, `per-transaction` or `other`; `interfaces[].type` is `rest`, `soap`, `graphql`, `file`, `event` or `other`; `related_assets[]` items have `id` and an optional `relationship` (`replaced-by`, `replaces`, `uses`, `used-by`, `alternative`, `related`); `adopters[]` items have `organisation` and `evidence`; `confirmation.method` and `.reference` are free text; URLs must be HTTPS in the schema as well as in R18. Taxonomy definitions and synonyms are drafts for the working group.
+  - **Pull request title:** Add the descriptor schema and draft taxonomy (S2)
+  - **Pull request description:**
+
+    > ## What this changes
+    >
+    > Adds schema version 0.1 of `solution.yml` and the draft taxonomy (slice S2 of `docs/build/PLAN.md`).
+    >
+    > - `schema/asset.schema.json`: every field in specification 6.4 and its eight conditions. The sentinel `not-publicly-stated` is accepted only in demonstration records, and fields the register derives at build time are rejected.
+    > - `schema/pointer.schema.json` for owner-hosted records, `schema/taxonomy.schema.json`, and `schema/README.md` listing the conditions and validation rules.
+    > - `taxonomy/`: 8 sectors, 14 service areas and 14 capabilities, each with a label, definition, synonyms and status.
+    > - `src/csr/schema.py` and `src/csr/taxonomy.py`: loaders that the validator (S3) builds on.
+    > - Tests, with a passing and a failing fixture for every condition.
+    >
+    > ## Why
+    >
+    > Specification 6.4 and 6.5. The validator, the site and the draft form all depend on the schema and taxonomy.
+    >
+    > Field details the specification leaves open are listed under "Decisions for the author to confirm" in the S2 entry of the build plan's progress log.
+    >
+    > ## How it was tested
+    >
+    > `pip install -e .[dev]` and `pytest -q` (127 passed) on Python 3.12.
+    >
+    > ## Checklist
+    >
+    > - [x] `CHANGELOG.md` updated under Unreleased
+    > - [x] No secrets or personal data

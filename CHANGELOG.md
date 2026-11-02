@@ -18,6 +18,7 @@ and this project uses [Semantic Versioning](https://semver.org/spec/v2.0.0.html)
 - Dependabot updates for `pip`.
 - Descriptor schema v0.1 (`schema/asset.schema.json`) with its eight conditions, the pointer record schema and `schema/README.md`.
 - Draft taxonomy: 8 sectors, 14 service areas and 14 capabilities, with definitions and synonyms.
+- Passing and failing schema fixtures for each of the eight conditions.
 
 ### Changed
 

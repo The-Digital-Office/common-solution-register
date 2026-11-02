@@ -1,0 +1,38 @@
+# Condition 5: any listed interface needs a type and documentation URL.
+# expect-error-at: interfaces[0]
+# expect-message: 'documentation_url' is a required property
+schema_version: '0.1'
+id: csr-9503
+record_status: example
+name: 'Example: Component With Interface'
+summary: A fictional record used as a schema test fixture, never published.
+purpose: Exercises one condition of the descriptor schema, so that the tests show the condition both passing
+  and failing.
+asset_type: component
+owner:
+  organisation: Example Council
+  sector: local-government
+contact:
+  type: role-mailbox
+  value: digital@example.gov.uk
+service_areas:
+- corporate-and-cross-cutting
+capabilities:
+- integration-and-apis
+status: live
+intended_adopters:
+- local-government
+- nhs-scotland
+terms_of_use:
+  type: open-licence
+  licence: MIT
+adoption_route:
+  summary: Ask the owner for access, then follow the onboarding guide.
+charging:
+  applies: false
+confirmation:
+  last_confirmed: '2026-10-01'
+  method: pull request
+  reference: https://example.gov.uk/confirmation/1
+interfaces:
+- type: rest
