@@ -37,6 +37,7 @@ and this project uses [Semantic Versioning](https://semver.org/spec/v2.0.0.html)
 - `js-yaml` 5.5.0, vendored with its licence and pinned hashes; `tools/vendor.py` refreshes any vendored package.
 - Draft form, part 2: validation against the schema in the browser with the vendored Ajv 8.17.1 (2020-12) runtime, plus rules R06 and R09, with an error summary and inline errors; Copy YAML, Download, Open as a GitHub issue (pre-filled, or download-and-attach when too long) and Send by email.
 - `csr validate` accepts the draft placeholder id `csr-NNNN` in files outside `records/`, with a warning.
+- Validate page (`validate/`): check a `solution.yml` or pointer by pasting it, uploading it or giving its URL, in the browser, against the schema and every rule that needs no network, with a results table giving the severity, rule, field, problem and fix for each finding.
 - The `Validate` job builds the site and uploads it as the `site-preview` artifact.
 
 ### Changed
@@ -47,6 +48,7 @@ and this project uses [Semantic Versioning](https://semver.org/spec/v2.0.0.html)
 ### Fixed
 
 - Schema condition 1 required `sources` when `record_status` was missing; it now applies only to demonstration records.
+- R18 no longer also reports "not stated in public sources" as a bad address; that is R10's finding.
 
 ### Removed
 

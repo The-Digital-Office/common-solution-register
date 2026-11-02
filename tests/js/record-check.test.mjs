@@ -4,7 +4,7 @@ import { readFileSync, readdirSync } from 'node:fs';
 import { createRequire } from 'node:module';
 import { test } from 'node:test';
 
-import { check, compile, dotted, isDate } from '../../src/csr/static/js/record-check.js';
+import { check, compile, dotted, isDate, rules } from '../../src/csr/static/js/record-check.js';
 
 const require = createRequire(import.meta.url);
 const Ajv = require('../../src/csr/static/vendor/ajv/8.17.1/ajv2020.min.js');
@@ -88,4 +88,31 @@ test('helpers', () => {
   assert.equal(isDate('2026-02-28'), true);
   assert.equal(isDate('2026-02-29'), false);
   assert.equal(isDate('31/03/2026'), false);
+});
+
+test('finds what csr validate finds, rule by rule and field by field', () => {
+  const corpus = JSON.parse(readFileSync(process.env.CSR_CORPUS, 'utf8'));
+  const context = { taxonomies: corpus.taxonomies, knownIds: corpus.known_ids };
+  for (const [name, expected] of Object.entries(corpus.records)) {
+    const found = check(validate, expected.record, { today: corpus.today, context });
+    assert.equal(!validate(expected.record), expected.schema_errors, `${name}: schema errors`);
+    const ruleFindings = rules(expected.record, context).map((f) => [f.rule, f.path, f.severity]);
+    // R06 and R09 are applied in check(), not rules().
+    for (const f of found) if (['R06', 'R09'].includes(f.rule)) ruleFindings.push([f.rule, f.path, f.severity]);
+    // R10 is the schema's "not" in the browser; csr validate reports it as a rule.
+    for (const f of found) if (f.rule === 'SCHEMA' && /Not stated in public sources/.test(f.message)) ruleFindings.push(['R10', f.path, 'error']);
+    const key = (f) => f.join(' ');
+    const sorted = (list) => [...new Set(list.map(key))].sort();
+    assert.deepEqual(sorted(ruleFindings), sorted(expected.rules), name);
+  }
+});
+
+test('each finding has a fix, a rule and a severity', () => {
+  const corpus = JSON.parse(readFileSync(process.env.CSR_CORPUS, 'utf8'));
+  const context = { taxonomies: corpus.taxonomies, knownIds: corpus.known_ids };
+  for (const { record } of Object.values(corpus.records)) {
+    for (const f of check(validate, record, { today: corpus.today, context })) {
+      assert.ok(f.fix && f.rule && ['error', 'warning'].includes(f.severity), JSON.stringify(f));
+    }
+  }
 });

@@ -1,0 +1,84 @@
+{% extends "base.html" %}
+{% block title %}Validate a solution.yml{% endblock %}
+{% block scripts %}<script src="{{ root }}static/vendor/ajv/8.17.1/ajv2020.min.js"></script>
+<script type="module" src="{{ root }}static/js/validate.js"></script>{% endblock %}
+{% block main %}
+<main class="ds_layout ds_layout--article" id="main-content">
+<div class="ds_layout__header">
+<header class="ds_page-header"><h1 class="ds_page-header__title">Validate a solution.yml</h1></header>
+<p class="ds_leader">Check a descriptor against the register's schema and rules before you submit or host it. Your file is checked in your browser and is not sent anywhere.</p>
+</div>
+<div class="ds_layout__content">
+<div class="ds_inset-text csr-no-js"><div class="ds_inset-text__text">This page needs JavaScript. Without it, run <code>csr validate path/to/solution.yml</code> from the command line, or use the workflow below.</div></div>
+
+<div class="csr-js-only">
+<div class="csr-modes" role="group" aria-label="How to provide the file">
+<button class="csr-mode" type="button" aria-pressed="true" aria-controls="mode-paste" data-mode="paste">Paste</button>
+<button class="csr-mode" type="button" aria-pressed="false" aria-controls="mode-upload" data-mode="upload">Upload a file</button>
+<button class="csr-mode" type="button" aria-pressed="false" aria-controls="mode-url" data-mode="url">From a URL</button>
+</div>
+
+<div id="mode-paste" data-panel="paste">
+<div class="ds_question">
+<label class="ds_label" for="yaml">solution.yml</label>
+<textarea class="ds_input csr-code" id="yaml" rows="14" spellcheck="false" autocomplete="off"></textarea>
+</div>
+</div>
+<div id="mode-upload" data-panel="upload" hidden>
+<div class="ds_question">
+<label class="ds_label" for="file">Choose a .yml or .yaml file</label>
+<input class="ds_file-upload" id="file" type="file" accept=".yml,.yaml,text/yaml,application/yaml">
+</div>
+</div>
+<div id="mode-url" data-panel="url" hidden>
+<div class="ds_question">
+<label class="ds_label" for="url">URL of a hosted solution.yml</label>
+<p class="ds_hint-text" id="url-hint">Works where the host allows cross-site requests, as raw GitHub files do. Otherwise, paste the file.</p>
+<input class="ds_input" id="url" type="url" placeholder="https://github.com/your-org/your-repo/raw/main/solution.yml" aria-describedby="url-hint" spellcheck="false">
+</div>
+</div>
+
+<button class="ds_button" type="button" id="run">Validate</button>
+
+<div id="results" aria-live="polite">
+<div class="ds_error-summary" id="result-fail" role="alert" tabindex="-1" hidden>
+<h2 class="ds_error-summary__title" id="result-fail-title"></h2>
+<p id="result-fail-text">Fix the errors below. Warnings do not stop registration.</p>
+</div>
+<div class="ds_notification-panel" id="result-pass" tabindex="-1" hidden>
+<h2 class="ds_notification-panel__title">Valid</h2>
+<div class="ds_notification-panel__content"><p id="result-pass-text"></p></div>
+</div>
+<div class="csr-table" id="result-table" hidden>
+<table class="ds_table">
+<caption class="visually-hidden">Validation results</caption>
+<thead><tr><th scope="col">Severity</th><th scope="col">Rule</th><th scope="col">Field</th><th scope="col">Problem and fix</th></tr></thead>
+<tbody id="result-rows"></tbody>
+</table>
+</div>
+<p id="result-pointer" hidden></p>
+</div>
+</div>
+
+<h2>Validate automatically in your own repository</h2>
+<p>If you host your solution.yml on GitHub, add this workflow to check it, and any publiccode.yml, on every pull request.</p>
+<pre class="csr-pre">jobs:
+  solution:
+    uses: {{ config.repository_url | replace("https://github.com/", "") }}/.github/workflows/validate-solution.yml@v0</pre>
+<p>Or run <code>csr validate path/to/solution.yml</code> from the command line.</p>
+</div>
+
+<div class="ds_layout__sidebar">
+<aside class="ds_article-aside">
+<h2 class="ds_h3">Related</h2>
+<ul class="ds_no-bullets">
+<li><a href="{{ root }}draft/">Create a solution.yml with the form</a></li>
+<li><a href="{{ root }}reference/">Field reference</a></li>
+<li><a href="{{ root }}reference/publiccode/">How publiccode.yml maps</a></li>
+<li><a href="{{ root }}about/#host">Host your own solution.yml</a></li>
+</ul>
+</aside>
+</div>
+<script type="application/json" id="csr-validate-config">{{ checker | tojson }}</script>
+</main>
+{% endblock %}

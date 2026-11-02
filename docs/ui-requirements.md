@@ -45,7 +45,7 @@ actions column, the results heading row, filters and wide tables. Wireframe
 | Data, Currency | `data.html`, `currency.html` | `data/`, `currency/` | S6 |
 | NotFound | `404.html` | `404.html` (links from the site root, because GitHub Pages serves it at any missing address) | S6 |
 | Draft | `draft.html` | `draft/` | S8 (form, conditions, preview: `static/js/draft-core.js` and `draft.js`), S9 (validation with `static/js/record-check.js` and the vendored Ajv; hand-off) |
-| Validate | `validate.html` | `validate/` | S10 |
+| Validate | `validate.html` | `validate/` | S10 (`static/js/validate.js`, with `record-check.js`, Ajv and `js-yaml`) |
 | Harvest | `harvest.html` | `harvest/` | S11 |
 
 ## Departures and open questions for the author
@@ -82,4 +82,7 @@ current choice until the author decides.
 | D25 | Downloaded file name | "Download .yaml" | The file is `solution.yml`, the descriptor's name; the button keeps the wireframe's wording | The same file can be submitted or hosted by the owner |
 | D26 | The draft's record ID | `id: csr-NNNN  # allocated when registered` | Kept. The browser and `csr validate` both accept `csr-NNNN` in a draft outside `records/`, with a warning that the id is allocated when registered; in `records/` a real id is required (R01) | So a draft that passes in the browser also passes `csr validate` |
 | D27 | Draft preview position | Sticky beside the form | Sticky from the large breakpoint up; S14's full-page screenshots should hold it at the top (for example by scrolling to the top first) | Full-page screenshots draw sticky elements where the page was last scrolled |
+| D28 | Validate page without JavaScript | Not shown | A note that the page needs JavaScript, pointing to `csr validate` and the workflow; the modes and button are hidden | Specification 6.8: the page "needs JavaScript, and the page says so" |
+| D29 | Validate results | A simulated pass or three sample problems | Real results: the schema and every rule that needs no network (R02 to R07, R09 to R12, R18), errors before warnings; with only warnings the "Valid" panel is shown with the warnings below; a pointer record is checked against the pointer schema, with a link to check the file it points to; `?url=` opens URL mode and checks that address | The parity table requires real validation with rule, field and fix |
+| D30 | Validate page sample text | The paste box starts with an example | It starts empty | The wireframe's sample is illustration, not content |
 
