@@ -3,6 +3,7 @@
 from __future__ import annotations
 
 import datetime as dt
+import re
 import subprocess
 from dataclasses import dataclass, field
 from pathlib import Path
@@ -13,6 +14,9 @@ from csr.records import RECORD_FILE, Record, parse, read_file, read_register, re
 from csr.rules import POINTER_RULES, RECORD_RULES, Context
 from csr.schema import ROOT, check
 from csr.taxonomy import load_all
+
+
+RECORD_ID = re.compile(r"csr-[0-9]{4}")
 
 
 class BaseError(RuntimeError):
@@ -97,20 +101,24 @@ def _against_base(records: list[Record], root: Path, base: str) -> list[Finding]
     """R01 with --base: a record added on this branch must not take an id
     that the base branch has since used."""
     ids, existing = base_ids(root, base)
-    taken = max((int(i[4:]) for i in ids if i[4:].isdigit() and int(i[4:]) < 9000), default=0)
+    used = {int(i[4:]) for i in [*ids, *(r.id or "" for r in records)] if RECORD_ID.fullmatch(i)}
     findings = []
     for record in records:
         if record.label in existing or not record.id or record.id not in ids:
             continue
+        number = int(record.id[4:])
+        span = range(9000, 10000) if number >= 9000 else range(1, 9000)
+        free = next((n for n in span if n > max(used & set(span), default=0)), None)
+        fix = f"Use the next free id, csr-{free:04d}." if free else "Choose an unused id."
         findings.append(error(record.label, "R01", "id", f"id {record.id} is already used on {base} by {ids[record.id]}",
-                              f"Use the next free id, csr-{taken + 1:04d} or later."))  # fmt: skip
+                              fix))  # fmt: skip
     return findings
 
 
 def validate(
     targets: list[str] | None = None,
     *,
-    root: Path = ROOT,
+    root: Path | None = None,
     base: str | None = None,
     check_links: bool = False,
     today: dt.date | None = None,
@@ -122,6 +130,7 @@ def validate(
     own ``solution.yml``. Records in ``records/`` are also checked against
     each other (R01, R05) and, with ``base``, against the base branch.
     """
+    root = root or ROOT
     result = Result()
     register, findings = read_register(root / "records", root=root)
     result.findings += findings
