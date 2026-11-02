@@ -13,9 +13,13 @@ and this project uses [Semantic Versioning](https://semver.org/spec/v2.0.0.html)
 - `LICENCE-CONTENT.md`: Open Government Licence v3.0 for records and documentation.
 - `CODEOWNERS` review requests for `/records/`, `/taxonomy/` and `/schema/`.
 - Specification v1.2, build plan, wireframes, baseline images and the wireframe rendering script.
+- Python package skeleton for the `csr` command-line tool, with `pytest` tests.
+- `Site` workflow with a `Validate` job that runs the tests.
+- Dependabot updates for `pip` and `npm`.
 
 ### Changed
 
+- `.gitignore` extended for Python, the built site and UI test tooling.
 - `publiccode.yml` completed: description, features, `softwareType: standalone/web` and categories.
 
 ### Removed

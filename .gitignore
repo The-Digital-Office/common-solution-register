@@ -27,3 +27,20 @@ temp/
 
 # Add language-specific entries below, for example from
 # https://github.com/github/gitignore
+
+# Python
+__pycache__/
+*.py[cod]
+.venv/
+*.egg-info/
+/build/
+/dist/
+.pytest_cache/
+
+# Site build output
+/site/
+
+# UI test tooling
+node_modules/
+test-results/
+playwright-report/

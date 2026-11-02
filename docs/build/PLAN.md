@@ -52,4 +52,36 @@ Newest last. One line per checkpoint; a fuller entry when a session ends.
 
 - 2026-11-02 — Plan created. **Next:** S0 (author), then S1a.
 - 2026-11-02 — S1a done: setup-issue files (README, `publiccode.yml` completed, `LICENCE-CONTENT.md`, `CODEOWNERS` review paths, `template.yml` deleted). S1 works on branch `robbie/wizardly-dijkstra-2sjib7`, the branch the build environment assigned, instead of `build/s01-…`.
-- 2026-11-02 — S1b done: handover pack committed (spec, wireframes, baseline images, this plan, `tools/render-wireframes.js`, `ui/README.md`). **Next:** S1c.
+- 2026-11-02 — S1b done: handover pack committed (spec, wireframes, baseline images, this plan, `tools/render-wireframes.js`, `ui/README.md`).
+- 2026-11-02 — S1c done: `pyproject.toml` (dependencies pinned exactly), `src/csr/` with a `csr` entry point (`--version` only), `tests/`, `.gitignore` and `dependabot.yml` (pip, npm) extended, `site.yml` with the `Validate` job running `pytest` (actions pinned by SHA).
+- 2026-11-02 — **S1 ready for pull request.**
+  - **Done:** S1a–c. `pytest -q` passes (5 tests). `csr validate` and `csr build` do not exist yet (S3 and S5); until then the fast checks are `pip install -e .[dev]` and `pytest -q`.
+  - **Next:** author opens the pull request from `robbie/wizardly-dijkstra-2sjib7`, confirms `Validate` and the baseline checks pass, merges, completes the **About** panel (description and topics) and closes the setup issue (#1). Then S2 on `build/s02-schema-taxonomy`.
+  - **Blockers:** none. Notes for the author: no second maintainer was named, so `CODEOWNERS` has one; the npm Dependabot entry has no `package.json` to read until S14; the pull request may need `Validate` added as a required check if the ruleset is to enforce it.
+  - **Pull request title:** Set up the repository and scaffold the `csr` package (S1)
+  - **Pull request description:**
+
+    > ## What this changes
+    >
+    > Completes the template setup and lays the foundations for the build (slice S1 of `docs/build/PLAN.md`).
+    >
+    > - Writes the README, completes `publiccode.yml`, adds `LICENCE-CONTENT.md` (OGL v3.0), adds `CODEOWNERS` review paths for `/records/`, `/taxonomy/` and `/schema/`, and deletes `.github/workflows/template.yml`.
+    > - Commits the specification (v1.2), the build plan, the wireframes, the baseline images and the rendering script.
+    > - Adds the Python package skeleton (`pyproject.toml`, `src/csr/`, `tests/`) and the `Site` workflow, whose `Validate` job runs `pytest`.
+    > - Extends `.gitignore` and `dependabot.yml` (pip and npm).
+    >
+    > ## Why
+    >
+    > Specification sections 6.3 and 7.1: the first pull request completes the setup issue, and every later slice builds on the package and the `Validate` check.
+    >
+    > Closes #1 once the About panel description and topics are added.
+    >
+    > ## How it was tested
+    >
+    > `pip install -e .[dev]` and `pytest -q` (5 passed) on Python 3.12.
+    >
+    > ## Checklist
+    >
+    > - [x] `CHANGELOG.md` updated under Unreleased
+    > - [x] No secrets or personal data
+    > - [x] Actions pinned by SHA
