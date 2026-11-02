@@ -1,0 +1,91 @@
+<!doctype html>
+<html lang="en-GB">
+<head>
+<meta charset="utf-8">
+<title>How current are the records?</title>
+<script src="./support.js"></script>
+<link rel="stylesheet" href="/_blob/b35ddd115c1bbdcc03534aeb563449a9">
+</head>
+<body>
+<x-dc>
+<helmet>
+<link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&display=swap" rel="stylesheet">
+<style>
+body{margin:0;font-family:Roboto,"Helvetica Neue",Helvetica,Arial,sans-serif}
+.wf-stats{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:16px;margin:0 0 40px}
+@media (max-width:48rem){.wf-stats{grid-template-columns:repeat(2,minmax(0,1fr))}}
+.wf-stat{border:1px solid #b3b3b3;padding:20px}
+.wf-stat .wf-n{font-size:40px;font-weight:700;line-height:1.1;display:block;margin:12px 0 4px}
+.wf-table{overflow-x:auto}
+</style>
+</helmet>
+<div>
+<header class="ds_site-header" role="banner">
+<div class="ds_wrapper"><div class="ds_site-header__content"><div class="ds_site-branding"><a class="ds_site-branding__link" href="Main.dc.html"><span class="ds_site-branding__title">Common Solution Register: Demonstrator</span></a></div></div></div>
+<div class="ds_site-header__navigation"><div class="ds_wrapper"><nav class="ds_site-navigation" aria-label="Main navigation"><ul class="ds_site-navigation__list">
+<li class="ds_site-navigation__item"><a class="ds_site-navigation__link" href="Main.dc.html">Find solutions</a></li>
+<li class="ds_site-navigation__item"><a class="ds_site-navigation__link" href="Browse.dc.html">Browse</a></li>
+<li class="ds_site-navigation__item"><a class="ds_site-navigation__link" href="Contribute.dc.html">Contribute</a></li>
+<li class="ds_site-navigation__item"><a class="ds_site-navigation__link" href="Validate.dc.html">Validate</a></li>
+<li class="ds_site-navigation__item"><a class="ds_site-navigation__link" href="Data.dc.html">Data and API</a></li>
+<li class="ds_site-navigation__item"><a class="ds_site-navigation__link" href="About.dc.html">About</a></li>
+</ul></nav></div></div>
+</header>
+<div class="ds_phase-banner"><div class="ds_wrapper"><p class="ds_phase-banner__content"><strong class="ds_tag ds_phase-banner__tag">Demonstrator</strong><span class="ds_phase-banner__text">This is not an official register. Inclusion does not mean endorsement. <a href="About.dc.html">Give feedback</a>.</span></p></div></div>
+
+<div class="ds_wrapper">
+<main class="ds_layout ds_layout--search-results" id="main-content">
+<div class="ds_layout__header">
+<header class="ds_page-header"><h1 class="ds_page-header__title">How current are the records?</h1></header>
+<p class="ds_leader">Owners are asked to confirm their record at least once a year. Records not confirmed in time are marked, not hidden, so you can judge how far to rely on them.</p>
+</div>
+<div class="ds_layout__content">
+<div class="wf-stats">
+<div class="wf-stat"><strong class="ds_tag ds_tag--teal">Current</strong><span class="wf-n">5</span><span>confirmed in the last 11 months</span></div>
+<div class="wf-stat"><strong class="ds_tag ds_tag--orange">Due</strong><span class="wf-n">1</span><span>confirmation due within a month</span></div>
+<div class="wf-stat"><strong class="ds_tag ds_tag--red">Stale</strong><span class="wf-n">1</span><span>not confirmed for over 12 months</span></div>
+<div class="wf-stat"><strong class="ds_tag ds_tag--grey">Not confirmed</strong><span class="wf-n">4</span><span>demonstration entries from public sources</span></div>
+</div>
+
+<h2>Records needing attention</h2>
+<div class="wf-table"><table class="ds_table">
+<thead><tr><th scope="col">Record</th><th scope="col">Owner</th><th scope="col">Last confirmed</th><th scope="col">State</th></tr></thead>
+<tbody>
+<tr><td><a href="Record-Example.dc.html">Example: Legacy Waste Booking Service</a></td><td>Example Council</td><td>2 September 2025</td><td><strong class="ds_tag ds_tag--red">Stale</strong></td></tr>
+<tr><td><a href="Record-Example.dc.html">Example: Pilot Notifications Component</a></td><td>Example Health Board</td><td>[11 months ago]</td><td><strong class="ds_tag ds_tag--orange">Due</strong></td></tr>
+<tr><td><a href="Record-Demonstration.dc.html">ScotAccount</a></td><td>Scottish Government</td><td>Never</td><td><strong class="ds_tag ds_tag--grey">Not confirmed</strong></td></tr>
+<tr><td><a href="Record-Demonstration.dc.html">Scottish Government Design System</a></td><td>Scottish Government</td><td>Never</td><td><strong class="ds_tag ds_tag--grey">Not confirmed</strong></td></tr>
+</tbody></table></div>
+
+<h2>How confirmation works</h2>
+<ol>
+<li>When a record is due, a full register would remind the owner. This demonstrator shows the states but sends no reminders.</li>
+<li>The owner confirms the record is still accurate, or corrects it. Owner-hosted records are confirmed by updating the date in their own solution.yml.</li>
+<li>After 12 months without confirmation the record is marked stale. It stays visible.</li>
+</ol>
+<p class="ds_hint-text">In this demonstrator the thresholds are 11 and 12 months. The working group may choose different ones.</p>
+</div>
+</main>
+</div>
+
+<footer class="ds_site-footer"><div class="ds_wrapper"><div class="ds_site-footer__content">
+<ul class="ds_site-footer__site-items">
+<li class="ds_site-items__item"><a href="About.dc.html">About</a></li>
+<li class="ds_site-items__item"><a href="Accessibility.dc.html">Accessibility</a></li>
+<li class="ds_site-items__item"><a href="Privacy.dc.html">Privacy</a></li>
+<li class="ds_site-items__item"><a href="Currency.dc.html">Currency</a></li>
+<li class="ds_site-items__item"><a href="Harvest.dc.html">Harvest report</a></li>
+<li class="ds_site-items__item"><a href="Reference.dc.html">Field reference</a></li>
+</ul>
+<div class="ds_site-footer__copyright"><p>Content available under the Open Government Licence v3.0. Code under the MIT licence.</p></div>
+<div class="ds_site-footer__org"><p>Hosted for demonstration by The Digital Office for Scottish Local Government.</p></div>
+</div></div></footer>
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props='{"$preview":{"width":1280,"height":1400}}'>
+class Component extends DCLogic {
+  renderVals() { return {}; }
+}
+</script>
+</body>
+</html>

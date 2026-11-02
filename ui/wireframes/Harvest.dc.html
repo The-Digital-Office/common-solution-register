@@ -1,0 +1,101 @@
+<!doctype html>
+<html lang="en-GB">
+<head>
+<meta charset="utf-8">
+<title>Harvest report</title>
+<script src="./support.js"></script>
+<link rel="stylesheet" href="/_blob/b35ddd115c1bbdcc03534aeb563449a9">
+</head>
+<body>
+<x-dc>
+<helmet>
+<link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&display=swap" rel="stylesheet">
+<style>
+body{margin:0;font-family:Roboto,"Helvetica Neue",Helvetica,Arial,sans-serif}
+.wf-table{overflow-x:auto;margin:0 0 32px}
+.wf-table code{word-break:break-all}
+</style>
+</helmet>
+<div>
+<header class="ds_site-header" role="banner">
+<div class="ds_wrapper"><div class="ds_site-header__content"><div class="ds_site-branding"><a class="ds_site-branding__link" href="Main.dc.html"><span class="ds_site-branding__title">Common Solution Register: Demonstrator</span></a></div></div></div>
+<div class="ds_site-header__navigation"><div class="ds_wrapper"><nav class="ds_site-navigation" aria-label="Main navigation"><ul class="ds_site-navigation__list">
+<li class="ds_site-navigation__item"><a class="ds_site-navigation__link" href="Main.dc.html">Find solutions</a></li>
+<li class="ds_site-navigation__item"><a class="ds_site-navigation__link" href="Browse.dc.html">Browse</a></li>
+<li class="ds_site-navigation__item"><a class="ds_site-navigation__link" href="Contribute.dc.html">Contribute</a></li>
+<li class="ds_site-navigation__item"><a class="ds_site-navigation__link" href="Validate.dc.html">Validate</a></li>
+<li class="ds_site-navigation__item"><a class="ds_site-navigation__link" href="Data.dc.html">Data and API</a></li>
+<li class="ds_site-navigation__item"><a class="ds_site-navigation__link" href="About.dc.html">About</a></li>
+</ul></nav></div></div>
+</header>
+<div class="ds_phase-banner"><div class="ds_wrapper"><p class="ds_phase-banner__content"><strong class="ds_tag ds_phase-banner__tag">Demonstrator</strong><span class="ds_phase-banner__text">This is not an official register. Inclusion does not mean endorsement. <a href="About.dc.html">Give feedback</a>.</span></p></div></div>
+
+<div class="ds_wrapper">
+<main class="ds_layout ds_layout--search-results" id="main-content">
+<div class="ds_layout__header">
+<header class="ds_page-header">
+<h1 class="ds_page-header__title">Harvest report</h1>
+<dl class="ds_page-header__metadata ds_metadata">
+<div class="ds_metadata__item"><dt class="ds_metadata__key">Last run</dt><dd class="ds_metadata__value">[date and time] (daily)</dd></div>
+<div class="ds_metadata__item"><dt class="ds_metadata__key">Registered sources</dt><dd class="ds_metadata__value">3</dd></div>
+</dl>
+</header>
+<p class="ds_leader">Records hosted by their owners are fetched daily from registered addresses only. Each file is validated before it is published. A file that fails is never published: the last valid version stays.</p>
+</div>
+<div class="ds_layout__content">
+<div class="wf-table"><table class="ds_table">
+<caption class="visually-hidden">Registered sources and their state</caption>
+<thead><tr><th scope="col">Record</th><th scope="col">Source</th><th scope="col">Last harvested</th><th scope="col">State</th></tr></thead>
+<tbody>
+<tr><td><a href="Record-Hosted.dc.html">csr-0001</a> Common Solution Register Demonstrator</td><td><code>github.com/The-Digital-Office/common-solution-register/raw/main/solution.yml</code></td><td>[date]</td><td><strong class="ds_tag ds_tag--green">OK</strong></td></tr>
+<tr><td><a href="Record-Example.dc.html">csr-9006</a> Example: Hosted Booking Component</td><td><code>[...]/examples/hosted/csr-9006.solution.yml</code></td><td>[date]</td><td><strong class="ds_tag ds_tag--green">OK</strong></td></tr>
+<tr><td>csr-9007 Example: Failing Hosted Source</td><td><code>[...]/examples/hosted/csr-9007.solution.yml</code></td><td>[date]</td><td><strong class="ds_tag ds_tag--red">Failing validation</strong></td></tr>
+</tbody></table></div>
+
+<h2>Problems</h2>
+<details class="ds_details" open="open">
+<summary class="ds_details__summary">csr-9007: failing validation since [date] (never published)</summary>
+<div class="ds_details__text">
+<ul>
+<li><strong>R14 owner match:</strong> the file says <code>owner.organisation: Another Council</code> but the registered owner is <code>Example Council</code>.</li>
+<li><strong>Schema:</strong> <code>adoption_route.summary</code> is missing.</li>
+<li><strong>R17 publiccode.yml (warning):</strong> the linked publiccode.yml fails the official parser: <code>[parser message]</code>.</li>
+</ul>
+</div>
+</details>
+
+<h2>How harvesting works</h2>
+<ol>
+<li>An owner publishes their solution.yml and asks for it to be registered. Registration is a reviewed change.</li>
+<li>Every day, and on request, the register fetches each registered address over HTTPS.</li>
+<li>It checks the record ID and owner match the registration, then validates the file and any linked publiccode.yml.</li>
+<li>Valid files are published straight away. Owners do not need a maintainer to approve their edits.</li>
+<li>If a source fails or disappears, the last valid version stays and is flagged. A maintainer decides whether to withdraw it after 7 days.</li>
+</ol>
+<p>Only registered addresses are fetched. The register does not search for unregistered files.</p>
+<p><a href="Data.dc.html">Harvest state as JSON</a></p>
+</div>
+</main>
+</div>
+
+<footer class="ds_site-footer"><div class="ds_wrapper"><div class="ds_site-footer__content">
+<ul class="ds_site-footer__site-items">
+<li class="ds_site-items__item"><a href="About.dc.html">About</a></li>
+<li class="ds_site-items__item"><a href="Accessibility.dc.html">Accessibility</a></li>
+<li class="ds_site-items__item"><a href="Privacy.dc.html">Privacy</a></li>
+<li class="ds_site-items__item"><a href="Currency.dc.html">Currency</a></li>
+<li class="ds_site-items__item"><a href="Harvest.dc.html">Harvest report</a></li>
+<li class="ds_site-items__item"><a href="Reference.dc.html">Field reference</a></li>
+</ul>
+<div class="ds_site-footer__copyright"><p>Content available under the Open Government Licence v3.0. Code under the MIT licence.</p></div>
+<div class="ds_site-footer__org"><p>Hosted for demonstration by The Digital Office for Scottish Local Government.</p></div>
+</div></div></footer>
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props='{"$preview":{"width":1280,"height":1500}}'>
+class Component extends DCLogic {
+  renderVals() { return {}; }
+}
+</script>
+</body>
+</html>

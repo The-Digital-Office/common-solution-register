@@ -1,0 +1,285 @@
+<!doctype html>
+<html lang="en-GB">
+<head>
+<meta charset="utf-8">
+<title>Find a common solution</title>
+<script src="./support.js"></script>
+<link rel="stylesheet" href="/_blob/b35ddd115c1bbdcc03534aeb563449a9">
+</head>
+<body>
+<x-dc>
+<helmet>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&display=swap" rel="stylesheet">
+<style>
+body{margin:0;font-family:Roboto,"Helvetica Neue",Helvetica,Arial,sans-serif}
+.wf-tags{display:flex;flex-wrap:wrap;gap:8px;margin:8px 0 0}
+.wf-filter{border:0;padding:0;margin:0 0 24px}
+.wf-results-head{display:flex;flex-wrap:wrap;justify-content:space-between;align-items:baseline;gap:16px}
+</style>
+</helmet>
+<div>
+<div class="ds_skip-links"><ul class="ds_skip-links__list"><li class="ds_skip-links__item"><a class="ds_skip-links__link" href="#main-content">Skip to main content</a></li></ul></div>
+<header class="ds_site-header" role="banner">
+<div class="ds_wrapper">
+<div class="ds_site-header__content">
+<div class="ds_site-branding">
+<a class="ds_site-branding__link" href="Main.dc.html"><span class="ds_site-branding__title">Common Solution Register: Demonstrator</span></a>
+</div>
+</div>
+</div>
+<div class="ds_site-header__navigation">
+<div class="ds_wrapper">
+<nav class="ds_site-navigation" aria-label="Main navigation">
+<ul class="ds_site-navigation__list">
+<li class="ds_site-navigation__item"><a class="ds_site-navigation__link ds_current" aria-current="page" href="Main.dc.html">Find solutions</a></li>
+<li class="ds_site-navigation__item"><a class="ds_site-navigation__link" href="Browse.dc.html">Browse</a></li>
+<li class="ds_site-navigation__item"><a class="ds_site-navigation__link" href="Contribute.dc.html">Contribute</a></li>
+<li class="ds_site-navigation__item"><a class="ds_site-navigation__link" href="Validate.dc.html">Validate</a></li>
+<li class="ds_site-navigation__item"><a class="ds_site-navigation__link" href="Data.dc.html">Data and API</a></li>
+<li class="ds_site-navigation__item"><a class="ds_site-navigation__link" href="About.dc.html">About</a></li>
+</ul>
+</nav>
+</div>
+</div>
+</header>
+<div class="ds_phase-banner">
+<div class="ds_wrapper">
+<p class="ds_phase-banner__content"><strong class="ds_tag ds_phase-banner__tag">Demonstrator</strong><span class="ds_phase-banner__text">Built for the Scottish public sector common solution register short-life working group. This is not an official register. Records are confirmed by their owner, compiled from public sources, or fictional examples. Inclusion does not mean endorsement. <a href="About.dc.html">Give feedback</a>.</span></p>
+</div>
+</div>
+
+<div class="ds_wrapper">
+<main class="ds_layout ds_layout--search-results--filters" id="main-content">
+<div class="ds_layout__header">
+<header class="ds_page-header">
+<h1 class="ds_page-header__title">Find a common solution</h1>
+</header>
+<p class="ds_leader">Reusable digital services, platforms, components, APIs and standards for the Scottish public sector.</p>
+</div>
+
+<div class="ds_layout__content">
+<div class="ds_site-search">
+<form class="ds_site-search__form" role="search" onSubmit="{{noSubmit}}">
+<label class="ds_label visually-hidden" for="q">Search solutions</label>
+<div class="ds_input__wrapper ds_input__wrapper--has-icon">
+<input class="ds_input ds_site-search__input" id="q" name="q" type="search" placeholder="Search by name, purpose or keyword" autocomplete="off" value="{{q}}" onInput="{{onQ}}">
+<button class="ds_button" type="submit"><span class="visually-hidden">Search</span><svg class="ds_icon" aria-hidden="true" viewBox="0 0 24 24" width="24" height="24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><circle cx="10.5" cy="10.5" r="6.5"></circle><line x1="15.5" y1="15.5" x2="21" y2="21"></line></svg></button>
+</div>
+</form>
+</div>
+</div>
+
+<div class="ds_layout__sidebar">
+<section class="ds_search-filters" aria-labelledby="filters-title">
+<h2 class="ds_search-filters__title ds_h3" id="filters-title">Filter by</h2>
+
+<fieldset class="wf-filter">
+<legend class="ds_label">Provenance</legend>
+<div class="ds_checkboxes ds_field-group">
+<sc-for list="{{provFacets}}" as="f" hint-placeholder-count="3">
+<div class="ds_checkbox ds_checkbox--small">
+<input class="ds_checkbox__input" id="{{f.inputId}}" type="checkbox" checked="{{f.checked}}" onChange="{{f.toggle}}">
+<label class="ds_checkbox__label" for="{{f.inputId}}">{{f.label}} ({{f.count}})</label>
+</div>
+</sc-for>
+</div>
+</fieldset>
+
+<fieldset class="wf-filter">
+<legend class="ds_label">Asset type</legend>
+<div class="ds_checkboxes ds_field-group">
+<sc-for list="{{typeFacets}}" as="f" hint-placeholder-count="6">
+<div class="ds_checkbox ds_checkbox--small">
+<input class="ds_checkbox__input" id="{{f.inputId}}" type="checkbox" checked="{{f.checked}}" onChange="{{f.toggle}}">
+<label class="ds_checkbox__label" for="{{f.inputId}}">{{f.label}} ({{f.count}})</label>
+</div>
+</sc-for>
+</div>
+</fieldset>
+
+<div class="ds_question">
+<label class="ds_label" for="f-sector">Owning sector</label>
+<div class="ds_select-wrapper">
+<select class="ds_select" id="f-sector">
+<option>Any sector</option>
+<option>Scottish Government</option>
+<option>Executive agencies</option>
+<option>Local government</option>
+<option>NHS Scotland</option>
+<option>Police and fire</option>
+<option>Non-departmental public bodies</option>
+<option>Further and higher education</option>
+<option>UK public sector</option>
+</select>
+<span class="ds_select-arrow" aria-hidden="true"></span>
+</div>
+</div>
+
+<div class="ds_question">
+<label class="ds_label" for="f-area">Service area</label>
+<div class="ds_select-wrapper">
+<select class="ds_select" id="f-area">
+<option>Any service area</option>
+<option>Health and care</option>
+<option>Housing</option>
+<option>Environment and waste</option>
+<option>Corporate and cross-cutting</option>
+</select>
+<span class="ds_select-arrow" aria-hidden="true"></span>
+</div>
+</div>
+
+<div class="ds_question">
+<label class="ds_label" for="f-cap">Capability</label>
+<div class="ds_select-wrapper">
+<select class="ds_select" id="f-cap">
+<option>Any capability</option>
+<option>Identity and access</option>
+<option>Payments</option>
+<option>Booking and scheduling</option>
+<option>Mapping and location</option>
+</select>
+<span class="ds_select-arrow" aria-hidden="true"></span>
+</div>
+</div>
+
+<fieldset class="wf-filter">
+<legend class="ds_label">Currency</legend>
+<div class="ds_checkboxes ds_field-group">
+<div class="ds_checkbox ds_checkbox--small"><input class="ds_checkbox__input" id="c-current" type="checkbox"><label class="ds_checkbox__label" for="c-current">Current</label></div>
+<div class="ds_checkbox ds_checkbox--small"><input class="ds_checkbox__input" id="c-due" type="checkbox"><label class="ds_checkbox__label" for="c-due">Due for confirmation</label></div>
+<div class="ds_checkbox ds_checkbox--small"><input class="ds_checkbox__input" id="c-stale" type="checkbox"><label class="ds_checkbox__label" for="c-stale">Stale</label></div>
+<div class="ds_checkbox ds_checkbox--small"><input class="ds_checkbox__input" id="c-unconf" type="checkbox"><label class="ds_checkbox__label" for="c-unconf">Not confirmed by owner</label></div>
+</div>
+</fieldset>
+
+<div class="ds_checkbox ds_checkbox--small">
+<input class="ds_checkbox__input" id="show-withdrawn" type="checkbox">
+<label class="ds_checkbox__label" for="show-withdrawn">Include withdrawn records</label>
+</div>
+
+<button class="ds_button ds_button--secondary ds_button--small" type="button" onClick="{{clearAll}}">Clear all filters</button>
+</section>
+</div>
+
+<div class="ds_layout__list">
+<div class="wf-results-head">
+<h2 class="ds_search-results__title ds_h3" aria-live="polite">{{countText}}</h2>
+<div class="ds_sort-options">
+<label class="ds_label" for="sort-by">Sort by</label>
+<div class="ds_select-wrapper">
+<select class="ds_select" id="sort-by"><option>Name (A to Z)</option><option>Recently changed</option><option>Recently confirmed</option></select>
+<span class="ds_select-arrow" aria-hidden="true"></span>
+</div>
+</div>
+</div>
+
+<sc-if value="{{noResults}}" hint-placeholder-val="{{false}}">
+<div class="ds_inset-text"><div class="ds_inset-text__text">No solutions match. Try removing a filter or searching for a capability such as "payments".</div></div>
+</sc-if>
+
+<ol class="ds_search-results__list">
+<sc-for list="{{results}}" as="r" hint-placeholder-count="6">
+<li class="ds_search-result">
+<h3 class="ds_search-result__title"><a class="ds_search-result__link" href="{{r.href}}">{{r.name}}</a></h3>
+<p class="ds_search-result__summary">{{r.summary}}</p>
+<dl class="ds_search-result__metadata ds_metadata ds_metadata--inline">
+<div class="ds_metadata__item"><dt class="ds_metadata__key">Owner</dt><dd class="ds_metadata__value">{{r.owner}}</dd></div>
+<div class="ds_metadata__item"><dt class="ds_metadata__key">Type</dt><dd class="ds_metadata__value">{{r.typeLabel}}</dd></div>
+<div class="ds_metadata__item"><dt class="ds_metadata__key">Status</dt><dd class="ds_metadata__value">{{r.status}}</dd></div>
+</dl>
+<div class="wf-tags">
+<strong class="{{r.provClass}}">{{r.provLabel}}</strong>
+<strong class="{{r.curClass}}">{{r.curLabel}}</strong>
+<sc-if value="{{r.hosted}}" hint-placeholder-val="{{false}}"><strong class="ds_tag ds_tag--darkblue">Owner-hosted</strong></sc-if>
+</div>
+</li>
+</sc-for>
+</ol>
+</div>
+</main>
+</div>
+
+<footer class="ds_site-footer">
+<div class="ds_wrapper">
+<div class="ds_site-footer__content">
+<ul class="ds_site-footer__site-items">
+<li class="ds_site-items__item"><a href="About.dc.html">About</a></li>
+<li class="ds_site-items__item"><a href="Accessibility.dc.html">Accessibility</a></li>
+<li class="ds_site-items__item"><a href="Privacy.dc.html">Privacy</a></li>
+<li class="ds_site-items__item"><a href="Currency.dc.html">Currency</a></li>
+<li class="ds_site-items__item"><a href="Harvest.dc.html">Harvest report</a></li>
+<li class="ds_site-items__item"><a href="Reference.dc.html">Field reference</a></li>
+</ul>
+<div class="ds_site-footer__copyright"><p>Content available under the Open Government Licence v3.0. Code under the MIT licence.</p></div>
+<div class="ds_site-footer__org"><p>Hosted for demonstration by The Digital Office for Scottish Local Government.</p></div>
+</div>
+</div>
+</footer>
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props='{"$preview":{"width":1280,"height":1900}}'>
+class Component extends DCLogic {
+  constructor(props) {
+    super(props);
+    this.state = { q: '', prov: {}, types: {} };
+  }
+  renderVals() {
+    var self = this;
+    var R = [
+      { id: 'csr-0001', name: 'Common Solution Register Demonstrator', summary: 'A demonstrator of a register of digital solutions intended for reuse across Scottish public bodies.', owner: 'The Digital Office', type: 'service', status: 'In development', prov: 'owner-confirmed', cur: 'current', hosted: true, href: 'Record-Hosted.dc.html' },
+      { id: 'csr-0002', name: 'Digital Office repository baseline', summary: 'Repository template, shared standards checks and settings script for publishing public sector code on GitHub.', owner: 'The Digital Office', type: 'pattern', status: 'Live', prov: 'owner-confirmed', cur: 'current', hosted: false, href: 'Record-Hosted.dc.html' },
+      { id: 'csr-0003', name: 'ScotAccount', summary: '[Summary compiled from public sources]', owner: 'Scottish Government', type: 'service', status: '[From sources]', prov: 'demonstration', cur: 'unconfirmed', hosted: false, href: 'Record-Demonstration.dc.html' },
+      { id: 'csr-0004', name: 'Scottish Government Design System', summary: '[Summary compiled from public sources]', owner: 'Scottish Government', type: 'standard', status: '[From sources]', prov: 'demonstration', cur: 'unconfirmed', hosted: false, href: 'Record-Demonstration.dc.html' },
+      { id: 'csr-0005', name: 'One Scotland Gazetteer', summary: '[Summary compiled from public sources]', owner: 'Improvement Service', type: 'platform', status: '[From sources]', prov: 'demonstration', cur: 'unconfirmed', hosted: false, href: 'Record-Demonstration.dc.html' },
+      { id: 'csr-0006', name: 'Spatial Hub', summary: '[Summary compiled from public sources]', owner: 'Improvement Service', type: 'platform', status: '[From sources]', prov: 'demonstration', cur: 'unconfirmed', hosted: false, href: 'Record-Demonstration.dc.html' },
+      { id: 'csr-9001', name: 'Example: Council Payments Gateway', summary: 'Fictional example of a hosted payments component with a recharge model.', owner: 'Example Council', type: 'component', status: 'Live', prov: 'example', cur: 'current', hosted: false, href: 'Record-Example.dc.html' },
+      { id: 'csr-9002', name: 'Example: Benefits Case Management API', summary: 'Fictional example of a REST API with published interface documentation.', owner: 'Example Agency', type: 'api', status: 'Beta', prov: 'example', cur: 'current', hosted: false, href: 'Record-Example.dc.html' },
+      { id: 'csr-9003', name: 'Example: Legacy Waste Booking Service', summary: 'Fictional example of a deprecated service with migration guidance.', owner: 'Example Council', type: 'service', status: 'Deprecated', prov: 'example', cur: 'stale', hosted: false, href: 'Record-Example.dc.html' },
+      { id: 'csr-9004', name: 'Example: Pilot Notifications Component', summary: 'Fictional example of a beta component due for owner confirmation.', owner: 'Example Health Board', type: 'component', status: 'Beta', prov: 'example', cur: 'due', hosted: false, href: 'Record-Example.dc.html' },
+      { id: 'csr-9006', name: 'Example: Hosted Booking Component', summary: 'Fictional example of a record harvested from its owner’s own solution.yml.', owner: 'Example Council', type: 'component', status: 'Live', prov: 'example', cur: 'current', hosted: true, href: 'Record-Example.dc.html' }
+    ];
+    var PROV = { 'owner-confirmed': ['Confirmed by owner', 'ds_tag ds_tag--green'], 'demonstration': ['From public sources', 'ds_tag ds_tag--blue'], 'example': ['Fictional example', 'ds_tag ds_tag--purple'] };
+    var CUR = { current: ['Current', 'ds_tag ds_tag--teal'], due: ['Due for confirmation', 'ds_tag ds_tag--orange'], stale: ['Stale', 'ds_tag ds_tag--red'], unconfirmed: ['Not confirmed by owner', 'ds_tag ds_tag--grey'] };
+    var TYPES = { service: 'Service', platform: 'Platform', component: 'Component', api: 'API', standard: 'Standard', pattern: 'Pattern', software: 'Software', artefact: 'Artefact' };
+    var s = this.state;
+    var q = s.q.trim().toLowerCase();
+    var provOn = Object.keys(s.prov).filter(function (k) { return s.prov[k]; });
+    var typeOn = Object.keys(s.types).filter(function (k) { return s.types[k]; });
+    var matchQ = function (r) { return !q || (r.name + ' ' + r.summary + ' ' + r.owner).toLowerCase().indexOf(q) >= 0; };
+    var res = R.filter(function (r) {
+      return matchQ(r) && (provOn.length === 0 || provOn.indexOf(r.prov) >= 0) && (typeOn.length === 0 || typeOn.indexOf(r.type) >= 0);
+    }).map(function (r) {
+      return Object.assign({}, r, { typeLabel: TYPES[r.type], provLabel: PROV[r.prov][0], provClass: PROV[r.prov][1], curLabel: CUR[r.cur][0], curClass: CUR[r.cur][1] });
+    });
+    var toggler = function (group, key) {
+      return function () {
+        var g = Object.assign({}, self.state[group]);
+        g[key] = !g[key];
+        var patch = {}; patch[group] = g;
+        self.setState(patch);
+      };
+    };
+    var provFacets = Object.keys(PROV).map(function (k) {
+      return { inputId: 'p-' + k, label: PROV[k][0], count: R.filter(function (r) { return r.prov === k && matchQ(r); }).length, checked: !!s.prov[k], toggle: toggler('prov', k) };
+    });
+    var typeFacets = Object.keys(TYPES).map(function (k) {
+      return { inputId: 't-' + k, label: TYPES[k], count: R.filter(function (r) { return r.type === k && matchQ(r); }).length, checked: !!s.types[k], toggle: toggler('types', k) };
+    });
+    return {
+      q: s.q,
+      onQ: function (e) { self.setState({ q: e.target.value }); },
+      noSubmit: function (e) { e.preventDefault(); },
+      clearAll: function () { self.setState({ q: '', prov: {}, types: {} }); },
+      provFacets: provFacets,
+      typeFacets: typeFacets,
+      results: res,
+      noResults: res.length === 0,
+      countText: res.length === 1 ? '1 solution' : res.length + ' solutions'
+    };
+  }
+}
+</script>
+</body>
+</html>

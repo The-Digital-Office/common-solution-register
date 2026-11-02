@@ -1,0 +1,39 @@
+[build-system]
+requires = ["setuptools>=77"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "csr"
+version = "0.1.0"
+description = "Validator, harvester and site generator for the Common Solution Register Demonstrator"
+readme = "README.md"
+license = "MIT"
+license-files = ["LICENSE"]
+authors = [{ name = "The Digital Office for Scottish Local Government" }]
+requires-python = ">=3.12"
+dependencies = [
+    "Jinja2==3.1.6",
+    "jsonschema==4.26.0",
+    "PyYAML==6.0.3",
+]
+
+[project.optional-dependencies]
+dev = [
+    "pytest==9.2.0",
+]
+
+[project.scripts]
+csr = "csr.cli:main"
+
+[project.urls]
+Repository = "https://github.com/The-Digital-Office/common-solution-register"
+
+[tool.setuptools.packages.find]
+where = ["src"]
+
+[tool.setuptools.package-data]
+csr = ["templates/**/*", "static/**/*"]
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]
+addopts = "-ra"

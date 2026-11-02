@@ -1,0 +1,167 @@
+<!doctype html>
+<html lang="en-GB">
+<head>
+<meta charset="utf-8">
+<title>Validate a solution.yml</title>
+<script src="./support.js"></script>
+<link rel="stylesheet" href="/_blob/b35ddd115c1bbdcc03534aeb563449a9">
+</head>
+<body>
+<x-dc>
+<helmet>
+<link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&display=swap" rel="stylesheet">
+<style>
+body{margin:0;font-family:Roboto,"Helvetica Neue",Helvetica,Arial,sans-serif}
+.wf-modes{display:flex;flex-wrap:wrap;gap:0;margin:0 0 24px;border-bottom:1px solid #b3b3b3}
+.wf-mode{appearance:none;background:none;border:0;border-bottom:4px solid transparent;padding:12px 20px;font:inherit;font-weight:700;color:#0065bd;cursor:pointer;min-height:44px}
+.wf-mode[aria-pressed="true"]{border-bottom-color:#333;color:#333}
+.wf-code{font-family:"Courier New",monospace;font-size:15px;line-height:1.5}
+.wf-pre{background:#f8f8f8;border:1px solid #b3b3b3;padding:16px;font-family:"Courier New",monospace;font-size:15px;white-space:pre;overflow-x:auto;margin:0 0 24px}
+.wf-table{overflow-x:auto}
+</style>
+</helmet>
+<div>
+<header class="ds_site-header" role="banner">
+<div class="ds_wrapper"><div class="ds_site-header__content"><div class="ds_site-branding"><a class="ds_site-branding__link" href="Main.dc.html"><span class="ds_site-branding__title">Common Solution Register: Demonstrator</span></a></div></div></div>
+<div class="ds_site-header__navigation"><div class="ds_wrapper"><nav class="ds_site-navigation" aria-label="Main navigation"><ul class="ds_site-navigation__list">
+<li class="ds_site-navigation__item"><a class="ds_site-navigation__link" href="Main.dc.html">Find solutions</a></li>
+<li class="ds_site-navigation__item"><a class="ds_site-navigation__link" href="Browse.dc.html">Browse</a></li>
+<li class="ds_site-navigation__item"><a class="ds_site-navigation__link" href="Contribute.dc.html">Contribute</a></li>
+<li class="ds_site-navigation__item"><a class="ds_site-navigation__link ds_current" aria-current="page" href="Validate.dc.html">Validate</a></li>
+<li class="ds_site-navigation__item"><a class="ds_site-navigation__link" href="Data.dc.html">Data and API</a></li>
+<li class="ds_site-navigation__item"><a class="ds_site-navigation__link" href="About.dc.html">About</a></li>
+</ul></nav></div></div>
+</header>
+<div class="ds_phase-banner"><div class="ds_wrapper"><p class="ds_phase-banner__content"><strong class="ds_tag ds_phase-banner__tag">Demonstrator</strong><span class="ds_phase-banner__text">This is not an official register. Inclusion does not mean endorsement. <a href="About.dc.html">Give feedback</a>.</span></p></div></div>
+
+<div class="ds_wrapper">
+<main class="ds_layout ds_layout--article" id="main-content">
+<div class="ds_layout__header">
+<header class="ds_page-header"><h1 class="ds_page-header__title">Validate a solution.yml</h1></header>
+<p class="ds_leader">Check a descriptor against the register's schema and rules before you submit or host it. Your file is checked in your browser and is not sent anywhere.</p>
+</div>
+<div class="ds_layout__content">
+<div class="wf-modes" role="group" aria-label="How to provide the file">
+<button class="wf-mode" type="button" aria-pressed="{{pastePressed}}" onClick="{{modePaste}}">Paste</button>
+<button class="wf-mode" type="button" aria-pressed="{{uploadPressed}}" onClick="{{modeUpload}}">Upload a file</button>
+<button class="wf-mode" type="button" aria-pressed="{{urlPressed}}" onClick="{{modeUrl}}">From a URL</button>
+</div>
+
+<sc-if value="{{isPaste}}" hint-placeholder-val="{{true}}">
+<div class="ds_question">
+<label class="ds_label" for="yaml">solution.yml</label>
+<textarea class="ds_input wf-code" id="yaml" rows="14" value="{{text}}" onInput="{{setText}}"></textarea>
+</div>
+</sc-if>
+<sc-if value="{{isUpload}}" hint-placeholder-val="{{false}}">
+<div class="ds_question">
+<label class="ds_label" for="file">Choose a .yml or .yaml file</label>
+<input class="ds_file-upload" id="file" type="file" accept=".yml,.yaml">
+</div>
+</sc-if>
+<sc-if value="{{isUrl}}" hint-placeholder-val="{{false}}">
+<div class="ds_question">
+<label class="ds_label" for="url">URL of a hosted solution.yml</label>
+<p class="ds_hint-text">Works where the host allows cross-site requests, as raw GitHub files do. Otherwise, paste the file.</p>
+<input class="ds_input" id="url" type="url" placeholder="https://github.com/your-org/your-repo/raw/main/solution.yml">
+</div>
+</sc-if>
+
+<button class="ds_button" type="button" onClick="{{run}}">Validate</button>
+
+<div aria-live="polite">
+<sc-if value="{{showFail}}" hint-placeholder-val="{{false}}">
+<div class="ds_error-summary" role="alert">
+<h2 class="ds_error-summary__title">3 problems found</h2>
+<p>Fix the errors below. Warnings do not stop registration.</p>
+</div>
+<div class="wf-table">
+<table class="ds_table">
+<caption class="visually-hidden">Validation results</caption>
+<thead><tr><th scope="col">Severity</th><th scope="col">Rule</th><th scope="col">Field</th><th scope="col">Problem and fix</th></tr></thead>
+<tbody>
+<tr><td><strong class="ds_tag ds_tag--red">Error</strong></td><td>Schema</td><td><code>capabilities</code></td><td>Must contain at least one capability. Choose from the <a href="Reference.dc.html">capability list</a>.</td></tr>
+<tr><td><strong class="ds_tag ds_tag--red">Error</strong></td><td>R09</td><td><code>adoption_route.summary</code></td><td>Value still starts with "TODO". Describe how another organisation can adopt the solution.</td></tr>
+<tr><td><strong class="ds_tag ds_tag--orange">Warning</strong></td><td>R07</td><td><code>contact.value</code></td><td>Looks like a personal email address. Use a role mailbox, service desk or web form.</td></tr>
+</tbody>
+</table>
+</div>
+</sc-if>
+<sc-if value="{{showPass}}" hint-placeholder-val="{{false}}">
+<div class="ds_notification-panel">
+<h2 class="ds_notification-panel__title">Valid</h2>
+<div class="ds_notification-panel__content"><p>This solution.yml meets schema version 0.1 and all rules.</p></div>
+</div>
+</sc-if>
+</div>
+
+<h2>Validate automatically in your own repository</h2>
+<p>If you host your solution.yml on GitHub, add this workflow to check it, and any publiccode.yml, on every pull request.</p>
+<pre class="wf-pre">jobs:
+  solution:
+    uses: The-Digital-Office/common-solution-register/.github/workflows/validate-solution.yml@v0</pre>
+<p>Or run <code>csr validate path/to/solution.yml</code> from the command line.</p>
+</div>
+
+<div class="ds_layout__sidebar">
+<aside class="ds_article-aside">
+<h2 class="ds_h3">Related</h2>
+<ul class="ds_no-bullets">
+<li><a href="Draft.dc.html">Create a solution.yml with the form</a></li>
+<li><a href="Reference.dc.html">Field reference</a></li>
+<li><a href="Publiccode.dc.html">How publiccode.yml maps</a></li>
+<li><a href="About.dc.html">Host your own solution.yml</a></li>
+</ul>
+</aside>
+</div>
+</main>
+</div>
+
+<footer class="ds_site-footer"><div class="ds_wrapper"><div class="ds_site-footer__content">
+<ul class="ds_site-footer__site-items">
+<li class="ds_site-items__item"><a href="About.dc.html">About</a></li>
+<li class="ds_site-items__item"><a href="Accessibility.dc.html">Accessibility</a></li>
+<li class="ds_site-items__item"><a href="Privacy.dc.html">Privacy</a></li>
+<li class="ds_site-items__item"><a href="Currency.dc.html">Currency</a></li>
+<li class="ds_site-items__item"><a href="Harvest.dc.html">Harvest report</a></li>
+<li class="ds_site-items__item"><a href="Reference.dc.html">Field reference</a></li>
+</ul>
+<div class="ds_site-footer__copyright"><p>Content available under the Open Government Licence v3.0. Code under the MIT licence.</p></div>
+<div class="ds_site-footer__org"><p>Hosted for demonstration by The Digital Office for Scottish Local Government.</p></div>
+</div></div></footer>
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props='{"$preview":{"width":1280,"height":1700}}'>
+class Component extends DCLogic {
+  constructor(props) {
+    super(props);
+    this.state = {
+      mode: 'paste',
+      result: null,
+      text: 'schema_version: "0.1"\nid: csr-0042\nrecord_status: owner-confirmed\nname: Example Booking Component\nsummary: A reusable appointment booking component for council services.\nasset_type: component\nowner:\n  organisation: Example Council\n  sector: local-government\ncontact:\n  type: role-mailbox\n  value: jane.smith@example.gov.uk\nservice_areas: [customer-and-corporate]\ncapabilities: []\nadoption_route:\n  summary: TODO\n'
+    };
+  }
+  renderVals() {
+    var self = this;
+    var s = this.state;
+    var mode = function (m) { return function () { self.setState({ mode: m, result: null }); }; };
+    return {
+      text: s.text,
+      setText: function (e) { self.setState({ text: e.target.value, result: null }); },
+      isPaste: s.mode === 'paste', isUpload: s.mode === 'upload', isUrl: s.mode === 'url',
+      pastePressed: s.mode === 'paste' ? 'true' : 'false',
+      uploadPressed: s.mode === 'upload' ? 'true' : 'false',
+      urlPressed: s.mode === 'url' ? 'true' : 'false',
+      modePaste: mode('paste'), modeUpload: mode('upload'), modeUrl: mode('url'),
+      run: function () {
+        var bad = s.mode === 'paste' && (s.text.indexOf('TODO') >= 0 || s.text.indexOf('capabilities: []') >= 0);
+        self.setState({ result: bad ? 'fail' : 'pass' });
+      },
+      showFail: s.result === 'fail',
+      showPass: s.result === 'pass'
+    };
+  }
+}
+</script>
+</body>
+</html>

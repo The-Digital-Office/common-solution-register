@@ -1,0 +1,124 @@
+<!doctype html>
+<html lang="en-GB">
+<head>
+<meta charset="utf-8">
+<title>Data and API</title>
+<script src="./support.js"></script>
+<link rel="stylesheet" href="/_blob/b35ddd115c1bbdcc03534aeb563449a9">
+</head>
+<body>
+<x-dc>
+<helmet>
+<link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&display=swap" rel="stylesheet">
+<style>
+body{margin:0;font-family:Roboto,"Helvetica Neue",Helvetica,Arial,sans-serif}
+.wf-pre{background:#f8f8f8;border:1px solid #b3b3b3;padding:16px;font-family:"Courier New",monospace;font-size:14px;line-height:1.5;white-space:pre;overflow-x:auto;margin:0 0 16px}
+.wf-table{overflow-x:auto;margin:0 0 32px}
+.wf-dl{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:24px;margin:0 0 40px}
+@media (max-width:48rem){.wf-dl{grid-template-columns:minmax(0,1fr)}}
+.wf-file{border:1px solid #b3b3b3;padding:20px}
+.wf-file h3{margin-top:0}
+</style>
+</helmet>
+<div>
+<header class="ds_site-header" role="banner">
+<div class="ds_wrapper"><div class="ds_site-header__content"><div class="ds_site-branding"><a class="ds_site-branding__link" href="Main.dc.html"><span class="ds_site-branding__title">Common Solution Register: Demonstrator</span></a></div></div></div>
+<div class="ds_site-header__navigation"><div class="ds_wrapper"><nav class="ds_site-navigation" aria-label="Main navigation"><ul class="ds_site-navigation__list">
+<li class="ds_site-navigation__item"><a class="ds_site-navigation__link" href="Main.dc.html">Find solutions</a></li>
+<li class="ds_site-navigation__item"><a class="ds_site-navigation__link" href="Browse.dc.html">Browse</a></li>
+<li class="ds_site-navigation__item"><a class="ds_site-navigation__link" href="Contribute.dc.html">Contribute</a></li>
+<li class="ds_site-navigation__item"><a class="ds_site-navigation__link" href="Validate.dc.html">Validate</a></li>
+<li class="ds_site-navigation__item"><a class="ds_site-navigation__link ds_current" aria-current="page" href="Data.dc.html">Data and API</a></li>
+<li class="ds_site-navigation__item"><a class="ds_site-navigation__link" href="About.dc.html">About</a></li>
+</ul></nav></div></div>
+</header>
+<div class="ds_phase-banner"><div class="ds_wrapper"><p class="ds_phase-banner__content"><strong class="ds_tag ds_phase-banner__tag">Demonstrator</strong><span class="ds_phase-banner__text">This is not an official register. Inclusion does not mean endorsement. <a href="About.dc.html">Give feedback</a>.</span></p></div></div>
+
+<div class="ds_wrapper">
+<main class="ds_layout ds_layout--search-results" id="main-content">
+<div class="ds_layout__header">
+<header class="ds_page-header"><h1 class="ds_page-header__title">Data and API</h1></header>
+<p class="ds_leader">Everything on this site is generated from one set of records, and published as open data under the Open Government Licence v3.0.</p>
+</div>
+<div class="ds_layout__content">
+<div class="ds_warning-text">
+<strong class="ds_warning-text__icon" aria-hidden="true"></strong>
+<strong class="visually-hidden">Warning</strong>
+<div class="ds_warning-text__text">The API is version 0 and may change without notice. Web addresses may change if the demonstrator moves. Use record IDs, not URLs, as identifiers. Every record includes <code>record_status</code>, so you can exclude demonstration and example records.</div>
+</div>
+
+<h2>Download everything</h2>
+<div class="wf-dl">
+<div class="wf-file">
+<h3 class="ds_h4"><a href="Data.dc.html">register.json</a></h3>
+<p>JSON, [size]. Every record with derived fields.</p>
+</div>
+<div class="wf-file">
+<h3 class="ds_h4"><a href="Data.dc.html">register.csv</a></h3>
+<p>CSV, UTF-8, [size]. One row per record. Nested fields use dotted column names.</p>
+</div>
+</div>
+
+<h2>API</h2>
+<p>Static JSON files. No key or registration is needed.</p>
+<div class="wf-table"><table class="ds_table">
+<thead><tr><th scope="col">URL</th><th scope="col">Returns</th></tr></thead>
+<tbody>
+<tr><td><a href="Data.dc.html"><code>api/v0/index.json</code></a></td><td>Generation time, schema and taxonomy versions, licence, links</td></tr>
+<tr><td><a href="Data.dc.html"><code>api/v0/assets.json</code></a></td><td>All records</td></tr>
+<tr><td><a href="Data.dc.html"><code>api/v0/assets/csr-0001.json</code></a></td><td>One record</td></tr>
+<tr><td><a href="Data.dc.html"><code>api/v0/taxonomy/capabilities.json</code></a></td><td>Taxonomy terms with definitions (also sectors and service areas)</td></tr>
+<tr><td><a href="Data.dc.html"><code>api/v0/schema/asset.schema.json</code></a></td><td>The JSON Schema</td></tr>
+<tr><td><a href="Harvest.dc.html"><code>api/v0/harvest-state.json</code></a></td><td>Each owner-hosted source: last harvest, state, content hash</td></tr>
+</tbody></table></div>
+
+<h2>Sample response</h2>
+<details class="ds_details" open="open">
+<summary class="ds_details__summary">GET api/v0/assets/csr-0001.json</summary>
+<div class="ds_details__text">
+<pre class="wf-pre">{
+  "id": "csr-0001",
+  "record_status": "owner-confirmed",
+  "name": "Common Solution Register Demonstrator",
+  "asset_type": "service",
+  "status": "in-development",
+  "owner": { "organisation": "The Digital Office ...", "sector": "local-government" },
+  "capabilities": ["content-and-publishing", "data-and-analytics"],
+  "codebases": [{ "repository_url": "https://github.com/The-Digital-Office/common-solution-register",
+                  "visibility": "public", "maintenance": "internal",
+                  "publiccode_state": "valid" }],
+  "open_data": [{ "title": "Register records", "url": "data/register.json" }],
+  "hosting": "owner-hosted",
+  "source": "https://github.com/.../raw/main/solution.yml",
+  "source_state": "ok",
+  "harvested_at": "[timestamp]",
+  "currency": "current",
+  "record_url": "assets/csr-0001/"
+}</pre>
+</div>
+</details>
+</div>
+</main>
+</div>
+
+<footer class="ds_site-footer"><div class="ds_wrapper"><div class="ds_site-footer__content">
+<ul class="ds_site-footer__site-items">
+<li class="ds_site-items__item"><a href="About.dc.html">About</a></li>
+<li class="ds_site-items__item"><a href="Accessibility.dc.html">Accessibility</a></li>
+<li class="ds_site-items__item"><a href="Privacy.dc.html">Privacy</a></li>
+<li class="ds_site-items__item"><a href="Currency.dc.html">Currency</a></li>
+<li class="ds_site-items__item"><a href="Harvest.dc.html">Harvest report</a></li>
+<li class="ds_site-items__item"><a href="Reference.dc.html">Field reference</a></li>
+</ul>
+<div class="ds_site-footer__copyright"><p>Content available under the Open Government Licence v3.0. Code under the MIT licence.</p></div>
+<div class="ds_site-footer__org"><p>Hosted for demonstration by The Digital Office for Scottish Local Government.</p></div>
+</div></div></footer>
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props='{"$preview":{"width":1280,"height":1900}}'>
+class Component extends DCLogic {
+  renderVals() { return {}; }
+}
+</script>
+</body>
+</html>
