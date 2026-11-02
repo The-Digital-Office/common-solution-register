@@ -44,7 +44,7 @@ actions column, the results heading row, filters and wide tables. Wireframe
 | Reference, Publiccode | `reference.html`, `publiccode.html` | `reference/`, `reference/publiccode/` | S6 |
 | Data, Currency | `data.html`, `currency.html` | `data/`, `currency/` | S6 |
 | NotFound | `404.html` | `404.html` (links from the site root, because GitHub Pages serves it at any missing address) | S6 |
-| Draft | `draft.html` | `draft/` | S8, S9 |
+| Draft | `draft.html` | `draft/` | S8 (form, conditions, preview: `static/js/draft-core.js` and `draft.js`), S9 (validation, hand-off) |
 | Validate | `validate.html` | `validate/` | S10 |
 | Harvest | `harvest.html` | `harvest/` | S11 |
 
@@ -73,4 +73,8 @@ current choice until the author decides.
 | D16 | Home page without JavaScript | Not shown | The search box is hidden as well as the filters and sort, because a static site cannot search without the script; the full list is shown, as the parity table requires | A search box that silently did nothing would mislead |
 | D17 | Filter counts | Provenance and asset-type counts reflect the search query only | Every count (provenance, type, sector, service area, capability, currency) is faceted: the number of results that option would give, with the query and the other filter groups applied | With several working filter groups, counts that ignored the other groups would promise results that are not there |
 | D18 | Search matching | Substring of name, summary and owner | Every query word must start a word in the name, summary, owner, purpose, record ID, asset type, or the labels and synonyms of the record's terms; accents and punctuation are ignored | Substring matching let short words match inside others ("gis" in "register") |
+| D19 | Draft "Intended for" | Four groupings: Local government; Scottish Government and agencies; NHS Scotland; Other Scottish public bodies | All eight sector terms | The parity table requires all terms, generated from the taxonomy; a grouping would map to several sectors without saying so |
+| D20 | Draft preview | Shows every field, with empty values (`name: ""`) | Shows only what has been entered, in schema order, plus `id: csr-NNNN  # allocated when registered` | The preview is the file people submit; S9's validation lists what is still missing |
+| D21 | Draft summary count | "0 of 200 characters" | The design system's character count component and its wording | Section 6.13 asks for the design system's components |
+| D22 | Draft conditions not in the wireframe | Not shown | Sources, and a "Not stated in public sources" choice for terms, adoption, support and charges, when the person is not from the owning organisation (condition 1); withdrawal date and reason when correcting a withdrawn record (condition 3); interfaces as a repeater | The parity table requires every condition in 6.4 |
 

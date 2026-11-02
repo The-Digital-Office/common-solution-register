@@ -33,6 +33,8 @@ and this project uses [Semantic Versioning](https://semver.org/spec/v2.0.0.html)
 - `csr-0001` links to the register's own open data.
 - Home page search, filters and sorting: search by name, summary, owner, purpose, record ID and taxonomy synonyms; provenance, asset type, sector, service area, capability, currency and withdrawn filters with counts; sort by name, recently changed or recently confirmed; the state kept in the URL; the result count announced to screen readers. Without JavaScript the full list is shown.
 - JavaScript unit tests, run by `pytest` with Node's built-in test runner when Node is installed.
+- Draft form (`draft/`), part 1: generated from the schema and taxonomy, with conditional sections for every condition, repeating codebases, open data, interfaces and sources, a live `solution.yml` preview, and "Suggest a correction" filling the form from a record.
+- `js-yaml` 5.5.0, vendored with its licence and pinned hashes; `tools/vendor.py` refreshes any vendored package.
 - The `Validate` job builds the site and uploads it as the `site-preview` artifact.
 
 ### Changed
