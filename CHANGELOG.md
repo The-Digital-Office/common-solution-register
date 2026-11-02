@@ -12,6 +12,7 @@ and this project uses [Semantic Versioning](https://semver.org/spec/v2.0.0.html)
 - README describing the demonstrator, how to get started and its licences.
 - `LICENCE-CONTENT.md`: Open Government Licence v3.0 for records and documentation.
 - `CODEOWNERS` review requests for `/records/`, `/taxonomy/` and `/schema/`.
+- Specification v1.2, build plan, wireframes, baseline images and the wireframe rendering script.
 
 ### Changed
 

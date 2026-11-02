@@ -1,0 +1,143 @@
+<!doctype html>
+<html lang="en-GB">
+<head>
+<meta charset="utf-8">
+<title>Field reference</title>
+<script src="./support.js"></script>
+<link rel="stylesheet" href="/_blob/b35ddd115c1bbdcc03534aeb563449a9">
+</head>
+<body>
+<x-dc>
+<helmet>
+<link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&display=swap" rel="stylesheet">
+<style>
+body{margin:0;font-family:Roboto,"Helvetica Neue",Helvetica,Arial,sans-serif}
+.wf-table{overflow-x:auto;margin:0 0 40px}
+.wf-table td code{white-space:nowrap}
+</style>
+</helmet>
+<div>
+<header class="ds_site-header" role="banner">
+<div class="ds_wrapper"><div class="ds_site-header__content"><div class="ds_site-branding"><a class="ds_site-branding__link" href="Main.dc.html"><span class="ds_site-branding__title">Common Solution Register: Demonstrator</span></a></div></div></div>
+<div class="ds_site-header__navigation"><div class="ds_wrapper"><nav class="ds_site-navigation" aria-label="Main navigation"><ul class="ds_site-navigation__list">
+<li class="ds_site-navigation__item"><a class="ds_site-navigation__link" href="Main.dc.html">Find solutions</a></li>
+<li class="ds_site-navigation__item"><a class="ds_site-navigation__link" href="Browse.dc.html">Browse</a></li>
+<li class="ds_site-navigation__item"><a class="ds_site-navigation__link" href="Contribute.dc.html">Contribute</a></li>
+<li class="ds_site-navigation__item"><a class="ds_site-navigation__link" href="Validate.dc.html">Validate</a></li>
+<li class="ds_site-navigation__item"><a class="ds_site-navigation__link" href="Data.dc.html">Data and API</a></li>
+<li class="ds_site-navigation__item"><a class="ds_site-navigation__link" href="About.dc.html">About</a></li>
+</ul></nav></div></div>
+</header>
+<div class="ds_phase-banner"><div class="ds_wrapper"><p class="ds_phase-banner__content"><strong class="ds_tag ds_phase-banner__tag">Demonstrator</strong><span class="ds_phase-banner__text">This is not an official register. Inclusion does not mean endorsement. <a href="About.dc.html">Give feedback</a>.</span></p></div></div>
+
+<div class="ds_wrapper">
+<main class="ds_layout ds_layout--guide" id="main-content">
+<div class="ds_layout__header">
+<header class="ds_page-header">
+<span class="ds_page-header__label ds_content-label">Schema version 0.1</span>
+<h1 class="ds_page-header__title">Field reference</h1>
+</header>
+<p class="ds_leader">Every field in a solution.yml, generated from the schema. The working group is invited to challenge any field that would not help an adopter decide.</p>
+</div>
+<div class="ds_layout__navigation">
+<nav class="ds_contents-nav" aria-label="Contents">
+<h2 class="ds_contents-nav__title">Contents</h2>
+<ul class="ds_contents-nav__list">
+<li class="ds_contents-nav__item"><a class="ds_contents-nav__link" href="#mandatory">Mandatory fields</a></li>
+<li class="ds_contents-nav__item"><a class="ds_contents-nav__link" href="#conditional">Conditional fields</a></li>
+<li class="ds_contents-nav__item"><a class="ds_contents-nav__link" href="#optional">Optional fields</a></li>
+<li class="ds_contents-nav__item"><a class="ds_contents-nav__link" href="#derived">Added by the register</a></li>
+<li class="ds_contents-nav__item"><a class="ds_contents-nav__link" href="#pointer">Pointer records</a></li>
+<li class="ds_contents-nav__item"><a class="ds_contents-nav__link" href="#taxonomy">Taxonomy terms</a></li>
+<li class="ds_contents-nav__item"><a class="ds_contents-nav__link" href="#rules">Validation rules</a></li>
+</ul>
+</nav>
+</div>
+<div class="ds_layout__content">
+<div class="ds_inset-text"><div class="ds_inset-text__text"><strong>A solution is not its code.</strong> A solution.yml describes what an owner offers for reuse. The code that implements it, if any, is listed under <code>codebases</code>, and each public codebase is described by its own publiccode.yml. <a href="Publiccode.dc.html">How they relate</a></div></div>
+<h2 id="mandatory">Mandatory fields</h2>
+<div class="wf-table"><table class="ds_table">
+<thead><tr><th scope="col">Field</th><th scope="col">Description</th><th scope="col">Allowed values or format</th></tr></thead>
+<tbody>
+<tr><td><code>schema_version</code></td><td>Version of this schema</td><td><code>"0.1"</code></td></tr>
+<tr><td><code>id</code></td><td>Stable identifier</td><td><code>csr-NNNN</code>, allocated when registered</td></tr>
+<tr><td><code>record_status</code></td><td>Provenance of the record</td><td>owner-confirmed, demonstration, example, withdrawn</td></tr>
+<tr><td><code>name</code></td><td>Official or common name</td><td>3 to 100 characters</td></tr>
+<tr><td><code>summary</code></td><td>Plain-English description</td><td>20 to 200 characters</td></tr>
+<tr><td><code>purpose</code></td><td>What it does and the problem it solves</td><td>50 to 2,000 characters</td></tr>
+<tr><td><code>asset_type</code></td><td>Kind of asset</td><td>service, platform, component, api, standard, pattern, software, artefact</td></tr>
+<tr><td><code>owner.organisation</code>, <code>owner.sector</code></td><td>Accountable organisation and its sector</td><td>Text; sector term</td></tr>
+<tr><td><code>contact</code></td><td>Role-based contact route</td><td>role-mailbox, service-desk or web-form, with a value</td></tr>
+<tr><td><code>service_areas</code>, <code>capabilities</code></td><td>Classification</td><td>At least one taxonomy term each</td></tr>
+<tr><td><code>status</code></td><td>Lifecycle stage</td><td>concept, in-development, beta, live, deprecated</td></tr>
+<tr><td><code>intended_adopters</code></td><td>Who reuse is intended for</td><td>Sector terms</td></tr>
+<tr><td><code>terms_of_use</code></td><td>Licence or service terms</td><td>Type, plus SPDX licence or URL</td></tr>
+<tr><td><code>adoption_route.summary</code></td><td>How another organisation can adopt it</td><td>20 to 500 characters</td></tr>
+<tr><td><code>charging.applies</code></td><td>Whether adopters may be charged</td><td>true or false</td></tr>
+</tbody></table></div>
+
+<h2 id="conditional">Conditional fields</h2>
+<div class="wf-table"><table class="ds_table">
+<thead><tr><th scope="col">When</th><th scope="col">Then required</th></tr></thead>
+<tbody>
+<tr><td>Record is a demonstration entry</td><td><code>sources</code> (public URLs). "Not stated in public sources" is allowed for terms, adoption route, support and charges.</td></tr>
+<tr><td>Record is owner-confirmed or an example</td><td><code>confirmation.last_confirmed</code>, <code>.method</code>, <code>.reference</code></td></tr>
+<tr><td>Record is withdrawn</td><td><code>withdrawal.date</code>, <code>withdrawal.reason</code></td></tr>
+<tr><td>Asset type is software (offered for other bodies to deploy)</td><td>At least one entry in <code>codebases</code></td></tr>
+<tr><td>Asset type is API, or interfaces are listed</td><td><code>interfaces</code>: type and documentation URL</td></tr>
+<tr><td>Charges apply</td><td><code>charging.model</code>, plus a URL or summary</td></tr>
+<tr><td>Service or platform, in beta or live</td><td><code>support</code>, <code>service_url</code>, <code>service_page_url</code></td></tr>
+<tr><td>Status is deprecated</td><td><code>deprecation.date</code>, <code>deprecation.migration_guidance</code></td></tr>
+</tbody></table></div>
+
+<h2 id="optional">Web addresses</h2>
+<div class="wf-table"><table class="ds_table">
+<thead><tr><th scope="col">Field</th><th scope="col">Meaning</th></tr></thead>
+<tbody>
+<tr><td><code>service_url</code></td><td>The live service itself: where people start using it (start page, sign-in, application, or base API address)</td></tr>
+<tr><td><code>service_page_url</code></td><td>The owner's public page describing the service</td></tr>
+<tr><td><code>documentation_url</code></td><td>Technical or implementation documentation</td></tr>
+</tbody></table></div>
+<p>All three are recommended for every record.</p>
+<h2>Optional fields</h2>
+<p><code>codebases</code> (repository URL, visibility, publiccode.yml URL, maintenance, version, maintainers), <code>open_data</code> (title, catalogue URL, catalogue name), <code>access_restriction</code>, <code>service_url</code>, <code>service_page_url</code>, <code>documentation_url</code>, <code>current_version</code>, <code>roadmap_url</code>, <code>dependencies</code>, <code>related_assets</code>, <code>adopters</code> (self-reported or verified), <code>standards_alignment</code>, <code>accessibility_statement_url</code>, <code>funding_model</code>.</p>
+
+<h2 id="derived">Added by the register</h2>
+<p>Never written in a solution.yml: <code>last_changed</code>, <code>history_url</code>, <code>merged_in</code>, <code>currency</code>, <code>hosting</code>, <code>source</code>, <code>harvested_at</code>, <code>content_hash</code>, <code>source_state</code>.</p>
+
+<h2 id="pointer">Pointer records</h2>
+<p>An owner-hosted record is registered with three fields: <code>id</code>, <code>source</code> (HTTPS URL of the owner's solution.yml) and <code>expected_owner</code>.</p>
+
+<h2 id="taxonomy">Taxonomy terms</h2>
+<details class="ds_details"><summary class="ds_details__summary">Sectors (8)</summary><div class="ds_details__text"><p>[Each term with its definition and synonyms]</p></div></details>
+<details class="ds_details"><summary class="ds_details__summary">Service areas (14)</summary><div class="ds_details__text"><p>[Each term with its definition and synonyms]</p></div></details>
+<details class="ds_details"><summary class="ds_details__summary">Capabilities (14)</summary><div class="ds_details__text"><p>[Each term with its definition and synonyms]</p></div></details>
+
+<h2 id="rules">Validation rules</h2>
+<p>Beyond the schema, 17 rules (R01 to R17) check identifiers, taxonomy references, dates, placeholders, provenance, hosting and publiccode.yml. <a href="Validate.dc.html">Try the validator</a>.</p>
+<p><a href="Main.dc.html">Propose a change to the schema or taxonomy</a></p>
+</div>
+</main>
+</div>
+
+<footer class="ds_site-footer"><div class="ds_wrapper"><div class="ds_site-footer__content">
+<ul class="ds_site-footer__site-items">
+<li class="ds_site-items__item"><a href="About.dc.html">About</a></li>
+<li class="ds_site-items__item"><a href="Accessibility.dc.html">Accessibility</a></li>
+<li class="ds_site-items__item"><a href="Privacy.dc.html">Privacy</a></li>
+<li class="ds_site-items__item"><a href="Currency.dc.html">Currency</a></li>
+<li class="ds_site-items__item"><a href="Harvest.dc.html">Harvest report</a></li>
+<li class="ds_site-items__item"><a href="Reference.dc.html">Field reference</a></li>
+</ul>
+<div class="ds_site-footer__copyright"><p>Content available under the Open Government Licence v3.0. Code under the MIT licence.</p></div>
+<div class="ds_site-footer__org"><p>Hosted for demonstration by The Digital Office for Scottish Local Government.</p></div>
+</div></div></footer>
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props='{"$preview":{"width":1280,"height":2300}}'>
+class Component extends DCLogic {
+  renderVals() { return {}; }
+}
+</script>
+</body>
+</html>

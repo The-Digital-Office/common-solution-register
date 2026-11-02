@@ -1,0 +1,345 @@
+<!doctype html>
+<html lang="en-GB">
+<head>
+<meta charset="utf-8">
+<title>Add a solution</title>
+<script src="./support.js"></script>
+<link rel="stylesheet" href="/_blob/b35ddd115c1bbdcc03534aeb563449a9">
+</head>
+<body>
+<x-dc>
+<helmet>
+<link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&display=swap" rel="stylesheet">
+<style>
+body{margin:0;font-family:Roboto,"Helvetica Neue",Helvetica,Arial,sans-serif}
+.wf-fieldset{border:0;padding:0;margin:0 0 40px}
+.wf-fieldset > legend{font-size:24px;font-weight:700;margin:0 0 16px;padding:0}
+.wf-cond{border-left:4px solid #b3b3b3;padding:0 0 0 20px;margin:0 0 24px}
+.wf-yaml{background:#f8f8f8;border:1px solid #b3b3b3;padding:16px;font-family:"Courier New",monospace;font-size:15px;line-height:1.5;white-space:pre-wrap;word-break:break-word;margin:0 0 24px;max-height:640px;overflow:auto}
+.wf-btns{display:flex;flex-wrap:wrap;gap:12px;align-items:center}
+.wf-btns .ds_button{margin:0}
+.wf-sticky{position:sticky;top:16px}
+</style>
+</helmet>
+<div>
+<header class="ds_site-header" role="banner">
+<div class="ds_wrapper"><div class="ds_site-header__content"><div class="ds_site-branding"><a class="ds_site-branding__link" href="Main.dc.html"><span class="ds_site-branding__title">Common Solution Register: Demonstrator</span></a></div></div></div>
+<div class="ds_site-header__navigation"><div class="ds_wrapper"><nav class="ds_site-navigation" aria-label="Main navigation"><ul class="ds_site-navigation__list">
+<li class="ds_site-navigation__item"><a class="ds_site-navigation__link" href="Main.dc.html">Find solutions</a></li>
+<li class="ds_site-navigation__item"><a class="ds_site-navigation__link" href="Browse.dc.html">Browse</a></li>
+<li class="ds_site-navigation__item"><a class="ds_site-navigation__link ds_current" aria-current="true" href="Contribute.dc.html">Contribute</a></li>
+<li class="ds_site-navigation__item"><a class="ds_site-navigation__link" href="Validate.dc.html">Validate</a></li>
+<li class="ds_site-navigation__item"><a class="ds_site-navigation__link" href="Data.dc.html">Data and API</a></li>
+<li class="ds_site-navigation__item"><a class="ds_site-navigation__link" href="About.dc.html">About</a></li>
+</ul></nav></div></div>
+</header>
+<div class="ds_phase-banner"><div class="ds_wrapper"><p class="ds_phase-banner__content"><strong class="ds_tag ds_phase-banner__tag">Demonstrator</strong><span class="ds_phase-banner__text">This is not an official register. Inclusion does not mean endorsement. <a href="About.dc.html">Give feedback</a>.</span></p></div></div>
+
+<div class="ds_wrapper">
+<main class="ds_layout ds_layout--article" id="main-content">
+<div class="ds_layout__header">
+<header class="ds_page-header"><h1 class="ds_page-header__title">Add a solution</h1></header>
+<p class="ds_leader">Describe a reusable solution. This page builds a <code>solution.yml</code> file that you can submit to the register, or host yourself.</p>
+<div class="ds_inset-text"><div class="ds_inset-text__text">This page needs JavaScript. Nothing you type is sent anywhere until you choose to submit it. GitHub issues are public. By submitting, you agree your submission may be published under the Open Government Licence v3.0.</div></div>
+</div>
+
+<div class="ds_layout__content">
+<sc-if value="{{showErrorSummary}}" hint-placeholder-val="{{false}}">
+<div class="ds_error-summary" role="alert" aria-labelledby="error-summary-title">
+<h2 class="ds_error-summary__title" id="error-summary-title">There is a problem</h2>
+<ul class="ds_error-summary__list">
+<sc-for list="{{errors}}" as="e" hint-placeholder-count="2"><li><a href="{{e.href}}">{{e.text}}</a></li></sc-for>
+</ul>
+</div>
+</sc-if>
+<sc-if value="{{showValid}}" hint-placeholder-val="{{false}}">
+<div class="ds_notification-panel">
+<h2 class="ds_notification-panel__title">Your solution.yml is valid</h2>
+<div class="ds_notification-panel__content"><p>Copy or download it below, then submit it or host it yourself.</p></div>
+</div>
+</sc-if>
+
+<form onSubmit="{{check}}" novalidate="novalidate">
+<fieldset class="wf-fieldset">
+<legend>About the solution</legend>
+<div class="{{nameQ}}">
+<label class="ds_label" for="name">Name</label>
+<sc-if value="{{nameErr}}" hint-placeholder-val="{{false}}"><p class="ds_question__error-message" id="name-error">Enter the solution's name</p></sc-if>
+<input class="{{nameInput}}" id="name" type="text" value="{{name}}" onInput="{{setName}}">
+</div>
+<div class="{{summaryQ}}">
+<label class="ds_label" for="summary">Summary</label>
+<p class="ds_hint-text" id="summary-hint">One or two sentences, 20 to 200 characters. Shown in search results.</p>
+<sc-if value="{{summaryErr}}" hint-placeholder-val="{{false}}"><p class="ds_question__error-message" id="summary-error">Summary must be at least 20 characters</p></sc-if>
+<textarea class="{{summaryInput}}" id="summary" rows="3" aria-describedby="summary-hint" value="{{summary}}" onInput="{{setSummary}}"></textarea>
+<p class="ds_hint-text" aria-live="polite">{{summaryCount}}</p>
+</div>
+<div class="ds_question">
+<label class="ds_label" for="purpose">Purpose</label>
+<p class="ds_hint-text">What it does, the problem it solves and who it is for.</p>
+<textarea class="ds_input" id="purpose" rows="5"></textarea>
+</div>
+<div class="ds_question">
+<label class="ds_label" for="type">Asset type</label>
+<div class="ds_select-wrapper">
+<select class="ds_select" id="type" value="{{type}}" onChange="{{setType}}">
+<option value="service">Service</option>
+<option value="platform">Platform</option>
+<option value="component">Component</option>
+<option value="api">API</option>
+<option value="standard">Standard</option>
+<option value="pattern">Pattern</option>
+<option value="software">Software</option>
+<option value="artefact">Artefact</option>
+</select>
+<span class="ds_select-arrow" aria-hidden="true"></span>
+</div>
+</div>
+<div class="ds_question">
+<label class="ds_label" for="status">Status</label>
+<div class="ds_select-wrapper">
+<select class="ds_select" id="status" value="{{status}}" onChange="{{setStatus}}">
+<option value="concept">Concept</option>
+<option value="in-development">In development</option>
+<option value="beta">Beta</option>
+<option value="live">Live</option>
+<option value="deprecated">Deprecated</option>
+</select>
+<span class="ds_select-arrow" aria-hidden="true"></span>
+</div>
+</div>
+
+<div class="ds_question">
+<label class="ds_label" for="svcurl">Service address</label>
+<p class="ds_hint-text">Where people start using it: a start page, sign-in, application or base API address. Required for live or beta services and platforms.</p>
+<input class="ds_input" id="svcurl" type="url" placeholder="https://">
+</div>
+<div class="ds_question">
+<label class="ds_label" for="svcpage">Your page describing the service</label>
+<p class="ds_hint-text">Your organisation's public page about it. Required for live or beta services and platforms.</p>
+<input class="ds_input" id="svcpage" type="url" placeholder="https://">
+</div>
+<sc-if value="{{isApi}}" hint-placeholder-val="{{false}}">
+<div class="wf-cond">
+<div class="ds_question"><label class="ds_label" for="itype">Interface type</label><div class="ds_select-wrapper"><select class="ds_select" id="itype"><option>REST</option><option>SOAP</option><option>GraphQL</option><option>File</option><option>Event</option><option>Other</option></select><span class="ds_select-arrow" aria-hidden="true"></span></div></div>
+<div class="ds_question"><label class="ds_label" for="idoc">Interface documentation URL</label><input class="ds_input" id="idoc" type="url"></div>
+</div>
+</sc-if>
+<sc-if value="{{isDeprecated}}" hint-placeholder-val="{{false}}">
+<div class="wf-cond">
+<div class="ds_question"><label class="ds_label" for="depdate">Deprecation date</label><input class="ds_input ds_input--fixed-10" id="depdate" type="text" placeholder="DD/MM/YYYY"></div>
+<div class="ds_question"><label class="ds_label" for="mig">Migration guidance</label><textarea class="ds_input" id="mig" rows="3"></textarea></div>
+</div>
+</sc-if>
+<sc-if value="{{needsSupport}}" hint-placeholder-val="{{false}}">
+<div class="wf-cond">
+<div class="ds_question"><label class="ds_label" for="support">Support arrangements</label><p class="ds_hint-text">Required for live or beta services and platforms.</p><textarea class="ds_input" id="support" rows="3"></textarea></div>
+</div>
+</sc-if>
+</fieldset>
+
+<fieldset class="wf-fieldset">
+<legend>Owner and contact</legend>
+<div class="{{ownerQ}}">
+<label class="ds_label" for="owner">Owning organisation</label>
+<sc-if value="{{ownerErr}}" hint-placeholder-val="{{false}}"><p class="ds_question__error-message">Enter the owning organisation</p></sc-if>
+<input class="{{ownerInput}}" id="owner" type="text" value="{{owner}}" onInput="{{setOwner}}">
+</div>
+<div class="ds_question">
+<label class="ds_label" for="sector">Owning sector</label>
+<div class="ds_select-wrapper"><select class="ds_select" id="sector"><option>Local government</option><option>Scottish Government</option><option>Executive agencies</option><option>NHS Scotland</option><option>Police and fire</option><option>Non-departmental public bodies</option><option>Further and higher education</option><option>UK public sector</option></select><span class="ds_select-arrow" aria-hidden="true"></span></div>
+</div>
+<div class="ds_question">
+<label class="ds_label" for="contact">Contact</label>
+<p class="ds_hint-text">A role mailbox, service desk or web form, not a named person.</p>
+<input class="ds_input" id="contact" type="text">
+</div>
+<fieldset class="ds_question"><legend class="ds_label">Are you from the owning organisation?</legend>
+<div class="ds_field-group">
+<div class="ds_radio ds_radio--small"><input class="ds_radio__input" id="own-yes" name="own" type="radio"><label class="ds_radio__label" for="own-yes">Yes: I confirm this information is accurate</label></div>
+<div class="ds_radio ds_radio--small"><input class="ds_radio__input" id="own-no" name="own" type="radio"><label class="ds_radio__label" for="own-no">No: I am suggesting it, and the owner will be asked to confirm</label></div>
+</div></fieldset>
+</fieldset>
+
+<fieldset class="wf-fieldset">
+<legend>Classification</legend>
+<fieldset class="ds_question"><legend class="ds_label">Service areas</legend><p class="ds_hint-text">Choose at least one. <a href="Reference.dc.html">See definitions</a>.</p>
+<div class="ds_checkboxes ds_field-group">
+<div class="ds_checkbox ds_checkbox--small"><input class="ds_checkbox__input" id="sa1" type="checkbox"><label class="ds_checkbox__label" for="sa1">Health and care</label></div>
+<div class="ds_checkbox ds_checkbox--small"><input class="ds_checkbox__input" id="sa2" type="checkbox"><label class="ds_checkbox__label" for="sa2">Housing</label></div>
+<div class="ds_checkbox ds_checkbox--small"><input class="ds_checkbox__input" id="sa3" type="checkbox"><label class="ds_checkbox__label" for="sa3">Environment and waste</label></div>
+<div class="ds_checkbox ds_checkbox--small"><input class="ds_checkbox__input" id="sa4" type="checkbox"><label class="ds_checkbox__label" for="sa4">Corporate and cross-cutting</label></div>
+<p class="ds_hint-text">[All 14 service areas are listed in the built form]</p>
+</div></fieldset>
+<fieldset class="ds_question"><legend class="ds_label">Capabilities</legend><p class="ds_hint-text">Choose at least one.</p>
+<div class="ds_checkboxes ds_field-group">
+<div class="ds_checkbox ds_checkbox--small"><input class="ds_checkbox__input" id="cp1" type="checkbox"><label class="ds_checkbox__label" for="cp1">Identity and access</label></div>
+<div class="ds_checkbox ds_checkbox--small"><input class="ds_checkbox__input" id="cp2" type="checkbox"><label class="ds_checkbox__label" for="cp2">Payments</label></div>
+<div class="ds_checkbox ds_checkbox--small"><input class="ds_checkbox__input" id="cp3" type="checkbox"><label class="ds_checkbox__label" for="cp3">Booking and scheduling</label></div>
+<p class="ds_hint-text">[All 14 capabilities are listed in the built form]</p>
+</div></fieldset>
+<fieldset class="ds_question"><legend class="ds_label">Intended for</legend>
+<div class="ds_checkboxes ds_field-group">
+<div class="ds_checkbox ds_checkbox--small"><input class="ds_checkbox__input" id="ia1" type="checkbox"><label class="ds_checkbox__label" for="ia1">Local government</label></div>
+<div class="ds_checkbox ds_checkbox--small"><input class="ds_checkbox__input" id="ia2" type="checkbox"><label class="ds_checkbox__label" for="ia2">Scottish Government and agencies</label></div>
+<div class="ds_checkbox ds_checkbox--small"><input class="ds_checkbox__input" id="ia3" type="checkbox"><label class="ds_checkbox__label" for="ia3">NHS Scotland</label></div>
+<div class="ds_checkbox ds_checkbox--small"><input class="ds_checkbox__input" id="ia4" type="checkbox"><label class="ds_checkbox__label" for="ia4">Other Scottish public bodies</label></div>
+</div></fieldset>
+</fieldset>
+
+<fieldset class="wf-fieldset">
+<legend>Using the solution</legend>
+<div class="ds_question">
+<label class="ds_label" for="terms">Terms of use</label>
+<div class="ds_select-wrapper"><select class="ds_select" id="terms"><option>Open licence</option><option>Service terms</option><option>Commercial terms</option><option>Other</option></select><span class="ds_select-arrow" aria-hidden="true"></span></div>
+</div>
+<div class="ds_question"><label class="ds_label" for="licence">Licence (SPDX identifier) or terms URL</label><input class="ds_input ds_input--fluid-half" id="licence" type="text" placeholder="for example MIT or OGL-UK-3.0"></div>
+<div class="ds_question"><label class="ds_label" for="adopt">How can another organisation adopt it?</label><textarea class="ds_input" id="adopt" rows="3"></textarea></div>
+<fieldset class="ds_question"><legend class="ds_label">Are there charges for adopters?</legend>
+<div class="ds_field-group ds_field-group--inline">
+<div class="ds_radio ds_radio--small"><input class="ds_radio__input" id="ch-yes" name="ch" type="radio" checked="{{chargesYes}}" onChange="{{setChargesYes}}"><label class="ds_radio__label" for="ch-yes">Yes</label></div>
+<div class="ds_radio ds_radio--small"><input class="ds_radio__input" id="ch-no" name="ch" type="radio" checked="{{chargesNo}}" onChange="{{setChargesNo}}"><label class="ds_radio__label" for="ch-no">No</label></div>
+</div></fieldset>
+<sc-if value="{{chargesYes}}" hint-placeholder-val="{{false}}">
+<div class="wf-cond">
+<div class="ds_question"><label class="ds_label" for="chmodel">Charging model</label><div class="ds_select-wrapper"><select class="ds_select" id="chmodel"><option>Recharge</option><option>Subscription</option><option>Per transaction</option><option>Other</option></select><span class="ds_select-arrow" aria-hidden="true"></span></div></div>
+<div class="ds_question"><label class="ds_label" for="chdetail">Charging details or URL</label><input class="ds_input" id="chdetail" type="text"></div>
+</div>
+</sc-if>
+</fieldset>
+
+<fieldset class="wf-fieldset">
+<legend>Code and data</legend>
+<p class="ds_hint-text">A solution is what you offer for reuse. Its code is described separately: list the codebases that implement it, if any. Each public codebase should have its own publiccode.yml.</p>
+<sc-if value="{{isSoftware}}" hint-placeholder-val="{{false}}">
+<div class="ds_inset-text"><div class="ds_inset-text__text">Software must list at least one codebase.</div></div>
+</sc-if>
+<fieldset class="ds_question wf-cond"><legend class="ds_label">Codebase 1</legend>
+<div class="ds_question"><label class="ds_label" for="repo">Repository URL</label><input class="ds_input" id="repo" type="url" placeholder="https://"></div>
+<fieldset class="ds_question"><legend class="ds_label">Visibility</legend>
+<div class="ds_field-group ds_field-group--inline">
+<div class="ds_radio ds_radio--small"><input class="ds_radio__input" id="vis-pub" name="vis" type="radio"><label class="ds_radio__label" for="vis-pub">Public</label></div>
+<div class="ds_radio ds_radio--small"><input class="ds_radio__input" id="vis-priv" name="vis" type="radio"><label class="ds_radio__label" for="vis-priv">Private</label></div>
+</div></fieldset>
+<div class="ds_question"><label class="ds_label" for="pc">publiccode.yml URL</label><p class="ds_hint-text">Recommended for public codebases. Checked with the official parser.</p><input class="ds_input" id="pc" type="url" placeholder="https://"></div>
+<div class="ds_question"><label class="ds_label" for="maint">Maintenance</label>
+<div class="ds_select-wrapper"><select class="ds_select" id="maint"><option>Internal: maintained by the owner</option><option>Contract: maintained by a supplier</option><option>Community: maintained by a community</option><option>None: not maintained</option></select><span class="ds_select-arrow" aria-hidden="true"></span></div></div>
+</fieldset>
+<p><button class="ds_button ds_button--secondary ds_button--small" type="button">Add another codebase</button></p>
+<fieldset class="ds_question wf-cond"><legend class="ds_label">Open data published by this solution (optional)</legend>
+<p class="ds_hint-text">Link to the catalogue entry. The register links to data but does not list datasets.</p>
+<div class="ds_question"><label class="ds_label" for="odtitle">Title</label><input class="ds_input" id="odtitle" type="text"></div>
+<div class="ds_question"><label class="ds_label" for="odurl">Catalogue URL</label><input class="ds_input" id="odurl" type="url" placeholder="https://"></div>
+</fieldset>
+<p><button class="ds_button ds_button--secondary ds_button--small" type="button">Add another data link</button></p>
+</fieldset>
+
+<div class="wf-btns">
+<button class="ds_button" type="submit">Check my answers</button>
+<button class="ds_button ds_button--secondary" type="button" onClick="{{reset}}">Start again</button>
+</div>
+</form>
+</div>
+
+<div class="ds_layout__sidebar">
+<div class="wf-sticky">
+<h2 class="ds_h3">Your solution.yml</h2>
+<pre class="wf-yaml" aria-label="Generated solution.yml">{{yaml}}</pre>
+<div class="wf-btns">
+<button class="ds_button ds_button--small" type="button">Copy YAML</button>
+<button class="ds_button ds_button--small ds_button--secondary" type="button">Download .yaml</button>
+</div>
+<h3 class="ds_h4">Submit it</h3>
+<ul>
+<li><a href="Main.dc.html">Open as a GitHub issue</a> (needs a GitHub account)</li>
+<li><a href="Main.dc.html">Send by email</a> (attach the downloaded file)</li>
+<li><a href="About.dc.html">Host it yourself</a> and ask for it to be registered</li>
+</ul>
+</div>
+</div>
+</main>
+</div>
+
+<footer class="ds_site-footer"><div class="ds_wrapper"><div class="ds_site-footer__content">
+<ul class="ds_site-footer__site-items">
+<li class="ds_site-items__item"><a href="About.dc.html">About</a></li>
+<li class="ds_site-items__item"><a href="Accessibility.dc.html">Accessibility</a></li>
+<li class="ds_site-items__item"><a href="Privacy.dc.html">Privacy</a></li>
+<li class="ds_site-items__item"><a href="Currency.dc.html">Currency</a></li>
+<li class="ds_site-items__item"><a href="Harvest.dc.html">Harvest report</a></li>
+<li class="ds_site-items__item"><a href="Reference.dc.html">Field reference</a></li>
+</ul>
+<div class="ds_site-footer__copyright"><p>Content available under the Open Government Licence v3.0. Code under the MIT licence.</p></div>
+<div class="ds_site-footer__org"><p>Hosted for demonstration by The Digital Office for Scottish Local Government.</p></div>
+</div></div></footer>
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props='{"$preview":{"width":1280,"height":2700}}'>
+class Component extends DCLogic {
+  constructor(props) {
+    super(props);
+    this.state = { name: '', summary: '', owner: '', type: 'service', status: 'live', charges: 'no', checked: false };
+  }
+  renderVals() {
+    var self = this;
+    var s = this.state;
+    var set = function (k) { return function (e) { var p = {}; p[k] = e.target.value; self.setState(p); }; };
+    var nameErr = s.checked && !s.name.trim();
+    var summaryErr = s.checked && s.summary.trim().length < 20;
+    var ownerErr = s.checked && !s.owner.trim();
+    var errors = [];
+    if (nameErr) errors.push({ href: '#name', text: "Enter the solution's name" });
+    if (summaryErr) errors.push({ href: '#summary', text: 'Summary must be at least 20 characters' });
+    if (ownerErr) errors.push({ href: '#owner', text: 'Enter the owning organisation' });
+    var q = function (err) { return err ? 'ds_question ds_question--error' : 'ds_question'; };
+    var inp = function (err) { return err ? 'ds_input ds_input--error' : 'ds_input'; };
+    var y = function (v) { return v ? JSON.stringify(v) : '""'; };
+    var lines = [
+      'schema_version: "0.1"',
+      'id: csr-NNNN          # allocated when registered',
+      'record_status: owner-confirmed',
+      'name: ' + y(s.name),
+      'summary: ' + y(s.summary),
+      'asset_type: ' + s.type,
+      'status: ' + s.status,
+      'service_url: ""',
+      'service_page_url: ""',
+      'owner:',
+      '  organisation: ' + y(s.owner),
+      '  sector: local-government',
+      'service_areas: []',
+      'capabilities: []',
+      'charging:',
+      '  applies: ' + (s.charges === 'yes' ? 'true' : 'false')
+    ];
+    if (s.charges === 'yes') { lines.push('  model: recharge'); }
+    lines.push('codebases:', '  - repository_url: ""', '    visibility: public', '    publiccode_url: ""', '    maintenance: internal', 'open_data: []');
+    if (s.type === 'api') { lines.push('interfaces:', '  - type: rest', '    documentation_url: ""'); }
+    if (s.status === 'deprecated') { lines.push('deprecation:', '  date: ""', '  migration_guidance: ""'); }
+    if ((s.type === 'service' || s.type === 'platform') && (s.status === 'beta' || s.status === 'live')) { lines.push('support:', '  summary: ""'); }
+    return {
+      name: s.name, summary: s.summary, owner: s.owner, type: s.type, status: s.status,
+      setName: set('name'), setSummary: set('summary'), setOwner: set('owner'), setType: set('type'), setStatus: set('status'),
+      chargesYes: s.charges === 'yes', chargesNo: s.charges === 'no',
+      setChargesYes: function () { self.setState({ charges: 'yes' }); },
+      setChargesNo: function () { self.setState({ charges: 'no' }); },
+      summaryCount: s.summary.length + ' of 200 characters',
+      isSoftware: s.type === 'software',
+      isApi: s.type === 'api',
+      isDeprecated: s.status === 'deprecated',
+      needsSupport: (s.type === 'service' || s.type === 'platform') && (s.status === 'beta' || s.status === 'live'),
+      nameErr: nameErr, summaryErr: summaryErr, ownerErr: ownerErr,
+      nameQ: q(nameErr), summaryQ: q(summaryErr), ownerQ: q(ownerErr),
+      nameInput: inp(nameErr), summaryInput: inp(summaryErr), ownerInput: inp(ownerErr),
+      errors: errors,
+      showErrorSummary: errors.length > 0,
+      showValid: s.checked && errors.length === 0,
+      check: function (e) { e.preventDefault(); self.setState({ checked: true }); },
+      reset: function () { self.setState({ name: '', summary: '', owner: '', type: 'service', status: 'live', charges: 'no', checked: false }); },
+      yaml: lines.join('\n')
+    };
+  }
+}
+</script>
+</body>
+</html>

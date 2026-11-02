@@ -1,0 +1,142 @@
+<!doctype html>
+<html lang="en-GB">
+<head>
+<meta charset="utf-8">
+<title>Solutions, codebases and publiccode.yml</title>
+<script src="./support.js"></script>
+<link rel="stylesheet" href="/_blob/b35ddd115c1bbdcc03534aeb563449a9">
+</head>
+<body>
+<x-dc>
+<helmet>
+<link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&display=swap" rel="stylesheet">
+<style>
+body{margin:0;font-family:Roboto,"Helvetica Neue",Helvetica,Arial,sans-serif}
+.wf-pair{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:32px;margin:0 0 40px}
+@media (max-width:62rem){.wf-pair{grid-template-columns:minmax(0,1fr)}}
+.wf-pre{background:#f8f8f8;border:1px solid #b3b3b3;padding:16px;font-family:"Courier New",monospace;font-size:14px;line-height:1.5;white-space:pre;overflow-x:auto;margin:0}
+.wf-table{overflow-x:auto}
+</style>
+</helmet>
+<div>
+<header class="ds_site-header" role="banner">
+<div class="ds_wrapper"><div class="ds_site-header__content"><div class="ds_site-branding"><a class="ds_site-branding__link" href="Main.dc.html"><span class="ds_site-branding__title">Common Solution Register: Demonstrator</span></a></div></div></div>
+<div class="ds_site-header__navigation"><div class="ds_wrapper"><nav class="ds_site-navigation" aria-label="Main navigation"><ul class="ds_site-navigation__list">
+<li class="ds_site-navigation__item"><a class="ds_site-navigation__link" href="Main.dc.html">Find solutions</a></li>
+<li class="ds_site-navigation__item"><a class="ds_site-navigation__link" href="Browse.dc.html">Browse</a></li>
+<li class="ds_site-navigation__item"><a class="ds_site-navigation__link" href="Contribute.dc.html">Contribute</a></li>
+<li class="ds_site-navigation__item"><a class="ds_site-navigation__link" href="Validate.dc.html">Validate</a></li>
+<li class="ds_site-navigation__item"><a class="ds_site-navigation__link" href="Data.dc.html">Data and API</a></li>
+<li class="ds_site-navigation__item"><a class="ds_site-navigation__link" href="About.dc.html">About</a></li>
+</ul></nav></div></div>
+</header>
+<div class="ds_phase-banner"><div class="ds_wrapper"><p class="ds_phase-banner__content"><strong class="ds_tag ds_phase-banner__tag">Demonstrator</strong><span class="ds_phase-banner__text">This is not an official register. Inclusion does not mean endorsement. <a href="About.dc.html">Give feedback</a>.</span></p></div></div>
+
+<div class="ds_wrapper">
+<main class="ds_layout ds_layout--search-results" id="main-content">
+<div class="ds_layout__header">
+<header class="ds_page-header">
+<span class="ds_page-header__label ds_content-label">Standards reuse</span>
+<h1 class="ds_page-header__title">Solutions, codebases and publiccode.yml</h1>
+</header>
+<p class="ds_leader">A common solution is what an owner offers for reuse. Its code, if it has any, is one or more codebases. The register describes solutions with solution.yml, and links to their codebases, which keep using the European publiccode.yml standard unchanged.</p>
+</div>
+<div class="ds_layout__content">
+<div class="wf-table"><table class="ds_table">
+<thead><tr><th scope="col"></th><th scope="col">solution.yml</th><th scope="col">publiccode.yml</th></tr></thead>
+<tbody>
+<tr><th scope="row">Describes</th><td>A common solution: what is offered, by whom, and how to adopt it</td><td>A codebase: one software repository</td></tr>
+<tr><th scope="row">Lives</th><td>Wherever the owner chooses, or in the register</td><td>At the root of the codebase's repository</td></tr>
+<tr><th scope="row">How many</th><td>One per solution</td><td>One per codebase. A solution may have none, one or several.</td></tr>
+<tr><th scope="row">Relationship</th><td>Lists its codebases</td><td>Validated by the register when a solution links to it</td></tr>
+</tbody></table></div>
+
+<div class="ds_notification-panel ds_notification-panel--neutral">
+<h2 class="ds_notification-panel__title">Worked example: this demonstrator</h2>
+<div class="ds_notification-panel__content"><p>The register is a <strong>service</strong> (record csr-0001). The repository that builds it is its <strong>codebase</strong>. Official parser result for that codebase: <strong class="ds_tag ds_tag--green">Valid</strong> [parser version, date]</p></div>
+</div>
+<div class="wf-pair">
+<section aria-labelledby="h-sol">
+<h2 class="ds_h3" id="h-sol">solution.yml (the solution)</h2>
+<pre class="wf-pre">id: csr-0001
+name: Common Solution Register Demonstrator
+asset_type: service
+status: in-development
+owner:
+  organisation: The Digital Office for
+                Scottish Local Government
+service_url: https://the-digital-office.github.io/
+             common-solution-register/
+adoption_route:
+  summary: Browse, query or contribute ...
+codebases:
+  - repository_url: https://github.com/
+      The-Digital-Office/common-solution-register
+    visibility: public
+    publiccode_url: [...]/publiccode.yml
+    maintenance: internal
+open_data:
+  - title: Register records
+    url: [...]/data/register.json</pre>
+</section>
+<section aria-labelledby="h-pc">
+<h2 class="ds_h3" id="h-pc">publiccode.yml (its codebase)</h2>
+<pre class="wf-pre">publiccodeYmlVersion: "0"
+name: common-solution-register
+url: https://github.com/The-Digital-Office/
+     common-solution-register
+developmentStatus: development
+softwareType: standalone/web
+organisation:
+  name: The Digital Office for Scottish
+        Local Government
+description:
+  en:
+    shortDescription: [...]
+legal:
+  license: MIT
+maintenance:
+  type: internal
+  contacts:
+    - name: [Name]
+      affiliation: The Digital Office</pre>
+</section>
+</div>
+
+<h2>What the register takes from a codebase's publiccode.yml</h2>
+<div class="wf-table"><table class="ds_table">
+<thead><tr><th scope="col">publiccode.yml</th><th scope="col">solution.yml</th><th scope="col">Treatment</th></tr></thead>
+<tbody>
+<tr><td><code>url</code></td><td><code>codebases[].repository_url</code></td><td>Copied</td></tr>
+<tr><td><code>maintenance.type</code></td><td><code>codebases[].maintenance</code></td><td>Copied: internal, contract, community or none</td></tr>
+<tr><td><code>softwareVersion</code></td><td><code>codebases[].version</code></td><td>Copied</td></tr>
+<tr><td><code>maintenance.contacts</code></td><td><code>codebases[].maintainers</code></td><td>Name, affiliation and email; phone not imported</td></tr>
+<tr><td><code>name</code>, <code>description</code>, <code>developmentStatus</code>, <code>landingURL</code>, <code>legal.license</code></td><td>Solution name, summary, purpose, status, service page, terms</td><td>Suggested only when drafting a new solution: the owner confirms or changes them, because a codebase's description is not necessarily the solution's</td></tr>
+<tr><td><code>categories</code></td><td>(none)</td><td>Shown as hints for choosing capabilities</td></tr>
+</tbody></table></div>
+<p>A public repository on its own is not a common solution. The register lists it only as a codebase of a solution that someone offers for reuse.</p>
+</div>
+</main>
+</div>
+
+<footer class="ds_site-footer"><div class="ds_wrapper"><div class="ds_site-footer__content">
+<ul class="ds_site-footer__site-items">
+<li class="ds_site-items__item"><a href="About.dc.html">About</a></li>
+<li class="ds_site-items__item"><a href="Accessibility.dc.html">Accessibility</a></li>
+<li class="ds_site-items__item"><a href="Privacy.dc.html">Privacy</a></li>
+<li class="ds_site-items__item"><a href="Currency.dc.html">Currency</a></li>
+<li class="ds_site-items__item"><a href="Harvest.dc.html">Harvest report</a></li>
+<li class="ds_site-items__item"><a href="Reference.dc.html">Field reference</a></li>
+</ul>
+<div class="ds_site-footer__copyright"><p>Content available under the Open Government Licence v3.0. Code under the MIT licence.</p></div>
+<div class="ds_site-footer__org"><p>Hosted for demonstration by The Digital Office for Scottish Local Government.</p></div>
+</div></div></footer>
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props='{"$preview":{"width":1280,"height":2000}}'>
+class Component extends DCLogic {
+  renderVals() { return {}; }
+}
+</script>
+</body>
+</html>

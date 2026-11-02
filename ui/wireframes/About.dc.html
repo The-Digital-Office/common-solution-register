@@ -1,0 +1,127 @@
+<!doctype html>
+<html lang="en-GB">
+<head>
+<meta charset="utf-8">
+<title>About this demonstrator</title>
+<script src="./support.js"></script>
+<link rel="stylesheet" href="/_blob/b35ddd115c1bbdcc03534aeb563449a9">
+</head>
+<body>
+<x-dc>
+<helmet>
+<link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&display=swap" rel="stylesheet">
+<style>
+body{margin:0;font-family:Roboto,"Helvetica Neue",Helvetica,Arial,sans-serif}
+.wf-tags{display:flex;flex-wrap:wrap;gap:8px}
+</style>
+</helmet>
+<div>
+<header class="ds_site-header" role="banner">
+<div class="ds_wrapper"><div class="ds_site-header__content"><div class="ds_site-branding"><a class="ds_site-branding__link" href="Main.dc.html"><span class="ds_site-branding__title">Common Solution Register: Demonstrator</span></a></div></div></div>
+<div class="ds_site-header__navigation"><div class="ds_wrapper"><nav class="ds_site-navigation" aria-label="Main navigation"><ul class="ds_site-navigation__list">
+<li class="ds_site-navigation__item"><a class="ds_site-navigation__link" href="Main.dc.html">Find solutions</a></li>
+<li class="ds_site-navigation__item"><a class="ds_site-navigation__link" href="Browse.dc.html">Browse</a></li>
+<li class="ds_site-navigation__item"><a class="ds_site-navigation__link" href="Contribute.dc.html">Contribute</a></li>
+<li class="ds_site-navigation__item"><a class="ds_site-navigation__link" href="Validate.dc.html">Validate</a></li>
+<li class="ds_site-navigation__item"><a class="ds_site-navigation__link" href="Data.dc.html">Data and API</a></li>
+<li class="ds_site-navigation__item"><a class="ds_site-navigation__link ds_current" aria-current="page" href="About.dc.html">About</a></li>
+</ul></nav></div></div>
+</header>
+<div class="ds_phase-banner"><div class="ds_wrapper"><p class="ds_phase-banner__content"><strong class="ds_tag ds_phase-banner__tag">Demonstrator</strong><span class="ds_phase-banner__text">This is not an official register. Inclusion does not mean endorsement. <a href="#feedback">Give feedback</a>.</span></p></div></div>
+
+<div class="ds_wrapper">
+<main class="ds_layout ds_layout--guide" id="main-content">
+<div class="ds_layout__header">
+<header class="ds_page-header"><h1 class="ds_page-header__title">About this demonstrator</h1></header>
+<p class="ds_leader">A working example of how a common solution register for the Scottish public sector could work, built to inform the short-life working group.</p>
+</div>
+<div class="ds_layout__navigation">
+<nav class="ds_contents-nav" aria-label="Contents">
+<h2 class="ds_contents-nav__title">Contents</h2>
+<ul class="ds_contents-nav__list">
+<li class="ds_contents-nav__item"><a class="ds_contents-nav__link" href="#why">Why this exists</a></li>
+<li class="ds_contents-nav__item"><a class="ds_contents-nav__link" href="#what">What counts as a common solution</a></li>
+<li class="ds_contents-nav__item"><a class="ds_contents-nav__link" href="#labels">How records are labelled</a></li>
+<li class="ds_contents-nav__item"><a class="ds_contents-nav__link" href="#inclusion">What can be included</a></li>
+<li class="ds_contents-nav__item"><a class="ds_contents-nav__link" href="#host">Host your own solution.yml</a></li>
+<li class="ds_contents-nav__item"><a class="ds_contents-nav__link" href="#removal">Corrections and removal</a></li>
+<li class="ds_contents-nav__item"><a class="ds_contents-nav__link" href="#forward">Taking this forward</a></li>
+<li class="ds_contents-nav__item"><a class="ds_contents-nav__link" href="#feedback">Feedback</a></li>
+</ul>
+</nav>
+</div>
+<div class="ds_layout__content">
+<h2 id="why">Why this exists</h2>
+<p>Scotland's Digital Public Services Delivery Plan 2025 to 2028 commits to a central public sector register of common solutions and components. The Scottish Government has set up a short-life working group to shape it.</p>
+<p>This demonstrator was built before that group's work, to show what is possible and give members something concrete to react to. The group, not the Digital Office, will decide whether a register is built, by whom and how.</p>
+<div class="ds_inset-text"><div class="ds_inset-text__text">This is not an official register. Records may be incomplete or out of date. Inclusion does not mean a solution is endorsed, approved or recommended.</div></div>
+
+<h2 id="what">What counts as a common solution</h2>
+<p>A common solution is something an owner deliberately offers to other public bodies, with a way to adopt it: a service to use, a platform to join, a component, API, standard or pattern to take up, or software to deploy, with terms and support behind it.</p>
+<p>A solution is not the same as its code. Code repositories are listed as a solution's <strong>codebases</strong>, each described by its own publiccode.yml. A repository on its own is not a common solution unless someone offers it for reuse and takes responsibility for it. Datasets are not listed either; solutions link to the data they publish.</p>
+<p>This demonstrator is an example of both: the register is a service (record csr-0001), and the repository that builds it is its codebase.</p>
+
+<h2 id="labels">How records are labelled</h2>
+<dl class="ds_summary-list">
+<div class="ds_summary-list__item"><dt class="ds_summary-list__key"><strong class="ds_tag ds_tag--green">Confirmed by owner</strong></dt><dd class="ds_summary-list__value">The owning organisation has confirmed the record is accurate.</dd></div>
+<div class="ds_summary-list__item"><dt class="ds_summary-list__key"><strong class="ds_tag ds_tag--blue">From public sources</strong></dt><dd class="ds_summary-list__value">A real solution described only from cited public sources. Not confirmed by its owner. Its owner was told before publication.</dd></div>
+<div class="ds_summary-list__item"><dt class="ds_summary-list__key"><strong class="ds_tag ds_tag--purple">Fictional example</strong></dt><dd class="ds_summary-list__value">Invented to show a feature. Always named "Example:".</dd></div>
+<div class="ds_summary-list__item"><dt class="ds_summary-list__key"><strong class="ds_tag ds_tag--darkblue">Owner-hosted</strong></dt><dd class="ds_summary-list__value">Published from a solution.yml the owner keeps in their own repository.</dd></div>
+</dl>
+
+<h2 id="inclusion">What can be included</h2>
+<p>A solution can be included when:</p>
+<ol>
+<li>it is intended for reuse by more than one public body</li>
+<li>an owning organisation accepts responsibility for its record</li>
+<li>there is a role-based contact or adoption route</li>
+<li>it can be classified using the taxonomy</li>
+<li>its status and terms of use can be stated</li>
+<li>it can be described without personal, confidential or security-sensitive information</li>
+</ol>
+
+<h2 id="host">Host your own solution.yml</h2>
+<p>Owners can keep their record in their own repository, beside any publiccode.yml. Changes they make are published at the next daily harvest, once they pass validation.</p>
+<ol>
+<li>Download solution.yml from your record page, or <a href="Draft.dc.html">create one</a>.</li>
+<li>Publish it at an HTTPS address, ideally the root of your repository. <a href="Validate.dc.html">Check it first</a>.</li>
+<li><a href="Main.dc.html">Ask for your record to be moved to your address</a> (GitHub) or email us.</li>
+</ol>
+
+<h2 id="removal">Corrections and removal</h2>
+<p>If a record about your organisation is wrong, or you would like it removed, <a href="Main.dc.html">tell us on GitHub</a> or email [role mailbox]. During the demonstrator, records are removed on request.</p>
+
+<h2 id="forward">Taking this forward</h2>
+<p>Everything here is open: code under the MIT licence and content under the Open Government Licence v3.0. Any body the working group chooses can take over the repository, or copy it, and continue. The repository includes an adoption guide and a list of the design decisions still open.</p>
+
+<h2 id="feedback">Feedback</h2>
+<p>Tell us what works, what is missing and what you would change.</p>
+<ul>
+<li><a href="Main.dc.html">Give feedback on GitHub</a> (public)</li>
+<li><a href="Main.dc.html">Give feedback without a GitHub account</a> [form or mailbox, input I4]</li>
+</ul>
+</div>
+</main>
+</div>
+
+<footer class="ds_site-footer"><div class="ds_wrapper"><div class="ds_site-footer__content">
+<ul class="ds_site-footer__site-items">
+<li class="ds_site-items__item"><a href="About.dc.html">About</a></li>
+<li class="ds_site-items__item"><a href="Accessibility.dc.html">Accessibility</a></li>
+<li class="ds_site-items__item"><a href="Privacy.dc.html">Privacy</a></li>
+<li class="ds_site-items__item"><a href="Currency.dc.html">Currency</a></li>
+<li class="ds_site-items__item"><a href="Harvest.dc.html">Harvest report</a></li>
+<li class="ds_site-items__item"><a href="Reference.dc.html">Field reference</a></li>
+</ul>
+<div class="ds_site-footer__copyright"><p>Content available under the Open Government Licence v3.0. Code under the MIT licence.</p></div>
+<div class="ds_site-footer__org"><p>Hosted for demonstration by The Digital Office for Scottish Local Government.</p></div>
+</div></div></footer>
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props='{"$preview":{"width":1280,"height":2100}}'>
+class Component extends DCLogic {
+  renderVals() { return {}; }
+}
+</script>
+</body>
+</html>
