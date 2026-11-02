@@ -1,0 +1,27 @@
+# Fictional example of an owner-hosted solution.yml that fails validation
+# (record csr-9007), on purpose. The harvester never publishes it; the
+# harvest report lists its errors. Do not correct it.
+schema_version: "0.1"
+id: csr-9007
+record_status: example
+name: "Example: Failing Hosted Source"
+summary: Too short.
+purpose: TODO
+asset_type: component
+owner:
+  organisation: Example Council
+  sector: local-government
+service_areas:
+  - waste
+capabilities:
+  - booking-and-scheduling
+status: live
+intended_adopters:
+  - local-government
+terms_of_use:
+  type: not-publicly-stated
+adoption_route:
+  summary: Ask us.
+charging:
+  applies: true
+documentation_url: http://docs.example.gov.uk/failing/

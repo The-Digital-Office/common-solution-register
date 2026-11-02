@@ -1,0 +1,51 @@
+# Fictional example: shows charges that apply, and support arrangements.
+schema_version: "0.1"
+id: csr-9001
+record_status: example
+name: "Example: Council Payments Gateway"
+summary: Fictional example of a shared payments component that charges adopters per transaction.
+purpose: >-
+  Lets council services take card and online bank payments through one shared
+  gateway, so each service does not need its own payment contract. Adopters
+  connect their forms to the gateway and receive daily reconciliation files.
+asset_type: component
+owner:
+  organisation: Example Council
+  sector: local-government
+contact:
+  type: role-mailbox
+  value: payments@example.gov.uk
+service_areas:
+  - revenues-and-tax
+  - corporate-and-cross-cutting
+capabilities:
+  - payments
+status: live
+intended_adopters:
+  - local-government
+terms_of_use:
+  type: service-terms
+  url: https://example.gov.uk/payments-gateway/terms
+adoption_route:
+  summary: Sign the shared service agreement, then connect your forms using the integration guide.
+  url: https://example.gov.uk/payments-gateway/adopt
+charging:
+  applies: true
+  model: per-transaction
+  summary: A fixed fee per transaction, recharged quarterly, plus the card scheme's own fees.
+  url: https://example.gov.uk/payments-gateway/charges
+support:
+  summary: Service desk, Monday to Friday 8am to 6pm, with out-of-hours cover for outages.
+  url: https://example.gov.uk/payments-gateway/support
+service_url: https://pay.example.gov.uk/
+service_page_url: https://example.gov.uk/payments-gateway/
+documentation_url: https://docs.example.gov.uk/payments-gateway/
+adopters:
+  - organisation: Example Council
+    evidence: verified
+  - organisation: Third Example Council
+    evidence: self-reported
+confirmation:
+  last_confirmed: "2026-09-15"
+  method: email from the service owner
+  reference: https://example.gov.uk/confirmations/csr-9001
