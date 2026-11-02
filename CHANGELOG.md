@@ -8,4 +8,4 @@ and this project uses [Semantic Versioning](https://semver.org/spec/v2.0.0.html)
 
 ### Added
 
-- Repository created from the Digital Office repository template on {{DATE}}.
+- Repository created from the Digital Office repository template on 2026-11-02.

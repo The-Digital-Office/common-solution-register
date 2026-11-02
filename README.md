@@ -1,18 +1,4 @@
-<!-- template-only:start -->
-> [!NOTE]
-> **This is The Digital Office repository template.** Create new repositories
-> from it with **Use this template** → **Create a new repository**.
->
-> About a minute after you create a repository, a setup workflow fills in its
-> name, URL, date and code owner, removes this note, and opens an issue titled
-> **Complete repository setup** listing what is left to do. If that issue does
-> not appear, run **Actions → Template setup → Run workflow** in the new
-> repository.
->
-> The policy behind this template is in
-> [GOVERNANCE.md](https://github.com/The-Digital-Office/.github/blob/main/GOVERNANCE.md).
-<!-- template-only:end -->
-# {{REPO_NAME}}
+# common-solution-register
 
 TODO: One paragraph saying what this is, who it is for, and the problem it
 solves.

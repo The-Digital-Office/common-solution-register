@@ -11,8 +11,8 @@
 
 publiccodeYmlVersion: "0"
 
-name: "{{REPO_NAME}}"
-url: "{{REPO_URL}}"
+name: "common-solution-register"
+url: "https://github.com/The-Digital-Office/common-solution-register"
 
 # Review: how people use the software: web, windows, mac, linux, ios, android.
 platforms:
@@ -61,7 +61,7 @@ legal:
 maintenance:
   type: internal
   contacts:
-    - name: "{{MAINTAINER_NAME}}"
+    - name: "Robbie Harris"
       affiliation: "The Digital Office for Scottish Local Government"
 
 localisation:
