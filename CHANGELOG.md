@@ -15,7 +15,7 @@ and this project uses [Semantic Versioning](https://semver.org/spec/v2.0.0.html)
 - Specification v1.2, build plan, wireframes, baseline images and the wireframe rendering script.
 - Python package skeleton for the `csr` command-line tool, with `pytest` tests.
 - `Site` workflow with a `Validate` job that runs the tests.
-- Dependabot updates for `pip` and `npm`.
+- Dependabot updates for `pip`.
 
 ### Changed
 

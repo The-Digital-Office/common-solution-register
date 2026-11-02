@@ -42,7 +42,7 @@ Rules: never push to `main`; never rewrite pushed history; do not start the next
 | S11 | Harvester: pointer records, fetch limits, owner match, last-valid state, harvest report; `publiccode-parser-go` for each codebase; R14–R17 | 6.11 | a) fetch and owner match; b) state; c) parser; d) report page | Harvest of `csr-0001` and the examples behaves as specified |
 | S12 | Tools: `csr import-publiccode --to/--new`, `move-to-source`, `move-to-local`, `new --from-issue` | 6.6, 6.12, Appendix A | a) importer; b) move commands | Tests for each command |
 | S13 | Workflows and community files: daily and on-demand harvest, deploy (disabled until `PAGES_ENABLED`), concurrency; reusable `validate-solution.yml`; issue forms; pull request template | 6.10, 6.6 | a) workflows; b) forms and template | Workflows pass; deploy is skipped |
-| S14 | UI tests: fixtures reproducing the wireframes; visual comparison at 1280 and 375 pixels; behaviour tests; `axe-core`; required `UI tests` job | 6.13 | a) visual; b) behaviour; c) accessibility | `UI tests` passes in CI |
+| S14 | UI tests: fixtures reproducing the wireframes; visual comparison at 1280 and 375 pixels; behaviour tests; `axe-core`; required `UI tests` job; `npm` entry in `dependabot.yml` (removed after S1 because there was no `package.json` to read) | 6.13 | a) visual; b) behaviour; c) accessibility | `UI tests` passes in CI |
 | S15 | Demonstration records: research, cited sources, sentinels where facts are not public | 5.2 | a) one record per checkpoint | Author verifies every statement against its source |
 | S16 | Documentation and readiness: adopting guide, decision points, editorial model, maintenance, runbook; manual accessibility pass | 8, 9 | a) documents; b) checklist | Ready for courtesy notes, sign-off and enabling Pages (author steps) |
 
@@ -85,3 +85,4 @@ Newest last. One line per checkpoint; a fuller entry when a session ends.
     > - [x] `CHANGELOG.md` updated under Unreleased
     > - [x] No secrets or personal data
     > - [x] Actions pinned by SHA
+- 2026-11-02 — S1 merged; setup issue closed and About panel completed. Follow-up: `npm` entry removed from `dependabot.yml` (its weekly run failed with no `package.json`); S14 adds it back. **Next:** S2.
