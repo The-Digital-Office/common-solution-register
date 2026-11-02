@@ -1,6 +1,7 @@
 {% extends "base.html" %}
 {% block title %}Add a solution{% endblock %}
-{% block scripts %}<script type="module" src="{{ root }}static/js/draft.js"></script>{% endblock %}
+{% block scripts %}<script src="{{ root }}static/vendor/ajv/8.17.1/ajv2020.min.js"></script>
+<script type="module" src="{{ root }}static/js/draft.js"></script>{% endblock %}
 
 {% macro text(id, label, hint=none, type="text", placeholder=none, cls="ds_input", unstated=false) %}
 <div class="ds_question" data-question="{{ id }}">
@@ -168,9 +169,10 @@
 <button class="ds_button ds_button--small" type="button" id="draft-copy">Copy YAML</button>
 <button class="ds_button ds_button--small ds_button--secondary" type="button" id="draft-download">Download .yaml</button>
 </div>
+<p class="ds_hint-text" id="draft-handoff-status" role="status"></p>
 <h3 class="ds_h4">Submit it</h3>
 <ul>
-<li><a href="{{ config.repository_url }}/issues/new?template=suggest-asset.yml" id="draft-issue">Open as a GitHub issue</a> (needs a GitHub account)</li>
+<li><a href="{{ config.repository_url }}/issues/new?template=suggest-asset.yml" id="draft-issue" target="_blank" rel="noopener">Open as a GitHub issue (opens in a new tab)</a> (needs a GitHub account)</li>
 <li>{% if config.contact_mailbox %}<a href="mailto:{{ config.contact_mailbox }}" id="draft-email">Send by email</a> (attach the downloaded file){% else %}Send by email: <span class="csr-pending">[To be completed before publication: the role mailbox (input I3)]</span>{% endif %}</li>
 <li><a href="{{ root }}about/#host">Host it yourself</a> and ask for it to be registered</li>
 </ul>
@@ -217,6 +219,6 @@
 </fieldset>
 </template>
 
-<script type="application/json" id="csr-draft-config">{{ {"order": form.order, "schema_version": form.schema_version, "repository": config.repository_url, "mailbox": config.contact_mailbox} | tojson }}</script>
+<script type="application/json" id="csr-draft-config">{{ {"order": form.order, "schema_version": form.schema_version, "repository": config.repository_url, "mailbox": config.contact_mailbox, "title": config.title, "schema": form.schema} | tojson }}</script>
 </main>
 {% endblock %}

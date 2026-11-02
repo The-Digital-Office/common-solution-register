@@ -1,13 +1,19 @@
-// The draft form page (specification 6.6 and 6.13): repeating groups,
-// conditional sections, and a live solution.yml preview. Validation and the
-// hand-off (copy, download, GitHub issue, email) are added in slice S9.
+// The draft form page (specification 6.6, 6.9 and 6.13): repeating groups,
+// conditional sections, a live solution.yml preview, validation against the
+// schema with an error summary and inline errors, and the hand-off: copy,
+// download, GitHub issue and email.
 import { dump } from '../vendor/js-yaml/5.5.0/js-yaml.mjs';
-import { answersFromRecord, buildRecord, emptyAnswers, sections } from './draft-core.js';
+import { answersFromRecord, buildDraft, emptyAnswers, sections } from './draft-core.js';
+import { check, compile } from './record-check.js';
 
 const form = document.getElementById('draft-form');
 const config = JSON.parse(document.getElementById('csr-draft-config').textContent);
 const preview = document.getElementById('draft-yaml');
+const AjvClass = window.ajv2020 && (window.ajv2020.default || window.ajv2020);
+const validator = AjvClass ? compile(AjvClass, config.schema) : null;
+const ISSUE_URL_LIMIT = 8000; // GitHub's address length limit is about 8 KB (specification 6.6)
 let base = {};
+let current = { record: {}, rows: {}, yaml: '' };
 
 const today = () => {
   const d = new Date();
@@ -142,11 +148,216 @@ function update() {
     element.hidden = !show.unstated;
     if (element.tagName === 'OPTION') element.disabled = !show.unstated;
   });
-  const record = buildRecord(answers, { base, order: config.order, today: today(), schemaVersion: config.schema_version });
+  const { record, rows } = buildDraft(answers, { base, order: config.order, today: today(), schemaVersion: config.schema_version });
   let yaml = dump(record, { lineWidth: 80, noRefs: true });
   if (record.id === 'csr-NNNN') yaml = yaml.replace(/^id: csr-NNNN$/m, 'id: csr-NNNN  # allocated when registered');
   preview.textContent = yaml;
-  return { answers, record, yaml };
+  current = { answers, record, rows, yaml };
+  document.getElementById('draft-valid').hidden = true;
+  updateIssueLink();
+  return current;
+}
+
+// Validation: the error summary and inline errors (design system pattern)
+
+const FIELDS = {
+  name: 'name', summary: 'summary', purpose: 'purpose', asset_type: 'type', status: 'status',
+  service_url: 'svcurl', service_page_url: 'svcpage', documentation_url: null, support: 'support',
+  'support.summary': 'support', deprecation: 'depdate', 'deprecation.date': 'depdate', 'deprecation.migration_guidance': 'mig',
+  owner: 'owner', 'owner.organisation': 'owner', 'owner.sector': 'sector', contact: 'contact', 'contact.value': 'contact',
+  'contact.type': 'contact', record_status: 'own-yes', confirmation: 'own-yes', 'confirmation.last_confirmed': 'own-yes',
+  withdrawal: 'wddate', 'withdrawal.date': 'wddate', 'withdrawal.reason': 'wdreason',
+  service_areas: () => firstOf('service_areas'), capabilities: () => firstOf('capabilities'),
+  intended_adopters: () => firstOf('intended_adopters'),
+  terms_of_use: 'licence', 'terms_of_use.type': 'terms', 'terms_of_use.licence': 'licence', 'terms_of_use.url': 'licence',
+  adoption_route: 'adopt', 'adoption_route.summary': 'adopt', charging: 'chdetail', 'charging.applies': 'ch-yes',
+  'charging.model': 'chmodel', 'charging.url': 'chdetail', 'charging.summary': 'chdetail',
+  sources: () => firstIn('sources', 'srcurl'), interfaces: () => firstIn('interfaces', 'idoc'),
+  codebases: () => firstIn('codebases', 'repo'), open_data: () => firstIn('open_data', 'odtitle'),
+};
+const ITEM_FIELDS = {
+  interfaces: { type: 'itype', documentation_url: 'idoc' },
+  sources: { url: 'srcurl', title: 'srctitle', publisher: 'srcpub', accessed: 'srcdate' },
+  codebases: { repository_url: 'repo', visibility: 'vis', publiccode_url: 'pc', maintenance: 'maint' },
+  open_data: { title: 'odtitle', url: 'odurl' },
+};
+
+function firstOf(name) {
+  return form.querySelector(`input[name="${name}"]`)?.id;
+}
+function firstIn(group, prefix) {
+  const item = items(group)[0];
+  return item ? `${prefix}-${item.dataset.n}` : null;
+}
+
+/** The id of the control a problem belongs to, or null if the form does not show that field. */
+function controlFor(path) {
+  const item = path.match(/^(\w+)\[(\d+)\]\.?(\w*)/);
+  if (item && ITEM_FIELDS[item[1]]) {
+    const [, group, index, field] = item;
+    const position = (current.rows[group] || [])[Number(index)];
+    const element = items(group)[position];
+    if (!element) return null;
+    const prefix = ITEM_FIELDS[group][field] || Object.values(ITEM_FIELDS[group])[0];
+    return prefix === 'vis' ? `vis-${element.dataset.n}-public` : `${prefix}-${element.dataset.n}`;
+  }
+  const target = FIELDS[path];
+  return typeof target === 'function' ? target() : target || null;
+}
+
+function clearErrors() {
+  form.querySelectorAll('.ds_question__error-message[data-generated]').forEach((p) => p.remove());
+  form.querySelectorAll('.ds_question--error').forEach((q) => q.classList.remove('ds_question--error'));
+  form.querySelectorAll('.ds_input--error').forEach((i) => i.classList.remove('ds_input--error'));
+  form.querySelectorAll('[data-error-described]').forEach((i) => {
+    const ids = (i.getAttribute('aria-describedby') || '').split(' ').filter((id) => !id.endsWith('-error'));
+    if (ids.length) i.setAttribute('aria-describedby', ids.join(' ')); else i.removeAttribute('aria-describedby');
+    i.removeAttribute('data-error-described');
+  });
+  document.getElementById('error-summary').hidden = true;
+}
+
+function showErrors(problems) {
+  clearErrors();
+  const summary = document.getElementById('error-summary');
+  const list = document.getElementById('error-summary-list');
+  list.replaceChildren();
+  const placed = new Set();
+  const located = problems.map((problem) => ({ ...problem, id: controlFor(problem.path) }));
+  // Follow the order of the form, with fields it does not show last.
+  const order = (id) => (id ? [...form.querySelectorAll('[id]')].findIndex((e) => e.id === id) : Infinity);
+  located.sort((a, b) => order(a.id) - order(b.id));
+  for (const problem of located) {
+    const li = document.createElement('li');
+    if (problem.id) {
+      const a = document.createElement('a');
+      a.href = `#${problem.id}`;
+      a.textContent = problem.message;
+      a.addEventListener('click', (event) => {
+        event.preventDefault();
+        const control = document.getElementById(problem.id);
+        control.closest('.ds_question')?.scrollIntoView({ block: 'start' });
+        control.focus({ preventScroll: true });
+      });
+      li.append(a);
+      const control = document.getElementById(problem.id);
+      const question = control.closest('fieldset.ds_question') && control.type && ['radio', 'checkbox'].includes(control.type)
+        ? control.closest('fieldset.ds_question') : control.closest('.ds_question');
+      if (question && !placed.has(question)) {
+        placed.add(question);
+        question.classList.add('ds_question--error');
+        const message = document.createElement('p');
+        message.className = 'ds_question__error-message';
+        message.id = `${problem.id}-error`;
+        message.dataset.generated = '';
+        message.textContent = problem.message;
+        // Immediately before the control (or its wrapper or group), as the design system places it.
+        const anchor = control.closest('.ds_select-wrapper, .ds_field-group, .ds_input__wrapper') || control;
+        anchor.before(message);
+        if (['INPUT', 'TEXTAREA', 'SELECT'].includes(control.tagName) && !['radio', 'checkbox'].includes(control.type)) {
+          control.classList.add('ds_input--error');
+        }
+        const described = control.getAttribute('aria-describedby');
+        control.setAttribute('aria-describedby', [described, message.id].filter(Boolean).join(' '));
+        control.dataset.errorDescribed = '';
+      }
+    } else {
+      li.textContent = `${problem.path}: ${problem.message}`;
+    }
+    list.append(li);
+  }
+  summary.hidden = false;
+  summary.focus();
+}
+
+/** Check the draft; show the problems or the "valid" panel. Returns true if valid. */
+function validateDraft({ announceValid = true } = {}) {
+  update();
+  if (!validator) return true; // the validator could not load: let people continue
+  const problems = check(validator, current.record, { today: today() });
+  if (problems.length) {
+    showErrors(problems);
+    return false;
+  }
+  clearErrors();
+  if (announceValid) {
+    const valid = document.getElementById('draft-valid');
+    valid.hidden = false;
+    valid.focus();
+  }
+  return true;
+}
+
+// The hand-off (specification 6.6)
+
+const statusMessage = (text) => { document.getElementById('draft-handoff-status').textContent = text; };
+
+function issueUrl(withYaml) {
+  const r = current.record;
+  const params = new URLSearchParams({ template: 'suggest-asset.yml', title: `Suggest a solution: ${r.name || 'untitled'}` });
+  params.set('asset-name', r.name || '');
+  params.set('organisation', r.owner?.organisation || '');
+  params.set('contact', r.contact?.value || '');
+  if (withYaml) params.set('solution-yml', current.yaml);
+  return `${config.repository}/issues/new?${params}`;
+}
+
+function updateIssueLink() {
+  const link = document.getElementById('draft-issue');
+  if (!link) return;
+  const full = issueUrl(true);
+  link.href = full.length <= ISSUE_URL_LIMIT ? full : issueUrl(false);
+  link.dataset.tooLong = full.length > ISSUE_URL_LIMIT ? 'true' : '';
+}
+
+function download() {
+  const blob = new Blob([current.yaml], { type: 'application/yaml' });
+  const url = URL.createObjectURL(blob);
+  const a = document.createElement('a');
+  a.href = url;
+  a.download = 'solution.yml';
+  document.body.append(a);
+  a.click();
+  a.remove();
+  setTimeout(() => URL.revokeObjectURL(url), 1000);
+}
+
+async function copy() {
+  try {
+    await navigator.clipboard.writeText(current.yaml);
+    statusMessage('Copied. Paste it into a GitHub issue, an email, or your own solution.yml file.');
+  } catch {
+    const range = document.createRange();
+    range.selectNodeContents(preview);
+    window.getSelection().removeAllRanges();
+    window.getSelection().addRange(range);
+    statusMessage('Your browser did not allow copying. The YAML is selected: copy it with Ctrl+C, or Cmd+C on a Mac.');
+  }
+}
+
+function wireHandOff() {
+  document.getElementById('draft-copy').addEventListener('click', () => { if (validateDraft({ announceValid: false })) copy(); });
+  document.getElementById('draft-download').addEventListener('click', () => {
+    if (validateDraft({ announceValid: false })) { download(); statusMessage('Downloaded solution.yml.'); }
+  });
+  document.getElementById('draft-issue')?.addEventListener('click', (event) => {
+    if (!validateDraft({ announceValid: false })) { event.preventDefault(); return; }
+    if (event.currentTarget.dataset.tooLong) {
+      download();
+      statusMessage('Your solution.yml is too long to include in the issue, so it has been downloaded. Attach it to the issue.');
+    }
+  });
+  const email = document.getElementById('draft-email');
+  if (email) {
+    email.addEventListener('click', (event) => {
+      if (!validateDraft({ announceValid: false })) { event.preventDefault(); return; }
+      download();
+      const subject = `${config.title}: ${current.record.name || 'a solution'}`;
+      const body = 'Please find my solution.yml attached.\nI have downloaded it from the draft form; please attach the downloaded file before sending.';
+      email.href = `mailto:${config.mailbox}?subject=${encodeURIComponent(subject)}&body=${encodeURIComponent(body)}`;
+      statusMessage('Downloaded solution.yml. Attach it to the email that opens.');
+    });
+  }
 }
 
 function reset() {
@@ -177,7 +388,7 @@ async function loadFrom(id) {
 if (form) {
   form.addEventListener('input', update);
   form.addEventListener('change', update);
-  form.addEventListener('submit', (event) => { event.preventDefault(); update(); });
+  form.addEventListener('submit', (event) => { event.preventDefault(); validateDraft(); });
   form.addEventListener('click', (event) => {
     const add = event.target.closest('[data-add]');
     if (add) { addItem(add.dataset.add, { focus: true }); update(); return; }
@@ -193,11 +404,12 @@ if (form) {
       update();
     }
   });
-  document.getElementById('draft-reset').addEventListener('click', reset);
+  document.getElementById('draft-reset').addEventListener('click', () => { clearErrors(); reset(); });
+  wireHandOff();
   writeAnswers(emptyAnswers());
   update();
   const from = new URLSearchParams(window.location.search).get('from');
   if (from) loadFrom(from);
 }
 
-export { update, readAnswers, writeAnswers };
+export { update, readAnswers, writeAnswers, validateDraft };

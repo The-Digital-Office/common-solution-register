@@ -3,7 +3,7 @@ import assert from 'node:assert/strict';
 import { test } from 'node:test';
 
 import {
-  SENTINEL, answersFromRecord, buildRecord, contactType, emptyAnswers, isoDate, sections, ukDate,
+  SENTINEL, answersFromRecord, buildDraft, buildRecord, contactType, emptyAnswers, isoDate, sections, ukDate,
 } from '../../src/csr/static/js/draft-core.js';
 
 const order = ['schema_version', 'id', 'record_status', 'name', 'summary', 'purpose', 'asset_type', 'owner', 'contact',
@@ -74,6 +74,13 @@ test('charging details: a URL or a summary', () => {
     { applies: true, model: 'subscription', url: 'https://x/charges' });
   assert.deepEqual(build({ charges: 'yes', charging_detail: 'Annual fee' }).charging,
     { applies: true, model: 'recharge', summary: 'Annual fee' });
+});
+
+test('rows say which form group each list entry came from', () => {
+  const { rows } = buildDraft({ ...emptyAnswers(), codebases: [
+    { repository_url: '', visibility: '', publiccode_url: '', maintenance: 'internal' },
+    { repository_url: 'https://code/x', visibility: '', publiccode_url: '', maintenance: 'internal' }] }, { order });
+  assert.deepEqual(rows.codebases, [1]);
 });
 
 test('repeaters drop empty rows', () => {

@@ -35,12 +35,18 @@ and this project uses [Semantic Versioning](https://semver.org/spec/v2.0.0.html)
 - JavaScript unit tests, run by `pytest` with Node's built-in test runner when Node is installed.
 - Draft form (`draft/`), part 1: generated from the schema and taxonomy, with conditional sections for every condition, repeating codebases, open data, interfaces and sources, a live `solution.yml` preview, and "Suggest a correction" filling the form from a record.
 - `js-yaml` 5.5.0, vendored with its licence and pinned hashes; `tools/vendor.py` refreshes any vendored package.
+- Draft form, part 2: validation against the schema in the browser with the vendored Ajv 8.17.1 (2020-12) runtime, plus rules R06 and R09, with an error summary and inline errors; Copy YAML, Download, Open as a GitHub issue (pre-filled, or download-and-attach when too long) and Send by email.
+- `csr validate` accepts the draft placeholder id `csr-NNNN` in files outside `records/`, with a warning.
 - The `Validate` job builds the site and uploads it as the `site-preview` artifact.
 
 ### Changed
 
 - `.gitignore` extended for Python, the built site and UI test tooling.
 - `publiccode.yml` completed: description, features, `softwareType: standalone/web` and categories.
+
+### Fixed
+
+- Schema condition 1 required `sources` when `record_status` was missing; it now applies only to demonstration records.
 
 ### Removed
 

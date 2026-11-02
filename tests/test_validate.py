@@ -248,3 +248,14 @@ def test_cli_valid_file(capsys):
 def test_cli_bad_base(capsys):
     assert main(["validate", "--base", "refs/heads/no-such-branch-anywhere"]) == 2
     assert "csr validate:" in capsys.readouterr().err
+
+
+def test_draft_placeholder_id_outside_the_register(repo, tmp_path, minimal):
+    root, add = repo
+    draft = tmp_path / "solution.yml"
+    draft.write_text(yaml.safe_dump({**minimal, "id": "csr-NNNN"}), encoding="utf-8")
+    result = validate([str(draft)], root=root, today=TODAY)
+    assert result.ok
+    assert [(f.rule, f.severity) for f in result.findings] == [("R01", "warning")]
+    add("csr-NNNN", filename="csr-9101.yaml")  # in the register, a real id is required
+    assert not validate(root=root, today=TODAY).ok

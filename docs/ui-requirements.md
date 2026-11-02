@@ -44,7 +44,7 @@ actions column, the results heading row, filters and wide tables. Wireframe
 | Reference, Publiccode | `reference.html`, `publiccode.html` | `reference/`, `reference/publiccode/` | S6 |
 | Data, Currency | `data.html`, `currency.html` | `data/`, `currency/` | S6 |
 | NotFound | `404.html` | `404.html` (links from the site root, because GitHub Pages serves it at any missing address) | S6 |
-| Draft | `draft.html` | `draft/` | S8 (form, conditions, preview: `static/js/draft-core.js` and `draft.js`), S9 (validation, hand-off) |
+| Draft | `draft.html` | `draft/` | S8 (form, conditions, preview: `static/js/draft-core.js` and `draft.js`), S9 (validation with `static/js/record-check.js` and the vendored Ajv; hand-off) |
 | Validate | `validate.html` | `validate/` | S10 |
 | Harvest | `harvest.html` | `harvest/` | S11 |
 
@@ -77,4 +77,9 @@ current choice until the author decides.
 | D20 | Draft preview | Shows every field, with empty values (`name: ""`) | Shows only what has been entered, in schema order, plus `id: csr-NNNN  # allocated when registered` | The preview is the file people submit; S9's validation lists what is still missing |
 | D21 | Draft summary count | "0 of 200 characters" | The design system's character count component and its wording | Section 6.13 asks for the design system's components |
 | D22 | Draft conditions not in the wireframe | Not shown | Sources, and a "Not stated in public sources" choice for terms, adoption, support and charges, when the person is not from the owning organisation (condition 1); withdrawal date and reason when correcting a withdrawn record (condition 3); interfaces as a repeater | The parity table requires every condition in 6.4 |
+| D23 | Draft hand-off | Copy, download, issue and email are always available | Each first checks the draft; if there are problems, the error summary is shown instead, so every route produces a validated record | Specification 2: "every route produces the same validated record" |
+| D24 | "Open as a GitHub issue" | Opens in the same tab | Opens in a new tab, and says so in the link text | Leaving the page would lose the draft, which is kept only in the page |
+| D25 | Downloaded file name | "Download .yaml" | The file is `solution.yml`, the descriptor's name; the button keeps the wireframe's wording | The same file can be submitted or hosted by the owner |
+| D26 | The draft's record ID | `id: csr-NNNN  # allocated when registered` | Kept. The browser and `csr validate` both accept `csr-NNNN` in a draft outside `records/`, with a warning that the id is allocated when registered; in `records/` a real id is required (R01) | So a draft that passes in the browser also passes `csr validate` |
+| D27 | Draft preview position | Sticky beside the form | Sticky from the large breakpoint up; S14's full-page screenshots should hold it at the top (for example by scrolling to the top first) | Full-page screenshots draw sticky elements where the page was last scrolled |
 

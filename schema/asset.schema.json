@@ -350,7 +350,7 @@
   "allOf": [
     {
       "$comment": "Condition 1: demonstration records cite their sources. Sentinel values are allowed only in demonstration records.",
-      "if": { "properties": { "record_status": { "const": "demonstration" } } },
+      "if": { "properties": { "record_status": { "const": "demonstration" } }, "required": ["record_status"] },
       "then": { "required": ["sources"] },
       "else": {
         "properties": {
