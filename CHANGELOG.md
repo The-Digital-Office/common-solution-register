@@ -17,6 +17,7 @@ and this project uses [Semantic Versioning](https://semver.org/spec/v2.0.0.html)
 - `Site` workflow with a `Validate` job that runs the tests.
 - Dependabot updates for `pip`.
 - Descriptor schema v0.1 (`schema/asset.schema.json`) with its eight conditions, the pointer record schema and `schema/README.md`.
+- Draft taxonomy: 8 sectors, 14 service areas and 14 capabilities, with definitions and synonyms.
 
 ### Changed
 

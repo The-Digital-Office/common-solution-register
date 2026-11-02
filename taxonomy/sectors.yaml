@@ -1,0 +1,45 @@
+# Sectors: who owns a solution (owner.sector) and who it is intended for
+# (intended_adopters). A draft for the short-life working group to critique.
+taxonomy: sectors
+version: "0.1"
+terms:
+  - id: scottish-government
+    label: Scottish Government
+    definition: The core Scottish Government, including its directorates.
+    synonyms: [SG, Scottish Ministers]
+    status: active
+  - id: executive-agencies
+    label: Executive agencies
+    definition: Executive agencies of the Scottish Government, which deliver services on behalf of Scottish Ministers.
+    synonyms: [agencies]
+    status: active
+  - id: local-government
+    label: Local government
+    definition: Scotland's councils, and bodies that councils run jointly or that serve local government as a whole.
+    synonyms: [councils, local authorities]
+    status: active
+  - id: nhs-scotland
+    label: NHS Scotland
+    definition: NHS Scotland's territorial and special health boards, and other national NHS bodies.
+    synonyms: [NHS, health boards]
+    status: active
+  - id: police-and-fire
+    label: Police and fire
+    definition: The national police and fire and rescue services in Scotland, and the bodies that oversee them.
+    synonyms: [emergency services, blue light]
+    status: active
+  - id: non-departmental-public-bodies
+    label: Non-departmental public bodies
+    definition: Executive and advisory non-departmental public bodies, public corporations and other Scottish public bodies not covered by another sector.
+    synonyms: [NDPBs, other public bodies]
+    status: active
+  - id: further-and-higher-education
+    label: Further and higher education
+    definition: Colleges and universities in Scotland, and the bodies that serve them as a sector.
+    synonyms: [colleges, universities, tertiary education]
+    status: active
+  - id: uk-public-sector
+    label: UK public sector
+    definition: UK Government departments and other public bodies outside the devolved Scottish public sector whose solutions Scottish public bodies can use.
+    synonyms: [UK Government, cross-government]
+    status: active
