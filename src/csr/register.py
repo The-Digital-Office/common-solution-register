@@ -157,7 +157,8 @@ def _entry(root: Path, record: Record, descriptor: Record, config: Config, today
     text = (root / descriptor.label).read_text(encoding="utf-8")
     last_changed, _ = _git_last_change(root, descriptor.label)
     _, merged_in = _git_last_change(root, record.label)  # for a pointer: the pull request that registered it
-    state, next_due = currency(descriptor.data, today, config)
+    as_of = config.examples_as_of if record.id >= "csr-9000" and config.examples_as_of else today
+    state, next_due = currency(descriptor.data, as_of, config)
     confirmed = descriptor.data.get("confirmation", {}).get("last_confirmed")
     stale_from = add_months(dt.date.fromisoformat(confirmed), config.stale_after_months) if confirmed else None
     return Entry(

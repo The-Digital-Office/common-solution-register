@@ -1,0 +1,28 @@
+{% extends "base.html" %}
+{% block title %}Browse solutions{% endblock %}
+{% block main %}
+<main class="ds_layout ds_layout--category-list" id="main-content">
+<div class="ds_layout__header">
+<header class="ds_page-header"><h1 class="ds_page-header__title">Browse solutions</h1></header>
+<p class="ds_leader">Every record is classified by who owns it, the service areas it supports and the capabilities it provides. Each term has a published definition.</p>
+</div>
+<div class="ds_layout__list">
+<div class="csr-cols">
+{% for column in columns %}
+<section aria-labelledby="h-{{ column.name }}">
+<h2 class="ds_h3" id="h-{{ column.name }}">{{ column.heading }}</h2>
+<ul class="ds_category-list ds_category-list--narrow">
+{% for term, count in column.terms %}
+<li class="ds_category-item"><h3 class="ds_category-item__title"><a class="ds_category-item__link" href="{{ root }}{{ column.folder }}/{{ term.id }}/">{{ term.label }}</a></h3><p class="ds_category-item__summary csr-count">{{ count }} solution{{ "" if count == 1 else "s" }}</p></li>
+{% endfor %}
+{% if column.name != "sectors" %}
+<li class="ds_category-item"><p class="ds_category-item__summary"><a href="{{ root }}reference/#taxonomy-{{ column.name }}">All {{ column.total }} {{ "service areas" if column.name == "service-areas" else "capabilities" }}, with definitions</a></p></li>
+{% endif %}
+</ul>
+</section>
+{% endfor %}
+</div>
+<div class="ds_inset-text"><div class="ds_inset-text__text">The taxonomy is a draft for the short-life working group to critique. Terms, definitions and synonyms are published as open data on the <a href="{{ root }}data/">Data and API</a> page.</div></div>
+</div>
+</main>
+{% endblock %}

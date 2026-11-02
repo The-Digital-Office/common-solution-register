@@ -18,7 +18,26 @@ feedback_url = "https://github.com/The-Digital-Office/common-solution-register/i
 [currency]
 due_after_months = 11
 stale_after_months = 12
+# Fictional example records (csr-9000 to csr-9999) are judged as on this
+# date, so they keep showing the current, due and stale states they were
+# written to show. Real records are always judged as on the build date.
+# Empty means the build date.
+examples_as_of = "2026-11-02"
 
 [harvest]
 max_bytes = 262144
 timeout_seconds = 10
+
+[publication]
+# Inputs the author completes before publication (specification 10.2). Until
+# each is filled in, the page shows "To be completed before publication" and
+# csr build lists it.
+data_controller_address = ""
+dpo_contact = ""
+lawful_basis = ""          # input I8: as agreed with the Data Protection Officer
+retention = ""
+feedback_form = ""         # input I4: owner and retention of the feedback form
+accessibility_assessment = ""
+accessibility_reply_days = ""
+accessibility_tested_on = ""
+statements_prepared_on = ""

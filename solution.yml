@@ -56,6 +56,10 @@ codebases:
     maintenance: internal
     kind: implementation
     role: Register site, API and tools
+open_data:
+  - title: Register records (register.json and register.csv)
+    url: https://the-digital-office.github.io/common-solution-register/data/
+    catalogue: This register's Data and API page
 confirmation:
   last_confirmed: "2026-11-02"
   method: owner-hosted solution.yml

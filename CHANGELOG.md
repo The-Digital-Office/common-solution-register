@@ -27,6 +27,10 @@ and this project uses [Semantic Versioning](https://semver.org/spec/v2.0.0.html)
 - Scottish Government Design System 4.3.0 (CSS and JavaScript), vendored with its licence, source and pinned hashes, and a script to refresh it.
 - `csr build`: generates the static site from the register, with `site.toml` for the site's configuration. This slice builds the base layout (header with the design system's mobile menu, banner and footer), the home page (the full list without JavaScript) and the record pages, including the withdrawn-record page and a downloadable `solution.yml` for each record.
 - `docs/ui-requirements.md`: how the build applies the wireframes, and its departures from them.
+- Remaining static pages: Browse, a page for every sector, service area and capability, Contribute, About, Accessibility, Privacy, Not found, Field reference (generated from the schema), Solutions and codebases, Data and API, and Currency.
+- API and extracts: `api/v0/` (index, all records, each record, taxonomies and schemas) and `data/register.json` and `data/register.csv`.
+- `site.toml`: `examples_as_of`, so fictional examples keep their currency states, and a `[publication]` section for the inputs the author completes before publication.
+- `csr-0001` links to the register's own open data.
 - The `Validate` job builds the site and uploads it as the `site-preview` artifact.
 
 ### Changed

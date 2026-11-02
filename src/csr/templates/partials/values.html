@@ -10,3 +10,24 @@
 {% macro row(key, id=none) %}
 <div class="ds_summary-list__item"><dt class="ds_summary-list__key">{{ key }}</dt><dd class="ds_summary-list__value">{{ caller() }}</dd></div>
 {% endmacro %}
+
+{% macro pending(key, what) %}{% if config.publication.get(key) %}{{ config.publication[key] }}{% else %}<span class="csr-pending">[To be completed before publication: {{ what }}]</span>{% endif %}{% endmacro %}
+
+{% macro mailbox(fallback_text="the issues page") %}{% if config.contact_mailbox %}<a href="mailto:{{ config.contact_mailbox }}">{{ config.contact_mailbox }}</a>{% else %}<span class="csr-pending">[To be completed before publication: the role mailbox (input I3)]</span>{% endif %}{% endmacro %}
+
+{% macro result(entry, show_status=false) %}
+{% from "partials/tags.html" import record_tags with context %}
+{% set r = entry.data %}
+<li class="ds_search-result">
+<h3 class="ds_search-result__title"><a class="ds_search-result__link" href="{{ root }}assets/{{ entry.id }}/">{{ r.name }}</a></h3>
+<p class="ds_search-result__summary">{{ r.summary }}</p>
+<dl class="ds_search-result__metadata ds_metadata ds_metadata--inline">
+<div class="ds_metadata__item"><dt class="ds_metadata__key">Owner</dt><dd class="ds_metadata__value">{{ r.owner.organisation }}</dd></div>
+<div class="ds_metadata__item"><dt class="ds_metadata__key">Type</dt><dd class="ds_metadata__value">{{ TYPE_LABELS[r.asset_type] }}</dd></div>
+{% if show_status %}<div class="ds_metadata__item"><dt class="ds_metadata__key">Status</dt><dd class="ds_metadata__value">{{ STATUS_LABELS[r.status] }}</dd></div>{% endif %}
+</dl>
+<div class="csr-tags">
+{{ record_tags(entry, show_status=false) }}
+</div>
+</li>
+{% endmacro %}

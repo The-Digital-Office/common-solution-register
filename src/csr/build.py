@@ -11,11 +11,14 @@ from urllib.parse import urlsplit
 
 from jinja2 import Environment, PackageLoader, StrictUndefined, select_autoescape
 
-from csr import __version__
+import yaml
+
+from csr import __version__, api
 from csr.config import Config, load_config
 from csr.register import Entry, Register, load_register
-from csr.schema import ROOT, SENTINEL
-from csr.taxonomy import load_all
+from csr.rules import RULES
+from csr.schema import ROOT, SENTINEL, load_schema
+from csr.taxonomy import TAXONOMIES, load_all
 
 STATIC = Path(__file__).parent / "static"
 SGDS_VERSION = "4.3.0"
@@ -161,12 +164,13 @@ class Site:
         else:
             target.write_text(content, encoding="utf-8")
 
-    def page(self, path: str, template: str, **context: Any) -> None:
-        """Render a page. ``path`` ends in ``/`` (written as index.html) or ``.html``."""
+    def page(self, path: str, template: str, root: str | None = None, **context: Any) -> None:
+        """Render a page. ``path`` ends in ``/`` (written as index.html) or ``.html``.
+        Links are relative to the page unless ``root`` is given."""
         file = path + "index.html" if path.endswith("/") or not path else path
         depth = file.count("/")
         html = self.env.get_template(template).render(
-            root="../" * depth or "./",
+            root=root or "../" * depth or "./",
             path=path,
             config=self.config,
             site=self,
@@ -201,7 +205,155 @@ def build(
     site.page("", "index.html", nav="home", entries=listed)
     for entry in register.entries:
         _record_pages(site, entry)
+    _taxonomy_pages(site, listed)
+    _static_pages(site)
+    _reference_pages(site, root)
+    _data_pages(site)
     return BuildResult(out=out, pages=site.pages, register=register)
+
+
+#: Taxonomy name, the folder of its term pages, the record field it classifies, and wording.
+TERM_PAGES = {
+    "sectors": ("sectors", "Sector", "By owning sector", ("is owned by this sector", "are owned by this sector")),
+    "service-areas": ("service-areas", "Service area", "By service area",
+                      ("supports this service area", "support this service area")),
+    "capabilities": ("capabilities", "Capability", "By capability",
+                     ("provides this capability", "provide this capability")),
+}  # fmt: skip
+
+
+def _uses(entry: Entry, taxonomy: str, term_id: str) -> bool:
+    r = entry.data
+    if taxonomy == "sectors":
+        return r["owner"]["sector"] == term_id
+    return term_id in r["service_areas" if taxonomy == "service-areas" else "capabilities"]
+
+
+def _term_ids(entry: Entry, taxonomy: str) -> list[str]:
+    r = entry.data
+    if taxonomy == "sectors":
+        return [r["owner"]["sector"]]
+    return r["service_areas" if taxonomy == "service-areas" else "capabilities"]
+
+
+def _taxonomy_pages(site: Site, entries: list[Entry]) -> None:
+    """Browse, and a page for every term (current records only)."""
+    columns = []
+    for name in TAXONOMIES:
+        folder, _, heading, _ = TERM_PAGES[name]
+        taxonomy = site.taxonomies[name]
+        counted = [(t, sum(_uses(e, name, t.id) for e in entries)) for t in taxonomy.terms]
+        shown = counted if name == "sectors" else [(t, n) for t, n in counted if n]
+        columns.append({"name": name, "folder": folder, "heading": heading, "terms": shown,
+                        "total": len(taxonomy.terms)})  # fmt: skip
+        for term in taxonomy.terms:
+            matching = [e for e in entries if _uses(e, name, term.id)]
+            together: dict[str, int] = {}
+            for e in matching:
+                for other in _term_ids(e, name):
+                    if other != term.id:
+                        together[other] = together.get(other, 0) + 1
+            related = [taxonomy.get(t) for t, _ in sorted(together.items(), key=lambda kv: (-kv[1], kv[0]))]
+            site.page(f"{folder}/{term.id}/", "term.html", nav="browse", taxonomy=taxonomy,
+                      kind=TERM_PAGES[name], term=term, entries=matching, related_terms=related)  # fmt: skip
+    site.page("browse/", "browse.html", nav="browse", columns=columns)
+
+
+def _static_pages(site: Site) -> None:
+    site.page("contribute/", "contribute.html", nav="contribute")
+    site.page("about/", "about.html", nav="about")
+    site.page("accessibility/", "accessibility.html", nav="")
+    site.page("privacy/", "privacy.html", nav="")
+    # GitHub Pages serves 404.html at whatever address was asked for, so its links start from the site root.
+    site.page("404.html", "404.html", root=urlsplit(site.config.base_url).path or "/", nav="")
+    states = [e for e in site.register.entries if e.currency]
+    site.page("currency/", "currency.html", nav="", entries=states,
+              attention=[e for e in states if e.currency in ("stale", "due", "unconfirmed")])  # fmt: skip
+
+
+def _reference_pages(site: Site, root: Path) -> None:
+    schema = load_schema("asset")
+    site.page("reference/", "reference.html", nav="", schema=schema, fields=reference_fields(schema),
+              rules=RULES, pointer=load_schema("pointer"))  # fmt: skip
+    worked = site.register.get("csr-0001")
+    solution = _excerpt(worked.data, ["id", "name", "asset_type", "status", "owner", "service_url",
+                                      "adoption_route", "codebases", "open_data"]) if worked else ""  # fmt: skip
+    publiccode_data = yaml.safe_load((root / "publiccode.yml").read_text(encoding="utf-8"))
+    publiccode = _excerpt(publiccode_data, ["publiccodeYmlVersion", "name", "url", "developmentStatus",
+                                            "softwareType", "organisation", "legal", "maintenance"])  # fmt: skip
+    site.page("reference/publiccode/", "publiccode.html", nav="", solution=solution, publiccode=publiccode)
+
+
+def _excerpt(data: dict[str, Any], keys: list[str]) -> str:
+    return yaml.safe_dump({k: data[k] for k in keys if k in data}, sort_keys=False, allow_unicode=True, width=60)
+
+
+def reference_fields(schema: dict[str, Any]) -> dict[str, list[tuple[str, str, str]]]:
+    """Rows for the field reference, generated from the schema:
+    mandatory fields (with required sub-fields) and optional fields."""
+    properties = schema["properties"]
+
+    def allowed(prop: dict[str, Any]) -> str:
+        prop = _resolve(schema, prop)
+        if "const" in prop:
+            return f'"{prop["const"]}"'
+        if "enum" in prop:
+            return ", ".join(str(v) for v in prop["enum"])
+        if "anyOf" in prop:
+            return "; or ".join(filter(None, (allowed(p) for p in prop["anyOf"])))
+        if prop.get("type") == "boolean":
+            return "true or false"
+        if "pattern" in prop and prop["pattern"].startswith("^csr-"):
+            return "csr-NNNN"
+        if prop.get("pattern", "").startswith("^https://"):
+            return "HTTPS URL"
+        if prop.get("format") == "date":
+            return "Date, YYYY-MM-DD"
+        if prop.get("type") == "array":
+            item = _resolve(schema, prop.get("items", {}))
+            if item.get("pattern", "").startswith("^[a-z0-9]"):
+                return "At least one taxonomy term" if prop.get("minItems") else "Taxonomy terms"
+            return "List"
+        if "minLength" in prop and "maxLength" in prop:
+            return f"{prop['minLength']:,} to {prop['maxLength']:,} characters"
+        if prop.get("type") == "object":
+            return "See its fields"
+        return "Text"
+
+    def describe(prop: dict[str, Any]) -> str:
+        text = prop.get("description") or _resolve(schema, prop).get("description", "")
+        return text.split(". ")[0].rstrip(".")
+
+    mandatory = []
+    for name in schema["required"]:
+        prop = properties[name]
+        if prop.get("type") == "object" and prop.get("required"):
+            for sub in prop["required"]:
+                subprop = prop["properties"][sub]
+                mandatory.append((f"{name}.{sub}", describe(subprop) or describe(prop), allowed(subprop)))
+        else:
+            mandatory.append((name, describe(prop), allowed(prop)))
+    optional = [(name, describe(prop), allowed(prop)) for name, prop in properties.items()
+                if name not in schema["required"]]  # fmt: skip
+    return {"mandatory": mandatory, "optional": optional}
+
+
+def _resolve(schema: dict[str, Any], prop: dict[str, Any]) -> dict[str, Any]:
+    if "$ref" in prop:
+        target = schema
+        for part in prop["$ref"].removeprefix("#/").split("/"):
+            target = target[part]
+        return {**target, **{k: v for k, v in prop.items() if k != "$ref"}}
+    return prop
+
+
+def _data_pages(site: Site) -> None:
+    files = api.files(site.register, site.taxonomies, site.config, site.today)
+    for path, content in files.items():
+        site.write(path, content)
+    sizes = {path: len(content.encode("utf-8")) for path, content in files.items()}
+    sample = files.get(f"{api.API}assets/csr-0001.json", "")
+    site.page("data/", "data.html", nav="data", sizes=sizes, sample=sample)
 
 
 def example_state(entry: Entry) -> str:

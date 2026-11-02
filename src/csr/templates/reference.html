@@ -1,0 +1,98 @@
+{% extends "base.html" %}
+{% block title %}Field reference{% endblock %}
+{% macro fields_table(rows) %}
+<div class="csr-table"><table class="ds_table">
+<thead><tr><th scope="col">Field</th><th scope="col">Description</th><th scope="col">Allowed values or format</th></tr></thead>
+<tbody>
+{% for name, description, allowed in rows %}
+<tr><td><code>{{ name }}</code></td><td>{{ description }}</td><td>{{ allowed }}</td></tr>
+{% endfor %}
+</tbody></table></div>
+{% endmacro %}
+{% block main %}
+<main class="ds_layout ds_layout--guide" id="main-content">
+<div class="ds_layout__header">
+<header class="ds_page-header">
+<span class="ds_page-header__label ds_content-label">Schema version {{ schema.properties.schema_version.const }}</span>
+<h1 class="ds_page-header__title">Field reference</h1>
+</header>
+<p class="ds_leader">Every field in a solution.yml, generated from the schema. The working group is invited to challenge any field that would not help an adopter decide.</p>
+</div>
+<div class="ds_layout__navigation">
+<nav class="ds_contents-nav" aria-label="Contents">
+<h2 class="ds_contents-nav__title">Contents</h2>
+<ul class="ds_contents-nav__list">
+<li class="ds_contents-nav__item"><a class="ds_contents-nav__link" href="#mandatory">Mandatory fields</a></li>
+<li class="ds_contents-nav__item"><a class="ds_contents-nav__link" href="#conditional">Conditional fields</a></li>
+<li class="ds_contents-nav__item"><a class="ds_contents-nav__link" href="#optional">Optional fields</a></li>
+<li class="ds_contents-nav__item"><a class="ds_contents-nav__link" href="#derived">Added by the register</a></li>
+<li class="ds_contents-nav__item"><a class="ds_contents-nav__link" href="#pointer">Pointer records</a></li>
+<li class="ds_contents-nav__item"><a class="ds_contents-nav__link" href="#taxonomy">Taxonomy terms</a></li>
+<li class="ds_contents-nav__item"><a class="ds_contents-nav__link" href="#rules">Validation rules</a></li>
+</ul>
+</nav>
+</div>
+<div class="ds_layout__content">
+<div class="ds_inset-text"><div class="ds_inset-text__text"><strong>A solution is not its code.</strong> A solution.yml describes what an owner offers for reuse. The code that implements it, if any, is listed under <code>codebases</code>, and each public codebase is described by its own publiccode.yml. <a href="{{ root }}reference/publiccode/">How they relate</a></div></div>
+
+<h2 id="mandatory">Mandatory fields</h2>
+{{ fields_table(fields.mandatory) }}
+
+<h2 id="conditional">Conditional fields</h2>
+<div class="csr-table"><table class="ds_table">
+<thead><tr><th scope="col">When</th><th scope="col">Then required</th></tr></thead>
+<tbody>
+<tr><td>Record is a demonstration entry</td><td><code>sources</code> (public URLs). "Not stated in public sources" is allowed for terms, adoption route, support and charges.</td></tr>
+<tr><td>Record is owner-confirmed or an example</td><td><code>confirmation.last_confirmed</code>, <code>.method</code>, <code>.reference</code></td></tr>
+<tr><td>Record is withdrawn</td><td><code>withdrawal.date</code>, <code>withdrawal.reason</code></td></tr>
+<tr><td>Asset type is software (offered for other bodies to deploy)</td><td>At least one entry in <code>codebases</code></td></tr>
+<tr><td>Asset type is API, or interfaces are listed</td><td><code>interfaces</code>: type and documentation URL</td></tr>
+<tr><td>Charges apply</td><td><code>charging.model</code>, plus a URL or summary</td></tr>
+<tr><td>Service or platform, in beta or live</td><td><code>support</code>, <code>service_url</code>, <code>service_page_url</code></td></tr>
+<tr><td>Status is deprecated</td><td><code>deprecation.date</code>, <code>deprecation.migration_guidance</code></td></tr>
+</tbody></table></div>
+
+<h2>Web addresses</h2>
+<div class="csr-table"><table class="ds_table">
+<thead><tr><th scope="col">Field</th><th scope="col">Meaning</th></tr></thead>
+<tbody>
+<tr><td><code>service_url</code></td><td>The live service itself: where people start using it (start page, sign-in, application, or base API address)</td></tr>
+<tr><td><code>service_page_url</code></td><td>The owner's public page describing the service</td></tr>
+<tr><td><code>documentation_url</code></td><td>Technical or implementation documentation</td></tr>
+</tbody></table></div>
+<p>All three are recommended for every record.</p>
+
+<h2 id="optional">Optional fields</h2>
+{{ fields_table(fields.optional) }}
+
+<h2 id="derived">Added by the register</h2>
+<p>Never written in a solution.yml: <code>last_changed</code>, <code>history_url</code>, <code>merged_in</code>, <code>currency</code>, <code>hosting</code>, <code>source</code>, <code>harvested_at</code>, <code>content_hash</code>, <code>source_state</code>.</p>
+
+<h2 id="pointer">Pointer records</h2>
+<p>An owner-hosted record is registered with three fields: <code>id</code>, <code>source</code> (HTTPS URL of the owner's solution.yml) and <code>expected_owner</code>.</p>
+
+<h2 id="taxonomy">Taxonomy terms</h2>
+{% for name, label in [("sectors", "Sectors"), ("service-areas", "Service areas"), ("capabilities", "Capabilities")] %}
+{% set taxonomy = site.taxonomies[name] %}
+<details class="ds_details" id="taxonomy-{{ name }}" data-module="ds-details"><summary class="ds_details__summary">{{ label }} ({{ taxonomy.terms | length }})</summary><div class="ds_details__text">
+<dl class="ds_summary-list">
+{% for term in taxonomy.terms %}
+<div class="ds_summary-list__item"><dt class="ds_summary-list__key"><a href="{{ root }}{{ name }}/{{ term.id }}/">{{ term.label }}</a></dt><dd class="ds_summary-list__value">{{ term.definition }}{% if term.synonyms %} <span class="ds_hint-text">Also known as: {{ term.synonyms | join("; ") }}.</span>{% endif %}</dd></div>
+{% endfor %}
+</dl>
+</div></details>
+{% endfor %}
+
+<h2 id="rules">Validation rules</h2>
+<p>Beyond the schema, {{ rules | length }} rules (R01 to R{{ "%02d" % (rules | length) }}) check identifiers, taxonomy references, dates, placeholders, provenance, hosting and publiccode.yml. <a href="{{ root }}validate/">Try the validator</a>.</p>
+<div class="csr-table"><table class="ds_table">
+<thead><tr><th scope="col">Rule</th><th scope="col">Check</th><th scope="col">Severity</th></tr></thead>
+<tbody>
+{% for rule, check, severity in rules %}
+<tr><td>{{ rule }}</td><td>{{ check }}</td><td>{{ severity }}</td></tr>
+{% endfor %}
+</tbody></table></div>
+<p><a href="{{ config.repository_url }}/issues/new?title={{ 'Schema or taxonomy: ' | urlencode }}">Propose a change to the schema or taxonomy</a></p>
+</div>
+</main>
+{% endblock %}

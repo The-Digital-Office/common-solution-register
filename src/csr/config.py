@@ -2,8 +2,9 @@
 
 from __future__ import annotations
 
+import datetime as dt
 import tomllib
-from dataclasses import dataclass
+from dataclasses import dataclass, field
 from pathlib import Path
 
 from csr.schema import ROOT
@@ -23,6 +24,14 @@ class Config:
     stale_after_months: int = 12
     harvest_max_bytes: int = 262144
     harvest_timeout_seconds: int = 10
+    examples_as_of: dt.date | None = None
+    publication: dict[str, str] = field(default_factory=dict)
+
+    @property
+    def pending_publication_inputs(self) -> list[str]:
+        """Inputs still to be completed before publication (contact mailbox and [publication])."""
+        pending = [] if self.contact_mailbox else ["contact_mailbox"]
+        return pending + [key for key, value in self.publication.items() if not value]
 
     @property
     def raw_prefix(self) -> str:
@@ -49,4 +58,6 @@ def load_config(root: Path | None = None, base_url: str | None = None) -> Config
         stale_after_months=currency.get("stale_after_months", 12),
         harvest_max_bytes=harvest.get("max_bytes", 262144),
         harvest_timeout_seconds=harvest.get("timeout_seconds", 10),
+        examples_as_of=dt.date.fromisoformat(currency["examples_as_of"]) if currency.get("examples_as_of") else None,
+        publication={k: str(v) for k, v in data.get("publication", {}).items()},
     )

@@ -1,0 +1,52 @@
+{% extends "base.html" %}
+{% block title %}Data and API{% endblock %}
+{% macro size(path) %}{% set b = sizes[path] %}{{ "%.1f KB" % (b / 1024) if b >= 1024 else b ~ " bytes" }}{% endmacro %}
+{% block main %}
+{% set api = root ~ "api/v0/" %}
+<main class="ds_layout ds_layout--search-results" id="main-content">
+<div class="ds_layout__header">
+<header class="ds_page-header"><h1 class="ds_page-header__title">Data and API</h1></header>
+<p class="ds_leader">Everything on this site is generated from one set of records, and published as open data under the Open Government Licence v3.0.</p>
+</div>
+<div class="ds_layout__content">
+<div class="ds_warning-text">
+<strong class="ds_warning-text__icon" aria-hidden="true"></strong>
+<strong class="visually-hidden">Warning</strong>
+<div class="ds_warning-text__text">The API is version 0 and may change without notice. Web addresses may change if the demonstrator moves. Use record IDs, not URLs, as identifiers. Every record includes <code>record_status</code>, so you can exclude demonstration and example records.</div>
+</div>
+
+<h2>Download everything</h2>
+<div class="csr-dl">
+<div class="csr-file">
+<h3 class="ds_h4"><a href="{{ root }}data/register.json" download>register.json</a></h3>
+<p>JSON, {{ size("data/register.json") }}. Every record with derived fields.</p>
+</div>
+<div class="csr-file">
+<h3 class="ds_h4"><a href="{{ root }}data/register.csv" download>register.csv</a></h3>
+<p>CSV, UTF-8, {{ size("data/register.csv") }}. One row per record. Nested fields use dotted column names.</p>
+</div>
+</div>
+
+<h2>API</h2>
+<p>Static JSON files. No key or registration is needed.</p>
+<div class="csr-table"><table class="ds_table">
+<thead><tr><th scope="col">URL</th><th scope="col">Returns</th></tr></thead>
+<tbody>
+<tr><td><a href="{{ api }}index.json"><code>api/v0/index.json</code></a></td><td>Generation date, schema and taxonomy versions, licence, links</td></tr>
+<tr><td><a href="{{ api }}assets.json"><code>api/v0/assets.json</code></a></td><td>All records</td></tr>
+<tr><td><a href="{{ api }}assets/csr-0001.json"><code>api/v0/assets/csr-0001.json</code></a></td><td>One record</td></tr>
+<tr><td><a href="{{ api }}taxonomy/capabilities.json"><code>api/v0/taxonomy/capabilities.json</code></a></td><td>Taxonomy terms with definitions (also <a href="{{ api }}taxonomy/sectors.json">sectors</a> and <a href="{{ api }}taxonomy/service-areas.json">service areas</a>)</td></tr>
+<tr><td><a href="{{ api }}schema/asset.schema.json"><code>api/v0/schema/asset.schema.json</code></a></td><td>The JSON Schema</td></tr>
+<tr><td><code>api/v0/harvest-state.json</code></td><td>Each owner-hosted source: last harvest, state, content hash. Published once the harvester runs.</td></tr>
+</tbody></table></div>
+
+<h2>Sample response</h2>
+<details class="ds_details" open="open" data-module="ds-details">
+<summary class="ds_details__summary">GET api/v0/assets/csr-0001.json</summary>
+<div class="ds_details__text">
+<pre class="csr-pre">{{ sample }}</pre>
+</div>
+</details>
+</div>
+</main>
+{% endblock %}

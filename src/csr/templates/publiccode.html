@@ -1,0 +1,51 @@
+{% extends "base.html" %}
+{% block title %}Solutions, codebases and publiccode.yml{% endblock %}
+{% block main %}
+<main class="ds_layout ds_layout--search-results" id="main-content">
+<div class="ds_layout__header">
+<header class="ds_page-header">
+<span class="ds_page-header__label ds_content-label">Standards reuse</span>
+<h1 class="ds_page-header__title">Solutions, codebases and publiccode.yml</h1>
+</header>
+<p class="ds_leader">A common solution is what an owner offers for reuse. Its code, if it has any, is one or more codebases. The register describes solutions with solution.yml, and links to their codebases, which keep using the European publiccode.yml standard unchanged.</p>
+</div>
+<div class="ds_layout__content">
+<div class="csr-table"><table class="ds_table">
+<thead><tr><th scope="col"><span class="visually-hidden">Question</span></th><th scope="col">solution.yml</th><th scope="col">publiccode.yml</th></tr></thead>
+<tbody>
+<tr><th scope="row">Describes</th><td>A common solution: what is offered, by whom, and how to adopt it</td><td>A codebase: one software repository</td></tr>
+<tr><th scope="row">Lives</th><td>Wherever the owner chooses, or in the register</td><td>At the root of the codebase's repository</td></tr>
+<tr><th scope="row">How many</th><td>One per solution</td><td>One per codebase. A solution may have none, one or several.</td></tr>
+<tr><th scope="row">Relationship</th><td>Lists its codebases</td><td>Validated by the register when a solution links to it</td></tr>
+</tbody></table></div>
+
+<div class="ds_notification-panel ds_notification-panel--neutral">
+<h2 class="ds_notification-panel__title">Worked example: this demonstrator</h2>
+<div class="ds_notification-panel__content"><p>The register is a <strong>service</strong> (record <a href="{{ root }}assets/csr-0001/">csr-0001</a>). The repository that builds it is its <strong>codebase</strong>. Official parser result for that codebase: <strong class="ds_tag ds_tag--grey">Not yet checked</strong></p></div>
+</div>
+<div class="csr-pair">
+<section aria-labelledby="h-sol">
+<h2 class="ds_h3" id="h-sol">solution.yml (the solution)</h2>
+<pre class="csr-pre">{{ solution }}</pre>
+</section>
+<section aria-labelledby="h-pc">
+<h2 class="ds_h3" id="h-pc">publiccode.yml (its codebase)</h2>
+<pre class="csr-pre">{{ publiccode }}</pre>
+</section>
+</div>
+
+<h2>What the register takes from a codebase's publiccode.yml</h2>
+<div class="csr-table"><table class="ds_table">
+<thead><tr><th scope="col">publiccode.yml</th><th scope="col">solution.yml</th><th scope="col">Treatment</th></tr></thead>
+<tbody>
+<tr><td><code>url</code></td><td><code>codebases[].repository_url</code></td><td>Copied</td></tr>
+<tr><td><code>maintenance.type</code></td><td><code>codebases[].maintenance</code></td><td>Copied: internal, contract, community or none</td></tr>
+<tr><td><code>softwareVersion</code></td><td><code>codebases[].version</code></td><td>Copied</td></tr>
+<tr><td><code>maintenance.contacts</code></td><td><code>codebases[].maintainers</code></td><td>Name, affiliation and email; phone not imported</td></tr>
+<tr><td><code>name</code>, <code>description</code>, <code>developmentStatus</code>, <code>landingURL</code>, <code>legal.license</code></td><td>Solution name, summary, purpose, status, service page, terms</td><td>Suggested only when drafting a new solution: the owner confirms or changes them, because a codebase's description is not necessarily the solution's</td></tr>
+<tr><td><code>categories</code></td><td>(none)</td><td>Shown as hints for choosing capabilities</td></tr>
+</tbody></table></div>
+<p>A public repository on its own is not a common solution. The register lists it only as a codebase of a solution that someone offers for reuse.</p>
+</div>
+</main>
+{% endblock %}

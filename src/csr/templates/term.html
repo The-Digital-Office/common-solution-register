@@ -1,0 +1,50 @@
+{% extends "base.html" %}
+{% from "partials/values.html" import row, result with context %}
+{% set folder, kind_label, _, verb = kind %}
+{% block title %}{{ term.label }}{% endblock %}
+{% block before_main %}
+<nav aria-label="Breadcrumb">
+<ol class="ds_breadcrumbs">
+<li class="ds_breadcrumbs__item"><a class="ds_breadcrumbs__link" href="{{ root }}">Home</a></li>
+<li class="ds_breadcrumbs__item"><a class="ds_breadcrumbs__link" href="{{ root }}browse/">Browse</a></li>
+<li class="ds_breadcrumbs__item">{{ {"sectors": "Sectors", "service-areas": "Service areas", "capabilities": "Capabilities"}[taxonomy.name] }}</li>
+</ol>
+</nav>
+{% endblock %}
+{% block main %}
+<main class="ds_layout ds_layout--search-results" id="main-content">
+<div class="ds_layout__header">
+<header class="ds_page-header">
+<span class="ds_page-header__label ds_content-label">{{ kind_label }}</span>
+<h1 class="ds_page-header__title">{{ term.label }}</h1>
+</header>
+</div>
+<div class="ds_layout__content">
+<dl class="ds_summary-list">
+{% call row("Definition") %}{{ term.definition }}{% endcall %}
+{% if term.synonyms %}{% call row("Also known as") %}{{ term.synonyms | join("; ") }}{% endcall %}{% endif %}
+{% call row("Term ID") %}<code>{{ term.id }}</code>{% endcall %}
+{% call row("Status") %}{{ "Deprecated" if term.deprecated else "Active" }} (draft taxonomy v{{ taxonomy.version }}){% endcall %}
+</dl>
+<p><a href="{{ config.repository_url }}/issues/new?title={{ ('Taxonomy: ' ~ term.id) | urlencode }}">Suggest a change to this term</a></p>
+</div>
+<div class="ds_layout__list">
+{% set n = entries | length %}
+<h2 class="ds_search-results__title ds_h3">{{ n }} solution{{ "" if n == 1 else "s" }} {{ verb[0] if n == 1 else verb[1] }}</h2>
+{% if entries %}
+<ol class="ds_search-results__list">
+{% for entry in entries %}{{ result(entry) }}{% endfor %}
+</ol>
+{% else %}
+<p>No solutions in the register use this term yet.</p>
+{% endif %}
+{% if related_terms %}
+<h2 class="ds_h3">Related terms</h2>
+<ul class="ds_no-bullets">
+{% for t in related_terms %}<li><a href="{{ root }}{{ folder }}/{{ t.id }}/">{{ t.label }}</a></li>
+{% endfor %}
+</ul>
+{% endif %}
+</div>
+</main>
+{% endblock %}
