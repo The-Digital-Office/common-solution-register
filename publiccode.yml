@@ -1,0 +1,70 @@
+# publiccode.yml: describes this software using the publiccode.yml standard.
+# Specification: https://yml.publiccode.tools
+#
+# Required for PUBLIC SOFTWARE repositories in The Digital Office. If this
+# repository is documentation rather than software, add the 'documentation'
+# topic to the repository and delete this file.
+#
+# Values starting with "TODO" must be completed. They are warnings until the
+# first release tag, then errors. Lines marked "Review" have a sensible
+# default that you should confirm. Everything else is a Digital Office default.
+
+publiccodeYmlVersion: "0"
+
+name: "{{REPO_NAME}}"
+url: "{{REPO_URL}}"
+
+# Review: how people use the software: web, windows, mac, linux, ios, android.
+platforms:
+  - web
+
+# Review: concept, development, beta, stable or obsolete.
+developmentStatus: development
+
+# Review: standalone/web, standalone/backend, standalone/desktop,
+# standalone/mobile, standalone/iot, standalone/other, addon, library,
+# configurationFiles.
+softwareType: "standalone/other"
+
+# Review: one or more values from
+# https://yml.publiccode.tools/categories-list.html
+categories:
+  - other
+
+organisation:
+  uri: "https://github.com/The-Digital-Office"
+  name: "The Digital Office for Scottish Local Government"
+
+intendedAudience:
+  countries:
+    - GB
+  scope:
+    - local-authorities
+    - government
+
+description:
+  en:
+    shortDescription: >-
+      TODO: One sentence, up to 150 characters, saying what this software does.
+    longDescription: >-
+      TODO: Describe the software for someone deciding whether to reuse it.
+      Explain the problem it solves, who it is for, what it does and how it
+      fits with other systems. Between 150 and 10,000 characters; Markdown is
+      allowed.
+    features:
+      - "TODO: A main feature, as a short phrase"
+
+legal:
+  license: MIT
+  mainCopyrightOwner: "The Digital Office for Scottish Local Government"
+
+maintenance:
+  type: internal
+  contacts:
+    - name: "{{MAINTAINER_NAME}}"
+      affiliation: "The Digital Office for Scottish Local Government"
+
+localisation:
+  localisationReady: false
+  availableLanguages:
+    - en

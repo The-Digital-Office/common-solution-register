@@ -1,0 +1,4 @@
+# Normalise line endings in the repository, and always check out shell
+# scripts with LF endings so they run in bash on Windows (Git Bash) too.
+* text=auto
+*.sh text eol=lf
