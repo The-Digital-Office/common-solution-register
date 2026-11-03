@@ -56,6 +56,7 @@ and this project uses [Semantic Versioning](https://semver.org/spec/v2.0.0.html)
 - `publiccode.yml` completed: description, features, `softwareType: standalone/web` and categories.
 - The visual baselines in `ui/baseline/` are now screenshots of the built pages (they were the wireframe images), with 375-pixel images added.
 - The phase banner is a named region, sidebar asides are named by their headings, and scrolling code examples can be reached with the keyboard.
+- Dependabot proposes only patch releases of Playwright; minor and major upgrades are made deliberately, with the UI baselines remade.
 - R07 treats hyphenated addresses (such as `solution-register@`) as role mailboxes, and knows more role words.
 - `csr validate` and the harvest report describe schema problems in plain words, one per field, with the same wording as the draft form and validate page.
 

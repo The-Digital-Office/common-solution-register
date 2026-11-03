@@ -49,6 +49,13 @@ the fixture register in `ui/tests/fixtures/` and runs, in Chromium:
 The `UI tests` job in `site.yml` runs them on every pull request and uploads the report and image
 differences if they fail.
 
+**Upgrading Playwright.** Dependabot proposes only patch releases of Playwright. To move to a new
+minor or major version, change `@playwright/test` in `package.json` and the `playwright-core`
+override to the same version, run `npm install --package-lock-only --ignore-scripts`, then remake
+the baselines (the Site workflow's `update-baselines` option), review the images and commit them
+in the same pull request. A new Playwright brings a new Chromium, which draws text slightly
+differently.
+
 ## Page-to-template map
 
 | Wireframe | Template | Built path | Slice |

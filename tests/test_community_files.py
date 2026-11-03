@@ -116,3 +116,11 @@ def test_reusable_workflow():
     inputs = data[True]["workflow_call"]["inputs"]
     assert set(inputs) == {"path", "publiccode", "register-repository", "register-ref"}
     assert inputs["register-ref"]["default"] == "v0"
+
+
+def test_dependabot_leaves_playwright_upgrades_to_people():
+    data = yaml.safe_load((ROOT / ".github" / "dependabot.yml").read_text(encoding="utf-8"))
+    npm = next(u for u in data["updates"] if u["package-ecosystem"] == "npm")
+    ignored = {i["dependency-name"]: set(i["update-types"]) for i in npm["ignore"]}
+    for name in ("@playwright/test", "playwright", "playwright-core"):
+        assert ignored[name] == {"version-update:semver-minor", "version-update:semver-major"}
