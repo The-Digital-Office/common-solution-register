@@ -1,0 +1,53 @@
+name: Suggest a correction
+description: Tell us something in a record is wrong or out of date, or ask for a record to be removed.
+title: "Correction: "
+labels: ["correction"]
+body:
+  - type: markdown
+    attributes:
+      value: |
+        You can also use **Suggest a correction** on the record's page, which fills in a form for you.
+        During the demonstrator, records about real organisations are removed on request.
+
+        **GitHub issues are public.** Do not include personal data.
+        By submitting, you agree your submission may be published under the Open Government Licence v3.0.
+  - type: input
+    id: record-id
+    attributes:
+      label: Record ID
+      description: Shown on the record's page, for example csr-0002.
+      placeholder: csr-NNNN
+    validations:
+      required: true
+  - type: dropdown
+    id: request
+    attributes:
+      label: What would you like?
+      options:
+        - Correct the record
+        - Remove the record
+    validations:
+      required: true
+  - type: textarea
+    id: what-is-wrong
+    attributes:
+      label: What is wrong?
+      description: Which details are wrong or out of date, and what they should say.
+    validations:
+      required: true
+  - type: textarea
+    id: evidence
+    attributes:
+      label: Where can this be checked?
+      description: A public page that shows the correct details, if there is one.
+    validations:
+      required: false
+  - type: dropdown
+    id: owner
+    attributes:
+      label: Are you from the owning organisation?
+      options:
+        - "Yes"
+        - "No"
+    validations:
+      required: true

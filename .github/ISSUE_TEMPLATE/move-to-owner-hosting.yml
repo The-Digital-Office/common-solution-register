@@ -1,0 +1,41 @@
+name: Host our own solution.yml
+description: Ask for a record to be published from a solution.yml your organisation hosts.
+title: "Move to owner hosting: "
+labels: ["owner hosting"]
+body:
+  - type: markdown
+    attributes:
+      value: |
+        Once your record is moved, the register harvests your solution.yml daily, and your changes are published after validation, without a maintainer's review.
+
+        1. Download solution.yml from your record's page and adjust it if needed.
+        2. Publish it at an HTTPS address, ideally the root of the solution's own repository, beside any publiccode.yml.
+        3. Check it on the [validate page](https://the-digital-office.github.io/common-solution-register/validate/).
+        4. Give the record ID and the address below. A maintainer opens a pull request, which fetches and checks your file, including that its id and owner match the record.
+
+        **GitHub issues are public.**
+        By submitting, you agree your submission may be published under the Open Government Licence v3.0.
+  - type: input
+    id: record-id
+    attributes:
+      label: Record ID
+      placeholder: csr-NNNN
+    validations:
+      required: true
+  - type: input
+    id: source
+    attributes:
+      label: Address of your solution.yml
+      description: An HTTPS address that returns the file itself. For a file on GitHub, use its raw address.
+      placeholder: https://github.com/your-organisation/your-repository/raw/main/solution.yml
+    validations:
+      required: true
+  - type: checkboxes
+    id: confirm
+    attributes:
+      label: Confirm
+      options:
+        - label: I am from the owning organisation, and the file's owner.organisation matches the record's.
+          required: true
+        - label: The file passes the validate page.
+          required: true
