@@ -471,4 +471,38 @@ Newest last. One line per checkpoint; a fuller entry when a session ends.
     >
     > - [x] `CHANGELOG.md` updated under Unreleased
     > - [x] No secrets or personal data
+- 2026-11-03 — S12 merged.
+- 2026-11-03 — S13a done: `site.yml` rewritten for specification 6.10: triggers pull requests, pushes to `main`, `workflow_dispatch` and a daily schedule (05:23 UTC); concurrency per pull request (cancelling) and one queue for `main` (never cancelling a deployment). `Validate` installs the pinned parser, runs `pytest` and `csr validate` (`--base` on pull requests); on pull requests it harvests this repository's sources without the network, then fetches any pointer the pull request adds or changes with `--fail-on-problems` (specification 6.12 step 3); on other triggers it harvests every source from the live state and writes the report to the job summary; it builds from the harvest, uploads a preview on pull requests, and uploads the Pages artifact only when `PAGES_ENABLED` is `true`. `Deploy` (`actions/deploy-pages`) is skipped until then. `Reusable workflow` runs `validate-solution.yml` on this repository's own files at the commit being tested. `validate-solution.yml` (`on: workflow_call`; inputs `path`, `publiccode`, `register-repository`, `register-ref`, default `v0`) checks an owner's `solution.yml` with `csr validate` and any `publiccode.yml` with the official parser. New CLI: `csr harvest --fail-on-problems` (owners' sources only) and `--summary PATH` (Markdown), and `csr check-publiccode PATH`. All actions pinned by SHA.
+- 2026-11-03 — S13b done: `.github/ISSUE_TEMPLATE/`: `suggest-asset.yml` (one YAML text area, `render: yaml`, plus `asset-name`, `organisation` and `contact`, the ids the draft form pre-fills), `suggest-correction.yml`, `move-to-owner-hosting.yml` (record id and HTTPS address, with the owner's confirmation), `feedback.yml`; the organisation's `bug_report.yml` and `change_request.yml` copied unchanged (a repository's own forms replace the organisation's); `config.yml` with links to the draft form, validate page and security policy. Every register form says issues are public and carries the OGL statement. `.github/pull_request_template.md` keeps the organisation's sections and checklist word for word and adds a Records section (provenance, sources, OGL and MIT agreement). `tests/test_community_files.py`, including an issue rendered from the form going through `csr new --from-issue`, and every action pinned by SHA.
+- 2026-11-03 — **S13 ready for pull request.**
+  - **Done:** S13a–b. `pytest -q`: 352 passed, 1 skipped (the real-parser test, which runs in CI).
+  - **Next:** author opens the pull request from `robbie/wizardly-dijkstra-2sjib7` and checks it: `Validate` (with the harvest step) and `Reusable workflow / solution.yml` pass; `Deploy` does not run on a pull request. After merging, the push to `main` runs the full harvest and shows `Deploy` as skipped. Then S14 (UI tests). **Before S14 starts, the author should decide the UI departures in `docs/ui-requirements.md`** (D1–D32): S14 approves baselines from the built pages, so later UI changes also mean re-approving baselines.
+  - **Blockers:** none.
+  - **Author steps from this slice:**
+    - Create the labels the register's forms apply (missing labels are not applied): `gh label create "new record" --color 0e8a16`, `gh label create correction --color fbca04`, `gh label create "owner hosting" --color 1d76db`, `gh label create feedback --color c5def5` (with `--repo The-Digital-Office/common-solution-register`).
+    - After merging, tag `main` as `v0` (`git tag v0 && git push origin v0`), the version owners' workflows call; move the tag when the reusable workflow or rules change compatibly.
+    - At publication (S16): set Settings → Pages → Source to "GitHub Actions" and the repository variable `PAGES_ENABLED` to `true`.
+  - **Pull request title:** Add the workflows, issue forms and pull request template (S13)
+  - **Pull request description (organisation template):**
+
+    > ## What and why
+    >
+    > Adds the workflows and community files (slice S13 of `docs/build/PLAN.md`; specification 6.6 and 6.10).
+    >
+    > - `site.yml` runs on pull requests, pushes to `main`, on demand and daily, with one queue for `main` so a deployment is never cut off. Pull requests harvest the sources in this repository and fetch any pointer they add or change, which must pass before the pull request can merge. Other runs harvest every registered source from the state on the live site and write the harvest report to the job summary. Deployment to GitHub Pages is skipped until the repository variable `PAGES_ENABLED` is `true`.
+    > - `validate-solution.yml` is a reusable workflow owners call from their own repositories to check their `solution.yml` and `publiccode.yml`. `site.yml` runs it on this repository's own files.
+    > - Issue forms: suggest a solution (pre-filled by the draft form), suggest a correction, host our own solution.yml, and give feedback, each saying issues are public and carrying the Open Government Licence statement. The organisation's bug report and change request are kept, because a repository's own forms replace the organisation's.
+    > - A pull request template that keeps the organisation's sections and checklist and adds provenance, sources and the licence agreement.
+    > - `csr harvest --fail-on-problems` and `--summary`, and `csr check-publiccode`, for the workflows.
+    >
+    > ## How it was checked
+    >
+    > `pytest -q` (352 passed, 1 skipped) on Python 3.12, including tests that the suggest-asset form has exactly the fields the draft form fills in, that an issue rendered from it becomes a valid record, that the pull request template keeps the organisation's, and that every action is pinned by SHA. The workflows themselves run on this pull request.
+    >
+    > ## Checklist
+    >
+    > - [x] `CHANGELOG.md` updated under **Unreleased** (if users would notice the change)
+    > - [x] Documentation updated (if behaviour or setup changed)
+    > - [x] No secrets, credentials or personal data added
+    > - [x] `publiccode.yml` still accurate (public software repositories only)
 

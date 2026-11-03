@@ -385,3 +385,26 @@ def r17_findings(source_label: str, data: dict, publiccode: dict) -> list[Findin
                                  f"the linked publiccode.yml fails the official parser: {detail}",
                                  "Correct the codebase's publiccode.yml; the parser's messages say what to change."))  # fmt: skip
     return found
+
+
+def markdown_report(state: dict, results: list[SourceResult]) -> str:
+    """The harvest report as Markdown, for a workflow's job summary."""
+    labels = {"ok": "OK", "failing": "Failing validation", "unavailable": "Unavailable", "not-harvested": "Not harvested"}
+    lines = ["## Harvest report", "", f"Run at {state.get('generated') or 'unknown time'}. "
+             f"{len(state.get('sources', {}))} registered sources.", "",
+             "| Record | Source | State | Last harvested |", "|---|---|---|---|"]  # fmt: skip
+    for record_id, entry in sorted(state.get("sources", {}).items()):
+        lines.append(f"| {record_id} | {entry.get('source', '')} | {labels.get(entry.get('state'), entry.get('state'))} "
+                     f"| {entry.get('harvested_at') or 'Never'} |")  # fmt: skip
+    problems = [r for r in results if r.findings]
+    if problems:
+        lines += ["", "### Problems", ""]
+        for result in problems:
+            lines.append(f"**{result.id}** ({labels.get(result.state, result.state)}):")
+            lines += [f"- {f.severity} {f.rule}{' `' + f.path + '`' if f.path else ''}: {f.message}" for f in result.findings]
+            lines.append("")
+    checked = state.get("publiccode", {})
+    if checked:
+        lines += ["", "### publiccode.yml (official parser)", "", "| File | Verdict |", "|---|---|"]
+        lines += [f"| {url} | {verdict.get('state')} |" for url, verdict in sorted(checked.items())]
+    return "\n".join(lines) + "\n"

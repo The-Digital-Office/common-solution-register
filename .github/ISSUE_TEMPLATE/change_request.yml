@@ -1,0 +1,27 @@
+# Copied unchanged from The-Digital-Office/.github: a repository's own issue forms replace the
+# organisation's, so the organisation's are kept here alongside the register's.
+name: Change request
+description: Suggest a new feature, improvement or change.
+labels: ["enhancement"]
+body:
+  - type: textarea
+    id: need
+    attributes:
+      label: What is the need?
+      description: Describe the problem or opportunity, and who it affects. Focus on the need rather than the solution.
+    validations:
+      required: true
+  - type: textarea
+    id: proposal
+    attributes:
+      label: Proposed change
+      description: How you think it could be met, if you have a view.
+    validations:
+      required: false
+  - type: textarea
+    id: done
+    attributes:
+      label: How will we know it is done?
+      description: Acceptance criteria, if known.
+    validations:
+      required: false

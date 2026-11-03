@@ -1,0 +1,39 @@
+name: Suggest a solution
+description: Propose a solution for the register, with its solution.yml.
+title: "Suggest a solution: "
+labels: ["new record"]
+body:
+  - type: markdown
+    attributes:
+      value: |
+        The easiest way to fill this in is the [Add a solution form](https://the-digital-office.github.io/common-solution-register/draft/): it checks your answers and opens this issue with everything filled in.
+
+        **GitHub issues are public.** Do not include personal data, such as a named person's email address: give a role-based contact.
+        By submitting, you agree your submission may be published under the Open Government Licence v3.0.
+  - type: input
+    id: asset-name
+    attributes:
+      label: Solution name
+    validations:
+      required: true
+  - type: input
+    id: organisation
+    attributes:
+      label: Owning organisation
+    validations:
+      required: true
+  - type: input
+    id: contact
+    attributes:
+      label: Contact
+      description: A role mailbox, service desk or web form, not a named person.
+    validations:
+      required: true
+  - type: textarea
+    id: solution-yml
+    attributes:
+      label: solution.yml
+      description: Paste the solution.yml from the Add a solution form, or one you have written and checked on the [validate page](https://the-digital-office.github.io/common-solution-register/validate/).
+      render: yaml
+    validations:
+      required: true

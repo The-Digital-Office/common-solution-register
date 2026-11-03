@@ -1,0 +1,33 @@
+name: Give feedback
+description: Tell us what works, what is missing and what you would change.
+title: "Feedback: "
+labels: ["feedback"]
+body:
+  - type: markdown
+    attributes:
+      value: |
+        Thank you. Feedback informs the short-life working group's decisions about a common solution register.
+        If you do not have a GitHub account, the [About page](https://the-digital-office.github.io/common-solution-register/about/#feedback) gives another way to send feedback.
+
+        **GitHub issues are public.** Do not include personal data.
+        By submitting, you agree your submission may be published under the Open Government Licence v3.0.
+  - type: textarea
+    id: feedback
+    attributes:
+      label: Your feedback
+    validations:
+      required: true
+  - type: input
+    id: page
+    attributes:
+      label: Which page or record is it about?
+      description: Optional. An address or a record ID.
+    validations:
+      required: false
+  - type: input
+    id: role
+    attributes:
+      label: Your role or organisation
+      description: Optional. It helps us understand the feedback; leave it blank if you prefer.
+    validations:
+      required: false
