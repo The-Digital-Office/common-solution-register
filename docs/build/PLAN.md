@@ -401,4 +401,6 @@ Newest last. One line per checkpoint; a fuller entry when a session ends.
     >
     > - [x] `CHANGELOG.md` updated under Unreleased
     > - [x] No secrets or personal data
+- 2026-11-03 — S10 merged.
+- 2026-11-03 — S11a done: `src/csr/harvest.py` fetches each pointer's source over HTTPS within the size limit and timeout, refusing redirects to non-HTTPS addresses (R15); sources in this repository are read from the working tree; checks R14 (id and owner match), R16 (owner-hosted status) and the schema and rules; `tests/test_harvest.py` with a fake network. **Next:** S11b (state, `csr harvest`, build integration).
 
