@@ -78,7 +78,7 @@ def test_404_links_start_from_the_site_root(site):
 
 def test_browse_counts(site):
     html = read(site, "browse/index.html")
-    assert "Local government</a></h3><p class=\"ds_category-item__summary csr-count\">7 solutions" in html
+    assert "Local government</a></h3><p class=\"ds_category-item__summary csr-count\">8 solutions" in html
     assert "Police and fire" in html  # every sector is listed, even with no solutions
     assert "Health and care" not in html  # service areas and capabilities without solutions are not
     assert "All 14 service areas, with definitions" in html
