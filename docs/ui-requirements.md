@@ -48,10 +48,21 @@ actions column, the results heading row, filters and wide tables. Wireframe
 | Validate | `validate.html` | `validate/` | S10 (`static/js/validate.js`, with `record-check.js`, Ajv and `js-yaml`) |
 | Harvest | `harvest.html` | `harvest/` | S11 (from the harvest state; `src/csr/harvest.py`) |
 
-## Departures and open questions for the author
+## Departures and the author's decisions
 
-Raised rather than resolved silently (section 6.13). Each is the build's
-current choice until the author decides.
+Raised rather than resolved silently (section 6.13). **Decided by the author
+on 3 November 2026**, before the visual baselines were approved (slice S14):
+
+| # | Decision |
+|---|---|
+| D1 | As built: the long banner on the home page and the short banner on every other page, as the wireframes show. Section 6.8 of the specification is to be corrected to match (S16). |
+| D2, D3 | As built: one record template with the union of the three record wireframes' sections and sidebar. |
+| D4 | As built: generic wording in the fictional-example panel. |
+| D5 | Changed: Roboto, the design system's typeface, and Roboto Mono for code are served from the site itself (`static/fonts.css`, `vendor/roboto/`, `vendor/roboto-mono/`); no font service is contacted. |
+| D19 | As built: all eight sectors under "Intended for". |
+| All others | Accepted as built. |
+
+The table below records each departure as raised.
 
 | # | Where | Wireframe or specification | Build | Why |
 |---|---|---|---|---|
@@ -59,7 +70,7 @@ current choice until the author decides.
 | D2 | Record page sidebar | The three record wireframes differ. Record-Hosted has "Actions" (buttons and links), Contents and Record history. Record-Demonstration has "Service links", "Is this your service?", "Use this record" and Contents. Record-Example has "Service links", "Use this record" and "Other states shown by examples". | One template with: "Service links" (when the record has service addresses); "Is this your service?" (demonstration records); "Use this record"; Contents; "Other states shown by examples" (examples, generated from the example records); Record history | Section 6.13 requires one template; this is the union, using the headings two of the three wireframes share |
 | D3 | Record page sections | Record-Example omits Classification, the owning sector, Record ID and Hosting, and lists codebases as a summary list. | Every record shows every section of Record-Hosted, and codebases as a table | One template; the fullest wireframe is followed |
 | D4 | Fictional-example panel | Explains the specific state, for example "It shows how the register displays a deprecated service whose record has not been confirmed for over 12 months." | "This record does not describe a real ‹type›. It shows how the register displays a record like this." | The schema has no field for the explanation; the tags and notices on the page show the state. A field could be added if the author wants the specific wording |
-| D5 | Font | The wireframes load Roboto from Google Fonts | No web font is loaded; the design system's font stack falls back to Helvetica or Arial | Loading fonts from Google would send visitors' addresses to a third party, against the privacy notice (section 6.9). Vendoring Roboto (Apache 2.0) is an option for S14, where it matters for visual comparison |
+| D5 | Font | The wireframes load Roboto from Google Fonts | Decided: Roboto (and Roboto Mono for code) served from the site itself | Loading fonts from Google would send visitors' addresses to a third party, against the privacy notice (section 6.9) |
 | D6 | "Hosted by its owner" panel | "It was last harvested on [harvest date] and passed validation." | Resolved in S11: as the wireframe, with the harvest date and time; a failing or unavailable source shows a warning, "Source failing validation since ‹date›" or "Source unavailable since ‹date›", in place of the panel | — |
 | D7 | publiccode.yml column | "Valid (official parser)" | Resolved in S11: the parser's verdict from the harvest state: "Valid (official parser)", "Fails the official parser" (with its messages), "Unavailable" or "Not yet checked" | — |
 | D8 | Home page without JavaScript | Not shown | Filters and sorting are hidden; the full list of current (not withdrawn) records is shown, sorted by name | Section 6.13 parity table; withdrawn records stay reachable at their address |

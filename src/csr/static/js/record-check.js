@@ -205,9 +205,10 @@ export function check(validate, record, { today = '', context = null } = {}) {
 /** Local parts of email addresses that name a role, not a person (R07). */
 const ROLE_WORDS = new Set(['admin', 'contact', 'contactus', 'customer', 'customers', 'data', 'digital', 'dpo',
   'enquiries', 'enquiry', 'feedback', 'foi', 'hello', 'help', 'helpdesk', 'info', 'information', 'it', 'mail', 'office',
-  'platform', 'platforms', 'product', 'products', 'service', 'servicedesk', 'services', 'support', 'team', 'technology',
-  'web', 'webmaster']);
-const PERSONAL_EMAIL = /^([a-z]{2,})[._-]([a-z]{2,})[0-9]*@/i;
+  'platform', 'platforms', 'product', 'products', 'register', 'registry', 'service', 'servicedesk', 'services',
+  'solution', 'solutions', 'support', 'team', 'technology', 'web', 'webmaster']);
+// firstname.lastname@ or firstname_lastname@; role mailboxes usually use hyphens (digital-services@).
+const PERSONAL_EMAIL = /^([a-z]{2,})[._]([a-z]{2,})[0-9]*@/i;
 const HTTPS = /^https:\/\/[^\s/$.?#][^\s]*$/;
 
 /**

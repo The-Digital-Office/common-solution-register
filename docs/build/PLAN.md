@@ -505,4 +505,6 @@ Newest last. One line per checkpoint; a fuller entry when a session ends.
     > - [x] Documentation updated (if behaviour or setup changed)
     > - [x] No secrets, credentials or personal data added
     > - [x] `publiccode.yml` still accurate (public software repositories only)
+- 2026-11-03 — S13 merged; labels created and `v0` tagged by the author. **Author's decisions (3 November 2026):** UI departures D1–D5 and D19 as recommended (D5: serve Roboto from the site), all others accepted as built; input I3 is the role mailbox `solution-register@digitaloffice.scot` (requested, with an automatic reply), also the feedback route for people without GitHub (I4); reply time 10 working days.
+- 2026-11-03 — S14 preparation (one commit): decisions recorded in `docs/ui-requirements.md`; Roboto (300, 400, 400 italic, 700) and Roboto Mono (400), Latin and Latin Extended, vendored from `@fontsource` 5.3.0 (OFL-1.1) with `static/fonts.css`, and used for code and YAML; `site.toml` `contact_mailbox` and `accessibility_reply_days = "10"`; `csr-0001`'s contact is the mailbox (`csr-0002`'s stays the issues page: the mailbox is the register's, not the baseline's). R07 now ignores hyphenated local parts and knows more role words (it flagged `solution-register@`), in Python and the browser alike. **Next:** S14a (visual comparison).
 

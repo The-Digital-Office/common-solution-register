@@ -21,8 +21,8 @@ owner:
   organisation: The Digital Office for Scottish Local Government
   sector: local-government
 contact:
-  type: web-form
-  value: https://github.com/The-Digital-Office/common-solution-register/issues
+  type: role-mailbox
+  value: solution-register@digitaloffice.scot
 service_areas:
   - corporate-and-cross-cutting
 capabilities:

@@ -40,6 +40,8 @@ and this project uses [Semantic Versioning](https://semver.org/spec/v2.0.0.html)
 - Harvester (`csr harvest`): fetches each owner-hosted record's registered source over HTTPS within limits (R15), checks the owner match (R14), the allowed statuses (R16), the schema and rules, and each linked `publiccode.yml` with the official parser (R17), keeping the last valid copy, content hash and dates in a harvest state published at `api/v0/harvest-state.json`. `csr build --harvest` publishes from that state.
 - Harvest report page (`harvest/`), and harvest states on owner-hosted record pages.
 - `tools/install-publiccode-parser.py`: installs publiccode-parser-go v5.4.3 with verified checksums; the `Validate` job uses it.
+- Roboto and Roboto Mono, served from the site itself (decision D5), with their licences and pinned hashes.
+- The role mailbox `solution-register@digitaloffice.scot` for the site, emailed drafts and feedback, with a 10 working day reply time; it is also `csr-0001`'s contact.
 - Workflows: `site.yml` runs on pull requests, pushes to `main`, on demand and daily; pull requests fetch and check any pointer they add or change; other runs harvest every source and report it in the job summary; deployment to GitHub Pages is skipped until the `PAGES_ENABLED` variable is `true`. `validate-solution.yml` is a reusable workflow owners call to check their `solution.yml` and `publiccode.yml`.
 - `csr harvest --fail-on-problems` and `--summary`, and `csr check-publiccode`.
 - Issue forms: suggest a solution, suggest a correction, host our own solution.yml, and give feedback, alongside the organisation's bug report and change request; and a pull request template that keeps the organisation's and adds provenance, sources and the licence agreement.
@@ -51,6 +53,7 @@ and this project uses [Semantic Versioning](https://semver.org/spec/v2.0.0.html)
 
 - `.gitignore` extended for Python, the built site and UI test tooling.
 - `publiccode.yml` completed: description, features, `softwareType: standalone/web` and categories.
+- R07 treats hyphenated addresses (such as `solution-register@`) as role mailboxes, and knows more role words.
 - `csr validate` and the harvest report describe schema problems in plain words, one per field, with the same wording as the draft form and validate page.
 
 ### Fixed
