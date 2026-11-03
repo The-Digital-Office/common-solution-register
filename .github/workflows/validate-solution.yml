@@ -1,0 +1,83 @@
+name: Validate solution.yml
+
+# A reusable workflow for owners who host their own solution.yml (specification
+# 6.10). It checks the file against the register's schema and rules, and any
+# publiccode.yml with the official parser, on every pull request. In the
+# owner's repository:
+#
+#   name: Common solution register
+#   on: [pull_request]
+#   permissions:
+#     contents: read
+#   jobs:
+#     solution:
+#       uses: The-Digital-Office/common-solution-register/.github/workflows/validate-solution.yml@v0
+#
+# Inputs (all optional): path (default solution.yml), publiccode (default
+# publiccode.yml; skipped if the file does not exist), register-repository and
+# register-ref (the register to check against; default this repository at v0).
+
+on:
+  workflow_call:
+    inputs:
+      path:
+        description: Path of the solution.yml to check
+        type: string
+        default: solution.yml
+      publiccode:
+        description: Path of a publiccode.yml to check with the official parser, if it exists
+        type: string
+        default: publiccode.yml
+      register-repository:
+        description: The register whose schema and rules to use
+        type: string
+        default: The-Digital-Office/common-solution-register
+      register-ref:
+        description: The version of the register to use
+        type: string
+        default: v0
+
+permissions:
+  contents: read
+
+jobs:
+  validate:
+    name: solution.yml
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          persist-credentials: false
+
+      - name: Check out the register
+        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          repository: ${{ inputs.register-repository }}
+          ref: ${{ inputs.register-ref }}
+          path: .common-solution-register
+          persist-credentials: false
+
+      - uses: actions/setup-python@6d4fd22b20465ccc0f7354476588e8df7c9ca0e0 # v7.1.0
+        with:
+          python-version: "3.12"
+
+      - name: Install the register's tools
+        run: |
+          python -m pip install -e ./.common-solution-register
+          python .common-solution-register/tools/install-publiccode-parser.py
+
+      - name: Check solution.yml
+        env:
+          SOLUTION: ${{ inputs.path }}
+        run: csr validate --format github "$SOLUTION"
+
+      - name: Check publiccode.yml
+        env:
+          PUBLICCODE: ${{ inputs.publiccode }}
+        run: |
+          if [[ -f "$PUBLICCODE" ]]; then
+            csr check-publiccode "$PUBLICCODE"
+          else
+            echo "No $PUBLICCODE: nothing to check."
+          fi

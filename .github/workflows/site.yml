@@ -1,26 +1,40 @@
 name: Site
 
-# Validates the register and its tooling. Later slices add the UI tests and
-# deploy jobs (spec 6.10).
+# Tests, validates, harvests, builds and (once enabled) deploys the register
+# (specification 6.10).
+#
+# Pull requests: run the tests, validate the records against the base branch,
+# harvest the sources in this repository, fetch and check any pointer the pull
+# request adds or changes (it must pass), build, and upload a preview.
+#
+# Pushes to main, the daily schedule and on-demand runs: harvest every
+# registered source, starting from the state published on the live site,
+# validate, build, and write the harvest report to the job summary. The site
+# is deployed to GitHub Pages only when the repository variable PAGES_ENABLED
+# is "true"; until then the deploy job is skipped.
 
 on:
   pull_request:
   push:
     branches: [main]
   workflow_dispatch:
+  schedule:
+    - cron: "23 5 * * *" # daily at 05:23 UTC
 
 permissions:
   contents: read
 
 concurrency:
-  group: site-${{ github.ref }}
-  cancel-in-progress: true
+  # One run per pull request at a time, newer pushes cancelling older runs.
+  # Runs on main queue instead, so a deployment is never cut off part-way.
+  group: site-${{ github.event_name == 'pull_request' && github.ref || 'main' }}
+  cancel-in-progress: ${{ github.event_name == 'pull_request' }}
 
 jobs:
   validate:
     name: Validate
     runs-on: ubuntu-latest
-    timeout-minutes: 10
+    timeout-minutes: 20
     steps:
       - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
         with:
@@ -53,16 +67,67 @@ jobs:
             csr validate --format github
           fi
 
-      - name: Harvest sources in this repository
-        # Full harvests, with the network, run in the harvest workflow (slice S13).
-        run: csr harvest --no-network --format github
+      - name: Harvest (pull request)
+        if: github.event_name == 'pull_request'
+        env:
+          BASE_REF: ${{ github.base_ref }}
+        run: |
+          csr harvest --no-network --format github
+          # Pointers added or changed by this pull request are fetched now, and must pass
+          # (specification 6.12): the owner's file is checked before it is registered.
+          changed=$(git diff --name-only --diff-filter=AMR "origin/$BASE_REF"...HEAD -- 'records/*.yaml' \
+            | xargs -r -n1 basename | sed 's/\.yaml$//' | tr '\n' ' ')
+          if [[ -n "$changed" ]]; then
+            # shellcheck disable=SC2086 # one argument per record id
+            csr harvest --state .harvest/harvest-state.json --only $changed --fail-on-problems \
+              --format github --summary "$GITHUB_STEP_SUMMARY"
+          fi
+
+      - name: Harvest (every registered source)
+        if: github.event_name != 'pull_request'
+        # Starts from the state published on the live site (state_url in site.toml);
+        # before the first deployment there is none, and the harvest starts fresh.
+        run: csr harvest --format github --summary "$GITHUB_STEP_SUMMARY"
 
       - name: Build site
         run: csr build --harvest .harvest/harvest-state.json
 
       - name: Upload preview
+        if: github.event_name == 'pull_request'
         uses: actions/upload-artifact@cf430e030ddbb5b0abf93d22962f4752f3646cd9 # v7.0.2
         with:
           name: site-preview
           path: site/
           retention-days: 14
+
+      - name: Upload site for GitHub Pages
+        if: github.event_name != 'pull_request' && github.ref == 'refs/heads/main' && vars.PAGES_ENABLED == 'true'
+        uses: actions/upload-pages-artifact@fc324d3547104276b827a68afc52ff2a11cc49c9 # v5.0.0
+        with:
+          path: site/
+
+  deploy:
+    name: Deploy
+    needs: validate
+    # Skipped until an owner of the repository sets the variable PAGES_ENABLED to "true",
+    # after the publication sign-off (specification 9).
+    if: github.event_name != 'pull_request' && github.ref == 'refs/heads/main' && vars.PAGES_ENABLED == 'true'
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    permissions:
+      pages: write
+      id-token: write
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    steps:
+      - id: deployment
+        uses: actions/deploy-pages@368f82528645a54fb793d4d04e342629a3f51346 # v5.0.1
+
+  reusable:
+    name: Reusable workflow
+    # Runs this repository's own solution.yml and publiccode.yml through the workflow
+    # owners call from their repositories, at this commit.
+    uses: ./.github/workflows/validate-solution.yml
+    with:
+      register-ref: ${{ github.sha }}

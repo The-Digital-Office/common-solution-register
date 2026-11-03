@@ -69,6 +69,10 @@ def build_parser() -> argparse.ArgumentParser:
     reap.add_argument("--only", nargs="+", metavar="ID", help="harvest only these records, keeping the others' state")
     reap.add_argument("--no-network", action="store_true", help="read only sources in this repository")
     reap.add_argument("--format", choices=("text", "github"), default="text", help="output format")
+    reap.add_argument("--fail-on-problems", action="store_true",
+                      help="exit 1 if an owner's source harvested in this run is not ok (for pull requests that "
+                           "register one; sources in this repository are checked without it)")  # fmt: skip
+    reap.add_argument("--summary", type=Path, metavar="PATH", help="also write the harvest report as Markdown")
 
     imp = commands.add_parser("import-publiccode", help="add a codebase to a record from a publiccode.yml, or draft a record",
                               description="Import a codebase's publiccode.yml (specification appendix A).")  # fmt: skip
@@ -77,6 +81,11 @@ def build_parser() -> argparse.ArgumentParser:
     target.add_argument("--to", metavar="ID", help="add or update the codebase in this local record")
     target.add_argument("--new", action="store_true", help="draft a new record from the publiccode.yml")
     imp.add_argument("--id", help="with --new: the id to use (default: the next free id)")
+
+    pcc = commands.add_parser("check-publiccode", help="check a publiccode.yml with the official parser",
+                              description="Run the official publiccode.yml parser (installed by "
+                              "tools/install-publiccode-parser.py) on a file, without the network.")  # fmt: skip
+    pcc.add_argument("path")
 
     mts = commands.add_parser("move-to-source", help="replace a local record with a pointer to the owner's solution.yml",
                               description="Fetch and check the owner's solution.yml, then replace the local record "
@@ -109,6 +118,8 @@ def main(argv: Sequence[str] | None = None) -> int:
         return _validate(args)
     if args.command == "harvest":
         return _harvest(args)
+    if args.command == "check-publiccode":
+        return _check_publiccode(Path(args.path))
     if args.command in ("import-publiccode", "move-to-source", "move-to-local", "new"):
         return _tool(args)
     if args.command == "build":
@@ -140,6 +151,23 @@ def _validate(args: argparse.Namespace) -> int:
                 print(f"    Fix: {finding.fix}")
         print(_summary(result))
     return 0 if result.ok else 1
+
+
+def _check_publiccode(path: Path) -> int:
+    if not path.is_file():
+        print(f"csr check-publiccode: {path}: no such file", file=sys.stderr)
+        return 2
+    found = harvest.run_parser(path)
+    if found is None:
+        print("csr check-publiccode: the official parser is not installed: run python tools/install-publiccode-parser.py",
+              file=sys.stderr)  # fmt: skip
+        return 2
+    for f in found:
+        kind = "error" if f.get("type", "error") == "error" else "warning"
+        print(f"::{kind} file={path},line={f.get('line') or 1}::{f.get('key') + ': ' if f.get('key') else ''}{f.get('description', '')}")
+    errors = sum(1 for f in found if f.get("type", "error") == "error")
+    print(f"{path}: {errors} error{'' if errors == 1 else 's'} from publiccode-parser-go {harvest.PARSER_VERSION}.")
+    return 1 if errors else 0
 
 
 def _tool(args: argparse.Namespace) -> int:
@@ -187,7 +215,16 @@ def _harvest(args: argparse.Namespace) -> int:
         for finding in result.findings:
             print(f"    {_github(finding) if args.format == 'github' else finding}")
     print(f"Harvest state written to {args.out}.")
-    # A failing source never stops the build: its last valid version stays published.
+    if args.summary:
+        args.summary.parent.mkdir(parents=True, exist_ok=True)
+        with args.summary.open("a", encoding="utf-8") as summary:
+            summary.write(harvest.markdown_report(state, results))
+    # A failing source never stops a scheduled build: its last valid version stays published.
+    # For a pull request that registers a source, --fail-on-problems stops the merge.
+    problems = [r for r in results if r.state != "ok" and not r.from_repository]  # owners' sources only
+    if args.fail_on_problems and problems:
+        print("Not ok: " + ", ".join(f"{r.id} ({r.state})" for r in problems), file=sys.stderr)
+        return 1
     return 0
 
 

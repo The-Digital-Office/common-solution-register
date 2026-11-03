@@ -373,3 +373,59 @@ def test_record_page_shows_the_parser_verdict(tmp_path):
     other = build(ROOT, tmp_path / "valid", today=dt.date(2026, 11, 20), state=valid)
     assert "Valid (official parser)" in page(other, "assets/csr-0001/index.html")
     assert "Valid (official parser)</strong> (publiccode-parser-go v5.4.3" in page(other, "reference/publiccode/index.html")
+
+
+
+# For the workflows (S13)
+
+
+def test_markdown_report():
+    from csr.harvest import markdown_report
+
+    state, results = run(ROOT, CONFIG, empty_state(), now=DAY1, parser=parser_says())
+    report = markdown_report(state, results)
+    assert report.startswith("## Harvest report")
+    assert "| csr-9007 |" in report and "Failing validation" in report
+    assert "**csr-9007** (Failing validation):" in report
+    assert "### publiccode.yml (official parser)" in report
+
+
+def test_cli_fail_on_problems_and_summary(tmp_path, monkeypatch, capsys):
+    from csr.cli import main
+
+    monkeypatch.setattr("csr.cli.harvest.run_parser", lambda path: [])
+    summary = tmp_path / "summary.md"
+    args = ["harvest", "--no-network", "--state", str(tmp_path / "none.json"), "--out", str(tmp_path / "state.json")]
+    assert main(args + ["--only", "csr-9006", "--fail-on-problems", "--summary", str(summary)]) == 0
+    assert "## Harvest report" in summary.read_text()
+    # csr-9007 fails on purpose, but it is in this repository: --fail-on-problems is for owners' sources.
+    assert main(args + ["--only", "csr-9007", "--fail-on-problems"]) == 0
+
+
+def test_cli_fail_on_problems_for_an_owner_source(tmp_path, monkeypatch, capsys):
+    import shutil
+
+    from csr.cli import main
+
+    for name in ("records", "examples"):
+        shutil.copytree(ROOT / name, tmp_path / name)
+    (tmp_path / "records" / "csr-0010.yaml").write_text(
+        "id: csr-0010\nsource: https://owner.example.gov.uk/solution.yml\nexpected_owner: Example Council\n")
+    monkeypatch.setattr("csr.cli.ROOT", tmp_path)
+    monkeypatch.setattr("csr.cli.harvest.fetch", serve({}))  # the owner's address returns 404
+    args = ["harvest", "--state", str(tmp_path / "none.json"), "--out", str(tmp_path / "state.json")]
+    assert main(args + ["--only", "csr-0010", "--fail-on-problems"]) == 1
+    assert "csr-0010 (unavailable)" in capsys.readouterr().err
+    assert main(args + ["--only", "csr-0010"]) == 0  # a scheduled harvest carries on
+
+
+def test_cli_check_publiccode(tmp_path, monkeypatch, capsys):
+    from csr.cli import main
+
+    monkeypatch.setattr("csr.cli.harvest.run_parser",
+                        lambda path: [{"type": "error", "key": "url", "description": "is required", "line": 2}])  # fmt: skip
+    assert main(["check-publiccode", str(ROOT / "publiccode.yml")]) == 1
+    assert "::error file=" in capsys.readouterr().out
+    monkeypatch.setattr("csr.cli.harvest.run_parser", lambda path: None)
+    assert main(["check-publiccode", str(ROOT / "publiccode.yml")]) == 2
+    assert main(["check-publiccode", str(tmp_path / "missing.yml")]) == 2
