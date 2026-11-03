@@ -40,6 +40,7 @@ and this project uses [Semantic Versioning](https://semver.org/spec/v2.0.0.html)
 - Harvester (`csr harvest`): fetches each owner-hosted record's registered source over HTTPS within limits (R15), checks the owner match (R14), the allowed statuses (R16), the schema and rules, and each linked `publiccode.yml` with the official parser (R17), keeping the last valid copy, content hash and dates in a harvest state published at `api/v0/harvest-state.json`. `csr build --harvest` publishes from that state.
 - Harvest report page (`harvest/`), and harvest states on owner-hosted record pages.
 - `tools/install-publiccode-parser.py`: installs publiccode-parser-go v5.4.3 with verified checksums; the `Validate` job uses it.
+- Maintainer tools: `csr import-publiccode` (add or update a codebase from its `publiccode.yml`, or draft a new record, following specification appendix A), `csr move-to-source` and `csr move-to-local` (move a record to and from owner hosting, checking the owner's file first), and `csr new --from-issue` (add a record from a suggest-asset issue with the next free id).
 - Validate page (`validate/`): check a `solution.yml` or pointer by pasting it, uploading it or giving its URL, in the browser, against the schema and every rule that needs no network, with a results table giving the severity, rule, field, problem and fix for each finding.
 - The `Validate` job builds the site and uploads it as the `site-preview` artifact.
 

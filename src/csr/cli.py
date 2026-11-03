@@ -14,7 +14,7 @@ from collections.abc import Sequence
 
 from pathlib import Path
 
-from csr import __version__, harvest
+from csr import __version__, harvest, tools
 from csr.build import build
 from csr.config import load_config
 from csr.findings import Finding
@@ -69,6 +69,32 @@ def build_parser() -> argparse.ArgumentParser:
     reap.add_argument("--only", nargs="+", metavar="ID", help="harvest only these records, keeping the others' state")
     reap.add_argument("--no-network", action="store_true", help="read only sources in this repository")
     reap.add_argument("--format", choices=("text", "github"), default="text", help="output format")
+
+    imp = commands.add_parser("import-publiccode", help="add a codebase to a record from a publiccode.yml, or draft a record",
+                              description="Import a codebase's publiccode.yml (specification appendix A).")  # fmt: skip
+    imp.add_argument("publiccode", metavar="url-or-path", help="the publiccode.yml to import")
+    target = imp.add_mutually_exclusive_group(required=True)
+    target.add_argument("--to", metavar="ID", help="add or update the codebase in this local record")
+    target.add_argument("--new", action="store_true", help="draft a new record from the publiccode.yml")
+    imp.add_argument("--id", help="with --new: the id to use (default: the next free id)")
+
+    mts = commands.add_parser("move-to-source", help="replace a local record with a pointer to the owner's solution.yml",
+                              description="Fetch and check the owner's solution.yml, then replace the local record "
+                              "with a pointer to it (specification 6.12).")  # fmt: skip
+    mts.add_argument("id")
+    mts.add_argument("url", help="the HTTPS address of the owner's solution.yml")
+
+    mtl = commands.add_parser("move-to-local", help="replace a pointer with the last valid harvested version",
+                              description="Write the last valid version from the harvest state as a local record.")  # fmt: skip
+    mtl.add_argument("id")
+    mtl.add_argument("--state", metavar="PATH-OR-URL", help="the harvest state (default: state_url in site.toml)")
+
+    new = commands.add_parser("new", help="add a record from a suggest-asset issue",
+                              description="Write the solution.yml in a suggest-asset issue as a new record, "
+                              "with the next free id.")  # fmt: skip
+    new.add_argument("--from-issue", required=True, metavar="PATH",
+                     help="a file with the issue's body, or - to read it from standard input")  # fmt: skip
+    new.add_argument("--issue-url", help="the issue's address, recorded as the confirmation reference")
     return parser
 
 
@@ -83,6 +109,8 @@ def main(argv: Sequence[str] | None = None) -> int:
         return _validate(args)
     if args.command == "harvest":
         return _harvest(args)
+    if args.command in ("import-publiccode", "move-to-source", "move-to-local", "new"):
+        return _tool(args)
     if args.command == "build":
         state = json.loads(Path(args.harvest).read_text(encoding="utf-8")) if args.harvest else None
         result = build(out=args.out, base_url=args.base_url, today=args.date, state=state)
@@ -112,6 +140,35 @@ def _validate(args: argparse.Namespace) -> int:
                 print(f"    Fix: {finding.fix}")
         print(_summary(result))
     return 0 if result.ok else 1
+
+
+def _tool(args: argparse.Namespace) -> int:
+    config = load_config()
+    try:
+        if args.command == "import-publiccode":
+            if args.new:
+                outcome = tools.import_new(ROOT, config, args.publiccode, fetcher=harvest.fetch, record_id=args.id)
+            else:
+                outcome = tools.import_to(ROOT, config, args.publiccode, args.to, fetcher=harvest.fetch)
+        elif args.command == "move-to-source":
+            outcome = tools.move_to_source(ROOT, config, args.id, args.url, fetcher=harvest.fetch)
+        elif args.command == "move-to-local":
+            state, note = harvest.read_state(args.state or config.state_url, harvest.fetch, config)
+            outcome = tools.move_to_local(ROOT, config, args.id, state)
+        else:
+            body = sys.stdin.read() if args.from_issue == "-" else Path(args.from_issue).read_text(encoding="utf-8")
+            outcome = tools.new_from_issue(ROOT, body, issue_url=args.issue_url)
+    except (tools.ToolError, OSError) as exc:
+        print(f"csr {args.command}: {exc}", file=sys.stderr)
+        return 2
+    for message in outcome.messages:
+        print(message)
+    for finding in outcome.findings:
+        print(str(finding))
+    errors = sum(1 for f in outcome.findings if f.severity == "error")
+    print(f"{outcome.path.relative_to(ROOT)}: {errors} error{'' if errors == 1 else 's'} to resolve before merging."
+          if errors else f"{outcome.path.relative_to(ROOT)} is valid.")  # fmt: skip
+    return 0 if outcome.ok else 1
 
 
 def _harvest(args: argparse.Namespace) -> int:
