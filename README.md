@@ -65,6 +65,16 @@ csr build --harvest .harvest/harvest-state.json --base-url http://localhost:8000
 Each pull request also builds the site and attaches it to the workflow run as
 the `site-preview` artifact.
 
+The UI tests (visual comparison, behaviour and accessibility) need Node 22:
+
+```bash
+npm ci
+npx playwright install chromium
+npm run test:ui
+```
+
+They are described in [`docs/ui-requirements.md`](docs/ui-requirements.md).
+
 Maintainers also have these commands, each of which writes a file in
 `records/` to review and propose in a pull request:
 

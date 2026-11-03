@@ -24,10 +24,11 @@ REGISTER_RANGE = range(1, 9000)
 ROLE_WORDS = {
     "admin", "contact", "contactus", "customer", "customers", "data", "digital", "dpo", "enquiries",
     "enquiry", "feedback", "foi", "hello", "help", "helpdesk", "info", "information", "it", "mail",
-    "office", "platform", "platforms", "product", "products", "service", "servicedesk", "services",
-    "support", "team", "technology", "web", "webmaster",
+    "office", "platform", "platforms", "product", "products", "register", "registry", "service", "servicedesk",
+    "services", "solution", "solutions", "support", "team", "technology", "web", "webmaster",
 }  # fmt: skip
-PERSONAL_EMAIL = re.compile(r"^([a-z]{2,})[._-]([a-z]{2,})[0-9]*@", re.IGNORECASE)
+# firstname.lastname@ or firstname_lastname@; role mailboxes usually use hyphens (digital-services@).
+PERSONAL_EMAIL = re.compile(r"^([a-z]{2,})[._]([a-z]{2,})[0-9]*@", re.IGNORECASE)
 
 
 @dataclass(frozen=True)

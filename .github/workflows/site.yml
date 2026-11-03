@@ -18,6 +18,11 @@ on:
   push:
     branches: [main]
   workflow_dispatch:
+    inputs:
+      update-baselines:
+        description: "Remake the UI test baselines in CI and upload them as the ui-baselines artifact"
+        type: boolean
+        default: false
   schedule:
     - cron: "23 5 * * *" # daily at 05:23 UTC
 
@@ -106,9 +111,65 @@ jobs:
         with:
           path: site/
 
+  ui:
+    name: UI tests
+    # Required check (specification 6.13): visual comparison with ui/baseline/, the
+    # behaviour of each parity-table row, and axe-core, against the fixture register.
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          persist-credentials: false
+
+      - uses: actions/setup-python@6d4fd22b20465ccc0f7354476588e8df7c9ca0e0 # v7.1.0
+        with:
+          python-version: "3.12"
+          cache: pip
+          cache-dependency-path: pyproject.toml
+
+      - uses: actions/setup-node@949feb2413d6458794dcd2491c4babbbce0c15c1 # v7.1.0
+        with:
+          node-version: "22"
+          cache: npm
+
+      - name: Install
+        run: |
+          python -m pip install -e .
+          npm ci --ignore-scripts
+          npx playwright install --with-deps chromium
+
+      - name: Run UI tests
+        if: ${{ !inputs.update-baselines }}
+        run: npm run test:ui
+
+      - name: Remake the baselines
+        # After a deliberate design change: download the ui-baselines artifact, review the
+        # images, and commit them to ui/baseline/ in the pull request that made the change.
+        if: ${{ inputs.update-baselines }}
+        run: npx playwright test --config ui/playwright.config.js visual --update-snapshots=all
+
+      - name: Upload the remade baselines
+        if: ${{ inputs.update-baselines }}
+        uses: actions/upload-artifact@cf430e030ddbb5b0abf93d22962f4752f3646cd9 # v7.0.2
+        with:
+          name: ui-baselines
+          path: ui/baseline/
+          retention-days: 14
+
+      - name: Upload the report and differences
+        if: failure()
+        uses: actions/upload-artifact@cf430e030ddbb5b0abf93d22962f4752f3646cd9 # v7.0.2
+        with:
+          name: ui-test-report
+          path: |
+            playwright-report/
+            test-results/
+          retention-days: 14
+
   deploy:
     name: Deploy
-    needs: validate
+    needs: [validate, ui]
     # Skipped until an owner of the repository sets the variable PAGES_ENABLED to "true",
     # after the publication sign-off (specification 9).
     if: github.event_name != 'pull_request' && github.ref == 'refs/heads/main' && vars.PAGES_ENABLED == 'true'

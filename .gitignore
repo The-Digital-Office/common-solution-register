@@ -50,3 +50,8 @@ playwright-report/
 
 # Tools installed by tools/install-publiccode-parser.py
 /.tools/
+
+# UI test build, reports and installed tooling
+/ui/build/
+/test-results/
+/playwright-report/

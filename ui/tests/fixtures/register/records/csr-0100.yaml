@@ -1,0 +1,46 @@
+# UI test fixture only: an invented demonstration entry, so the tests can show
+# how the register displays a record compiled from public sources. It does not
+# describe a real service and is never published.
+schema_version: "0.1"
+id: csr-0100
+record_status: demonstration
+name: Sample Sign-in Service
+summary: A sign-in service that lets people prove who they are once and use many public services.
+purpose: >-
+  Lets people create one account to prove who they are, then sign in to several
+  public services with it. Services connect to it instead of building their own
+  identity checks.
+asset_type: service
+owner:
+  organisation: Example Agency
+  sector: executive-agencies
+contact:
+  type: web-form
+  value: https://signin.example.gov.uk/contact
+service_areas:
+  - corporate-and-cross-cutting
+capabilities:
+  - identity-and-access
+status: live
+intended_adopters:
+  - scottish-government
+  - local-government
+terms_of_use:
+  type: not-publicly-stated
+adoption_route:
+  summary: not-publicly-stated
+charging:
+  applies: not-publicly-stated
+support:
+  summary: not-publicly-stated
+service_url: https://signin.example.gov.uk/
+service_page_url: https://www.example.gov.uk/sign-in-service
+sources:
+  - url: https://www.example.gov.uk/sign-in-service
+    title: About the sign-in service
+    publisher: Example Agency
+    accessed: "2026-10-28"
+  - url: https://www.example.gov.uk/sign-in-service/for-services
+    title: Connecting a service
+    publisher: Example Agency
+    accessed: "2026-10-28"

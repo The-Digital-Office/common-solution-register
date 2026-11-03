@@ -56,6 +56,9 @@ def build_parser() -> argparse.ArgumentParser:
         "--date", type=dt.date.fromisoformat, help="build as on this date, for currency (default: today)"
     )
     site.add_argument("--harvest", metavar="PATH", help="the harvest state to publish from (from csr harvest)")
+    site.add_argument("--root", type=Path, help="build from the register in this folder (default: this repository)")
+    site.add_argument("--no-history", action="store_true",
+                      help="leave out dates and pull requests taken from git (for reproducible test builds)")  # fmt: skip
 
     reap = commands.add_parser(
         "harvest",
@@ -124,11 +127,12 @@ def main(argv: Sequence[str] | None = None) -> int:
         return _tool(args)
     if args.command == "build":
         state = json.loads(Path(args.harvest).read_text(encoding="utf-8")) if args.harvest else None
-        result = build(out=args.out, base_url=args.base_url, today=args.date, state=state)
+        result = build(root=args.root.resolve() if args.root else None, out=args.out, base_url=args.base_url,
+                       today=args.date, state=state, history=not args.no_history)  # fmt: skip
         print(f"Built {len(result.pages)} pages into {result.out}.")
         for item in result.register.unpublished:
             print(f"Not published: {item.id} ({item.reason})")
-        pending = load_config(base_url=args.base_url).pending_publication_inputs
+        pending = load_config(args.root, base_url=args.base_url).pending_publication_inputs
         if pending:
             print("To be completed before publication (site.toml): " + ", ".join(pending))
         return 0

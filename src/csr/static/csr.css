@@ -6,6 +6,17 @@
  * design system's spacing, colour and type.
  */
 
+/* Code and YAML in Roboto Mono (static/fonts.css), so they look the same on every computer. */
+code,
+kbd,
+pre,
+samp,
+.csr-pre,
+.csr-yaml,
+.csr-code {
+  font-family: "Roboto Mono", monospace;
+}
+
 .csr-tags {
   display: flex;
   flex-wrap: wrap;
@@ -150,7 +161,6 @@ html:not(.js-enabled) .csr-js-only {
 .csr-pre {
   background: #f8f8f8;
   border: 0.0625rem solid #b3b3b3;
-  font-family: "Courier New", monospace;
   font-size: 0.875rem;
   line-height: 1.5;
   margin: 0 0 1.5rem;
@@ -188,7 +198,6 @@ html:not(.js-enabled) .csr-js-only {
 .csr-yaml {
   background: #f8f8f8;
   border: 0.0625rem solid #b3b3b3;
-  font-family: "Courier New", monospace;
   font-size: 0.9375rem;
   line-height: 1.5;
   margin: 0 0 1.5rem;
@@ -251,7 +260,6 @@ html:not(.js-enabled) .csr-js-only {
 }
 
 .csr-code {
-  font-family: "Courier New", monospace;
   font-size: 0.9375rem;
   line-height: 1.5;
 }

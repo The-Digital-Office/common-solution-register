@@ -1,6 +1,6 @@
 """Vendor a pinned npm package's browser files, without npm.
 
-Usage: python tools/vendor.py NAME VERSION     (NAME: sgds, js-yaml or ajv)
+Usage: python tools/vendor.py NAME VERSION     (NAME: sgds, js-yaml, ajv, roboto or roboto-mono)
 
 Downloads the package from the npm registry, checks the tarball against the
 registry's integrity hash, and writes the listed files to
@@ -40,6 +40,26 @@ PACKAGES = {
         },
         "Used by the draft form to write solution.yml. The browser ES module build is renamed "
         "js-yaml.mjs.",
+    ),
+    "roboto": (
+        "@fontsource/roboto",
+        {
+            **{f"package/files/roboto-{subset}-{face}.woff2": f"roboto-{subset}-{face}.woff2"
+               for subset in ("latin", "latin-ext") for face in ("300-normal", "400-normal", "400-italic", "700-normal")},
+            "package/LICENSE": "LICENSE",
+        },
+        "Roboto, the design system's typeface, served from the site itself so that no visitor's browser "
+        "contacts a font service (decision D5 in docs/ui-requirements.md). Latin and Latin Extended "
+        "subsets, in the weights the design system uses. The @font-face rules are in static/fonts.css.",
+    ),
+    "roboto-mono": (
+        "@fontsource/roboto-mono",
+        {
+            **{f"package/files/roboto-mono-{subset}-400-normal.woff2": f"roboto-mono-{subset}-400-normal.woff2"
+               for subset in ("latin", "latin-ext")},
+            "package/LICENSE": "LICENSE",
+        },
+        "Roboto Mono, for code and YAML, so that they look the same on every computer. Served from the site itself.",
     ),
     "ajv": (
         "ajv-dist",

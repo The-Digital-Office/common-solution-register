@@ -217,6 +217,7 @@ def build(
     base_url: str | None = None,
     today: dt.date | None = None,
     state: dict | None = None,
+    history: bool = True,
 ) -> BuildResult:
     """Build the site into ``out`` (default ``site/``), replacing what is there. ``state``
     is the harvest state (``csr harvest``); without it, sources in this repository are
@@ -225,7 +226,7 @@ def build(
     out = out or root / "site"
     today = today or dt.date.today()
     config = load_config(root, base_url)
-    register = load_register(root, config, today, state)
+    register = load_register(root, config, today, state, history)
 
     if out.exists():
         shutil.rmtree(out)

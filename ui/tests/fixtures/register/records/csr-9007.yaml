@@ -1,0 +1,5 @@
+# Fictional example: a pointer to a deliberately invalid solution.yml. It is
+# never published; it appears in the harvest report with its errors.
+id: csr-9007
+source: https://github.com/The-Digital-Office/common-solution-register/raw/main/examples/hosted/csr-9007/solution.yml
+expected_owner: Example Council

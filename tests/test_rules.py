@@ -112,6 +112,8 @@ def test_r06_confirmation_date(minimal, context, date, ok):
         ("jane.smith@example.gov.uk", True),
         ("jane_smith2@example.gov.uk", True),
         ("jsmith@example.gov.uk", False),
+        ("solution-register@digitaloffice.scot", False),
+        ("jane-smith@example.gov.uk", False),  # hyphens are taken as a role mailbox
     ],
 )
 def test_r07_personal_contact(minimal, context, value, personal):

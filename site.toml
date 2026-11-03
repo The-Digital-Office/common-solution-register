@@ -9,10 +9,10 @@ state_url = ""
 repository_url = "https://github.com/The-Digital-Office/common-solution-register"
 default_branch = "main"
 host_organisation = "The Digital Office for Scottish Local Government"
-# Input I3: the role mailbox for the site and emailed drafts, not yet chosen.
-contact_mailbox = ""
-# Input I4: the feedback route for people without GitHub accounts, not yet
-# chosen; the repository's issues until then.
+# Input I3: the role mailbox for the site and emailed drafts (requested 3 November 2026).
+contact_mailbox = "solution-register@digitaloffice.scot"
+# Input I4: the feedback route. GitHub issues; people without a GitHub account
+# use the mailbox above (decided 3 November 2026).
 feedback_url = "https://github.com/The-Digital-Office/common-solution-register/issues"
 
 [currency]
@@ -38,6 +38,6 @@ lawful_basis = ""          # input I8: as agreed with the Data Protection Office
 retention = ""
 feedback_form = ""         # input I4: owner and retention of the feedback form
 accessibility_assessment = ""
-accessibility_reply_days = ""
+accessibility_reply_days = "10"
 accessibility_tested_on = ""
 statements_prepared_on = ""

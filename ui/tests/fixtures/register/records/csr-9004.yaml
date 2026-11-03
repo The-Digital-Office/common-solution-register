@@ -1,0 +1,43 @@
+# Fictional example: shows a beta component whose confirmation is due
+# (more than 11 months old).
+schema_version: "0.1"
+id: csr-9004
+record_status: example
+name: "Example: Pilot Notifications Component"
+summary: Fictional example of a notifications component in beta, with its confirmation due.
+purpose: >-
+  Sends email and text message notifications from council services through one
+  component, with shared templates and delivery reports. In beta with two
+  pilot services; more adopters are welcome to join the pilot.
+asset_type: component
+owner:
+  organisation: Example Council
+  sector: local-government
+contact:
+  type: role-mailbox
+  value: notifications@example.gov.uk
+service_areas:
+  - corporate-and-cross-cutting
+capabilities:
+  - notifications
+status: beta
+intended_adopters:
+  - local-government
+terms_of_use:
+  type: open-licence
+  licence: MIT
+adoption_route:
+  summary: Join the pilot by contacting the team, then deploy the component from its repository.
+charging:
+  applies: false
+codebases:
+  - repository_url: https://code.example.gov.uk/notifications
+    visibility: public
+    publiccode_url: https://code.example.gov.uk/notifications/raw/main/publiccode.yml
+    maintenance: internal
+    version: "0.4.0"
+    kind: implementation
+confirmation:
+  last_confirmed: "2025-12-01"
+  method: pull request
+  reference: https://example.gov.uk/confirmations/csr-9004

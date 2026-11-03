@@ -92,10 +92,14 @@ def test_term_page(site):
     assert "1 solution provides this capability" in read(site, "capabilities/notifications/index.html")
 
 
-def test_pages_mark_inputs_still_to_come(site):
-    assert "To be completed before publication" in read(site, "privacy/index.html")
-    assert "To be completed before publication: the role mailbox" in read(site, "accessibility/index.html")
-    assert "Email us" not in read(site, "contribute/index.html")  # no mailbox yet (input I3)
+def test_pages_use_the_mailbox_and_mark_inputs_still_to_come(site):
+    mailbox = "mailto:solution-register@digitaloffice.scot"
+    accessibility = read(site, "accessibility/index.html")
+    assert mailbox in accessibility and "within 10 working days" in accessibility
+    assert "Email us" in read(site, "contribute/index.html") and mailbox in read(site, "contribute/index.html")
+    assert "Give feedback without a GitHub account: email" in read(site, "about/index.html")
+    assert mailbox in read(site, "draft/index.html")  # Send by email
+    assert "To be completed before publication" in read(site, "privacy/index.html")  # the DPO's inputs are still to come
 
 
 def test_currency_page(site):
