@@ -52,6 +52,7 @@ and this project uses [Semantic Versioning](https://semver.org/spec/v2.0.0.html)
 - Demonstration records `csr-0003` ScotAccount , `csr-0004` Scottish Government Design System , `csr-0005` One Scotland Gazetteer , `csr-0006` Spatial Hub , `csr-0007` GOV.UK Notify and `csr-0008` mygovscot myaccount, compiled from cited public sources, and `docs/demonstration-sources.md`, which ties each statement to its source for the author to verify.
 - `docs/decision-points.md`: every choice the working group may revisit (DP-01 to DP-53), including the schema v0.1 choices and the rule interpretations, with alternatives and what would change; `docs/editorial-model.md`: the two-approval model and how to enforce it.
 - Guides: `docs/adopting-this-demonstrator.md` (transfer or fork, files and settings to change), `docs/contributing-records.md` (the inclusion test and every contribution route, linked from the Contribute page), `docs/hosting-your-solution-yml.md` (owner hosting and the reusable workflow) and `docs/harvesting.md`.
+- `docs/maintenance.md`: maintainer commands, handling issues, maintaining records, removing content from history, dependency and vendored-file updates, and the runbook (monthly, on rule changes, on failures, yearly); `docs/publiccode-mapping.md` and `docs/github-free.md` (specification appendices A and B).
 
 ### Changed
 
