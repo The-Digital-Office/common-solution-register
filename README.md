@@ -16,8 +16,19 @@ specification in
 [`docs/spec/`](docs/spec/Common-Solution-Register-Demonstrator-Specification.md)
 sets out the scope, design and build.
 
-> **Status:** under construction. The build is done in slices, recorded in
-> [`docs/build/PLAN.md`](docs/build/PLAN.md). The site is not yet published.
+> **Status:** built; not yet published. The build was done in slices, recorded
+> in [`docs/build/PLAN.md`](docs/build/PLAN.md). What remains before
+> publication is in [`docs/publication-checklist.md`](docs/publication-checklist.md).
+
+## Documentation
+
+| For | Read |
+|---|---|
+| Anyone suggesting or correcting a record | [Contributing records](docs/contributing-records.md) |
+| Owners who want to host their own record | [Hosting your solution.yml](docs/hosting-your-solution-yml.md) |
+| The working group, and anyone taking the work forward | [Decision points](docs/decision-points.md), [Adopting this demonstrator](docs/adopting-this-demonstrator.md), [Editorial model](docs/editorial-model.md) |
+| Maintainers | [Maintenance and runbook](docs/maintenance.md), [Harvesting](docs/harvesting.md), [publiccode.yml mapping](docs/publiccode-mapping.md), [GitHub Free](docs/github-free.md), [UI requirements and tests](docs/ui-requirements.md), [Demonstration sources](docs/demonstration-sources.md) |
+| The author, before publishing | [Publication checklist](docs/publication-checklist.md) |
 
 ## Getting started
 
@@ -75,7 +86,7 @@ npm run test:ui
 
 They are described in [`docs/ui-requirements.md`](docs/ui-requirements.md).
 
-Maintainers also have these commands, each of which writes a file in
+Maintainers also have these commands ([`docs/maintenance.md`](docs/maintenance.md)), each of which writes a file in
 `records/` to review and propose in a pull request:
 
 | Command | Does |
