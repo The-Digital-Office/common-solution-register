@@ -18,6 +18,11 @@ on:
   push:
     branches: [main]
   workflow_dispatch:
+    inputs:
+      update-baselines:
+        description: "Remake the UI test baselines in CI and upload them as the ui-baselines artifact"
+        type: boolean
+        default: false
   schedule:
     - cron: "23 5 * * *" # daily at 05:23 UTC
 
@@ -135,7 +140,22 @@ jobs:
           npx playwright install --with-deps chromium
 
       - name: Run UI tests
+        if: ${{ !inputs.update-baselines }}
         run: npm run test:ui
+
+      - name: Remake the baselines
+        # After a deliberate design change: download the ui-baselines artifact, review the
+        # images, and commit them to ui/baseline/ in the pull request that made the change.
+        if: ${{ inputs.update-baselines }}
+        run: npx playwright test --config ui/playwright.config.js visual --update-snapshots=all
+
+      - name: Upload the remade baselines
+        if: ${{ inputs.update-baselines }}
+        uses: actions/upload-artifact@cf430e030ddbb5b0abf93d22962f4752f3646cd9 # v7.0.2
+        with:
+          name: ui-baselines
+          path: ui/baseline/
+          retention-days: 14
 
       - name: Upload the report and differences
         if: failure()

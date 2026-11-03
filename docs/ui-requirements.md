@@ -37,9 +37,12 @@ actions column, the results heading row, filters and wide tables. Wireframe
 the fixture register in `ui/tests/fixtures/` and runs, in Chromium:
 
 - `ui/tests/visual.spec.js`: every page below, at 1280 and 375 pixels, compared with its approved
-  image in `ui/baseline/` (at most 1% of pixels may differ). After a deliberate design change, run
-  `npm run test:ui:update` and commit the new images in the same pull request, so the change is
-  visible in review.
+  image in `ui/baseline/` (at most 1% of pixels may differ). The browser draws text without font
+  hinting or subpixel positioning, so screenshots match across Linux machines. After a deliberate
+  design change, run `npm run test:ui:update` and commit the new images in the same pull request,
+  so the change is visible in review. If CI's images still differ from yours, run the Site workflow
+  by hand on the branch (**Actions → Site → Run workflow**, with **update-baselines** ticked),
+  download the `ui-baselines` artifact, review the images and commit them instead.
 - `ui/tests/behaviour.spec.js`: one test per row of the behaviour-parity table.
 - `ui/tests/accessibility.spec.js`: axe-core on every page, failing on any serious or critical issue.
 

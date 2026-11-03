@@ -24,6 +24,11 @@ module.exports = defineConfig({
     browserName: 'chromium',
     locale: 'en-GB',
     timezoneId: 'Europe/London',
+    // Text is measured and drawn the same on every Linux machine, so screenshots
+    // made in one place match those made in CI.
+    launchOptions: {
+      args: ['--font-render-hinting=none', '--disable-font-subpixel-positioning', '--disable-lcd-text', '--force-color-profile=srgb'],
+    },
   },
   expect: {
     toHaveScreenshot: { maxDiffPixelRatio: 0.01, animations: 'disabled', caret: 'hide', scale: 'css' },
