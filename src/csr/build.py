@@ -188,13 +188,16 @@ def build(
     *,
     base_url: str | None = None,
     today: dt.date | None = None,
+    state: dict | None = None,
 ) -> BuildResult:
-    """Build the site into ``out`` (default ``site/``), replacing what is there."""
+    """Build the site into ``out`` (default ``site/``), replacing what is there. ``state``
+    is the harvest state (``csr harvest``); without it, sources in this repository are
+    harvested from the working tree."""
     root = root or ROOT
     out = out or root / "site"
     today = today or dt.date.today()
     config = load_config(root, base_url)
-    register = load_register(root, config, today)
+    register = load_register(root, config, today, state)
 
     if out.exists():
         shutil.rmtree(out)
@@ -389,6 +392,7 @@ def _resolve(schema: dict[str, Any], prop: dict[str, Any]) -> dict[str, Any]:
 
 def _data_pages(site: Site) -> None:
     files = api.files(site.register, site.taxonomies, site.config, site.today)
+    files[api.API + "harvest-state.json"] = api.dumps(site.register.state)
     for path, content in files.items():
         site.write(path, content)
     sizes = {path: len(content.encode("utf-8")) for path, content in files.items()}

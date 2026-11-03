@@ -147,7 +147,8 @@ def test_api_files(site):
 
 
 def test_published_records_still_match_the_schema(site):
-    derived = {"hosting", "source", "currency", "last_changed", "merged_in", "history_url", "record_url"}
+    derived = {"hosting", "source", "source_state", "harvested_at", "content_hash", "currency", "last_changed",
+               "merged_in", "history_url", "record_url"}  # fmt: skip
     for record in json.loads(read(site, "data/register.json"))["assets"]:
         assert check({k: v for k, v in record.items() if k not in derived}) == []
 

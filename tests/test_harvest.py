@@ -1,6 +1,8 @@
 """The harvester (specification 6.11): R14 to R17, state, and the build."""
 
+import datetime as dt
 import io
+import json
 
 import pytest
 import yaml
@@ -8,7 +10,11 @@ from helpers import TODAY
 
 from csr import harvest
 from csr.config import load_config
-from csr.harvest import FetchError, check_source, content_hash, get_source, harvest_source
+from csr.build import build
+from csr.harvest import (
+    FetchError, SourceResult, check_source, content_hash, empty_state, get_source, harvest_source, read_state, run,
+    update_entry,
+)  # fmt: skip
 from csr.records import Record
 from csr.rules import Context
 from csr.schema import ROOT, load_yaml_file
@@ -150,3 +156,94 @@ def test_redirects_must_stay_on_https():
     handler = harvest._HttpsOnly()
     with pytest.raises(FetchError, match="not HTTPS"):
         handler.redirect_request(None, None, 302, "Found", {}, "http://elsewhere.example/solution.yml")
+
+
+# Checkpoint b: state
+
+
+DAY1 = dt.datetime(2026, 11, 3, 6, 0, tzinfo=dt.UTC)
+DAY2 = dt.datetime(2026, 11, 4, 6, 0, tzinfo=dt.UTC)
+DAY3 = dt.datetime(2026, 11, 5, 6, 0, tzinfo=dt.UTC)
+
+
+def result(state, text=None, findings=()):
+    return SourceResult("csr-9006", REMOTE, "Example Council", state, list(findings), text,
+                        content_hash(text.encode()) if text else None)  # fmt: skip
+
+
+def test_ok_records_the_valid_copy_and_when_it_changed():
+    first = update_entry(None, result("ok", "a: 1\n"), DAY1)
+    assert first["state"] == "ok" and first["last_valid"] == "a: 1\n"
+    assert first["harvested_at"] == "2026-11-03T06:00:00Z" and first["last_changed"] == "2026-11-03"
+    same = update_entry(first, result("ok", "a: 1\n"), DAY2)
+    assert same["harvested_at"] == "2026-11-04T06:00:00Z" and same["last_changed"] == "2026-11-03"
+    changed = update_entry(same, result("ok", "a: 2\n"), DAY3)
+    assert changed["last_changed"] == "2026-11-05" and changed["content_hash"] == content_hash(b"a: 2\n")
+
+
+def test_failing_keeps_the_last_valid_copy_and_says_since_when():
+    ok = update_entry(None, result("ok", "a: 1\n"), DAY1)
+    failing = update_entry(ok, result("failing"), DAY2)
+    assert failing["last_valid"] == "a: 1\n" and failing["harvested_at"] == "2026-11-03T06:00:00Z"
+    assert failing["failing_since"] == "2026-11-04T06:00:00Z"
+    still = update_entry(failing, result("failing"), DAY3)
+    assert still["failing_since"] == "2026-11-04T06:00:00Z" and still["checked_at"] == "2026-11-05T06:00:00Z"
+    unavailable = update_entry(still, result("unavailable"), DAY3)
+    assert unavailable["unavailable_since"] == "2026-11-05T06:00:00Z" and unavailable["failing_since"] is None
+    recovered = update_entry(unavailable, result("ok", "a: 1\n"), DAY3)
+    assert recovered["unavailable_since"] is None and recovered["last_changed"] == "2026-11-03"
+
+
+def test_a_source_that_never_passed_has_no_valid_copy():
+    never = update_entry(None, result("failing"), DAY1)
+    assert never["last_valid"] is None and never["harvested_at"] is None
+
+
+def test_a_changed_registration_starts_afresh():
+    ok = update_entry(None, result("ok", "a: 1\n"), DAY1)
+    moved = SourceResult("csr-9006", "https://new.example.gov.uk/solution.yml", "Example Council", "failing")
+    assert update_entry(ok, moved, DAY2)["last_valid"] is None
+
+
+def test_not_harvested_keeps_what_was_known():
+    ok = update_entry(None, result("ok", "a: 1\n"), DAY1)
+    assert update_entry(ok, result("not-harvested"), DAY2) == ok
+    assert update_entry(None, result("not-harvested"), DAY2)["state"] == "not-harvested"
+
+
+def test_run_over_the_register_and_only():
+    state, results = run(ROOT, CONFIG, empty_state(), now=DAY1)
+    assert {r.id: r.state for r in results} == {"csr-0001": "ok", "csr-9006": "ok", "csr-9007": "failing"}
+    assert state["generated"] == "2026-11-03T06:00:00Z"
+    assert set(state["sources"]) == {"csr-0001", "csr-9006", "csr-9007"}
+    again, results = run(ROOT, CONFIG, state, now=DAY2, only={"csr-9007"})
+    assert [r.id for r in results] == ["csr-9007"]
+    assert again["sources"]["csr-0001"] == state["sources"]["csr-0001"]
+    assert again["sources"]["csr-9007"]["failing_since"] == "2026-11-03T06:00:00Z"
+
+
+def test_read_state(tmp_path):
+    path = tmp_path / "state.json"
+    state, _ = run(ROOT, CONFIG, empty_state(), now=DAY1)
+    path.write_text(json.dumps(state))
+    assert read_state(str(path), None, CONFIG)[0] == state
+    assert read_state(str(tmp_path / "missing.json"), None, CONFIG)[0] == empty_state()
+    path.write_text('{"state_version": 99}')
+    assert "unknown format" in read_state(str(path), None, CONFIG)[1]
+    assert read_state("https://example.github.io/state.json", serve({}), CONFIG)[0] == empty_state()
+
+
+def test_build_publishes_the_last_valid_copy_of_a_failing_source(tmp_path):
+    state, _ = run(ROOT, CONFIG, empty_state(), now=DAY1)
+    entry = state["sources"]["csr-9006"]
+    valid = entry["last_valid"]
+    failing = SourceResult("csr-9006", entry["source"], entry["expected_owner"], "failing")
+    state["sources"]["csr-9006"] = update_entry(entry, failing, DAY2)
+    site = build(ROOT, tmp_path / "site", today=TODAY, state=state)
+    hosted = site.register.get("csr-9006")
+    assert hosted is not None and hosted.text == valid and hosted.source_state == "failing"
+    record = json.loads((tmp_path / "site/api/v0/assets/csr-9006.json").read_text())
+    assert record["source_state"] == "failing" and record["harvested_at"] == "2026-11-03T06:00:00Z"
+    published = json.loads((tmp_path / "site/api/v0/harvest-state.json").read_text())
+    assert published == state
+    assert [u.id for u in site.register.unpublished] == ["csr-9007"]

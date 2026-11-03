@@ -12,7 +12,9 @@ working tree, so a pull request is checked with its own changes.
 
 from __future__ import annotations
 
+import copy
 import hashlib
+import json
 import re
 import urllib.error
 import urllib.request
@@ -22,8 +24,9 @@ from pathlib import Path
 
 from csr.config import Config
 from csr.findings import Finding, error, has_errors
-from csr.records import Record, parse
+from csr.records import Record, parse, read_register
 from csr.rules import Context
+from csr.taxonomy import load_all
 from csr.validate import check_record
 
 #: Fetches a URL within limits. Returns the bytes, or raises FetchError.
@@ -171,3 +174,98 @@ def harvest_source(pointer: Record, root: Path, config: Config, context: Context
         result.state = "ok"
         result.text = fetched.body.decode("utf-8")
     return result
+
+
+# State: last valid copies, hashes and dates, carried from one harvest to the next
+# (specification 6.11: read from the live site, written back with each deployment).
+
+STATE_VERSION = 1
+
+
+def empty_state() -> dict:
+    return {"state_version": STATE_VERSION, "generated": None, "sources": {}, "publiccode": {}}
+
+
+def _iso(moment) -> str:
+    return moment.replace(microsecond=0).isoformat().replace("+00:00", "Z")
+
+
+def update_entry(previous: dict | None, result: SourceResult, now) -> dict:
+    """The new state of one source, from its previous state and this harvest's result."""
+    same_registration = (
+        previous is not None
+        and previous.get("source") == result.source
+        and previous.get("expected_owner") == result.expected_owner
+    )
+    prev = previous if same_registration else {}
+    if result.state == "not-harvested":  # nothing new is known
+        return copy.deepcopy(prev) if prev else {
+            "source": result.source, "expected_owner": result.expected_owner, "state": "not-harvested",
+            "checked_at": None, "harvested_at": None, "content_hash": None, "last_changed": None, "last_valid": None,
+            "failing_since": None, "unavailable_since": None, "findings": [],
+        }  # fmt: skip
+    entry = {
+        "source": result.source,
+        "expected_owner": result.expected_owner,
+        "state": result.state,
+        "checked_at": _iso(now),
+        "harvested_at": prev.get("harvested_at"),
+        "content_hash": prev.get("content_hash"),
+        "last_changed": prev.get("last_changed"),
+        "last_valid": prev.get("last_valid"),
+        "failing_since": None,
+        "unavailable_since": None,
+        "findings": [f.as_dict() for f in result.findings],
+    }
+    if result.state == "ok":
+        if result.hash != prev.get("content_hash"):
+            entry["last_changed"] = now.date().isoformat()
+        entry.update(harvested_at=_iso(now), content_hash=result.hash, last_valid=result.text)
+    elif result.state == "failing":
+        entry["failing_since"] = prev.get("failing_since") if prev.get("state") == "failing" else _iso(now)
+    elif result.state == "unavailable":
+        entry["unavailable_since"] = prev.get("unavailable_since") if prev.get("state") == "unavailable" else _iso(now)
+    return entry
+
+
+def read_state(location: str | None, fetcher: Fetcher | None, config: Config) -> tuple[dict, str]:
+    """The previous state, from a file or the live site. Returns (state, note); a state that
+    cannot be read means starting fresh, which is harmless (specification 6.11)."""
+    if not location:
+        return empty_state(), "no previous state given: starting fresh"
+    try:
+        if location.startswith("https://"):
+            if fetcher is None:
+                return empty_state(), "previous state not fetched: the network was not used"
+            raw = fetcher(location, 16 * 1024 * 1024, config.harvest_timeout_seconds)
+        else:
+            raw = Path(location).read_bytes()
+        state = json.loads(raw)
+    except (FetchError, OSError, ValueError) as exc:
+        return empty_state(), f"previous state could not be read ({exc}): starting fresh"
+    if not isinstance(state, dict) or state.get("state_version") != STATE_VERSION:
+        return empty_state(), "previous state is in an unknown format: starting fresh"
+    state.setdefault("sources", {})
+    state.setdefault("publiccode", {})
+    return state, f"previous state read from {location}"
+
+
+def run(root: Path, config: Config, previous: dict, *, now, fetcher: Fetcher | None = None,
+        only: set[str] | None = None) -> tuple[dict, list[SourceResult]]:  # fmt: skip
+    """Harvest every pointer (or only the given ids) and return the new state and the results."""
+    records, _ = read_register(root / "records", root=root)
+    pointers = [r for r in records if r.data is not None and r.is_pointer and r.id]
+    known = frozenset(r.id for r in records if r.id)
+    context = Context(taxonomies=load_all(), today=now.date(), known_ids=known)
+    state = {**empty_state(), "generated": _iso(now), "publiccode": dict(previous.get("publiccode", {}))}
+    results = []
+    for record in sorted(pointers, key=lambda r: r.id):
+        before = previous.get("sources", {}).get(record.id)
+        if only is not None and record.id not in only:
+            if before is not None:
+                state["sources"][record.id] = before
+            continue
+        result = harvest_source(record, root, config, context, fetcher)
+        results.append(result)
+        state["sources"][record.id] = update_entry(before, result, now)
+    return state, results
