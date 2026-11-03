@@ -78,7 +78,7 @@ def test_404_links_start_from_the_site_root(site):
 
 def test_browse_counts(site):
     html = read(site, "browse/index.html")
-    assert "Local government</a></h3><p class=\"ds_category-item__summary csr-count\">8 solutions" in html
+    assert "Local government</a></h3><p class=\"ds_category-item__summary csr-count\">9 solutions" in html
     assert "Police and fire" in html  # every sector is listed, even with no solutions
     assert "Health and care" not in html  # service areas and capabilities without solutions are not
     assert "All 14 service areas, with definitions" in html
@@ -89,7 +89,7 @@ def test_term_page(site):
     assert "2 solutions provide this capability" in html
     assert "Also known as" in html and "<code>payments</code>" in html
     assert "Related terms" in html and "../../capabilities/booking-and-scheduling/" in html
-    assert "1 solution provides this capability" in read(site, "capabilities/identity-and-access/index.html")
+    assert "1 solution provides this capability" in read(site, "capabilities/case-management/index.html")
 
 
 def test_pages_use_the_mailbox_and_mark_inputs_still_to_come(site):

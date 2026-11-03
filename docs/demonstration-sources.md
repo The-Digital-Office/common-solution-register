@@ -187,3 +187,40 @@ publicly documented charges.
 | [ ] | `support` | 24/7 for emergencies, reply within 30 minutes; otherwise by the end of the next working day | S5 | "GOV.UK Notify provides 24/7 support for emergencies. If you have an emergency we'll reply within 30 minutes. If it's not an emergency we'll reply by the end of the next working day." |
 | [ ] | `service_url`, `service_page_url`, `documentation_url` | home page, Features, Documentation | S1, S2, S6 | The service's own pages |
 | [ ] | `interfaces` | REST, documented at docs.notifications.service.gov.uk/rest-api.html; client libraries for Java, .NET, Node JS, PHP, Python and Ruby | S6 | "Read the REST API documentation"; "Client libraries … Java .NET Node JS PHP Python Ruby" |
+
+## csr-0008 mygovscot myaccount
+
+Added at the author's request as a sixth demonstration record, beyond the 3–5
+in specification 5.2 (see the build plan's log for the decision).
+
+**Sources**
+
+- [S1] [mygovscot myaccount](https://www.improvementservice.org.uk/products-and-services/digital-public-services/myaccount), Improvement Service. The page answers automated requests with HTTP 403, so its text was supplied by the register author on 3 November 2026; the author confirms the quotes below.
+- [S2] [myaccount](https://www.mygov.scot/myaccount), mygov.scot (Scottish Government), last updated 10 June 2025.
+- [S3] [mygovscot myaccount help](https://signin.mygovscot.org/portal/pages/help), Improvement Service; includes a link to the contact form (author verification).
+
+**Not used.** A techUK guest article by Yoti (a supplier to the service) is not cited; everything it supports is also in S1 or S2. Services the author knows use myaccount but that the sources do not name (for example tellmescotland.gov.uk) are left out.
+
+| Checked | Field | Value | Source | Supporting words |
+|---|---|---|---|---|
+| [x] | `name` | mygovscot myaccount | S1 | "About mygovscot myaccount" |
+| [x] | `summary` | The simple and secure sign-in service for online public services in Scotland; one account across multiple organisations | S1 | "mygovscot myaccount is the simple and secure sign-in service for online public services in Scotland"; "an online account that can be used across multiple organisations" |
+| [x] | `purpose` (services) | Council tax, parking permits, school meals, benefits, National Entitlement Card | S1 | "such as paying council tax or requesting a parking permit, paying for school meals, or applying for benefits or a National Entitlement Card" |
+| [x] | `purpose` (providers) | Standards-based authentication and identity verification | S1 | "secure and trusted authentication and identity verification services that are standards-based, easy to integrate, and free to use" |
+| [x] | `purpose` (four services) | Authentication, channel shift, identity verification, data integrity | S1 | "mygovscot myaccount is based around four services: Authentication … Channel shift … Identity verification … Data integrity" |
+| [x] | `purpose` (GPG44 and GPG45) | Can meet GPG44 authentication levels and GPG45 identity profiles; missed bin versus NHS Lothian and My Diabetes My Way | S1 | "can provide tools that will enable the organisation to achieve Good Practice Guide 44 (GPG44) authentication levels and verified identities that meet Good Practice Guide 45 (GPG45) profiles, if required"; "a user wishing to access NHS Lothian or My Diabetes My Way, are required to have a verified mygovscot myaccount" |
+| [x] | `purpose` (getyournec.scot, parentsportal.scot) | Used by all 32 and 23 councils respectively | S1 | "All 32 local authorities use getyournec.scot for National Entitlement Card applications"; "23 local authorities use parentsportal.scot" |
+| [x] | `purpose` (age) | 12 or over | S1, S2 | S1: "provided exclusively to individuals who are at least 12 years of age"; S2: "You must be 12 or over." |
+| [ ] | `asset_type` | service | — | Classification by the register, as for ScotAccount |
+| [x] | `owner` | Improvement Service, `local-government` | S2 | "Myaccount is run by the Improvement Service for local councils." |
+| [x] | `contact` | web form: the help page | S3 | Help page with a link to the contact form (author verification) |
+| [ ] | `service_areas`, `capabilities` | corporate-and-cross-cutting; identity-and-access | — | Classification by the register |
+| [x] | `status` | live | S1 | "41 organisations are live with mygovscot myaccount" |
+| [ ] | `intended_adopters` | the six Scottish public sector sectors | S1 | "For public service providers"; users include councils, NHS Lothian and Social Security Scotland. **Check** |
+| [x] | `terms_of_use.type` | not-publicly-stated | S1 | Not stated |
+| [x] | `adoption_route.summary` | Offered as a toolkit in a variety of configurations; easy to integrate | S1 | "offered to organisations as a toolkit, which can be deployed in a variety of configurations to meet their needs and requirements and is proportionate to the services they provide"; "easy to integrate" |
+| [x] | `charging` | `applies: false`; free to use for public service providers | S1 | "For public service providers … free to use" |
+| [x] | `support.summary` | not-publicly-stated | S1 | Support for organisations is not stated |
+| [x] | `service_url` | https://signin.mygovscot.org/home/ | S2 | "Register on the myaccount website" links here |
+| [x] | `service_page_url` | the Improvement Service's product page | S1 | The owner's page |
+| [ ] | `adopters` | All 32 Scottish councils; NHS Lothian; Social Security Scotland; Young Scot (all `self-reported`) | S1, S2 | S1: "all 32 councils across Scotland use it"; "NHS Lothian"; S2: "applying for Social Security Scotland benefits"; "applying for a Young Scot card" |
