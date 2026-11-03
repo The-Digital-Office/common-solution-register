@@ -1,0 +1,50 @@
+# Fictional example: shows an API with its interfaces, and related records.
+schema_version: "0.1"
+id: csr-9002
+record_status: example
+name: "Example: Benefits Case Management API"
+summary: Fictional example of an API that lets other bodies create and track benefit cases.
+purpose: >-
+  Lets partner organisations refer people for support and follow the progress
+  of their case without rekeying data. Partners create a case through the API
+  and receive events as it moves through assessment to a decision.
+asset_type: api
+owner:
+  organisation: Example Social Security Agency
+  sector: executive-agencies
+contact:
+  type: service-desk
+  value: https://support.example.gov.uk/benefits-api
+service_areas:
+  - social-security-and-benefits
+capabilities:
+  - case-management
+  - integration-and-apis
+status: live
+intended_adopters:
+  - local-government
+  - nhs-scotland
+  - non-departmental-public-bodies
+terms_of_use:
+  type: service-terms
+  url: https://example.gov.uk/benefits-api/terms
+adoption_route:
+  summary: Apply for API access, complete the data sharing agreement, then test in the sandbox.
+charging:
+  applies: false
+interfaces:
+  - type: rest
+    documentation_url: https://developer.example.gov.uk/benefits-api/
+    description: Create, read and update cases.
+  - type: event
+    documentation_url: https://developer.example.gov.uk/benefits-api/events/
+    description: Case status changes, sent to a partner's webhook.
+service_url: https://api.example.gov.uk/benefits/v1/
+service_page_url: https://example.gov.uk/benefits-api/
+related_assets:
+  - id: csr-9004
+    relationship: uses
+confirmation:
+  last_confirmed: "2026-10-12"
+  method: pull request
+  reference: https://example.gov.uk/confirmations/csr-9002

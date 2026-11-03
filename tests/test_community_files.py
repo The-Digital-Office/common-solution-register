@@ -105,7 +105,8 @@ def test_site_workflow_triggers_concurrency_and_deploy():
     assert set(triggers) == {"pull_request", "push", "workflow_dispatch", "schedule"}
     assert data["concurrency"]["group"]
     deploy = data["jobs"]["deploy"]
-    assert "vars.PAGES_ENABLED == 'true'" in deploy["if"] and deploy["needs"] == "validate"
+    assert "vars.PAGES_ENABLED == 'true'" in deploy["if"] and deploy["needs"] == ["validate", "ui"]
+    assert data["jobs"]["ui"]["name"] == "UI tests"  # the second required check
     assert data["jobs"]["validate"]["name"] == "Validate"  # the required check's name
     assert data["jobs"]["reusable"]["uses"] == "./.github/workflows/validate-solution.yml"
 

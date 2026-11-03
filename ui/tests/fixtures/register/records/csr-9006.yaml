@@ -1,0 +1,5 @@
+# Fictional example: an owner-hosted record. Its solution.yml is in
+# examples/hosted/csr-9006/ and is harvested like any other source.
+id: csr-9006
+source: https://github.com/The-Digital-Office/common-solution-register/raw/main/examples/hosted/csr-9006/solution.yml
+expected_owner: Example Council

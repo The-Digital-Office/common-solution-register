@@ -1,0 +1,66 @@
+# solution.yml: describes the Common Solution Register Demonstrator as a common
+# solution (record csr-0001). Schema: schema/asset.schema.json.
+# The codebase that implements it is described by publiccode.yml.
+schema_version: "0.1"
+id: csr-0001
+record_status: owner-confirmed
+name: Common Solution Register Demonstrator
+summary: >-
+  A working demonstrator of a common solution register for the Scottish public
+  sector, built for the short-life working group to react to.
+purpose: >-
+  Shows how public bodies in Scotland could describe the solutions they offer to
+  each other for reuse, and how those descriptions could be validated, published
+  and kept current. It lets members of the Scottish Government short-life working
+  group on a common solution register search and browse example records, draft
+  and validate a solution.yml, and see owner-hosted records harvested. It is not
+  an official register. Whichever body the working group asks to take the work
+  forward can adopt the repository, by transfer or fork, and build on it.
+asset_type: service
+owner:
+  organisation: The Digital Office for Scottish Local Government
+  sector: local-government
+contact:
+  type: role-mailbox
+  value: solution-register@digitaloffice.scot
+service_areas:
+  - corporate-and-cross-cutting
+capabilities:
+  - content-and-publishing
+  - data-and-analytics
+  - collaboration-and-productivity
+status: in-development
+intended_adopters:
+  - scottish-government
+  - executive-agencies
+  - local-government
+  - nhs-scotland
+  - police-and-fire
+  - non-departmental-public-bodies
+  - further-and-higher-education
+terms_of_use:
+  type: open-licence
+  licence: MIT AND OGL-UK-3.0
+  summary: Code under the MIT licence; records and documentation under the Open Government Licence v3.0.
+adoption_route:
+  summary: >-
+    Transfer or fork the repository, change site.toml and the repository
+    settings for the new host, and publish the site with GitHub Pages.
+charging:
+  applies: false
+documentation_url: https://github.com/The-Digital-Office/common-solution-register#readme
+codebases:
+  - repository_url: https://github.com/The-Digital-Office/common-solution-register
+    visibility: public
+    publiccode_url: https://github.com/The-Digital-Office/common-solution-register/raw/main/publiccode.yml
+    maintenance: internal
+    kind: implementation
+    role: Register site, API and tools
+open_data:
+  - title: Register records (register.json and register.csv)
+    url: https://the-digital-office.github.io/common-solution-register/data/
+    catalogue: This register's Data and API page
+confirmation:
+  last_confirmed: "2026-11-02"
+  method: owner-hosted solution.yml
+  reference: https://github.com/The-Digital-Office/common-solution-register/blob/main/solution.yml

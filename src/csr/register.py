@@ -111,7 +111,8 @@ def _git_last_change(root: Path, path: str) -> tuple[dt.date | None, int | None]
     return dt.date.fromisoformat(date), int(match.group(1)) if match else None
 
 
-def load_register(root: Path, config: Config, today: dt.date, state: dict | None = None) -> Register:
+def load_register(root: Path, config: Config, today: dt.date, state: dict | None = None,
+                  history: bool = True) -> Register:  # fmt: skip
     """Read every record and derive its fields. Owner-hosted records come from the harvest
     ``state``: each is published from its last valid copy. With no state, the sources in
     this repository are harvested now, without the network."""
@@ -137,22 +138,24 @@ def load_register(root: Path, config: Config, today: dt.date, state: dict | None
                 unpublished.append(Unpublished(record.id, source, reason, harvested.get("findings", []), harvested))
                 continue
             descriptor = parse(harvested["last_valid"], source)
-            entry = _entry(root, record, descriptor, harvested["last_valid"], config, today)
+            entry = _entry(root, record, descriptor, harvested["last_valid"], config, today, history)
             entry.hosting, entry.source = "owner-hosted", source
             entry.harvest = harvested
             entry.last_changed = dt.date.fromisoformat(harvested["last_changed"]) if harvested.get("last_changed") else None
         else:
             if has_errors(check_record(record, context)):
                 continue  # csr validate reports it; the build publishes only valid records
-            entry = _entry(root, record, record, (root / record.label).read_text(encoding="utf-8"), config, today)
-            entry.last_changed = _git_last_change(root, record.label)[0]
+            entry = _entry(root, record, record, (root / record.label).read_text(encoding="utf-8"), config, today, history)
+            entry.last_changed = _git_last_change(root, record.label)[0] if history else None
         entries.append(entry)
     entries.sort(key=lambda e: e.data["name"].casefold())
     return Register(entries, unpublished, state)
 
 
-def _entry(root: Path, record: Record, descriptor: Record, text: str, config: Config, today: dt.date) -> Entry:
-    _, merged_in = _git_last_change(root, record.label)  # for a pointer: the pull request that registered it
+def _entry(root: Path, record: Record, descriptor: Record, text: str, config: Config, today: dt.date,
+           history: bool = True) -> Entry:  # fmt: skip
+    # For a pointer: the pull request that registered it. Without history (UI test builds), none.
+    merged_in = _git_last_change(root, record.label)[1] if history else None
     as_of = config.examples_as_of if record.id >= "csr-9000" and config.examples_as_of else today
     state, next_due = currency(descriptor.data, as_of, config)
     confirmed = descriptor.data.get("confirmation", {}).get("last_confirmed")

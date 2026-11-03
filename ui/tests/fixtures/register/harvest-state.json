@@ -1,0 +1,177 @@
+{
+  "state_version": 1,
+  "generated": "2026-11-02T05:23:00Z",
+  "sources": {
+    "csr-0001": {
+      "source": "https://github.com/The-Digital-Office/common-solution-register/raw/main/solution.yml",
+      "expected_owner": "The Digital Office for Scottish Local Government",
+      "name": "Common Solution Register Demonstrator",
+      "state": "ok",
+      "checked_at": "2026-11-02T05:23:00Z",
+      "harvested_at": "2026-11-02T05:23:00Z",
+      "content_hash": "sha256:c99cc27856438fcea9e11418cd9a6e2e3665814be57ea8b4459bc4175acb15da",
+      "last_changed": "2026-11-02",
+      "last_valid": "# solution.yml: describes the Common Solution Register Demonstrator as a common\n# solution (record csr-0001). Schema: schema/asset.schema.json.\n# The codebase that implements it is described by publiccode.yml.\nschema_version: \"0.1\"\nid: csr-0001\nrecord_status: owner-confirmed\nname: Common Solution Register Demonstrator\nsummary: >-\n  A working demonstrator of a common solution register for the Scottish public\n  sector, built for the short-life working group to react to.\npurpose: >-\n  Shows how public bodies in Scotland could describe the solutions they offer to\n  each other for reuse, and how those descriptions could be validated, published\n  and kept current. It lets members of the Scottish Government short-life working\n  group on a common solution register search and browse example records, draft\n  and validate a solution.yml, and see owner-hosted records harvested. It is not\n  an official register. Whichever body the working group asks to take the work\n  forward can adopt the repository, by transfer or fork, and build on it.\nasset_type: service\nowner:\n  organisation: The Digital Office for Scottish Local Government\n  sector: local-government\ncontact:\n  type: role-mailbox\n  value: solution-register@digitaloffice.scot\nservice_areas:\n  - corporate-and-cross-cutting\ncapabilities:\n  - content-and-publishing\n  - data-and-analytics\n  - collaboration-and-productivity\nstatus: in-development\nintended_adopters:\n  - scottish-government\n  - executive-agencies\n  - local-government\n  - nhs-scotland\n  - police-and-fire\n  - non-departmental-public-bodies\n  - further-and-higher-education\nterms_of_use:\n  type: open-licence\n  licence: MIT AND OGL-UK-3.0\n  summary: Code under the MIT licence; records and documentation under the Open Government Licence v3.0.\nadoption_route:\n  summary: >-\n    Transfer or fork the repository, change site.toml and the repository\n    settings for the new host, and publish the site with GitHub Pages.\ncharging:\n  applies: false\ndocumentation_url: https://github.com/The-Digital-Office/common-solution-register#readme\ncodebases:\n  - repository_url: https://github.com/The-Digital-Office/common-solution-register\n    visibility: public\n    publiccode_url: https://github.com/The-Digital-Office/common-solution-register/raw/main/publiccode.yml\n    maintenance: internal\n    kind: implementation\n    role: Register site, API and tools\nopen_data:\n  - title: Register records (register.json and register.csv)\n    url: https://the-digital-office.github.io/common-solution-register/data/\n    catalogue: This register's Data and API page\nconfirmation:\n  last_confirmed: \"2026-11-02\"\n  method: owner-hosted solution.yml\n  reference: https://github.com/The-Digital-Office/common-solution-register/blob/main/solution.yml\n",
+      "failing_since": null,
+      "unavailable_since": null,
+      "findings": []
+    },
+    "csr-9006": {
+      "source": "https://github.com/The-Digital-Office/common-solution-register/raw/main/examples/hosted/csr-9006/solution.yml",
+      "expected_owner": "Example Council",
+      "name": "Example: Hosted Booking Component",
+      "state": "ok",
+      "checked_at": "2026-11-02T05:23:00Z",
+      "harvested_at": "2026-11-02T05:23:00Z",
+      "content_hash": "sha256:b15c2cb270ea7c736083f6a4782f69a8d4aaf9f3c8e0878a016c6f69fbf5aa90",
+      "last_changed": "2026-11-02",
+      "last_valid": "# Fictional example of an owner-hosted solution.yml (record csr-9006).\nschema_version: \"0.1\"\nid: csr-9006\nrecord_status: example\nname: \"Example: Hosted Booking Component\"\nsummary: Fictional example of a booking component whose owner hosts its own solution.yml.\npurpose: >-\n  Lets council services offer online booking for collections, appointments and\n  rooms through one reusable component. The owner publishes this file in the\n  component's own repository, and the register harvests it daily.\nasset_type: component\nowner:\n  organisation: Example Council\n  sector: local-government\ncontact:\n  type: role-mailbox\n  value: booking@example.gov.uk\nservice_areas:\n  - environment-and-waste\n  - corporate-and-cross-cutting\ncapabilities:\n  - booking-and-scheduling\nstatus: live\nintended_adopters:\n  - local-government\nterms_of_use:\n  type: open-licence\n  licence: MIT\nadoption_route:\n  summary: Deploy the component from its repository and configure your bookable resources.\n  url: https://docs.example.gov.uk/booking/adopt\ncharging:\n  applies: false\nsupport:\n  summary: Community support through the repository's issues, with the owner's team reviewing weekly.\ndocumentation_url: https://docs.example.gov.uk/booking/\ncodebases:\n  - repository_url: https://code.example.gov.uk/booking\n    visibility: public\n    publiccode_url: https://code.example.gov.uk/booking/raw/main/publiccode.yml\n    maintenance: internal\n    version: \"2.1.0\"\n    kind: implementation\nrelated_assets:\n  - id: csr-9003\n    relationship: replaces\nconfirmation:\n  last_confirmed: \"2026-10-20\"\n  method: owner-hosted solution.yml\n  reference: https://code.example.gov.uk/booking/raw/main/solution.yml\n",
+      "failing_since": null,
+      "unavailable_since": null,
+      "findings": []
+    },
+    "csr-9007": {
+      "source": "https://github.com/The-Digital-Office/common-solution-register/raw/main/examples/hosted/csr-9007/solution.yml",
+      "expected_owner": "Example Council",
+      "name": "Example: Failing Hosted Source",
+      "state": "failing",
+      "checked_at": "2026-11-02T05:23:00Z",
+      "harvested_at": null,
+      "content_hash": null,
+      "last_changed": null,
+      "last_valid": null,
+      "failing_since": "2026-11-02T05:23:00Z",
+      "unavailable_since": null,
+      "findings": [
+        {
+          "file": "https://github.com/The-Digital-Office/common-solution-register/raw/main/examples/hosted/csr-9007/solution.yml",
+          "rule": "SCHEMA",
+          "severity": "error",
+          "path": "adoption_route.summary",
+          "message": "How another organisation can adopt it must be at least 20 characters",
+          "fix": "Change the length of the text."
+        },
+        {
+          "file": "https://github.com/The-Digital-Office/common-solution-register/raw/main/examples/hosted/csr-9007/solution.yml",
+          "rule": "SCHEMA",
+          "severity": "error",
+          "path": "charging",
+          "message": "Enter the charging details or their address",
+          "fix": "Add one of them."
+        },
+        {
+          "file": "https://github.com/The-Digital-Office/common-solution-register/raw/main/examples/hosted/csr-9007/solution.yml",
+          "rule": "SCHEMA",
+          "severity": "error",
+          "path": "charging.model",
+          "message": "Choose a charging model",
+          "fix": "Add it: see the field reference for what it should contain."
+        },
+        {
+          "file": "https://github.com/The-Digital-Office/common-solution-register/raw/main/examples/hosted/csr-9007/solution.yml",
+          "rule": "SCHEMA",
+          "severity": "error",
+          "path": "confirmation",
+          "message": "Add the owner's confirmation: the date, how and where it was given",
+          "fix": "Add it: see the field reference for what it should contain."
+        },
+        {
+          "file": "https://github.com/The-Digital-Office/common-solution-register/raw/main/examples/hosted/csr-9007/solution.yml",
+          "rule": "SCHEMA",
+          "severity": "error",
+          "path": "contact",
+          "message": "Enter a contact",
+          "fix": "Add it: see the field reference for what it should contain."
+        },
+        {
+          "file": "https://github.com/The-Digital-Office/common-solution-register/raw/main/examples/hosted/csr-9007/solution.yml",
+          "rule": "SCHEMA",
+          "severity": "error",
+          "path": "documentation_url",
+          "message": "Documentation address must be a full web address starting https://",
+          "fix": "Correct the value: see the field reference for the format."
+        },
+        {
+          "file": "https://github.com/The-Digital-Office/common-solution-register/raw/main/examples/hosted/csr-9007/solution.yml",
+          "rule": "SCHEMA",
+          "severity": "error",
+          "path": "purpose",
+          "message": "Purpose must be at least 50 characters",
+          "fix": "Change the length of the text."
+        },
+        {
+          "file": "https://github.com/The-Digital-Office/common-solution-register/raw/main/examples/hosted/csr-9007/solution.yml",
+          "rule": "SCHEMA",
+          "severity": "error",
+          "path": "summary",
+          "message": "Summary must be at least 20 characters",
+          "fix": "Change the length of the text."
+        },
+        {
+          "file": "https://github.com/The-Digital-Office/common-solution-register/raw/main/examples/hosted/csr-9007/solution.yml",
+          "rule": "SCHEMA",
+          "severity": "error",
+          "path": "terms_of_use.type",
+          "message": "\"Not stated in public sources\" can only be used by people who are not from the owning organisation",
+          "fix": "Give the actual value: the owner can state it."
+        },
+        {
+          "file": "https://github.com/The-Digital-Office/common-solution-register/raw/main/examples/hosted/csr-9007/solution.yml",
+          "rule": "R03",
+          "severity": "error",
+          "path": "service_areas[0]",
+          "message": "'waste' is not a term in taxonomy/service-areas.yaml",
+          "fix": "Use one of: health-and-care, social-care-and-social-work, children-and-families, education-and-skills, housing, social-security-and-benefits, revenues-and-tax, justice-and-community-safety, environment-and-waste, planning-and-building-standards, transport-and-roads, economy-and-business, culture-and-communities, corporate-and-cross-cutting."
+        },
+        {
+          "file": "https://github.com/The-Digital-Office/common-solution-register/raw/main/examples/hosted/csr-9007/solution.yml",
+          "rule": "R09",
+          "severity": "error",
+          "path": "purpose",
+          "message": "still starts with TODO",
+          "fix": "Replace the placeholder with the real value."
+        },
+        {
+          "file": "https://github.com/The-Digital-Office/common-solution-register/raw/main/examples/hosted/csr-9007/solution.yml",
+          "rule": "R10",
+          "severity": "error",
+          "path": "terms_of_use.type",
+          "message": "'not-publicly-stated' is allowed only in demonstration records",
+          "fix": "Give the actual value: the owner can state it."
+        },
+        {
+          "file": "https://github.com/The-Digital-Office/common-solution-register/raw/main/examples/hosted/csr-9007/solution.yml",
+          "rule": "R18",
+          "severity": "error",
+          "path": "documentation_url",
+          "message": "'http://docs.example.gov.uk/failing/' is not an HTTPS URL",
+          "fix": "Use a full address starting https://."
+        }
+      ]
+    }
+  },
+  "publiccode": {
+    "https://code.example.gov.uk/booking/raw/main/publiccode.yml": {
+      "state": "not-checked",
+      "checked_at": "2026-11-02T05:23:00Z",
+      "parser": "v5.4.3",
+      "messages": [
+        "Not fetched: the network was not used."
+      ]
+    },
+    "https://code.example.gov.uk/notifications/raw/main/publiccode.yml": {
+      "state": "not-checked",
+      "checked_at": "2026-11-02T05:23:00Z",
+      "parser": "v5.4.3",
+      "messages": [
+        "Not fetched: the network was not used."
+      ]
+    },
+    "https://github.com/The-Digital-Office/common-solution-register/raw/main/publiccode.yml": {
+      "state": "valid",
+      "checked_at": "2026-11-02T05:23:00Z",
+      "parser": "v5.4.3",
+      "messages": []
+    }
+  }
+}

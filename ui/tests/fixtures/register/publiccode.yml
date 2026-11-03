@@ -1,0 +1,85 @@
+# publiccode.yml: describes this software using the publiccode.yml standard.
+# Specification: https://yml.publiccode.tools
+#
+# This file describes the codebase. The common solution that this codebase
+# implements (the register itself, record csr-0001) is described separately,
+# in solution.yml.
+
+publiccodeYmlVersion: "0"
+
+name: "common-solution-register"
+url: "https://github.com/The-Digital-Office/common-solution-register"
+
+platforms:
+  - web
+
+developmentStatus: development
+
+softwareType: "standalone/web"
+
+categories:
+  - knowledge-management
+  - content-management
+
+organisation:
+  uri: "https://github.com/The-Digital-Office"
+  name: "The Digital Office for Scottish Local Government"
+
+intendedAudience:
+  countries:
+    - GB
+  scope:
+    - local-authorities
+    - government
+
+description:
+  en:
+    shortDescription: >-
+      Demonstrator of a common solution register for the Scottish public
+      sector: validated records, published as a static site.
+    longDescription: >-
+      The Common Solution Register Demonstrator shows how public bodies in
+      Scotland could describe the solutions they offer to each other for
+      reuse, and how those descriptions could be checked and published. It was
+      built for the Scottish Government short-life working group on a common
+      solution register, so that members can react to something concrete. It
+      is not an official register.
+
+
+      Each common solution is described by a `solution.yml` descriptor: what it
+      is, who owns it, how to adopt it, its terms, support and charging, and
+      the codebases that implement it. Codebases keep their own
+      `publiccode.yml`, which the register links to and validates. Records are
+      held in the repository, or hosted by their owners and harvested daily.
+
+
+      A Python command-line tool validates records against a JSON Schema and a
+      set of rules, harvests owner-hosted descriptors, and generates a static
+      website with search, filters, a draft form, a validate page, a JSON API
+      and CSV extracts. The site uses the Scottish Government Design System and
+      needs no server, so it can be hosted on GitHub Pages or any static host.
+      The repository is designed to be adopted, by transfer or fork, by
+      whichever body takes the work forward.
+    features:
+      - "Solution descriptor (solution.yml) with a JSON Schema"
+      - "Record validation in pull requests and from the command line"
+      - "Harvesting of owner-hosted solution.yml files"
+      - "Validation of linked publiccode.yml files"
+      - "Static website with search, filters and sorting"
+      - "Draft form and validate page that run in the browser"
+      - "JSON API and CSV extracts"
+
+legal:
+  license: MIT
+  mainCopyrightOwner: "The Digital Office for Scottish Local Government"
+
+maintenance:
+  type: internal
+  contacts:
+    - name: "Robbie Harris"
+      affiliation: "The Digital Office for Scottish Local Government"
+
+localisation:
+  localisationReady: false
+  availableLanguages:
+    - en

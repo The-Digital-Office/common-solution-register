@@ -1,0 +1,20 @@
+{
+  "name": "common-solution-register-ui-tests",
+  "private": true,
+  "description": "Test tooling only (specification 6.2): Playwright and axe-core for the UI tests in ui/tests. Never part of the published site or the build.",
+  "license": "MIT",
+  "scripts": {
+    "test:ui": "playwright test --config ui/playwright.config.js",
+    "test:ui:update": "playwright test --config ui/playwright.config.js --update-snapshots"
+  },
+  "devDependencies": {
+    "@axe-core/playwright": "4.14.0",
+    "@playwright/test": "1.63.0"
+  },
+  "engines": {
+    "node": ">=22"
+  },
+  "overrides": {
+    "playwright-core": "1.63.0"
+  }
+}
