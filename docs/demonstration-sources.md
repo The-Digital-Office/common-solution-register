@@ -86,3 +86,43 @@ author should look at it by hand.
 | [ ] | `service_page_url`, `documentation_url` | https://designsystem.gov.scot/ | S1 | Linked as "Scottish Government Design System" |
 | [ ] | `current_version`, `codebases[0].version` | 4.3.0 | S3 | `latest` dist-tag 4.3.0. **Update** if a newer version has been released |
 | [ ] | `codebases[0]` | public repository, maintenance `internal` | S1, S3 | S3: repository `github.com/scottish-government-design-system/design-system`, maintained by the "Scottish Government Digital Design system team". No `publiccode.yml` in the repository, so R12 warns |
+
+## csr-0005 One Scotland Gazetteer
+
+**Sources** (metadata records published by the Improvement Service in the
+Scottish Government's spatial data catalogue, spatialdata.gov.scot)
+
+- [S1] [One Scotland Gazetteer](https://spatialdata.gov.scot/geonetwork/srv/api/records/250ea276-48e2-4189-8a89-fcc4ca92d652) (dataset).
+- [S2] [National Street Gazetteer for Scotland](https://spatialdata.gov.scot/geonetwork/srv/api/records/0454729b-6dda-49d3-bc18-ac73127345af) (dataset).
+- [S3] [One Scotland Gazetteer REST Service](https://spatialdata.gov.scot/geonetwork/srv/api/records/0374e2cf-f0d4-4ae4-9b13-fc4b7df6588e) (service).
+- [S4] [One Scotland Gazetteer SOAP Service](https://spatialdata.gov.scot/geonetwork/srv/api/records/1b74296b-cc69-4ede-bf48-380d3c6baa8c) (service).
+
+**Not used.** `onescotlandgazetteer.org.uk` describes itself as "an
+independent informational resource, not an official government service", so it
+is not a source. The owner's portal, `osg.scot/portal/`, builds its pages in
+the browser, so its About, Help, Contact, Open data and Terms pages could not
+be read; the Improvement Service's own page answers automated requests with
+HTTP 403. The author should read these by hand: they may supply the support,
+charging and service page details now marked as not stated.
+
+| Checked | Field | Value | Source | Supporting words |
+|---|---|---|---|---|
+| [ ] | `name` | One Scotland Gazetteer | S1 | Title "One Scotland Gazetteer" |
+| [ ] | `summary`, `purpose` (database) | Address database made up of all 32 local authority gazetteers; BS7666:2006 and the Scottish Gazetteer Conventions; spatially referenced records and property lifecycle details | S1 | "The One Scotland Gazetteer is an address database made up of all 32 individual local authority gazetteers. All addresses are created in accordance with the national standard for addressing, BS7666:2006 and the Scottish Gazetteer Conventions. Key features include: Spatially referenced address records, Property lifecycle details" |
+| [ ] | `purpose` (streets) | National Street Gazetteer for Scotland, every street, road, track or cycleway, with USRNs | S2 | "a line dataset depicting every street, road, track or cycleway in Scotland"; "Unique Street Reference Numbers (USRN)" |
+| [ ] | `purpose` (services) | REST and SOAP services provide the data as an API for authorised organisations | S3, S4 | "provides the One Scotland Gazetteer data as an API that can be used by any authorised organisation within their address and street-based applications" |
+| [ ] | `purpose` (daily) | Maintained daily | S1, S2 | Maintenance frequency "daily" |
+| [ ] | `asset_type` | platform | — | Classification from specification 5.2 |
+| [ ] | `owner` | Improvement Service, `local-government` | S1–S4 | Organisation "The Improvement Service" (the national improvement body for Scottish local government) |
+| [ ] | `contact` | web form https://osg.scot/portal/pages/contact-Us | — | The portal's "Contact" link. The metadata gives the mailboxes gazcustomers@improvementservice.org.uk (S1, S2) and gazhelp@improvementservice.org.uk (S3, S4). **Check** the contact page works |
+| [ ] | `service_areas` | corporate-and-cross-cutting | — | Classification by the register |
+| [ ] | `capabilities` | data-and-analytics, mapping-and-location | — | Classification by the register: reference data; addresses and geographic data |
+| [ ] | `status` | live | S1–S4 | Maintained daily, with web services in use. Not stated in so many words; **check** |
+| [ ] | `intended_adopters` | the six Scottish public sector sectors | S1, S3 | "available to any organisation that is a member of the PSGA (Public Sector Geospatial Agreement)". PSGA membership is wider than Scotland; **check** whether to add `uk-public-sector` or `further-and-higher-education` |
+| [ ] | `terms_of_use` | other; PSGA members; commercial availability stated differently by the dataset and service records | S1, S3, S4 | S1: "available to any organisation that is a member of the PSGA (Public Sector Geospatial Agreement). It is not currently commercially available"; S3: "It is commercially available via Ordnance Survey's Address Base products". S4 names the One Scotland Mapping Agreement, which the PSGA replaced |
+| [ ] | `adoption_route` | PSGA members can use the data and the services | S1, S3 | As above |
+| [ ] | `charging.applies` | not-publicly-stated | S1–S4 | Not stated |
+| [ ] | `support.summary` | not-publicly-stated | S1–S4 | Not stated (S3 and S4 give a "gazhelp" mailbox as the contact, without saying it is a support service) |
+| [ ] | `service_url` | https://osg.scot/portal/ | S1–S4 | Online resource "https://osg.scot/portal/" |
+| [ ] | `service_page_url` | not-publicly-stated | — | The owner's page could not be read; **check** `https://osg.scot/portal/pages/about-us` and the Improvement Service's page |
+| [ ] | `interfaces` | REST (S3), SOAP (S4), each documented by its metadata record | S3, S4 | Titles "One Scotland Gazetteer REST Service", "One Scotland Gazetteer SOAP Service" |
