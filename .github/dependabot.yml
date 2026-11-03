@@ -23,3 +23,14 @@ updates:
     groups:
       npm:
         patterns: ["*"]
+    # A new Playwright brings a new Chromium, which changes the UI test baselines, and
+    # package.json pins playwright-core through overrides. Minor and major upgrades are
+    # made deliberately instead: all three packages and the override together, with the
+    # baselines remade (docs/ui-requirements.md). Patch releases still come through.
+    ignore:
+      - dependency-name: "@playwright/test"
+        update-types: ["version-update:semver-minor", "version-update:semver-major"]
+      - dependency-name: "playwright"
+        update-types: ["version-update:semver-minor", "version-update:semver-major"]
+      - dependency-name: "playwright-core"
+        update-types: ["version-update:semver-minor", "version-update:semver-major"]
