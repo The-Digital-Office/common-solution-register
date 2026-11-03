@@ -22,3 +22,13 @@ def drop_demonstrations(root: Path) -> None:
     for path in (root / "records").glob("*.yaml"):
         if load_yaml_file(path).get("record_status") == "demonstration":
             path.unlink()
+
+
+def demonstration_ids() -> list[str]:
+    """The ids of the register's demonstration records, which S15 adds one at a time."""
+    from csr.schema import ROOT, load_yaml_file
+
+    return sorted(
+        path.stem for path in (ROOT / "records").glob("*.yaml")
+        if load_yaml_file(path).get("record_status") == "demonstration"
+    )  # fmt: skip

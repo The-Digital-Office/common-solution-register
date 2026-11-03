@@ -1,0 +1,71 @@
+# Demonstration record: compiled only from the public sources listed under
+# sources, and not confirmed by the owner. See docs/demonstration-sources.md.
+schema_version: "0.1"
+id: csr-0004
+record_status: demonstration
+name: Scottish Government Design System
+summary: >-
+  Code, components and guidance for building websites and web applications for
+  the Scottish Government and other Scottish public sector bodies.
+purpose: >-
+  Contains the code needed to start building user interfaces for websites and
+  web applications for the Scottish Government and other Scottish public sector
+  bodies. Its website shows live examples of the available components,
+  alongside guidance on how and when to use them. Teams install it as a
+  package from npm and include its compiled CSS and JavaScript in their
+  projects.
+asset_type: standard
+owner:
+  organisation: Scottish Government
+  sector: scottish-government
+contact:
+  type: web-form
+  value: https://github.com/scottish-government-design-system/design-system/issues
+service_areas:
+  - corporate-and-cross-cutting
+capabilities:
+  - content-and-publishing
+status: live
+intended_adopters:
+  - scottish-government
+  - executive-agencies
+  - local-government
+  - nhs-scotland
+  - police-and-fire
+  - non-departmental-public-bodies
+terms_of_use:
+  type: open-licence
+  licence: MIT
+  url: https://github.com/scottish-government-design-system/design-system/blob/main/LICENSE.txt
+adoption_route:
+  summary: >-
+    Install the package with npm (npm install @scottish-government/design-system),
+    then include its production CSS, JavaScript and static assets in your
+    project, following the installation guidance.
+  url: https://designsystem.gov.scot/get-started/installation/
+charging:
+  applies: false
+support:
+  summary: Email the Design System team at designsystem@gov.scot for help or to give feedback.
+service_page_url: https://designsystem.gov.scot/
+documentation_url: https://designsystem.gov.scot/
+current_version: 4.3.0
+codebases:
+  - repository_url: https://github.com/scottish-government-design-system/design-system
+    visibility: public
+    maintenance: internal
+    kind: implementation
+    version: 4.3.0
+sources:
+  - url: https://github.com/scottish-government-design-system/design-system/blob/main/README.md
+    title: Scottish Government Design System (repository README)
+    publisher: Scottish Government
+    accessed: "2026-11-03"
+  - url: https://github.com/scottish-government-design-system/design-system/blob/main/LICENSE.txt
+    title: Scottish Government Design System licence (LICENSE.txt)
+    publisher: Scottish Government
+    accessed: "2026-11-03"
+  - url: https://www.npmjs.com/package/@scottish-government/design-system
+    title: "@scottish-government/design-system on npm"
+    publisher: npm
+    accessed: "2026-11-03"

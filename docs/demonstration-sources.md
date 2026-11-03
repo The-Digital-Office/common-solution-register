@@ -52,3 +52,37 @@ hand during verification.
 | [ ] | `service_url` | not-publicly-stated | S1 | People reach ScotAccount through the services that use it; S1 points to a list on mygov.scot ("For a full list of services currently using ScotAccount visit mygov.scot") but gives no start page. **Check** `https://www.mygov.scot/scotaccount` by hand |
 | [ ] | `service_page_url` | https://scotaccount.campaign.gov.scot/ | S1, S2 | Linked as the ScotAccount website in both. It now redirects to `https://scotaccount.servicemanual.gov.scot/` (HTTPS); **check** which address to keep |
 | [ ] | `adopters` | Disclosure Scotland; Crown Office and Procurator Fiscal Service (both `self-reported`: stated by the owner, not by the adopter) | S1, S2 | S1: "Since launching with Disclosure Scotland in February 2023"; S2: "assisted the Crown Office and Procurator Fiscal Service (COPFS) to introduce their new Witness Gateway" |
+
+## csr-0004 Scottish Government Design System
+
+**Sources**
+
+- [S1] [Repository README](https://github.com/scottish-government-design-system/design-system/blob/main/README.md), Scottish Government.
+- [S2] [LICENSE.txt](https://github.com/scottish-government-design-system/design-system/blob/main/LICENSE.txt), Scottish Government.
+- [S3] [`@scottish-government/design-system` on npm](https://www.npmjs.com/package/@scottish-government/design-system) (read from the registry's public metadata, `https://registry.npmjs.org/@scottish-government/design-system`).
+
+`designsystem.gov.scot` answers automated requests with a bot check, so the
+design system's own website is linked from the record but not cited; the
+author should look at it by hand.
+
+| Checked | Field | Value | Source | Supporting words |
+|---|---|---|---|---|
+| [ ] | `name` | Scottish Government Design System | S1 | "# Scottish Government Design System" |
+| [ ] | `summary`, `purpose` (code) | Code for building websites and web applications for the Scottish Government and other Scottish public sector bodies | S1 | "This repository contains all the code needed to start building user interfaces for websites and web applications for the Scottish Government and other Scottish public sector bodies." |
+| [ ] | `summary`, `purpose` (guidance) | Live examples of components, with guidance on how and when to use them | S1 | "See live examples of the available components, alongside guidance on how and when to use them in the Scottish Government Design System" |
+| [ ] | `purpose` (install) | Installed from npm; compiled CSS and JavaScript included in projects | S1 | "We recommend installing the package using node package manager (npm)"; "optimised CSS, JavaScript files and static assets that should be included in your project" |
+| [ ] | `asset_type` | standard | — | Classification from specification 5.2 |
+| [ ] | `owner.organisation` | Scottish Government | S2, S3 | S2: "Copyright (c) Crown Copyright 2019"; S3: author "Scottish Government Digital Design system team" |
+| [ ] | `owner.sector` | scottish-government | S3 | As above |
+| [ ] | `contact` | web form: the repository's issues page | S3 | Package `bugs` address `https://github.com/scottish-government-design-system/design-system/issues`. S1 also gives the mailbox designsystem@gov.scot (used under `support`) |
+| [ ] | `service_areas` | corporate-and-cross-cutting | — | Classification by the register |
+| [ ] | `capabilities` | content-and-publishing | — | The taxonomy definition names design systems: "including design systems and content standards" |
+| [ ] | `status` | live | S3 | Stable releases published; the `latest` version is 4.3.0 (29 September 2026). **Check** the website does not describe it as beta |
+| [ ] | `intended_adopters` | the six Scottish public sector sectors | S1, S3 | S1: "the Scottish Government and other Scottish public sector bodies"; S3: "Design System for Scottish public sector websites". **Check** whether colleges and universities are included |
+| [ ] | `terms_of_use` | open-licence, MIT, linking LICENSE.txt | S2, S3 | S2: "The MIT License (MIT)"; S3: licence `MIT`. The website's guidance text may be under another licence; not stated in these sources |
+| [ ] | `adoption_route` | Install with npm, include the production files, follow the installation guidance | S1 | "Run the command `npm install @scottish-government/design-system`"; the link "installing the package using node package manager (npm)" goes to `https://designsystem.gov.scot/get-started/installation/` |
+| [ ] | `charging.applies` | false | S2 | "Permission is hereby granted, free of charge" |
+| [ ] | `support.summary` | Email the Design System team at designsystem@gov.scot for help or feedback | S1 | "If you need any help or want to give any feedback you can e-mail the Design System team at: designsystem@gov.scot" |
+| [ ] | `service_page_url`, `documentation_url` | https://designsystem.gov.scot/ | S1 | Linked as "Scottish Government Design System" |
+| [ ] | `current_version`, `codebases[0].version` | 4.3.0 | S3 | `latest` dist-tag 4.3.0. **Update** if a newer version has been released |
+| [ ] | `codebases[0]` | public repository, maintenance `internal` | S1, S3 | S3: repository `github.com/scottish-government-design-system/design-system`, maintained by the "Scottish Government Digital Design system team". No `publiccode.yml` in the repository, so R12 warns |
