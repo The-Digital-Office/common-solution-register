@@ -55,7 +55,7 @@ adoption_route:
     that provide data join an Organisation on the Spatial Hub.
   url: https://data.spatialhub.scot/faq
 charging:
-  applies: false
+  applies: not-publicly-stated
   summary: >-
     Accounts are free, and open datasets are accessible with a free account.
     Premium datasets need PSGA membership or a commercial licence agreement.

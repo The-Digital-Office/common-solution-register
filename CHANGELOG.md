@@ -60,6 +60,7 @@ and this project uses [Semantic Versioning](https://semver.org/spec/v2.0.0.html)
 - Dependabot proposes only patch releases of Playwright; minor and major upgrades are made deliberately, with the UI baselines remade.
 - R07 treats hyphenated addresses (such as `solution-register@`) as role mailboxes, and knows more role words.
 - `csr validate` and the harvest report describe schema problems in plain words, one per field, with the same wording as the draft form and validate page.
+- Record pages show a charging summary after "No charge" and "Not stated in public sources", not only when charges apply.
 
 ### Fixed
 

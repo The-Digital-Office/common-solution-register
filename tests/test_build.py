@@ -153,3 +153,10 @@ def test_helpers():
 def test_config_base_url_override():
     assert load_config(ROOT, "http://localhost:8000").base_url == "http://localhost:8000/"
     assert load_config(ROOT).state_url.endswith("/api/v0/harvest-state.json")
+
+
+def test_a_charging_summary_is_shown_with_no_charge_and_not_stated(site):
+    scotaccount = " ".join(Parsed(page(site, "assets/csr-0003/index.html")).text)
+    assert "No charge. Beta participants get access" in scotaccount
+    spatial_hub = " ".join(Parsed(page(site, "assets/csr-0006/index.html")).text)
+    assert "Charges Not stated in public sources . Accounts are free" in spatial_hub  # text nodes joined by spaces

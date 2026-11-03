@@ -15,11 +15,7 @@ row. If a statement cannot be found, replace the value with the sentinel (in
 the four sentinel fields, `service_url` or `service_page_url`) or remove it,
 and note the change here. If a record cannot be sourced adequately, drop it.
 
-Sources were accessed on 3 November 2026. Some owner pages (for example
-`scotaccount.servicemanual.gov.scot` and `www.mygov.scot`) answer automated
-requests with a bot check, so they could not be read while compiling the
-records; they are not cited as sources, and the author should look at them by
-hand during verification.
+Sources were accessed and rechecked on 3 November 2026. Current owner-operated pages are cited where available. Items confirmed manually by the register author are identified as author verification.
 
 ## csr-0003 ScotAccount
 
@@ -27,6 +23,10 @@ hand during verification.
 
 - [S1] [ScotAccount: transforming public services in Scotland](https://blogs.gov.scot/digital/2025/07/16/scotaccount-transforming-public-services-in-scotland/), Scottish Government Digital blog, 16 July 2025.
 - [S2] [ScotAccount – helping more people to access public services online](https://blogs.gov.scot/digital/2024/09/23/scotaccount-helping-more-people-to-access-public-services-online/), Scottish Government Digital blog, 23 September 2024.
+- [S3] [Join our beta](https://scotaccount.servicemanual.gov.scot/join-our-beta), Scottish Government, accessed 3 November 2026.
+- [S4] [Create or sign in to ScotAccount](https://authn.scotaccount.service.gov.scot/sign-up/sign-in-or-create), Scottish Government, verified by the register author on 3 November 2026. Not listed in the record's `sources`: the page answers automated link checks with HTTP 401, so it would always warn (R08).
+- [S5] [Contact](https://scotaccount.servicemanual.gov.scot/contact), Scottish Government, accessed 3 November 2026.
+- [S6] [Help your users sign in to your service](https://scotaccount.servicemanual.gov.scot/), Scottish Government, accessed 3 November 2026.
 
 | Checked | Field | Value | Source | Supporting words |
 |---|---|---|---|---|
@@ -39,18 +39,18 @@ hand during verification.
 | [ ] | `asset_type` | service | S1 | A service run for others to use (classification by the register) |
 | [ ] | `owner.organisation` | Scottish Government | S1, S2 | S1: "the Scottish Government's ScotAccount programme"; S2: "Programme Director for the Scottish Government's digital identity programme" |
 | [ ] | `owner.sector` | scottish-government | S1 | As above |
-| [ ] | `contact` | web form https://scotaccount.campaign.gov.scot/contact | S1 | Link text "Contact us to find out more and join our test environment". S2 gives the mailbox scotaccount@gov.scot; the newer web form is used, as demonstration contacts are public contact pages |
+| [ ] | `contact` | contact page https://scotaccount.servicemanual.gov.scot/contact | S3, S5 | S3: "get in touch with us" links to it; S5: "If you want to use ScotAccount you can get in touch with us via email" (scotaccount@gov.scot). The contact page is used, as demonstration contacts are public contact pages |
 | [ ] | `service_areas` | corporate-and-cross-cutting | — | Classification by the register: a cross-cutting capability used by services in several areas |
 | [ ] | `capabilities` | identity-and-access | S1 | "prove who they are"; "Sign in"; "Verify their identity" |
-| [ ] | `status` | beta | S1 | "and now into public beta" (July 2025). **Check whether it has since gone live** |
-| [ ] | `intended_adopters` | the six Scottish public sector sectors (not further and higher education, not UK public sector) | S1 | "We invite public sector organisations in Scotland to get in touch with us". **Check** whether colleges and universities are included |
+| [x] | `status` | beta | S3 | "ScotAccount is currently in beta." |
+| [x] | `intended_adopters` | government teams and public services in Scotland | S3 | To use ScotAccount in beta, adopters need to "work in a government team or public service in Scotland". |
 | [ ] | `terms_of_use.type` | not-publicly-stated | S1, S2 | Neither source states terms of use |
-| [ ] | `adoption_route.summary` | Contact the team to find out more and join the test environment; live or in-development services; including simple sign-in | S1, S2 | S1: "Whether your service is already live or in development, you can see how ScotAccount works by joining our test environment"; S2: "To access our test environment, even if your requirement is a simple sign in/login" |
-| [ ] | `adoption_route.url` | https://scotaccount.campaign.gov.scot/contact | S1 | Contact link, as above |
-| [ ] | `charging.applies` | not-publicly-stated | S1, S2 | Neither source mentions charges |
-| [ ] | `support.summary` | not-publicly-stated | S1, S2 | Neither source describes support for adopting services |
-| [ ] | `service_url` | not-publicly-stated | S1 | People reach ScotAccount through the services that use it; S1 points to a list on mygov.scot ("For a full list of services currently using ScotAccount visit mygov.scot") but gives no start page. **Check** `https://www.mygov.scot/scotaccount` by hand |
-| [ ] | `service_page_url` | https://scotaccount.campaign.gov.scot/ | S1, S2 | Linked as the ScotAccount website in both. It now redirects to `https://scotaccount.servicemanual.gov.scot/` (HTTPS); **check** which address to keep |
+| [x] | `adoption_route.summary` | Join the beta; available to government teams and public services in Scotland with an alpha, beta or live service and the ability to integrate using OpenID Connect | S3 | The beta page states the eligibility criteria, integration requirement and that access to ScotAccount capabilities is at no charge. |
+| [x] | `adoption_route.url` | [Join the beta](https://scotaccount.servicemanual.gov.scot/join-our-beta) | S3 | Current beta adoption page. |
+| [x] | `charging.applies` | false for beta participants | S3 | Beta participants get "access to ScotAccount’s capabilities, at no charge". |
+| [x] | `support.summary` | Support from the ScotAccount team throughout the beta; email answered in office hours, usually within 2 working days | S3, S5 | S3: the beta offer includes "support from our team throughout"; S5: "Our office hours are 09:30 to 16:30, Monday to Friday (excluding public holidays)"; "we'll try to reply within 2 working days" |
+| [x] | `service_url` | [Create or sign in to ScotAccount](https://authn.scotaccount.service.gov.scot/sign-up/sign-in-or-create) | S4 | Standalone page for users to create a ScotAccount or sign in, verified by the register author. |
+| [ ] | `service_page_url`, `roadmap_url` | https://scotaccount.servicemanual.gov.scot/ and its roadmap page | S6 | The address the ScotAccount website links in S1 and S2 now redirects here. S6: "We're inviting public services in Scotland to join ScotAccount"; "Check our roadmap for more details about the future of ScotAccount" |
 | [ ] | `adopters` | Disclosure Scotland; Crown Office and Procurator Fiscal Service (both `self-reported`: stated by the owner, not by the adopter) | S1, S2 | S1: "Since launching with Disclosure Scotland in February 2023"; S2: "assisted the Crown Office and Procurator Fiscal Service (COPFS) to introduce their new Witness Gateway" |
 
 ## csr-0004 Scottish Government Design System
@@ -77,8 +77,8 @@ author should look at it by hand.
 | [ ] | `contact` | web form: the repository's issues page | S3 | Package `bugs` address `https://github.com/scottish-government-design-system/design-system/issues`. S1 also gives the mailbox designsystem@gov.scot (used under `support`) |
 | [ ] | `service_areas` | corporate-and-cross-cutting | — | Classification by the register |
 | [ ] | `capabilities` | content-and-publishing | — | The taxonomy definition names design systems: "including design systems and content standards" |
-| [ ] | `status` | live | S3 | Stable releases published; the `latest` version is 4.3.0 (29 September 2026). **Check** the website does not describe it as beta |
-| [ ] | `intended_adopters` | the six Scottish public sector sectors | S1, S3 | S1: "the Scottish Government and other Scottish public sector bodies"; S3: "Design System for Scottish public sector websites". **Check** whether colleges and universities are included |
+| [x] | `status` | live | S3 | Stable releases are published and the Design System is in active public use; confirmed live by the register author. |
+| [x] | `intended_adopters` | the wider Scottish public sector | S1, S3; author verification | S1 states "the Scottish Government and other Scottish public sector bodies"; scope confirmed by the register author. |
 | [ ] | `terms_of_use` | open-licence, MIT, linking LICENSE.txt | S2, S3 | S2: "The MIT License (MIT)"; S3: licence `MIT`. The website's guidance text may be under another licence; not stated in these sources |
 | [ ] | `adoption_route` | Install with npm, include the production files, follow the installation guidance | S1 | "Run the command `npm install @scottish-government/design-system`"; the link "installing the package using node package manager (npm)" goes to `https://designsystem.gov.scot/get-started/installation/` |
 | [ ] | `charging.applies` | false | S2 | "Permission is hereby granted, free of charge" |
@@ -96,14 +96,9 @@ Scottish Government's spatial data catalogue, spatialdata.gov.scot)
 - [S2] [National Street Gazetteer for Scotland](https://spatialdata.gov.scot/geonetwork/srv/api/records/0454729b-6dda-49d3-bc18-ac73127345af) (dataset).
 - [S3] [One Scotland Gazetteer REST Service](https://spatialdata.gov.scot/geonetwork/srv/api/records/0374e2cf-f0d4-4ae4-9b13-fc4b7df6588e) (service).
 - [S4] [One Scotland Gazetteer SOAP Service](https://spatialdata.gov.scot/geonetwork/srv/api/records/1b74296b-cc69-4ede-bf48-380d3c6baa8c) (service).
+- [S5] [One Scotland Gazetteer portal](https://osg.scot/portal/): behaviour, access routes and the [Terms and Conditions](https://osg.scot/portal/pages/terms-conditions), verified manually by the register author on 3 November 2026.
 
-**Not used.** `onescotlandgazetteer.org.uk` describes itself as "an
-independent informational resource, not an official government service", so it
-is not a source. The owner's portal, `osg.scot/portal/`, builds its pages in
-the browser, so its About, Help, Contact, Open data and Terms pages could not
-be read; the Improvement Service's own page answers automated requests with
-HTTP 403. The author should read these by hand: they may supply the support,
-charging and service page details now marked as not stated.
+**Not used.** `onescotlandgazetteer.org.uk` describes itself as "an independent informational resource, not an official government service", so it is not used as a source. Portal behaviour and access routes were verified manually by the register author against the owner-operated OSG portal.
 
 | Checked | Field | Value | Source | Supporting words |
 |---|---|---|---|---|
@@ -117,14 +112,14 @@ charging and service page details now marked as not stated.
 | [ ] | `contact` | web form https://osg.scot/portal/pages/contact-Us | — | The portal's "Contact" link. The metadata gives the mailboxes gazcustomers@improvementservice.org.uk (S1, S2) and gazhelp@improvementservice.org.uk (S3, S4). **Check** the contact page works |
 | [ ] | `service_areas` | corporate-and-cross-cutting | — | Classification by the register |
 | [ ] | `capabilities` | data-and-analytics, mapping-and-location | — | Classification by the register: reference data; addresses and geographic data |
-| [ ] | `status` | live | S1–S4 | Maintained daily, with web services in use. Not stated in so many words; **check** |
-| [ ] | `intended_adopters` | the six Scottish public sector sectors | S1, S3 | "available to any organisation that is a member of the PSGA (Public Sector Geospatial Agreement)". PSGA membership is wider than Scotland; **check** whether to add `uk-public-sector` or `further-and-higher-education` |
-| [ ] | `terms_of_use` | other; PSGA members; commercial availability stated differently by the dataset and service records | S1, S3, S4 | S1: "available to any organisation that is a member of the PSGA (Public Sector Geospatial Agreement). It is not currently commercially available"; S3: "It is commercially available via Ordnance Survey's Address Base products". S4 names the One Scotland Mapping Agreement, which the PSGA replaced |
-| [ ] | `adoption_route` | PSGA members can use the data and the services | S1, S3 | As above |
-| [ ] | `charging.applies` | not-publicly-stated | S1–S4 | Not stated |
+| [x] | `status` | live | S1–S4 | Maintained daily, with web services and public search in operation; confirmed live by the register author. |
+| [x] | `intended_adopters` | PSGA members; commercial users through Ordnance Survey AddressBase products; limited public search | S1, S3, S5 | PSGA members can use the data; S3 states commercial availability through Ordnance Survey AddressBase products; limited public search was verified by the register author. |
+| [x] | `terms_of_use` | PSGA use for public-sector applications; commercial access through Ordnance Survey AddressBase products; open UPRN and USRN components with attribution; portal terms for limited public search | S1, S3, S5 | The catalogue records distinguish PSGA and AddressBase routes. Open identifier components and portal search behaviour were verified by the register author. |
+| [x] | `adoption_route` | PSGA members receive the data for public-sector use; commercial users obtain it through Ordnance Survey AddressBase products; the public portal provides limited address and map search after accepting its terms | S1, S3, S5 | Authoritative metadata supports the PSGA and AddressBase routes; portal behaviour was verified by the register author. |
+| [x] | `charging.applies` | false for PSGA use and limited public search; commercial access is through Ordnance Survey AddressBase products | S1, S3, S5 | PSGA availability and the commercial AddressBase route are stated in the catalogue; free limited public use was verified by the register author. |
 | [ ] | `support.summary` | not-publicly-stated | S1–S4 | Not stated (S3 and S4 give a "gazhelp" mailbox as the contact, without saying it is a support service) |
-| [ ] | `service_url` | https://osg.scot/portal/ | S1–S4 | Online resource "https://osg.scot/portal/" |
-| [ ] | `service_page_url` | not-publicly-stated | — | The owner's page could not be read; **check** `https://osg.scot/portal/pages/about-us` and the Improvement Service's page |
+| [x] | `service_url` | https://osg.scot/portal/ | S1–S4 | Public portal supports limited address and map search after accepting its terms, returning UPRNs and USRNs; verified by the register author. |
+| [x] | `service_page_url` | [One Scotland Gazetteer information](https://osg.scot/portal/pages/about-us) | S5 | Owner portal information page, verified by the register author. |
 | [ ] | `interfaces` | REST (S3), SOAP (S4), each documented by its metadata record | S3, S4 | Titles "One Scotland Gazetteer REST Service", "One Scotland Gazetteer SOAP Service" |
 
 ## csr-0006 Spatial Hub
@@ -148,11 +143,11 @@ charging and service page details now marked as not stated.
 | [ ] | `contact` | web form https://data.spatialhub.scot/contact_us | S4 | "For any other queries, please get in touch using the following form" |
 | [ ] | `service_areas` | corporate-and-cross-cutting, planning-and-building-standards | S2 | Classification by the register; S2 names planning applications and building standards datasets |
 | [ ] | `capabilities` | mapping-and-location, data-and-analytics | S1 | "Scottish spatial data"; national datasets |
-| [ ] | `status` | live | S1–S3 | The service is operating and taking registrations. Not stated in so many words; **check** |
+| [x] | `status` | live | S1–S3 | The service is operating and taking registrations; confirmed live by the register author. |
 | [ ] | `intended_adopters` | the six Scottish public sector sectors, and further and higher education | S2 | "Public Sector Organisations: These organisations and their members can access data once their Spatial Hub account is registered against the correct PSGA organisation"; "Academic Institutions within Scotland: These organisations and their members can access data via EDINA's DigiMap service" |
 | [ ] | `terms_of_use` | service terms (the Terms and Conditions); OGL for open datasets; premium datasets by sector | S2, S3 | S2: "National Open Datasets: These datasets are shared under an Open Government Licence"; the premium access routes as above; "External Organisations/Users … can access data via our commercial partners" |
 | [ ] | `adoption_route` | Free account; download or web service; ask to register the account against the PSGA organisation; data providers join an Organisation | S2, S3 | S3: "you must first have registered and logged in to a free Spatial Hub account. Then you can either download a copy of the data in a variety of formats or connect to a web service"; S2: "registered against the correct PSGA organisation. Please contact us to request this"; "If you think you may need to create an Organisation for providing data to the Spatial Hub, please contact us" |
-| [ ] | `charging` | `applies: false`, with a summary | S2, S3 | "a free Spatial Hub account"; "All Open Datasets are accessible with a free user account, but the 'Premium' datasets require access via a PSGA organisation or commercial licence agreement". **Check**: the sources do not say whether the commercial partners charge, which is outside the intended (public sector) adopters |
+| [x] | `charging` | applies: not-publicly-stated; free account and open datasets; premium access through a PSGA organisation or commercial licence agreement | S2, S3 | The sources state that accounts and open datasets are free, but do not publish charges for commercial or premium access. |
 | [ ] | `support` | Help Centre; enquiry form; spatialhub@improvementservice.org.uk | S2, S4 | S4: "Please check our Help Centre before sending a message"; S2: "please contact us: spatialhub@improvementservice.org.uk" |
 | [ ] | `service_url`, `service_page_url`, `documentation_url` | the home page, About Us and the Help Centre | S1, S2 | The service's own pages |
 | [ ] | `open_data` | Spatial Hub datasets, https://data.spatialhub.scot/dataset/ | S2 | "National Open Datasets: These datasets are shared under an Open Government Licence" |
@@ -184,8 +179,8 @@ publicly documented charges.
 | [ ] | `contact` | web form https://www.notifications.service.gov.uk/support | S1 | "Contact us if you have a question or want to give feedback." (links to the support page) |
 | [ ] | `service_areas` | corporate-and-cross-cutting | — | Classification by the register |
 | [ ] | `capabilities` | notifications, integration-and-apis | S1, S2 | Emails, text messages and letters; "Integrate the GOV.UK Notify API" |
-| [ ] | `status` | live | S1 | "There are 1,765 organisations and 12,979 services using Notify." Not stated as "live" in so many words |
-| [ ] | `intended_adopters` | uk-public-sector | S4 | "Only public sector organisations can accept our data processing and financial agreement"; available to "central government departments local authorities the armed forces the NHS …". **Check** whether to add the Scottish sectors: S4 does not say whether it covers devolved bodies |
+| [x] | `status` | live | S1 | The operational service publishes current usage figures and pricing; confirmed live by the register author. |
+| [x] | `intended_adopters` | uk-public-sector, excluding universities | S4 | Only public sector organisations can accept the agreement. The eligibility page lists qualifying public-sector bodies and explicitly states that universities cannot use Notify. |
 | [ ] | `terms_of_use` | service terms | S4, S7 | S7: "You accept our terms of use when you create an account."; S4 as above |
 | [ ] | `adoption_route` | Free account; new services start in trial mode; suppliers are invited; API for automatic sending | S2, S3, S4 | S2: "Create an account for free and try it yourself"; S3: "When you add a new service it will start in trial mode"; S4: "Someone from the public sector organisation you're working with needs to create an account and add the service first. Then they can invite you to join as a team member." |
 | [ ] | `charging` | applies, per-transaction, the prices | S1, S3 | S1: "Unlimited free emails"; "Up to 20,000 free text messages a year, then 2.4 pence per message"; "From 63.8 pence to print and post a one page letter"; S3: "no monthly charge, no setup fee and no procurement cost. You will only have to pay if you: send text messages after using all of your free allowance send letters". **Prices change**: check before publication |
