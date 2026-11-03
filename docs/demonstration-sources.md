@@ -156,3 +156,39 @@ charging and service page details now marked as not stated.
 | [ ] | `support` | Help Centre; enquiry form; spatialhub@improvementservice.org.uk | S2, S4 | S4: "Please check our Help Centre before sending a message"; S2: "please contact us: spatialhub@improvementservice.org.uk" |
 | [ ] | `service_url`, `service_page_url`, `documentation_url` | the home page, About Us and the Help Centre | S1, S2 | The service's own pages |
 | [ ] | `open_data` | Spatial Hub datasets, https://data.spatialhub.scot/dataset/ | S2 | "National Open Datasets: These datasets are shared under an Open Government Licence" |
+
+## csr-0007 GOV.UK Notify
+
+The optional record in specification 5.2: the only real `api` record, with
+publicly documented charges.
+
+**Sources** (GOV.UK Notify's own pages, by the Government Digital Service)
+
+- [S1] [GOV.UK Notify](https://www.notifications.service.gov.uk/) (home page).
+- [S2] [Features](https://www.notifications.service.gov.uk/features).
+- [S3] [Pricing](https://www.notifications.service.gov.uk/pricing).
+- [S4] [Who can use Notify](https://www.notifications.service.gov.uk/features/who-can-use-notify).
+- [S5] [Support](https://www.notifications.service.gov.uk/support).
+- [S6] [Documentation](https://www.notifications.service.gov.uk/using-notify/api-documentation).
+- [S7] [Terms of use](https://www.notifications.service.gov.uk/terms-of-use).
+
+| Checked | Field | Value | Source | Supporting words |
+|---|---|---|---|---|
+| [ ] | `name` | GOV.UK Notify | S1 | Throughout |
+| [ ] | `summary`, `purpose` (what) | Public sector service teams send emails, text messages and letters | S2 | "GOV.UK Notify makes it easy for public sector service teams to send emails, text messages and letters." |
+| [ ] | `purpose` (no technical knowledge) | Templates, personalisation, bulk sending by spreadsheet, delivery tracking | S1, S2 | S2: "You do not need any technical knowledge to: create and send messages … add personalisation send messages in bulk see when your messages have been delivered"; S1: "Upload a spreadsheet of email addresses or phone numbers and Notify sends the messages." |
+| [ ] | `purpose` (API) | A developer integrates the API with a web application or back office system; client libraries or REST directly | S2, S6 | S2: "To send messages automatically, you'll need a developer to integrate with the GOV.UK Notify API"; S6: "If you cannot use the client libraries, you can integrate directly with the API instead." |
+| [ ] | `purpose` (letters) | Notify prints and posts letters | S2 | "GOV.UK Notify prints and posts your letters for you" |
+| [ ] | `asset_type` | api | — | Classification from specification 5.2 |
+| [ ] | `owner` | Government Digital Service, `uk-public-sector` | S1 | "GOV.UK Notify is built by the Government Digital Service" |
+| [ ] | `contact` | web form https://www.notifications.service.gov.uk/support | S1 | "Contact us if you have a question or want to give feedback." (links to the support page) |
+| [ ] | `service_areas` | corporate-and-cross-cutting | — | Classification by the register |
+| [ ] | `capabilities` | notifications, integration-and-apis | S1, S2 | Emails, text messages and letters; "Integrate the GOV.UK Notify API" |
+| [ ] | `status` | live | S1 | "There are 1,765 organisations and 12,979 services using Notify." Not stated as "live" in so many words |
+| [ ] | `intended_adopters` | uk-public-sector | S4 | "Only public sector organisations can accept our data processing and financial agreement"; available to "central government departments local authorities the armed forces the NHS …". **Check** whether to add the Scottish sectors: S4 does not say whether it covers devolved bodies |
+| [ ] | `terms_of_use` | service terms | S4, S7 | S7: "You accept our terms of use when you create an account."; S4 as above |
+| [ ] | `adoption_route` | Free account; new services start in trial mode; suppliers are invited; API for automatic sending | S2, S3, S4 | S2: "Create an account for free and try it yourself"; S3: "When you add a new service it will start in trial mode"; S4: "Someone from the public sector organisation you're working with needs to create an account and add the service first. Then they can invite you to join as a team member." |
+| [ ] | `charging` | applies, per-transaction, the prices | S1, S3 | S1: "Unlimited free emails"; "Up to 20,000 free text messages a year, then 2.4 pence per message"; "From 63.8 pence to print and post a one page letter"; S3: "no monthly charge, no setup fee and no procurement cost. You will only have to pay if you: send text messages after using all of your free allowance send letters". **Prices change**: check before publication |
+| [ ] | `support` | 24/7 for emergencies, reply within 30 minutes; otherwise by the end of the next working day | S5 | "GOV.UK Notify provides 24/7 support for emergencies. If you have an emergency we'll reply within 30 minutes. If it's not an emergency we'll reply by the end of the next working day." |
+| [ ] | `service_url`, `service_page_url`, `documentation_url` | home page, Features, Documentation | S1, S2, S6 | The service's own pages |
+| [ ] | `interfaces` | REST, documented at docs.notifications.service.gov.uk/rest-api.html; client libraries for Java, .NET, Node JS, PHP, Python and Ruby | S6 | "Read the REST API documentation"; "Client libraries … Java .NET Node JS PHP Python Ruby" |

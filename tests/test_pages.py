@@ -89,7 +89,7 @@ def test_term_page(site):
     assert "2 solutions provide this capability" in html
     assert "Also known as" in html and "<code>payments</code>" in html
     assert "Related terms" in html and "../../capabilities/booking-and-scheduling/" in html
-    assert "1 solution provides this capability" in read(site, "capabilities/notifications/index.html")
+    assert "1 solution provides this capability" in read(site, "capabilities/identity-and-access/index.html")
 
 
 def test_pages_use_the_mailbox_and_mark_inputs_still_to_come(site):

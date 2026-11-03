@@ -1,0 +1,96 @@
+# Demonstration record: compiled only from the public sources listed under
+# sources, and not confirmed by the owner. See docs/demonstration-sources.md.
+schema_version: "0.1"
+id: csr-0007
+record_status: demonstration
+name: GOV.UK Notify
+summary: >-
+  Lets public sector service teams send emails, text messages and letters,
+  from the website or automatically through its API.
+purpose: >-
+  Makes it easy for public sector service teams to send emails, text messages
+  and letters. Teams without technical knowledge can create templates, add
+  personalisation, send messages in bulk by uploading a spreadsheet, and see
+  when messages have been delivered. To send messages automatically, a
+  developer integrates the GOV.UK Notify API with a web application or back
+  office system, using a client library or the REST API directly. Notify
+  prints and posts letters.
+asset_type: api
+owner:
+  organisation: Government Digital Service
+  sector: uk-public-sector
+contact:
+  type: web-form
+  value: https://www.notifications.service.gov.uk/support
+service_areas:
+  - corporate-and-cross-cutting
+capabilities:
+  - notifications
+  - integration-and-apis
+status: live
+intended_adopters:
+  - uk-public-sector
+terms_of_use:
+  type: service-terms
+  url: https://www.notifications.service.gov.uk/terms-of-use
+  summary: >-
+    You accept the terms of use when you create an account. Only public sector
+    organisations can accept the data processing and financial agreement.
+adoption_route:
+  summary: >-
+    Create an account for free and add a service, which starts in trial mode.
+    Suppliers working for a public sector organisation are invited to join by
+    someone from that organisation. To send messages automatically, integrate
+    with the API.
+  url: https://www.notifications.service.gov.uk/features/who-can-use-notify
+charging:
+  applies: true
+  model: per-transaction
+  summary: >-
+    Emails are free. Up to 20,000 free text messages a year, then 2.4 pence per
+    message. Letters from 63.8 pence to print and post a one page letter. No
+    monthly charge, setup fee or procurement cost.
+  url: https://www.notifications.service.gov.uk/pricing
+support:
+  summary: >-
+    Support 24 hours a day, 7 days a week for emergencies, with a reply within
+    30 minutes; otherwise a reply by the end of the next working day.
+  url: https://www.notifications.service.gov.uk/support
+service_url: https://www.notifications.service.gov.uk/
+service_page_url: https://www.notifications.service.gov.uk/features
+documentation_url: https://www.notifications.service.gov.uk/using-notify/api-documentation
+interfaces:
+  - type: rest
+    documentation_url: https://docs.notifications.service.gov.uk/rest-api.html
+    description: >-
+      REST API, with client libraries for Java, .NET, Node JS, PHP, Python and
+      Ruby.
+sources:
+  - url: https://www.notifications.service.gov.uk/
+    title: GOV.UK Notify
+    publisher: Government Digital Service
+    accessed: "2026-11-03"
+  - url: https://www.notifications.service.gov.uk/features
+    title: Features
+    publisher: Government Digital Service
+    accessed: "2026-11-03"
+  - url: https://www.notifications.service.gov.uk/pricing
+    title: Pricing
+    publisher: Government Digital Service
+    accessed: "2026-11-03"
+  - url: https://www.notifications.service.gov.uk/features/who-can-use-notify
+    title: Who can use Notify
+    publisher: Government Digital Service
+    accessed: "2026-11-03"
+  - url: https://www.notifications.service.gov.uk/support
+    title: Support
+    publisher: Government Digital Service
+    accessed: "2026-11-03"
+  - url: https://www.notifications.service.gov.uk/using-notify/api-documentation
+    title: Documentation
+    publisher: Government Digital Service
+    accessed: "2026-11-03"
+  - url: https://www.notifications.service.gov.uk/terms-of-use
+    title: Terms of use
+    publisher: Government Digital Service
+    accessed: "2026-11-03"
