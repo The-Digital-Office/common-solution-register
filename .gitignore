@@ -47,3 +47,6 @@ playwright-report/
 
 # Harvest state written by csr harvest
 /.harvest/
+
+# Tools installed by tools/install-publiccode-parser.py
+/.tools/

@@ -15,7 +15,11 @@ from __future__ import annotations
 import copy
 import hashlib
 import json
+import os
 import re
+import shutil
+import subprocess
+import tempfile
 import urllib.error
 import urllib.request
 from collections.abc import Callable
@@ -23,9 +27,10 @@ from dataclasses import dataclass, field
 from pathlib import Path
 
 from csr.config import Config
-from csr.findings import Finding, error, has_errors
+from csr.findings import Finding, error, has_errors, warning
 from csr.records import Record, parse, read_register
 from csr.rules import Context
+from csr.schema import ROOT
 from csr.taxonomy import load_all
 from csr.validate import check_record
 
@@ -251,8 +256,9 @@ def read_state(location: str | None, fetcher: Fetcher | None, config: Config) ->
 
 
 def run(root: Path, config: Config, previous: dict, *, now, fetcher: Fetcher | None = None,
-        only: set[str] | None = None) -> tuple[dict, list[SourceResult]]:  # fmt: skip
-    """Harvest every pointer (or only the given ids) and return the new state and the results."""
+        only: set[str] | None = None, parser: ParserRunner | None = None) -> tuple[dict, list[SourceResult]]:  # fmt: skip
+    """Harvest every pointer (or only the given ids), check every linked publiccode.yml,
+    and return the new state and the results."""
     records, _ = read_register(root / "records", root=root)
     pointers = [r for r in records if r.data is not None and r.is_pointer and r.id]
     known = frozenset(r.id for r in records if r.id)
@@ -268,4 +274,110 @@ def run(root: Path, config: Config, previous: dict, *, now, fetcher: Fetcher | N
         result = harvest_source(record, root, config, context, fetcher)
         results.append(result)
         state["sources"][record.id] = update_entry(before, result, now)
+
+    runner = parser or run_parser
+    for url in publiccode_urls(root, state):
+        verdict = check_publiccode(url, root, config, fetcher, runner, now)
+        if verdict["state"] == "not-checked" and url in state["publiccode"]:
+            continue  # keep what was known
+        state["publiccode"][url] = verdict
+    for result in results:
+        entry = state["sources"][result.id]
+        if entry.get("last_valid") and result.state == "ok":
+            data = parse(entry["last_valid"], result.source).data
+            extra = r17_findings(result.source, data, state["publiccode"])
+            result.findings += extra
+            entry["findings"] += [f.as_dict() for f in extra]
     return state, results
+
+
+# R17: each linked publiccode.yml is checked with the official parser
+# (publiccode-parser-go, installed by tools/install-publiccode-parser.py).
+
+PARSER_VERSION = "v5.4.3"
+#: Runs the parser on a file. Returns its findings ([{key, description, line, column, type}]),
+#: or None if the parser is not installed.
+ParserRunner = Callable[[Path], "list[dict] | None"]
+
+
+def find_parser() -> str | None:
+    """The parser binary: CSR_PUBLICCODE_PARSER, the pinned install in .tools/, or on PATH."""
+    explicit = os.environ.get("CSR_PUBLICCODE_PARSER")
+    if explicit:
+        return explicit
+    pinned = ROOT / ".tools" / "publiccode-parser" / PARSER_VERSION / "publiccode-parser"
+    if pinned.is_file():
+        return str(pinned)
+    return shutil.which("publiccode-parser")
+
+
+def run_parser(path: Path) -> list[dict] | None:
+    binary = find_parser()
+    if binary is None:
+        return None
+    # -no-network: the harvester reaches only registered sources (specification 6.1).
+    completed = subprocess.run([binary, "-json", "-no-network", str(path)], capture_output=True, text=True,
+                               timeout=60, check=False)  # fmt: skip
+    try:
+        found = json.loads(completed.stdout or "[]")
+    except ValueError:
+        return [{"type": "error", "key": "", "description": (completed.stderr or completed.stdout).strip()[:500],
+                 "line": 0, "column": 0}]  # fmt: skip
+    return found if isinstance(found, list) else []
+
+
+def check_publiccode(url: str, root: Path, config: Config, fetcher: Fetcher | None,
+                     runner: ParserRunner, now) -> dict:  # fmt: skip
+    """The parser's verdict on one publiccode.yml: valid, invalid, unavailable or not-checked."""
+    result = {"state": "not-checked", "checked_at": _iso(now), "parser": PARSER_VERSION, "messages": []}
+    fetched = get_source(url, root, config, fetcher)
+    if fetched.body is None:
+        if fetched.problem.startswith("not fetched"):
+            result["messages"] = ["Not fetched: the network was not used."]
+        else:
+            result.update(state="unavailable", messages=[fetched.problem[0].upper() + fetched.problem[1:] + "."])
+        return result
+    with tempfile.TemporaryDirectory() as folder:
+        path = Path(folder) / "publiccode.yml"
+        path.write_bytes(fetched.body)
+        found = runner(path)
+    if found is None:
+        result["messages"] = ["The official parser is not installed where the harvest ran."]
+        return result
+    errors = [f for f in found if f.get("type", "error") == "error"]
+    result["state"] = "invalid" if errors else "valid"
+    result["messages"] = [
+        f"{f.get('type', 'error')}: {f.get('key') + ': ' if f.get('key') else ''}{f.get('description', '')}"
+        + (f" (line {f['line']})" if f.get("line") else "")
+        for f in found
+    ]
+    return result
+
+
+def publiccode_urls(root: Path, state: dict) -> list[str]:
+    """Every publiccode_url linked from a local record or from a harvested copy."""
+    records, _ = read_register(root / "records", root=root)
+    documents = [r.data for r in records if isinstance(r.data, dict) and not r.is_pointer]
+    for entry in state.get("sources", {}).values():
+        if entry.get("last_valid"):
+            documents.append(parse(entry["last_valid"], entry["source"]).data)
+    urls = set()
+    for data in filter(None, documents):
+        for codebase in data.get("codebases") or []:
+            if isinstance(codebase, dict) and isinstance(codebase.get("publiccode_url"), str):
+                urls.add(codebase["publiccode_url"])
+    return sorted(urls)
+
+
+def r17_findings(source_label: str, data: dict, publiccode: dict) -> list[Finding]:
+    """R17 warnings for a harvested record's codebases whose publiccode.yml fails the parser."""
+    found = []
+    for i, codebase in enumerate(data.get("codebases") or []):
+        url = codebase.get("publiccode_url") if isinstance(codebase, dict) else None
+        verdict = publiccode.get(url or "", {})
+        if verdict.get("state") == "invalid":
+            detail = "; ".join(m for m in verdict["messages"] if m.startswith("error"))[:400]
+            found.append(warning(source_label, "R17", f"codebases[{i}].publiccode_url",
+                                 f"the linked publiccode.yml fails the official parser: {detail}",
+                                 "Correct the codebase's publiccode.yml; the parser's messages say what to change."))  # fmt: skip
+    return found

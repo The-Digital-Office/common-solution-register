@@ -37,6 +37,9 @@ jobs:
       - name: Install
         run: python -m pip install -e ".[dev]"
 
+      - name: Install the official publiccode.yml parser (pinned, checksum verified)
+        run: python tools/install-publiccode-parser.py
+
       - name: Run tests
         run: pytest -q
 
@@ -50,8 +53,12 @@ jobs:
             csr validate --format github
           fi
 
+      - name: Harvest sources in this repository
+        # Full harvests, with the network, run in the harvest workflow (slice S13).
+        run: csr harvest --no-network --format github
+
       - name: Build site
-        run: csr build
+        run: csr build --harvest .harvest/harvest-state.json
 
       - name: Upload preview
         uses: actions/upload-artifact@cf430e030ddbb5b0abf93d22962f4752f3646cd9 # v7.0.2

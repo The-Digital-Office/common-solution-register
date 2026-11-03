@@ -247,3 +247,74 @@ def test_build_publishes_the_last_valid_copy_of_a_failing_source(tmp_path):
     published = json.loads((tmp_path / "site/api/v0/harvest-state.json").read_text())
     assert published == state
     assert [u.id for u in site.register.unpublished] == ["csr-9007"]
+
+
+# Checkpoint c: the official parser (R17)
+
+OWN_PUBLICCODE = CONFIG.raw_prefix + "publiccode.yml"
+
+
+def parser_says(*findings):
+    def runner(path):
+        assert path.read_text()  # the parser is given the fetched file
+        return list(findings)
+
+    return runner
+
+
+def test_publiccode_valid_invalid_and_warnings():
+    from csr.harvest import check_publiccode
+
+    valid = check_publiccode(OWN_PUBLICCODE, ROOT, CONFIG, None, parser_says(), DAY1)
+    assert valid["state"] == "valid" and valid["messages"] == [] and valid["parser"] == "v5.4.3"
+    warned = check_publiccode(OWN_PUBLICCODE, ROOT, CONFIG, None,
+                              parser_says({"type": "warning", "key": "logo", "description": "missing", "line": 3}), DAY1)
+    assert warned["state"] == "valid" and warned["messages"] == ["warning: logo: missing (line 3)"]
+    invalid = check_publiccode(OWN_PUBLICCODE, ROOT, CONFIG, None,
+                               parser_says({"type": "error", "key": "url", "description": "is required"}), DAY1)
+    assert invalid["state"] == "invalid" and invalid["messages"] == ["error: url: is required"]
+
+
+def test_publiccode_not_installed_unavailable_and_not_fetched():
+    from csr.harvest import check_publiccode
+
+    assert check_publiccode(OWN_PUBLICCODE, ROOT, CONFIG, None, lambda path: None, DAY1)["state"] == "not-checked"
+    remote = "https://code.example.gov.uk/booking/raw/main/publiccode.yml"
+    assert check_publiccode(remote, ROOT, CONFIG, serve({}), parser_says(), DAY1)["state"] == "unavailable"
+    assert check_publiccode(remote, ROOT, CONFIG, None, parser_says(), DAY1)["state"] == "not-checked"
+
+
+def test_run_checks_every_linked_publiccode_and_warns_r17_on_harvested_records():
+    remote = "https://code.example.gov.uk/booking/raw/main/publiccode.yml"
+    network = serve({remote: b"publiccodeYmlVersion: '0'\n"})
+
+    def runner(path):
+        return [] if "common-solution-register" in path.read_text() else [{"type": "error", "key": "name",
+                                                                           "description": "is required"}]  # fmt: skip
+
+    state, results = run(ROOT, CONFIG, empty_state(), now=DAY1, fetcher=network, parser=runner)
+    assert state["publiccode"][OWN_PUBLICCODE]["state"] == "valid"
+    assert state["publiccode"][remote]["state"] == "invalid"
+    hosted = next(r for r in results if r.id == "csr-9006")
+    assert hosted.state == "ok"  # R17 is a warning: the record is still published
+    assert [(f.rule, f.path) for f in hosted.findings] == [("R17", "codebases[0].publiccode_url")]
+    assert state["sources"]["csr-9006"]["findings"][0]["rule"] == "R17"
+    # The fictional notifications component's publiccode.yml does not exist, so it is unavailable.
+    assert state["publiccode"]["https://code.example.gov.uk/notifications/raw/main/publiccode.yml"]["state"] == "unavailable"
+
+
+def test_a_verdict_is_kept_when_it_cannot_be_checked_again():
+    state, _ = run(ROOT, CONFIG, empty_state(), now=DAY1, parser=parser_says())
+    later, _ = run(ROOT, CONFIG, state, now=DAY2, parser=lambda path: None)
+    assert later["publiccode"][OWN_PUBLICCODE] == state["publiccode"][OWN_PUBLICCODE]
+
+
+@pytest.mark.skipif(harvest.find_parser() is None, reason="the official parser is not installed (tools/install-publiccode-parser.py)")
+def test_the_official_parser_accepts_this_repository_and_rejects_a_broken_file(tmp_path):
+    """Runs where the parser is installed, as in CI."""
+    from csr.harvest import check_publiccode, run_parser
+
+    assert check_publiccode(OWN_PUBLICCODE, ROOT, CONFIG, None, run_parser, DAY1)["state"] == "valid"
+    broken = tmp_path / "publiccode.yml"
+    broken.write_text("publiccodeYmlVersion: '0'\nname: broken\n")
+    assert any(f.get("type") == "error" for f in run_parser(broken))
