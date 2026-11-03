@@ -50,6 +50,7 @@ and this project uses [Semantic Versioning](https://semver.org/spec/v2.0.0.html)
 - Validate page (`validate/`): check a `solution.yml` or pointer by pasting it, uploading it or giving its URL, in the browser, against the schema and every rule that needs no network, with a results table giving the severity, rule, field, problem and fix for each finding.
 - The `Validate` job builds the site and uploads it as the `site-preview` artifact.
 - Demonstration records `csr-0003` ScotAccount , `csr-0004` Scottish Government Design System , `csr-0005` One Scotland Gazetteer , `csr-0006` Spatial Hub , `csr-0007` GOV.UK Notify and `csr-0008` mygovscot myaccount, compiled from cited public sources, and `docs/demonstration-sources.md`, which ties each statement to its source for the author to verify.
+- `docs/decision-points.md`: every choice the working group may revisit (DP-01 to DP-53), including the schema v0.1 choices and the rule interpretations, with alternatives and what would change; `docs/editorial-model.md`: the two-approval model and how to enforce it.
 
 ### Changed
 
