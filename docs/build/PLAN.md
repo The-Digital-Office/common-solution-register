@@ -513,7 +513,7 @@ Newest last. One line per checkpoint; a fuller entry when a session ends.
 - 2026-11-03 — **S14 ready for pull request.**
   - **Done:** S14 preparation and S14a–c. `npm run test:ui`: 78 passed (42 visual, 14 behaviour, 22 accessibility). `pytest -q`: 356 passed, 1 skipped.
   - **Next:** author opens the pull request from `robbie/wizardly-dijkstra-2sjib7` and checks that `UI tests` passes in CI; then **adds `UI tests` to the "CSR: required checks" ruleset** alongside `Validate`; reviews the baseline images in the pull request's files view (each wireframe image beside the built page); and merges. Then S15 (demonstration records).
-  - **Blockers:** none. **Risk:** the baselines were made in the build session's Chromium (Playwright 1.63.0, the same version CI installs, and the site's own Roboto fonts); if CI's rendering differs by more than 1% on some pages, `UI tests` fails with image differences in the `ui-test-report` artifact. The remedy is to take the actual images from that artifact as the baselines (they are the same pages, rendered in CI) in a follow-up commit on this branch.
+  - **Blockers:** none.
   - **Pull request title:** Add the UI tests (S14)
   - **Pull request description (organisation template):**
 
@@ -537,4 +537,5 @@ Newest last. One line per checkpoint; a fuller entry when a session ends.
     > - [x] Documentation updated (if behaviour or setup changed)
     > - [x] No secrets, credentials or personal data added
     > - [x] `publiccode.yml` still accurate (public software repositories only)
+- 2026-11-03 — S14 in CI: the first run's `UI tests` failed every visual comparison by about 4% (behaviour and accessibility passed): Chromium's font hinting measured text slightly differently on the runner, so some lines wrapped differently. The test browser now draws text without hinting or subpixel positioning (`ui/playwright.config.js`), the baselines were remade, and the second run passed: `Validate`, `UI tests` (78), `Reusable workflow` and the standards checks green, `Deploy` skipped. The Site workflow gained a manual `update-baselines` option that remakes the baselines in CI and uploads them as the `ui-baselines` artifact, for any future difference between machines.
 
