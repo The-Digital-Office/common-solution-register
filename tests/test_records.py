@@ -28,13 +28,15 @@ def months_before(date: str) -> int:
 
 
 def test_record_set():
-    assert sorted(RECORDS) == ["csr-0001", "csr-0002", *(f"csr-900{n}" for n in range(1, 8))]
+    assert sorted(RECORDS) == ["csr-0001", "csr-0002", "csr-0003", "csr-0004", "csr-0005", "csr-0006", "csr-0007", "csr-0008", *(f"csr-900{n}" for n in range(1, 8))]
 
 
 def test_register_has_no_errors():
     result = validate(root=ROOT, today=TODAY)
     assert result.ok, [str(f) for f in result.findings]
-    assert [(f.file, f.rule) for f in result.findings] == [("records/csr-0002.yaml", "R12")] * 2
+    assert [(f.file, f.rule) for f in result.findings] == [("records/csr-0002.yaml", "R12")] * 2 + [
+        ("records/csr-0004.yaml", "R12")
+    ]
 
 
 @pytest.mark.parametrize("record_id", ["csr-0001", "csr-9006", "csr-9007"])

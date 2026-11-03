@@ -1,0 +1,93 @@
+# Demonstration record: compiled only from the public sources listed under
+# sources, and not confirmed by the owner. See docs/demonstration-sources.md.
+schema_version: "0.1"
+id: csr-0005
+record_status: demonstration
+name: One Scotland Gazetteer
+summary: >-
+  Scotland's address database, made up of the gazetteers maintained by all 32
+  local authorities, with web services for authorised organisations.
+purpose: >-
+  An address database made up of all 32 individual local authority
+  gazetteers. All addresses are created in accordance with the national
+  standard for addressing, BS7666:2006, and the Scottish Gazetteer
+  Conventions, with spatially referenced address records and property
+  lifecycle details. A companion dataset, the National Street Gazetteer for
+  Scotland, depicts every street, road, track or cycleway in Scotland with
+  Unique Street Reference Numbers (USRN). REST and SOAP services provide the
+  data as an API for authorised organisations to use in their address and
+  street-based applications. The data is maintained daily. The public portal
+  offers a limited address and map search, returning UPRNs and USRNs, after
+  its terms are accepted.
+asset_type: platform
+owner:
+  organisation: Improvement Service
+  sector: local-government
+contact:
+  type: web-form
+  value: https://osg.scot/portal/pages/contact-Us
+service_areas:
+  - corporate-and-cross-cutting
+capabilities:
+  - data-and-analytics
+  - mapping-and-location
+status: live
+intended_adopters:
+  - scottish-government
+  - executive-agencies
+  - local-government
+  - nhs-scotland
+  - police-and-fire
+  - non-departmental-public-bodies
+terms_of_use:
+  type: other
+  url: https://osg.scot/portal/pages/terms-conditions
+  summary: >-
+    Members of the Public Sector Geospatial Agreement (PSGA) use the data for
+    public sector purposes. Commercial access is through Ordnance Survey's
+    AddressBase products. The UPRN and USRN identifiers are open, with
+    attribution. The portal's terms apply to its limited public search.
+adoption_route:
+  summary: >-
+    Members of the Public Sector Geospatial Agreement (PSGA) receive the data,
+    and can use the REST and SOAP services, for public sector use. Commercial
+    users obtain it through Ordnance Survey's AddressBase products. The public
+    portal provides a limited address and map search after its terms are
+    accepted.
+charging:
+  applies: false
+  summary: >-
+    No charge for PSGA use or the limited public search. Commercial access is
+    through Ordnance Survey's AddressBase products.
+support:
+  summary: not-publicly-stated
+service_url: https://osg.scot/portal/
+service_page_url: https://osg.scot/portal/pages/about-us
+interfaces:
+  - type: rest
+    documentation_url: https://spatialdata.gov.scot/geonetwork/srv/api/records/0374e2cf-f0d4-4ae4-9b13-fc4b7df6588e
+    description: One Scotland Gazetteer REST Service, for authorised organisations.
+  - type: soap
+    documentation_url: https://spatialdata.gov.scot/geonetwork/srv/api/records/1b74296b-cc69-4ede-bf48-380d3c6baa8c
+    description: One Scotland Gazetteer SOAP Service, for authorised organisations.
+sources:
+  - url: https://spatialdata.gov.scot/geonetwork/srv/api/records/250ea276-48e2-4189-8a89-fcc4ca92d652
+    title: One Scotland Gazetteer (dataset metadata)
+    publisher: Improvement Service, on spatialdata.gov.scot
+    accessed: "2026-11-03"
+  - url: https://spatialdata.gov.scot/geonetwork/srv/api/records/0454729b-6dda-49d3-bc18-ac73127345af
+    title: National Street Gazetteer for Scotland (dataset metadata)
+    publisher: Improvement Service, on spatialdata.gov.scot
+    accessed: "2026-11-03"
+  - url: https://spatialdata.gov.scot/geonetwork/srv/api/records/0374e2cf-f0d4-4ae4-9b13-fc4b7df6588e
+    title: One Scotland Gazetteer REST Service (service metadata)
+    publisher: Improvement Service, on spatialdata.gov.scot
+    accessed: "2026-11-03"
+  - url: https://spatialdata.gov.scot/geonetwork/srv/api/records/1b74296b-cc69-4ede-bf48-380d3c6baa8c
+    title: One Scotland Gazetteer SOAP Service (service metadata)
+    publisher: Improvement Service, on spatialdata.gov.scot
+    accessed: "2026-11-03"
+  - url: https://osg.scot/portal/
+    title: One Scotland Gazetteer portal (checked by the register author)
+    publisher: Improvement Service
+    accessed: "2026-11-03"

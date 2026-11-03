@@ -5,7 +5,7 @@ import re
 from html.parser import HTMLParser
 
 import pytest
-from helpers import TODAY
+from helpers import TODAY, demonstration_ids
 
 from csr.build import build, display_url, long_date
 from csr.config import load_config
@@ -79,11 +79,13 @@ def test_home_lists_records_without_javascript(site):
     html = page(site, "index.html")
     p = Parsed(html)
     items = re.findall(r'<li class="ds_search-result" data-id="(csr-\d+)"( hidden)?>', html)
-    assert [i for i, hidden in items if not hidden] == [
+    shown = [i for i, hidden in items if not hidden]
+    assert shown[:7] == [
         "csr-0001", "csr-0002", "csr-9002", "csr-9001", "csr-9006", "csr-9003", "csr-9004",
     ]  # fmt: skip
+    assert sorted(shown[7:]) == demonstration_ids()  # never confirmed, so listed last
     assert [i for i, hidden in items if hidden] == ["csr-9005"]  # withdrawn: shown only when asked for
-    assert "7 solutions" in p.text  # unpublished records are not listed at all
+    assert f"{len(shown)} solutions" in p.text  # unpublished records are not listed at all
     assert "csr-js-only" in p.classes  # search, filters and sorting hidden without JavaScript
     assert "Confirmed by owner (2)" in p.text and "Software (0)" in p.text
 
@@ -151,3 +153,10 @@ def test_helpers():
 def test_config_base_url_override():
     assert load_config(ROOT, "http://localhost:8000").base_url == "http://localhost:8000/"
     assert load_config(ROOT).state_url.endswith("/api/v0/harvest-state.json")
+
+
+def test_a_charging_summary_is_shown_with_no_charge_and_not_stated(site):
+    scotaccount = " ".join(Parsed(page(site, "assets/csr-0003/index.html")).text)
+    assert "No charge. Beta participants get access" in scotaccount
+    spatial_hub = " ".join(Parsed(page(site, "assets/csr-0006/index.html")).text)
+    assert "Charges Not stated in public sources . Accounts are free" in spatial_hub  # text nodes joined by spaces

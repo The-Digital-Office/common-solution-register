@@ -1,0 +1,83 @@
+# Demonstration record: compiled only from the public sources listed under
+# sources, and not confirmed by the owner. See docs/demonstration-sources.md.
+schema_version: "0.1"
+id: csr-0003
+record_status: demonstration
+name: ScotAccount
+summary: >-
+  A secure and simple way for people to prove who they are and that they are
+  eligible when they use public services online.
+purpose: >-
+  Lets people sign in to public services online using two-factor
+  authentication, verify their identity if a service requires it (by photo ID
+  or, for people without photographic ID, by security questions), and save
+  their digital identity to reuse with other public services. Two-factor
+  sign-in is available to public services as a stand-alone feature. Services
+  using it include Disclosure Scotland's online disclosure journey and the
+  Crown Office and Procurator Fiscal Service's Witness Gateway.
+asset_type: service
+owner:
+  organisation: Scottish Government
+  sector: scottish-government
+contact:
+  type: web-form
+  value: https://scotaccount.servicemanual.gov.scot/contact
+service_areas:
+  - corporate-and-cross-cutting
+capabilities:
+  - identity-and-access
+status: beta
+intended_adopters:
+  - scottish-government
+  - executive-agencies
+  - local-government
+  - nhs-scotland
+  - police-and-fire
+  - non-departmental-public-bodies
+terms_of_use:
+  type: not-publicly-stated
+adoption_route:
+  summary: >-
+    Join the beta, which is open to government teams and public services in
+    Scotland with a service in alpha, beta or live. Integrating needs
+    developers comfortable with the OpenID Connect (OIDC) protocol. Teams can
+    also ask to join the test environment.
+  url: https://scotaccount.servicemanual.gov.scot/join-our-beta
+charging:
+  applies: false
+  summary: Beta participants get access to ScotAccount's capabilities at no charge.
+support:
+  summary: >-
+    Support from the ScotAccount team throughout the beta. Queries by email are
+    answered in office hours (09:30 to 16:30, Monday to Friday), usually within
+    2 working days.
+  url: https://scotaccount.servicemanual.gov.scot/contact
+service_url: https://authn.scotaccount.service.gov.scot/sign-up/sign-in-or-create
+service_page_url: https://scotaccount.servicemanual.gov.scot/
+roadmap_url: https://scotaccount.servicemanual.gov.scot/roadmap
+adopters:
+  - organisation: Disclosure Scotland
+    evidence: self-reported
+  - organisation: Crown Office and Procurator Fiscal Service
+    evidence: self-reported
+sources:
+  - url: https://blogs.gov.scot/digital/2025/07/16/scotaccount-transforming-public-services-in-scotland/
+    title: "ScotAccount: transforming public services in Scotland"
+    publisher: Scottish Government Digital blog
+    accessed: "2026-11-03"
+  - url: https://blogs.gov.scot/digital/2024/09/23/scotaccount-helping-more-people-to-access-public-services-online/
+    title: "ScotAccount – helping more people to access public services online"
+    publisher: Scottish Government Digital blog
+    accessed: "2026-11-03"
+  - url: https://scotaccount.servicemanual.gov.scot/join-our-beta
+    title: Join our beta
+    publisher: Scottish Government
+    accessed: "2026-11-03"
+  - url: https://scotaccount.servicemanual.gov.scot/contact
+    title: Contact
+    publisher: Scottish Government
+    accessed: "2026-11-03"
+  - url: https://scotaccount.servicemanual.gov.scot/
+    title: Help your users sign in to your service
+    publisher: Scottish Government
+    accessed: "2026-11-03"

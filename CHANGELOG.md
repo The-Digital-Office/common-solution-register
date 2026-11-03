@@ -49,6 +49,7 @@ and this project uses [Semantic Versioning](https://semver.org/spec/v2.0.0.html)
 - Maintainer tools: `csr import-publiccode` (add or update a codebase from its `publiccode.yml`, or draft a new record, following specification appendix A), `csr move-to-source` and `csr move-to-local` (move a record to and from owner hosting, checking the owner's file first), and `csr new --from-issue` (add a record from a suggest-asset issue with the next free id).
 - Validate page (`validate/`): check a `solution.yml` or pointer by pasting it, uploading it or giving its URL, in the browser, against the schema and every rule that needs no network, with a results table giving the severity, rule, field, problem and fix for each finding.
 - The `Validate` job builds the site and uploads it as the `site-preview` artifact.
+- Demonstration records `csr-0003` ScotAccount , `csr-0004` Scottish Government Design System , `csr-0005` One Scotland Gazetteer , `csr-0006` Spatial Hub , `csr-0007` GOV.UK Notify and `csr-0008` mygovscot myaccount, compiled from cited public sources, and `docs/demonstration-sources.md`, which ties each statement to its source for the author to verify.
 
 ### Changed
 
@@ -59,6 +60,7 @@ and this project uses [Semantic Versioning](https://semver.org/spec/v2.0.0.html)
 - Dependabot proposes only patch releases of Playwright; minor and major upgrades are made deliberately, with the UI baselines remade.
 - R07 treats hyphenated addresses (such as `solution-register@`) as role mailboxes, and knows more role words.
 - `csr validate` and the harvest report describe schema problems in plain words, one per field, with the same wording as the draft form and validate page.
+- Record pages show a charging summary after "No charge" and "Not stated in public sources", not only when charges apply.
 
 ### Fixed
 

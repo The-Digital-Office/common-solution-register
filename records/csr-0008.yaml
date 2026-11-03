@@ -1,0 +1,82 @@
+# Demonstration record: compiled only from the public sources listed under
+# sources, and not confirmed by the owner. See docs/demonstration-sources.md.
+schema_version: "0.1"
+id: csr-0008
+record_status: demonstration
+name: mygovscot myaccount
+summary: >-
+  The simple and secure sign-in service for online public services in
+  Scotland: one account that people can use across multiple organisations.
+purpose: >-
+  Lets people living in Scotland set up one online account and use it across
+  multiple organisations, for services such as paying council tax, requesting
+  a parking permit, paying for school meals, or applying for benefits or a
+  National Entitlement Card. For public service providers it offers
+  standards-based authentication and identity verification, built around four
+  services: authentication (with stronger options a provider can request),
+  channel shift (registering people in person or by phone), identity
+  verification (online, or face to face to the same standards) and data
+  integrity (notifying providers of changes in their users' circumstances).
+  Depending on a service's needs it can meet Good Practice Guide 44
+  authentication levels and Good Practice Guide 45 identity profiles: an
+  unverified account may suit reporting a missed bin, while NHS Lothian and My
+  Diabetes My Way require a verified one. It is
+  offered as a toolkit that can be deployed in different configurations.
+  getyournec.scot, used by all 32 councils for National Entitlement Card
+  applications, and parentsportal.scot, used by 23, rely on it. People must be
+  12 or over to register.
+asset_type: service
+owner:
+  organisation: Improvement Service
+  sector: local-government
+contact:
+  type: web-form
+  value: https://signin.mygovscot.org/portal/pages/help
+service_areas:
+  - corporate-and-cross-cutting
+capabilities:
+  - identity-and-access
+status: live
+intended_adopters:
+  - scottish-government
+  - executive-agencies
+  - local-government
+  - nhs-scotland
+  - police-and-fire
+  - non-departmental-public-bodies
+terms_of_use:
+  type: not-publicly-stated
+adoption_route:
+  summary: >-
+    Offered to organisations as a toolkit that can be deployed in a variety of
+    configurations, proportionate to the services they provide. It is
+    described as easy to integrate.
+charging:
+  applies: false
+  summary: Free to use for public service providers.
+support:
+  summary: not-publicly-stated
+service_url: https://signin.mygovscot.org/home/
+service_page_url: https://www.improvementservice.org.uk/products-and-services/digital-public-services/myaccount
+adopters:
+  - organisation: All 32 Scottish councils
+    evidence: self-reported
+  - organisation: NHS Lothian
+    evidence: self-reported
+  - organisation: Social Security Scotland
+    evidence: self-reported
+  - organisation: Young Scot
+    evidence: self-reported
+sources:
+  - url: https://www.improvementservice.org.uk/products-and-services/digital-public-services/myaccount
+    title: mygovscot myaccount
+    publisher: Improvement Service
+    accessed: "2026-11-03"
+  - url: https://www.mygov.scot/myaccount
+    title: myaccount
+    publisher: mygov.scot (Scottish Government)
+    accessed: "2026-11-03"
+  - url: https://signin.mygovscot.org/portal/pages/help
+    title: mygovscot myaccount help
+    publisher: Improvement Service
+    accessed: "2026-11-03"

@@ -1,0 +1,90 @@
+# Demonstration record: compiled only from the public sources listed under
+# sources, and not confirmed by the owner. See docs/demonstration-sources.md.
+schema_version: "0.1"
+id: csr-0006
+record_status: demonstration
+name: Spatial Hub
+summary: >-
+  A platform for hosting and publishing Scottish spatial data, which combines
+  local authority datasets into Scotland-wide national datasets.
+purpose: >-
+  Collects datasets from local authorities and other partner organisations to
+  form Scotland-wide national datasets, and publishes these in various formats
+  to maximise their use. Collected updates are quality assessed, cleaned,
+  standardised and amalgamated every three months (some datasets, such as
+  planning applications and building standards, daily), then published as web
+  services and file downloads. Anyone can search datasets and preview them on a
+  map; downloading or connecting to data needs a free account. Some local
+  authorities use it as their open data portal.
+asset_type: platform
+owner:
+  organisation: Improvement Service
+  sector: local-government
+contact:
+  type: web-form
+  value: https://data.spatialhub.scot/contact_us
+service_areas:
+  - corporate-and-cross-cutting
+  - planning-and-building-standards
+capabilities:
+  - mapping-and-location
+  - data-and-analytics
+status: live
+intended_adopters:
+  - scottish-government
+  - executive-agencies
+  - local-government
+  - nhs-scotland
+  - police-and-fire
+  - non-departmental-public-bodies
+  - further-and-higher-education
+terms_of_use:
+  type: service-terms
+  url: https://data.spatialhub.scot/terms_and_condition
+  summary: >-
+    National open datasets are shared under the Open Government Licence.
+    Premium datasets are available to public sector organisations through the
+    Public Sector Geospatial Agreement (PSGA), to academic institutions in
+    Scotland through EDINA's DigiMap, and to others through commercial
+    partners.
+adoption_route:
+  summary: >-
+    Register for a free Spatial Hub account, then download data or connect to
+    web services. To use premium datasets, ask the Spatial Hub team to register
+    your account against your PSGA organisation. Local authorities and partners
+    that provide data join an Organisation on the Spatial Hub.
+  url: https://data.spatialhub.scot/faq
+charging:
+  applies: not-publicly-stated
+  summary: >-
+    Accounts are free, and open datasets are accessible with a free account.
+    Premium datasets need PSGA membership or a commercial licence agreement.
+support:
+  summary: >-
+    A Help Centre answers common questions. For other queries, use the enquiry
+    form or email spatialhub@improvementservice.org.uk.
+  url: https://data.spatialhub.scot/faq
+service_url: https://data.spatialhub.scot/
+service_page_url: https://data.spatialhub.scot/about
+documentation_url: https://data.spatialhub.scot/faq
+open_data:
+  - title: Spatial Hub datasets
+    url: https://data.spatialhub.scot/dataset/
+    catalogue: Spatial Hub
+sources:
+  - url: https://data.spatialhub.scot/about
+    title: About Us
+    publisher: Improvement Service (Spatial Hub)
+    accessed: "2026-11-03"
+  - url: https://data.spatialhub.scot/faq
+    title: Help Centre
+    publisher: Improvement Service (Spatial Hub)
+    accessed: "2026-11-03"
+  - url: https://data.spatialhub.scot/terms_and_condition
+    title: Terms and Conditions
+    publisher: Improvement Service (Spatial Hub)
+    accessed: "2026-11-03"
+  - url: https://data.spatialhub.scot/contact_us
+    title: Contact Us
+    publisher: Improvement Service (Spatial Hub)
+    accessed: "2026-11-03"
