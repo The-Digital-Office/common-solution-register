@@ -183,8 +183,8 @@
 {% set go = r.service_url and r.service_url != SENTINEL %}
 {% set more = r.service_page_url and r.service_page_url != SENTINEL %}
 {% if go or more %}
-<aside class="ds_article-aside">
-<h2 class="ds_h3">Service links</h2>
+<aside class="ds_article-aside" aria-labelledby="aside-service">
+<h2 class="ds_h3" id="aside-service">Service links</h2>
 <div class="csr-actions">
 {% if go %}<a class="ds_button" href="{{ r.service_url }}">Go to the service</a>{% endif %}
 {% if more %}<a class="ds_button{% if go %} ds_button--secondary{% endif %}" href="{{ r.service_page_url }}">More information from the owner</a>{% endif %}
@@ -192,8 +192,8 @@
 </aside>
 {% endif %}
 {% if demonstration %}
-<aside class="ds_article-aside">
-<h2 class="ds_h3">Is this your {{ type_noun }}?</h2>
+<aside class="ds_article-aside" aria-labelledby="aside-owner">
+<h2 class="ds_h3" id="aside-owner">Is this your {{ type_noun }}?</h2>
 <p>You can confirm this entry, correct it, host it yourself, or ask for it to be removed.</p>
 <div class="csr-actions">
 <a class="ds_button" href="{{ root }}draft/?from={{ entry.id }}">Confirm or correct</a>
@@ -201,8 +201,8 @@
 </div>
 </aside>
 {% endif %}
-<aside class="ds_article-aside">
-<h2 class="ds_h3">Use this record</h2>
+<aside class="ds_article-aside" aria-labelledby="aside-use">
+<h2 class="ds_h3" id="aside-use">Use this record</h2>
 <ul class="ds_no-bullets">
 <li><a href="solution.yml" download="{{ entry.id }}.yml">Download solution.yml</a></li>
 <li><a href="{{ root }}api/v0/assets/{{ entry.id }}.json">View as JSON</a></li>
@@ -222,8 +222,8 @@
 </ul>
 </nav>
 {% if example and other_examples %}
-<aside class="ds_article-aside">
-<h2 class="ds_h3">Other states shown by examples</h2>
+<aside class="ds_article-aside" aria-labelledby="aside-examples">
+<h2 class="ds_h3" id="aside-examples">Other states shown by examples</h2>
 <ul class="ds_no-bullets">
 {% for label, href, record_id in other_examples %}
 <li><a href="{{ root }}{{ href }}">{{ label }} ({{ record_id }})</a></li>
@@ -231,8 +231,8 @@
 </ul>
 </aside>
 {% endif %}
-<aside class="ds_article-aside">
-<h2 class="ds_h3">Record history</h2>
+<aside class="ds_article-aside" aria-labelledby="aside-history">
+<h2 class="ds_h3" id="aside-history">Record history</h2>
 {% if hosted %}<p><a href="{{ root }}harvest/#{{ entry.id }}">Harvest history</a></p>{% endif %}
 <p><a href="{{ entry.history_url }}">{{ "Registration history" if hosted else "Change history" }} on GitHub</a></p>
 </aside>

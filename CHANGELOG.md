@@ -42,6 +42,7 @@ and this project uses [Semantic Versioning](https://semver.org/spec/v2.0.0.html)
 - `tools/install-publiccode-parser.py`: installs publiccode-parser-go v5.4.3 with verified checksums; the `Validate` job uses it.
 - Roboto and Roboto Mono, served from the site itself (decision D5), with their licences and pinned hashes.
 - The role mailbox `solution-register@digitaloffice.scot` for the site, emailed drafts and feedback, with a 10 working day reply time; it is also `csr-0001`'s contact.
+- UI tests (`npm run test:ui`, required `UI tests` job): every page compared with its approved image in `ui/baseline/` at 1280 and 375 pixels, a behaviour test for each row of the parity table, and axe-core on every page; a fixed fixture register for them; `csr build --root` and `--no-history`.
 - Workflows: `site.yml` runs on pull requests, pushes to `main`, on demand and daily; pull requests fetch and check any pointer they add or change; other runs harvest every source and report it in the job summary; deployment to GitHub Pages is skipped until the `PAGES_ENABLED` variable is `true`. `validate-solution.yml` is a reusable workflow owners call to check their `solution.yml` and `publiccode.yml`.
 - `csr harvest --fail-on-problems` and `--summary`, and `csr check-publiccode`.
 - Issue forms: suggest a solution, suggest a correction, host our own solution.yml, and give feedback, alongside the organisation's bug report and change request; and a pull request template that keeps the organisation's and adds provenance, sources and the licence agreement.
@@ -53,6 +54,8 @@ and this project uses [Semantic Versioning](https://semver.org/spec/v2.0.0.html)
 
 - `.gitignore` extended for Python, the built site and UI test tooling.
 - `publiccode.yml` completed: description, features, `softwareType: standalone/web` and categories.
+- The visual baselines in `ui/baseline/` are now screenshots of the built pages (they were the wireframe images), with 375-pixel images added.
+- The phase banner is a named region, sidebar asides are named by their headings, and scrolling code examples can be reached with the keyboard.
 - R07 treats hyphenated addresses (such as `solution-register@`) as role mailboxes, and knows more role words.
 - `csr validate` and the harvest report describe schema problems in plain words, one per field, with the same wording as the draft form and validate page.
 

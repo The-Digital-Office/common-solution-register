@@ -31,6 +31,21 @@ Local styles are in `src/csr/static/csr.css`, limited to the cases section
 actions column, the results heading row, filters and wide tables. Wireframe
 `wf-` classes are renamed `csr-`.
 
+## Tests
+
+`npm run test:ui` (after `pip install -e .`, `npm ci` and `npx playwright install chromium`) builds
+the fixture register in `ui/tests/fixtures/` and runs, in Chromium:
+
+- `ui/tests/visual.spec.js`: every page below, at 1280 and 375 pixels, compared with its approved
+  image in `ui/baseline/` (at most 1% of pixels may differ). After a deliberate design change, run
+  `npm run test:ui:update` and commit the new images in the same pull request, so the change is
+  visible in review.
+- `ui/tests/behaviour.spec.js`: one test per row of the behaviour-parity table.
+- `ui/tests/accessibility.spec.js`: axe-core on every page, failing on any serious or critical issue.
+
+The `UI tests` job in `site.yml` runs them on every pull request and uploads the report and image
+differences if they fail.
+
 ## Page-to-template map
 
 | Wireframe | Template | Built path | Slice |
@@ -98,4 +113,6 @@ The table below records each departure as raised.
 | D30 | Validate page sample text | The paste box starts with an example | It starts empty | The wireframe's sample is illustration, not content |
 | D31 | Harvest report times | "[date and time]", "[date]" | Dates with times in UTC ("3 November 2026 at 08:36 UTC"); "Never" for a source never harvested; a source that has never passed is named from its file but not linked | Harvests run several times a day in CI; UTC avoids ambiguity |
 | D32 | Harvest report problems | One entry per failing source | Every source with findings, including R17 warnings on published records; a source unavailable for more than 7 days is flagged for a maintainer's decision | Specification 6.11 |
+| D33 | Visual baselines | The approved wireframe images | As section 6.13 describes: the baselines started as the wireframe images, and slice S14 replaced each with the built page's screenshot in the same pull request, so the difference was visible in review; 375-pixel images were added. The wireframe images remain in git history and can be regenerated with `tools/render-wireframes.js` | A built page never matches a drawing pixel for pixel; the review of each difference is the approval |
+| D34 | Landmarks and focus | Not shown | The phase banner is a named region ("Demonstrator notice"); each sidebar aside is named by its heading; code examples that scroll sideways can be focused with the keyboard | Found by axe-core in S14 |
 
