@@ -62,6 +62,7 @@ def corpus() -> dict:
             "record": data,
             "schema_errors": any(f.rule == "SCHEMA" for f in findings),
             "rules": sorted({(f.rule, f.path, str(f.severity)) for f in findings if f.rule in SHARED_RULES}),
+            "schema": sorted({(f.path, f.message) for f in findings if f.rule == "SCHEMA"}),
         }
     return {
         "today": TODAY.isoformat(),

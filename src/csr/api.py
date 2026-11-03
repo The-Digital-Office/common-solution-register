@@ -20,7 +20,8 @@ LICENCE = {
     "content_url": "https://www.nationalarchives.gov.uk/doc/open-government-licence/version/3/",
 }
 #: Fields the register adds to each record (specification 6.4), in output order.
-DERIVED = ["hosting", "source", "currency", "last_changed", "merged_in", "history_url", "record_url"]
+DERIVED = ["hosting", "source", "source_state", "harvested_at", "content_hash", "currency", "last_changed",
+           "merged_in", "history_url", "record_url"]
 
 
 def record_json(entry: Entry) -> dict[str, Any]:
@@ -28,6 +29,9 @@ def record_json(entry: Entry) -> dict[str, Any]:
     derived = {
         "hosting": entry.hosting,
         "source": entry.source,
+        "source_state": entry.source_state,
+        "harvested_at": entry.harvest.get("harvested_at"),
+        "content_hash": entry.harvest.get("content_hash"),
         "currency": entry.currency,
         "last_changed": entry.last_changed.isoformat() if entry.last_changed else None,
         "merged_in": entry.merged_in,

@@ -59,6 +59,23 @@ RELATIONSHIP_LABELS = {
     "alternative": "alternative", "related": "related",
 }  # fmt: skip
 
+HARVEST_TAGS = {
+    "ok": ("OK", "green"),
+    "failing": ("Failing validation", "red"),
+    "unavailable": ("Unavailable", "orange"),
+    "not-harvested": ("Not yet harvested", "grey"),
+}
+PUBLICCODE_TAGS = {
+    "valid": ("Valid (official parser)", "green"),
+    "invalid": ("Fails the official parser", "red"),
+    "unavailable": ("Unavailable", "orange"),
+    "not-checked": ("Not yet checked", "grey"),
+}
+RULE_LABELS = {
+    "SCHEMA": "Schema", "YAML": "YAML", "R14": "R14 owner match", "R15": "R15 fetch", "R16": "R16 status",
+    "R17": "R17 publiccode.yml",
+}  # fmt: skip
+
 NAVIGATION = [
     ("home", "Find solutions", ""),
     ("browse", "Browse", "browse/"),
@@ -91,6 +108,14 @@ def display_url(url: str) -> str:
     return text + (f"?{parts.query}" if parts.query else "")
 
 
+def long_datetime(value: str | None) -> str:
+    """"2026-11-03T08:33:00Z" as "3 November 2026 at 08:33 UTC"."""
+    if not value:
+        return ""
+    moment = dt.datetime.fromisoformat(value.replace("Z", "+00:00"))
+    return f"{moment.day} {moment:%B %Y} at {moment:%H:%M} UTC"
+
+
 def long_date(value: dt.date | str | None) -> str:
     if value is None:
         return ""
@@ -121,7 +146,7 @@ def environment() -> Environment:
         lstrip_blocks=True,
         keep_trailing_newline=True,
     )
-    env.filters.update(display_url=display_url, long_date=long_date)
+    env.filters.update(display_url=display_url, long_date=long_date, long_datetime=long_datetime)
     env.globals.update(
         SENTINEL=SENTINEL,
         TYPE_LABELS=TYPE_LABELS,
@@ -135,6 +160,9 @@ def environment() -> Environment:
         INTERFACE_LABELS=INTERFACE_LABELS,
         RELATIONSHIP_LABELS=RELATIONSHIP_LABELS,
         NAVIGATION=NAVIGATION,
+        HARVEST_TAGS=HARVEST_TAGS,
+        PUBLICCODE_TAGS=PUBLICCODE_TAGS,
+        RULE_LABELS=RULE_LABELS,
         FOOTER=FOOTER,
         SGDS_VERSION=SGDS_VERSION,
         CSR_VERSION=__version__,
@@ -188,13 +216,16 @@ def build(
     *,
     base_url: str | None = None,
     today: dt.date | None = None,
+    state: dict | None = None,
 ) -> BuildResult:
-    """Build the site into ``out`` (default ``site/``), replacing what is there."""
+    """Build the site into ``out`` (default ``site/``), replacing what is there. ``state``
+    is the harvest state (``csr harvest``); without it, sources in this repository are
+    harvested from the working tree."""
     root = root or ROOT
     out = out or root / "site"
     today = today or dt.date.today()
     config = load_config(root, base_url)
-    register = load_register(root, config, today)
+    register = load_register(root, config, today, state)
 
     if out.exists():
         shutil.rmtree(out)
@@ -213,6 +244,7 @@ def build(
     form = draft_context()
     form["sectors"] = [(t.id, t.label) for t in site.taxonomies["sectors"].terms]
     site.page("draft/", "draft.html", nav="contribute", form=form)
+    _harvest_page(site)
     site.page("validate/", "validate.html", nav="validate", checker={
         "schemas": {"asset": load_schema("asset"), "pointer": load_schema("pointer")},
         "taxonomies": {name: [{"id": t.id, "status": t.status, "replaced_by": t.replaced_by} for t in tax.terms]
@@ -387,8 +419,24 @@ def _resolve(schema: dict[str, Any], prop: dict[str, Any]) -> dict[str, Any]:
     return prop
 
 
+def _harvest_page(site: Site) -> None:
+    state = site.register.state
+    rows = []
+    published = {e.id: e for e in site.register.entries}
+    for record_id, harvested in sorted(state.get("sources", {}).items()):
+        name = harvested.get("name", "")
+        days = None
+        if harvested.get("unavailable_since"):
+            since = dt.datetime.fromisoformat(harvested["unavailable_since"].replace("Z", "+00:00")).date()
+            days = (site.today - since).days
+        rows.append({"id": record_id, "entry": published.get(record_id), "source": harvested.get("source", ""),
+                     "harvest": harvested, "name": name, "days_unavailable": days})  # fmt: skip
+    site.page("harvest/", "harvest.html", nav="", state=state, sources=rows)
+
+
 def _data_pages(site: Site) -> None:
     files = api.files(site.register, site.taxonomies, site.config, site.today)
+    files[api.API + "harvest-state.json"] = api.dumps(site.register.state)
     for path, content in files.items():
         site.write(path, content)
     sizes = {path: len(content.encode("utf-8")) for path, content in files.items()}

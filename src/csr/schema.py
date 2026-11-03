@@ -82,6 +82,11 @@ def _path(error) -> str:
     return "".join(f"[{part}]" if isinstance(part, int) else f".{part}" for part in error.absolute_path).lstrip(".")
 
 
+def raw_errors(document: Any, name: str = "asset") -> list:
+    """The validator's own errors, for csr.messages to put in plain words."""
+    return list(validator(name).iter_errors(document))
+
+
 def check(document: Any, name: str = "asset") -> list[SchemaError]:
     """Validate a document against a schema and return its errors, in path order."""
     errors = validator(name).iter_errors(document)

@@ -1,0 +1,64 @@
+{% extends "base.html" %}
+{% block title %}Harvest report{% endblock %}
+{% macro state_tag(state) %}{% set label, colour = HARVEST_TAGS.get(state, ("Not yet harvested", "grey")) %}<strong class="ds_tag ds_tag--{{ colour }}">{{ label }}</strong>{% endmacro %}
+{% block main %}
+<main class="ds_layout ds_layout--search-results" id="main-content">
+<div class="ds_layout__header">
+<header class="ds_page-header">
+<h1 class="ds_page-header__title">Harvest report</h1>
+<dl class="ds_page-header__metadata ds_metadata">
+<div class="ds_metadata__item"><dt class="ds_metadata__key">Last run</dt><dd class="ds_metadata__value">{{ state.generated | long_datetime if state.generated else "Not yet run" }} (daily)</dd></div>
+<div class="ds_metadata__item"><dt class="ds_metadata__key">Registered sources</dt><dd class="ds_metadata__value">{{ sources | length }}</dd></div>
+</dl>
+</header>
+<p class="ds_leader">Records hosted by their owners are fetched daily from registered addresses only. Each file is validated before it is published. A file that fails is never published: the last valid version stays.</p>
+</div>
+<div class="ds_layout__content">
+<div class="csr-table"><table class="ds_table">
+<caption class="visually-hidden">Registered sources and their state</caption>
+<thead><tr><th scope="col">Record</th><th scope="col">Source</th><th scope="col">Last harvested</th><th scope="col">State</th></tr></thead>
+<tbody>
+{% for s in sources %}
+<tr id="{{ s.id }}"><td>{% if s.entry %}<a href="{{ root }}assets/{{ s.id }}/">{{ s.id }}</a> {{ s.entry.data.name }}{% else %}{{ s.id }}{% if s.name %} {{ s.name }}{% endif %}{% endif %}</td>
+<td><code>{{ s.source | display_url }}</code></td>
+<td>{{ s.harvest.harvested_at | long_datetime if s.harvest.harvested_at else "Never" }}</td>
+<td>{{ state_tag(s.harvest.state) }}</td></tr>
+{% endfor %}
+</tbody></table></div>
+
+<h2>Problems</h2>
+{% set problems = sources | selectattr("harvest.findings") | list %}
+{% if problems %}
+{% for s in problems %}
+{% set h = s.harvest %}
+<details class="ds_details" open="open" data-module="ds-details">
+<summary class="ds_details__summary">{{ s.id }}: {% if h.state == "failing" %}failing validation since {{ h.failing_since | long_datetime }}{% elif h.state == "unavailable" %}unavailable since {{ h.unavailable_since | long_datetime }}{% else %}warnings{% endif %} ({{ "last valid version from " ~ (h.harvested_at | long_datetime) ~ " still published" if h.last_valid and h.state != "ok" else ("never published" if not h.last_valid else "published") }})</summary>
+<div class="ds_details__text">
+{% if h.state == "unavailable" and s.days_unavailable is not none and s.days_unavailable > 7 %}
+<div class="ds_inset-text"><div class="ds_inset-text__text">Unavailable for {{ s.days_unavailable }} days. A maintainer decides whether to withdraw the record; records are never withdrawn automatically.</div></div>
+{% endif %}
+<ul>
+{% for f in h.findings %}
+<li><strong>{{ RULE_LABELS.get(f.rule, f.rule) }}{% if f.severity == "warning" %} (warning){% endif %}:</strong> {% if f.path %}<code>{{ f.path }}</code>: {% endif %}{{ f.message }}.{% if f.fix %} {{ f.fix }}{% endif %}</li>
+{% endfor %}
+</ul>
+</div>
+</details>
+{% endfor %}
+{% else %}
+<p>No problems at the last harvest.</p>
+{% endif %}
+
+<h2>How harvesting works</h2>
+<ol>
+<li>An owner publishes their solution.yml and asks for it to be registered. Registration is a reviewed change.</li>
+<li>Every day, and on request, the register fetches each registered address over HTTPS.</li>
+<li>It checks the record ID and owner match the registration, then validates the file and any linked publiccode.yml.</li>
+<li>Valid files are published straight away. Owners do not need a maintainer to approve their edits.</li>
+<li>If a source fails or disappears, the last valid version stays and is flagged. A maintainer decides whether to withdraw it after 7 days.</li>
+</ol>
+<p>Only registered addresses are fetched. The register does not search for unregistered files.</p>
+<p><a href="{{ root }}api/v0/harvest-state.json">Harvest state as JSON</a></p>
+</div>
+</main>
+{% endblock %}
