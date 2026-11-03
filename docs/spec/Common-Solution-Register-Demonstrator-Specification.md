@@ -2,9 +2,9 @@
 title: "Common Solution Register Demonstrator: Scope, Design and Build Specification"
 author: "Robbie Harris, Enterprise Architect"
 organisation: "The Digital Office for Scottish Local Government"
-status: "Draft: no build has started"
-version: "1.2"
-date: "2 November 2026"
+status: "Draft: built as a demonstrator (see docs/build/PLAN.md)"
+version: "1.3"
+date: "3 November 2026"
 classification: "OFFICIAL"
 based_on:
   - "Common Solution Register: Proposed Approach and Operating Model, v0.2 (19 October 2026)"
@@ -17,9 +17,9 @@ based_on:
 
 | Document control | Detail |
 |---|---|
-| Status | Draft. **No build has started and no GitHub changes have been made.** |
-| Version | 1.2 |
-| Date | 2 November 2026 |
+| Status | Draft. Built as a demonstrator; the build is recorded in `docs/build/PLAN.md`. |
+| Version | 1.3 |
+| Date | 3 November 2026 |
 | Owner | Robbie Harris, Enterprise Architect, The Digital Office |
 | Classification | OFFICIAL |
 
@@ -37,6 +37,7 @@ based_on:
 | 1.0 | 2 November 2026 | Separates **common solutions** from **codebases** (new 1.1). `solution.yml` describes the offer; `publiccode.yml` describes a codebase and stays in that code's repository. Replaces the top-level repository fields with a `codebases[]` list, carrying each codebase's `publiccode_url`, `maintenance` (mapped from `publiccode.yml`), version and maintainers. Adds `open_data[]` links, so a solution can point to the data it publishes without the register cataloguing datasets. `csr-0001` becomes a **service** whose codebase is this repository. The `publiccode.yml` importer now adds a codebase to a solution. Records two decision points: datasets are out of scope, and a codebase on its own is not a common solution. |
 | 1.1 | 2 November 2026 | Adds reference implementations as a kind of codebase (1.1, `codebases[].kind`). Replaces the build plan in section 9 with an incremental, multi-session build strategy, with the slices and resume protocol in `docs/build/PLAN.md`. |
 | 1.2 | 2 November 2026 | Removes all tool attribution from the repository: no tool-specific instruction file, build sessions brief from `docs/build/PLAN.md`, and commits, pull requests and files carry the author's identity only (9.1). |
+| 1.3 | 3 November 2026 | Corrections after the build. 6.8: the banner wording follows the wireframes, a long notice on the home page and a short one elsewhere (UI decision D1). 5.2: a sixth demonstration record, mygovscot myaccount (decision point DP-07). |
 
 
 ## 1. Purpose and context
@@ -153,6 +154,7 @@ The **inclusion test** is from proposal 4.3: (1) intended for reuse by more than
 | demonstration | One Scotland Gazetteer (Improvement Service) | platform | Local government owner, data capability | 1, 4, 6 pass; 5 as publicly stated |
 | demonstration | Spatial Hub (Improvement Service) | platform | Mapping capability; `open_data[]` link to its catalogue | 1, 4, 6 pass; 5 as publicly stated |
 | demonstration (optional) | GOV.UK Notify or GOV.UK Pay | api | `uk-public-sector`, interfaces, publicly documented charging | 1, 3, 4, 5, 6 pass from public documentation |
+| demonstration (added in 1.3) | mygovscot myaccount (Improvement Service) | service | A live sign-in service used by all 32 councils; local government owner, identity capability | 1, 3, 4, 6 pass; 5 as publicly stated |
 | example | `csr-9001` Example: Council Payments Gateway | component | `charging.applies = true`, `support` | n/a (fictional) |
 | example | `csr-9002` Example: Benefits Case Management API | api | `interfaces[]`, related assets | n/a |
 | example | `csr-9003` Example: Legacy Waste Booking Service | service | `deprecated` with migration guidance; `stale` currency | n/a |
@@ -365,7 +367,7 @@ In the demonstrator, `CODEOWNERS` **requests** a review but nothing **enforces**
 | Accessibility statement, Privacy notice | `accessibility/`, `privacy/` | No |
 | API and extracts | `api/v0/…`, `data/register.json`, `data/register.csv` | n/a |
 
-Every page carries the banner: *"Demonstrator for the Scottish public sector common solution register short-life working group. This is not an official register. Records are marked as confirmed by their owner, compiled from public sources, or fictional examples. Inclusion does not mean endorsement."*
+Every page carries a "Demonstrator" banner with a link to give feedback, as the wireframes show. On the home page it says: *"Built for the Scottish public sector common solution register short-life working group. This is not an official register. Records are confirmed by their owner, compiled from public sources, or fictional examples. Inclusion does not mean endorsement."* Every other page says: *"This is not an official register. Inclusion does not mean endorsement."*
 
 **CSV:** nested objects use dotted column names; arrays of values are joined with `; `; arrays of objects are stored as compact JSON; UTF-8 with a header row.
 

@@ -50,6 +50,10 @@ and this project uses [Semantic Versioning](https://semver.org/spec/v2.0.0.html)
 - Validate page (`validate/`): check a `solution.yml` or pointer by pasting it, uploading it or giving its URL, in the browser, against the schema and every rule that needs no network, with a results table giving the severity, rule, field, problem and fix for each finding.
 - The `Validate` job builds the site and uploads it as the `site-preview` artifact.
 - Demonstration records `csr-0003` ScotAccount , `csr-0004` Scottish Government Design System , `csr-0005` One Scotland Gazetteer , `csr-0006` Spatial Hub , `csr-0007` GOV.UK Notify and `csr-0008` mygovscot myaccount, compiled from cited public sources, and `docs/demonstration-sources.md`, which ties each statement to its source for the author to verify.
+- `docs/decision-points.md`: every choice the working group may revisit (DP-01 to DP-53), including the schema v0.1 choices and the rule interpretations, with alternatives and what would change; `docs/editorial-model.md`: the two-approval model and how to enforce it.
+- Guides: `docs/adopting-this-demonstrator.md` (transfer or fork, files and settings to change), `docs/contributing-records.md` (the inclusion test and every contribution route, linked from the Contribute page), `docs/hosting-your-solution-yml.md` (owner hosting and the reusable workflow) and `docs/harvesting.md`.
+- `docs/maintenance.md`: maintainer commands, handling issues, maintaining records, removing content from history, dependency and vendored-file updates, and the runbook (monthly, on rule changes, on failures, yearly); `docs/publiccode-mapping.md` and `docs/github-free.md` (specification appendices A and B).
+- `docs/publication-checklist.md`: the author's steps before publication (inputs, the register's own record, courtesy notes with a suggested text, the manual keyboard and screen-reader check, sign-off, enabling Pages, sharing); a documentation table in the README; tests that the documents exist and their links resolve.
 
 ### Changed
 
@@ -61,6 +65,7 @@ and this project uses [Semantic Versioning](https://semver.org/spec/v2.0.0.html)
 - R07 treats hyphenated addresses (such as `solution-register@`) as role mailboxes, and knows more role words.
 - `csr validate` and the harvest report describe schema problems in plain words, one per field, with the same wording as the draft form and validate page.
 - Record pages show a charging summary after "No charge" and "Not stated in public sources", not only when charges apply.
+- Specification 1.3: section 6.8 gives the banner wording as built (D1), and 5.2 lists the sixth demonstration record.
 
 ### Fixed
 

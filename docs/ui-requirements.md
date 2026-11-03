@@ -80,7 +80,7 @@ on 3 November 2026**, before the visual baselines were approved (slice S14):
 
 | # | Decision |
 |---|---|
-| D1 | As built: the long banner on the home page and the short banner on every other page, as the wireframes show. Section 6.8 of the specification is to be corrected to match (S16). |
+| D1 | As built: the long banner on the home page and the short banner on every other page, as the wireframes show. Section 6.8 of the specification was corrected to match in version 1.3. |
 | D2, D3 | As built: one record template with the union of the three record wireframes' sections and sidebar. |
 | D4 | As built: generic wording in the fictional-example panel. |
 | D5 | Changed: Roboto, the design system's typeface, and Roboto Mono for code are served from the site itself (`static/fonts.css`, `vendor/roboto/`, `vendor/roboto-mono/`); no font service is contacted. |
