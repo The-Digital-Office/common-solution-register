@@ -438,4 +438,37 @@ Newest last. One line per checkpoint; a fuller entry when a session ends.
     > - [x] `CHANGELOG.md` updated under Unreleased
     > - [x] No secrets or personal data
     > - [x] Actions pinned by SHA
+- 2026-11-03 — S11 merged.
+- 2026-11-03 — S12a–b done (one commit; the commands share `src/csr/tools.py`). `csr import-publiccode <url-or-path> --to ID` adds or updates (by repository URL) a codebase from a publiccode.yml, copying `url`, `maintenance.type`, `softwareVersion` and `maintenance.contacts` (name, affiliation, email; never phone), and prints `categories` and `intendedAudience.scope` as hints; `--new [--id]` drafts a record with the next free id, suggesting name, summary, purpose, status, licence, owner, service page, documentation, interfaces (type left as TODO), roadmap, adopters (self-reported) and dependencies, with every unmapped mandatory field TODO (R09 rejects it until filled). `csr move-to-source ID URL` fetches the owner's file and checks it as the harvester does (HTTPS, R14, R16, schema and rules) before writing the pointer; nothing changes if it would not be published. `csr move-to-local ID [--state]` writes the last valid harvested version as a local record. `csr new --from-issue PATH|- [--issue-url]` takes the YAML block from a suggest-asset issue, refuses an id already in the register, allocates the next free id (example range for examples), and records the issue as the confirmation reference. Every command validates what it writes and exits 1 if a maintainer has errors to resolve, 2 if it could not act. `tests/test_tools.py`.
+- 2026-11-03 — **S12 ready for pull request.**
+  - **Done:** S12a–b. `pytest -q`: 329 passed, 1 skipped (the real-parser test). `csr validate --base origin/main`: 0 errors, 2 warnings.
+  - **Next:** author opens and merges the pull request from `robbie/wizardly-dijkstra-2sjib7`. Then S13 (workflows and community files).
+  - **Blockers:** none.
+  - **For S13:** the `suggest-asset.yml` form's YAML text area should use `render: yaml`, so GitHub fences it and `csr new --from-issue` finds it; its field ids are `solution-yml`, `asset-name`, `organisation` and `contact` (S9). The `move-to-owner-hosting.yml` form asks for the record id and the owner's HTTPS address, which a maintainer passes to `csr move-to-source`. `docs/maintenance.md` (S16) should describe all five commands.
+  - **Pull request title:** Add the maintainer tools (S12)
+  - **Pull request description:**
+
+    > ## What this changes
+    >
+    > Adds the maintainer tools (slice S12 of `docs/build/PLAN.md`; specification 6.6, 6.12 and appendix A). Each writes a file in `records/` for a maintainer to review and propose in a pull request, validates it, and says what to check.
+    >
+    > - `csr import-publiccode <url-or-path> --to csr-NNNN` adds the codebase a `publiccode.yml` describes to a record, or updates it if listed, following appendix A. Phone numbers are never imported.
+    > - `csr import-publiccode <url-or-path> --new` drafts a new record with the next free id. Solution fields are suggestions from the codebase's description; anything a person must decide is `TODO`, which validation rejects until filled in.
+    > - `csr move-to-source csr-NNNN <url>` fetches the owner's `solution.yml` and checks it as the harvester will (HTTPS, owner match, status, schema and rules) before replacing the local record with a pointer. If the file would not be published, nothing changes.
+    > - `csr move-to-local csr-NNNN` replaces a pointer with the last valid version from the harvest state.
+    > - `csr new --from-issue` adds the `solution.yml` from a suggest-asset issue as a new record with the next free id, and records the issue as the confirmation reference.
+    > - The README lists the commands.
+    >
+    > ## Why
+    >
+    > Specification 6.6 (the assisted contribution route), 6.12 (moving records to and from owner hosting) and appendix A (the `publiccode.yml` mapping).
+    >
+    > ## How it was tested
+    >
+    > `pytest -q` (329 passed, 1 skipped) on Python 3.12: each command, what it writes and what it refuses, on a copy of the register, with a fake network.
+    >
+    > ## Checklist
+    >
+    > - [x] `CHANGELOG.md` updated under Unreleased
+    > - [x] No secrets or personal data
 

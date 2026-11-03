@@ -54,9 +54,27 @@ python -m http.server 8000 --directory site
 
 Then open http://localhost:8000/. The site needs to be served over HTTP, not
 opened from the file system, because its scripts are JavaScript modules.
+To harvest owner-hosted records first (add `--no-network` to read only the
+sources in this repository), then build from the harvest:
+
+```bash
+csr harvest
+csr build --harvest .harvest/harvest-state.json --base-url http://localhost:8000/
+```
+
 Each pull request also builds the site and attaches it to the workflow run as
-the `site-preview` artifact. Harvesting owner-hosted descriptors
-(`csr harvest`) is added in a later build slice.
+the `site-preview` artifact.
+
+Maintainers also have these commands, each of which writes a file in
+`records/` to review and propose in a pull request:
+
+| Command | Does |
+|---|---|
+| `csr new --from-issue issue.md` | Adds the `solution.yml` from a suggest-asset issue as a new record, with the next free id |
+| `csr import-publiccode <url-or-path> --to csr-NNNN` | Adds or updates a codebase in a record from its `publiccode.yml` |
+| `csr import-publiccode <url-or-path> --new` | Drafts a new record from a `publiccode.yml`, with `TODO` where a person must decide |
+| `csr move-to-source csr-NNNN <url>` | Checks the owner's hosted `solution.yml`, then replaces the local record with a pointer to it |
+| `csr move-to-local csr-NNNN` | Replaces a pointer with the last valid harvested version, as a local record |
 
 A failed build or deployment notifies the person whose commit triggered it,
 through GitHub. Maintainers watch the repository.
