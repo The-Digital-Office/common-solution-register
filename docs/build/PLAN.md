@@ -404,5 +404,38 @@ Newest last. One line per checkpoint; a fuller entry when a session ends.
 - 2026-11-03 — S10 merged.
 - 2026-11-03 — S11a done: `src/csr/harvest.py` fetches each pointer's source over HTTPS within the size limit and timeout, refusing redirects to non-HTTPS addresses (R15); sources in this repository are read from the working tree; checks R14 (id and owner match), R16 (owner-hosted status) and the schema and rules; `tests/test_harvest.py` with a fake network.
 - 2026-11-03 — S11b done: harvest state (`state_version` 1): per source its state (`ok`, `failing`, `unavailable`, `not-harvested`), `checked_at`, `harvested_at`, `content_hash`, `last_changed`, `last_valid` (the published copy), `failing_since`, `unavailable_since` and findings; a changed source or owner starts afresh. `csr harvest [--state PATH-OR-URL] [--out] [--only ID ...] [--no-network]` reads the previous state (default `state_url`; unreadable means starting fresh) and writes `.harvest/harvest-state.json` (ignored by git). `csr build --harvest PATH` publishes owner-hosted records from their last valid copy and writes `api/v0/harvest-state.json`; without a state it harvests this repository's sources without the network, as before. The API gains `source_state`, `harvested_at` and `content_hash`.
-- 2026-11-03 — S11c done: `tools/install-publiccode-parser.py` installs publiccode-parser-go v5.4.3 (EUPL-1.2; released 6 August 2026) for Linux or macOS, checking the SHA-256 pinned from the release's `checksums.txt`, into `.tools/` (ignored by git; the binary is not committed). The harvester finds it there, through `CSR_PUBLICCODE_PARSER`, or on the path, and runs it with `-json -no-network` on every `publiccode.yml` linked from a local record or a harvested copy; verdicts (`valid`, `invalid`, `unavailable`, `not-checked`) are kept in the state under `publiccode`, and an invalid one gives an R17 warning on a harvested record. The parser was not run in this session (running a downloaded binary is not permitted here); its interface was taken from its source at v5.4.3, the tests use a stand-in, and one test uses the real parser where it is installed. The `Validate` job now installs it, harvests this repository's sources and builds from the state, so CI exercises the real parser. **Next:** S11d (harvest report page; record page harvest states).
+- 2026-11-03 — S11c done: `tools/install-publiccode-parser.py` installs publiccode-parser-go v5.4.3 (EUPL-1.2; released 6 August 2026) for Linux or macOS, checking the SHA-256 pinned from the release's `checksums.txt`, into `.tools/` (ignored by git; the binary is not committed). The harvester finds it there, through `CSR_PUBLICCODE_PARSER`, or on the path, and runs it with `-json -no-network` on every `publiccode.yml` linked from a local record or a harvested copy; verdicts (`valid`, `invalid`, `unavailable`, `not-checked`) are kept in the state under `publiccode`, and an invalid one gives an R17 warning on a harvested record. The parser was not run in this session (running a downloaded binary is not permitted here); its interface was taken from its source at v5.4.3, the tests use a stand-in, and one test uses the real parser where it is installed. The `Validate` job now installs it, harvests this repository's sources and builds from the state, so CI exercises the real parser.
+- 2026-11-03 — S11d done: `templates/harvest.html` (last run, registered sources, a row per source with its state, problems per source with findings, sources unavailable for more than 7 days flagged for a maintainer, link to the state); record pages show the harvest state (passed, failing since, unavailable since; "Last harvested"), and every codebase's parser verdict; the Publiccode page's worked example and the Data page's state link use the state. `src/csr/messages.py` puts schema problems in plain words for `csr validate` and the report, word for word as the browser does (checked by the JavaScript parity test). Departures D6, D7 and D13 resolved; D31 and D32 added.
+- 2026-11-03 — **S11 ready for pull request.**
+  - **Done:** S11a–d. `pytest -q`: 310 passed, 1 skipped (the real-parser test, which runs where the parser is installed, as in CI). `csr harvest --no-network`: `csr-0001` ok, `csr-9006` ok, `csr-9007` failing (never published), as specified. `csr build --harvest .harvest/harvest-state.json`: 58 pages.
+  - **Next:** author opens and merges the pull request from `robbie/wizardly-dijkstra-2sjib7`, and checks in the pull request's `Validate` run that the parser installs and the real-parser test passes. Then S12 (tools: import-publiccode, move-to-source, move-to-local, new --from-issue).
+  - **Blockers:** none. The real parser was not run in the session (running a downloaded binary is not permitted there); the first run is in CI.
+  - **For S13:** the daily and on-demand harvest workflow runs `python tools/install-publiccode-parser.py`, `csr harvest` (previous state from `state_url`, with the network), and `csr build --harvest .harvest/harvest-state.json`; pull requests run `csr harvest --only <added or changed pointers>` with the network to fetch and check a newly registered source (specification 6.12 step 3); the harvest report can also be written to the job summary.
+  - **Pull request title:** Add the harvester and the harvest report (S11)
+  - **Pull request description:**
+
+    > ## What this changes
+    >
+    > Adds harvesting of owner-hosted records (slice S11 of `docs/build/PLAN.md`; specification 6.11).
+    >
+    > - `csr harvest` fetches each pointer's registered source over HTTPS only, within the size limit and timeout, refusing redirects to addresses that are not HTTPS (R15). Sources in this repository are read from the working tree, so a pull request is checked with its own changes.
+    > - Each harvested file is checked for an id and owner that match the registration (R14), a status that may be owner-hosted (R16), and the schema and rules.
+    > - Every linked `publiccode.yml` is checked with the official parser, publiccode-parser-go v5.4.3, installed by a new script at a pinned release with verified checksums (R17, a warning). The `Validate` job installs it.
+    > - The harvest state keeps each source's last valid copy, content hash and dates. A failing or unavailable source keeps its last valid version published and is flagged; a source that has never passed is not published. The state is read from the live site, starts fresh if it cannot be read, and is published at `api/v0/harvest-state.json`.
+    > - `csr build --harvest` publishes from the state. The harvest report page lists every source, its state and its problems, and flags sources unavailable for more than 7 days. Record pages show the harvest state and each codebase's parser verdict.
+    > - `csr validate` and the harvest report now describe schema problems in plain words, one per field, word for word as the browser does.
+    >
+    > ## Why
+    >
+    > Specification 6.11: owners can publish their own records, protected by validation and the owner match, without maintainer review.
+    >
+    > ## How it was tested
+    >
+    > `pytest -q` (310 passed, 1 skipped) on Python 3.12 and Node 22, with a fake network and a stand-in parser for every rule and state transition. The skipped test runs the real parser and runs in CI. The harvest report and record pages were checked in Chromium at 1280 and 375 pixels.
+    >
+    > ## Checklist
+    >
+    > - [x] `CHANGELOG.md` updated under Unreleased
+    > - [x] No secrets or personal data
+    > - [x] Actions pinned by SHA
 

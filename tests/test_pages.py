@@ -16,15 +16,16 @@ from csr.build import build, reference_fields
 from csr.rules import RULES
 from csr.schema import ROOT, check, load_schema
 
-#: Built paths from the page-to-template map in section 6.13. Harvest (S11) comes later.
+#: Built paths from the page-to-template map in section 6.13: every page.
 PAGE_MAP = [
     "index.html", "browse/index.html", "sectors/local-government/index.html",
     "service-areas/housing/index.html", "capabilities/payments/index.html", "assets/csr-0001/index.html",
     "assets/csr-9005/index.html", "contribute/index.html", "reference/index.html",
     "reference/publiccode/index.html", "data/index.html", "currency/index.html", "about/index.html",
     "accessibility/index.html", "privacy/index.html", "404.html", "draft/index.html", "validate/index.html",
+    "harvest/index.html",
 ]  # fmt: skip
-LATER = ("harvest/",)
+LATER = ()
 
 
 @pytest.fixture(scope="module")
@@ -57,7 +58,7 @@ def test_internal_links_resolve(site):
                 continue
             parts = urlsplit(urljoin("http://x/" + page, href))
             path = parts.path.lstrip("/")
-            if path.startswith(LATER):
+            if LATER and path.startswith(LATER):
                 continue
             target = site.out / path
             if target.is_dir() or not path:

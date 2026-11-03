@@ -3,6 +3,7 @@
 import datetime as dt
 import io
 import json
+import re
 
 import pytest
 import yaml
@@ -318,3 +319,57 @@ def test_the_official_parser_accepts_this_repository_and_rejects_a_broken_file(t
     broken = tmp_path / "publiccode.yml"
     broken.write_text("publiccodeYmlVersion: '0'\nname: broken\n")
     assert any(f.get("type") == "error" for f in run_parser(broken))
+
+
+# Checkpoint d: the harvest report and the record page
+
+
+def built(tmp_path, state):
+    return build(ROOT, tmp_path / "site", today=dt.date(2026, 11, 20), state=state)
+
+
+def page(site, path):
+    return (site.out / path).read_text(encoding="utf-8")
+
+
+def test_harvest_report(tmp_path):
+    state, _ = run(ROOT, CONFIG, empty_state(), now=DAY1, parser=parser_says())
+    site = built(tmp_path, state)
+    html = page(site, "harvest/index.html")
+    assert "3 November 2026 at 06:00 UTC (daily)" in html
+    assert re.search(r'Registered sources</dt><dd class="ds_metadata__value">3<', html)
+    for record_id, tag in (("csr-0001", "OK"), ("csr-9006", "OK"), ("csr-9007", "Failing validation")):
+        assert re.search(rf'<tr id="{record_id}">.*?{tag}</strong>', html, re.S), record_id
+    assert '<tr id="csr-9007"><td>csr-9007 Example: Failing Hosted Source</td>' in html  # named, not linked
+    assert "csr-9007: failing validation since 3 November 2026 at 06:00 UTC (never published)" in html
+    assert "<strong>R03:</strong> <code>service_areas[0]</code>" in html
+    assert "api/v0/harvest-state.json" in html
+
+
+def test_report_and_record_page_for_a_failing_and_an_unavailable_source(tmp_path):
+    state, _ = run(ROOT, CONFIG, empty_state(), now=DAY1, parser=parser_says())
+    entry9006 = state["sources"]["csr-9006"]
+    gone = SourceResult("csr-9006", entry9006["source"], entry9006["expected_owner"], "unavailable",
+                        [harvest.error(entry9006["source"], "R15", "", "the address returned HTTP 404")])  # fmt: skip
+    state["sources"]["csr-9006"] = update_entry(entry9006, gone, DAY2)
+    site = built(tmp_path, state)  # 16 days after it became unavailable
+    report = page(site, "harvest/index.html")
+    assert "csr-9006: unavailable since 4 November 2026 at 06:00 UTC (last valid version from 3 November 2026" in report
+    assert "Unavailable for 16 days. A maintainer decides whether to withdraw the record" in report
+    record = page(site, "assets/csr-9006/index.html")
+    assert "Source unavailable since 4 November 2026 at 06:00 UTC" in record
+    assert "harvested on 3 November 2026 at 06:00 UTC" in record
+    assert "Last harvested</dt><dd class=\"ds_summary-list__value\">4 November 2026 at 06:00 UTC: source unavailable" in record
+
+
+def test_record_page_shows_the_parser_verdict(tmp_path):
+    state, _ = run(ROOT, CONFIG, empty_state(), now=DAY1,
+                   parser=parser_says({"type": "error", "key": "url", "description": "is required"}))  # fmt: skip
+    site = built(tmp_path, state)
+    record = page(site, "assets/csr-0001/index.html")
+    assert "Fails the official parser</strong><br><span class=\"ds_hint-text\">error: url: is required</span>" in record
+    assert "It was last harvested on 3 November 2026 at 06:00 UTC and passed validation." in record
+    valid, _ = run(ROOT, CONFIG, empty_state(), now=DAY1, parser=parser_says())
+    other = build(ROOT, tmp_path / "valid", today=dt.date(2026, 11, 20), state=valid)
+    assert "Valid (official parser)" in page(other, "assets/csr-0001/index.html")
+    assert "Valid (official parser)</strong> (publiccode-parser-go v5.4.3" in page(other, "reference/publiccode/index.html")

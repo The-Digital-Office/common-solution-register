@@ -116,3 +116,16 @@ test('each finding has a fix, a rule and a severity', () => {
     }
   }
 });
+
+test('says the same as csr validate about the schema, word for word', () => {
+  const corpus = JSON.parse(readFileSync(process.env.CSR_CORPUS, 'utf8'));
+  const context = { taxonomies: corpus.taxonomies, knownIds: corpus.known_ids };
+  for (const [name, expected] of Object.entries(corpus.records)) {
+    const found = check(validate, expected.record, { today: corpus.today, context });
+    // The browser shows one finding per field, preferring a rule's message; compare the fields it gives to the schema.
+    const ruled = new Set(found.filter((f) => f.rule !== 'SCHEMA').map((f) => f.path));
+    const browser = found.filter((f) => f.rule === 'SCHEMA').map((f) => `${f.path}: ${f.message}`).sort();
+    const python = expected.schema.filter(([path]) => !ruled.has(path)).map(([path, message]) => `${path}: ${message}`).sort();
+    assert.deepEqual(browser, python, name);
+  }
+});

@@ -12,7 +12,8 @@ from csr import links
 from csr.findings import Finding, error, has_errors, warning
 from csr.records import RECORD_FILE, Record, parse, read_file, read_register, read_url
 from csr.rules import POINTER_RULES, RECORD_RULES, Context
-from csr.schema import ROOT, check
+from csr.messages import plain
+from csr.schema import ROOT, raw_errors
 from csr.taxonomy import load_all
 
 
@@ -55,7 +56,7 @@ def check_record(record: Record, context: Context) -> list[Finding]:
         record = Record(record.label, {**record.data, "id": stand_in}, record.in_register, record.filename)
     schema = "pointer" if record.is_pointer else "asset"
     findings += [
-        error(record.label, "SCHEMA", e.path, e.message, _schema_fix(schema)) for e in check(record.data, schema)
+        error(record.label, "SCHEMA", path, message, fix) for path, message, fix in plain(raw_errors(record.data, schema))
     ]
     if record.in_register and record.id and record.filename and record.filename != f"{record.id}.yaml":
         findings.append(error(record.label, "R01", "id", f"id {record.id} does not match the file name",
@@ -63,11 +64,6 @@ def check_record(record: Record, context: Context) -> list[Finding]:
     for rule in POINTER_RULES if record.is_pointer else RECORD_RULES:
         findings += rule(record, context)
     return findings
-
-
-def _schema_fix(schema: str) -> str:
-    page = "schema/pointer.schema.json" if schema == "pointer" else "the field reference"
-    return f"See {page} for the allowed values."
 
 
 def _duplicates(records: list[Record]) -> list[Finding]:

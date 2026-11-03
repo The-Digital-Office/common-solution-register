@@ -151,6 +151,7 @@ class SourceResult:
     text: str | None = None
     hash: str | None = None
     from_repository: bool = False
+    name: str = ""  # the name the file gives, even if it fails, for the harvest report
 
     @property
     def problem(self) -> str:
@@ -170,8 +171,10 @@ def harvest_source(pointer: Record, root: Path, config: Config, context: Context
         result.findings = [error(data["source"], "R15", "", fetched.problem,
                                  "Check the address is right, public and served over HTTPS.")]  # fmt: skip
         return result
-    _, findings = check_source(pointer, fetched.body, context)
+    harvested, findings = check_source(pointer, fetched.body, context)
     result.findings = findings
+    if isinstance(harvested.data, dict) and isinstance(harvested.data.get("name"), str):
+        result.name = harvested.data["name"][:200]
     result.hash = content_hash(fetched.body)
     if has_errors(findings):
         result.state = "failing"
@@ -205,13 +208,14 @@ def update_entry(previous: dict | None, result: SourceResult, now) -> dict:
     prev = previous if same_registration else {}
     if result.state == "not-harvested":  # nothing new is known
         return copy.deepcopy(prev) if prev else {
-            "source": result.source, "expected_owner": result.expected_owner, "state": "not-harvested",
+            "source": result.source, "expected_owner": result.expected_owner, "name": "", "state": "not-harvested",
             "checked_at": None, "harvested_at": None, "content_hash": None, "last_changed": None, "last_valid": None,
             "failing_since": None, "unavailable_since": None, "findings": [],
         }  # fmt: skip
     entry = {
         "source": result.source,
         "expected_owner": result.expected_owner,
+        "name": result.name or prev.get("name", ""),
         "state": result.state,
         "checked_at": _iso(now),
         "harvested_at": prev.get("harvested_at"),

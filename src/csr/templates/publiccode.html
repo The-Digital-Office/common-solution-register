@@ -21,7 +21,7 @@
 
 <div class="ds_notification-panel ds_notification-panel--neutral">
 <h2 class="ds_notification-panel__title">Worked example: this demonstrator</h2>
-<div class="ds_notification-panel__content"><p>The register is a <strong>service</strong> (record <a href="{{ root }}assets/csr-0001/">csr-0001</a>). The repository that builds it is its <strong>codebase</strong>. Official parser result for that codebase: <strong class="ds_tag ds_tag--grey">Not yet checked</strong></p></div>
+<div class="ds_notification-panel__content"><p>The register is a <strong>service</strong> (record <a href="{{ root }}assets/csr-0001/">csr-0001</a>). The repository that builds it is its <strong>codebase</strong>. {% set verdict = site.register.state.get("publiccode", {}).get(config.raw_prefix ~ "publiccode.yml", {}) %}{% set label, colour = PUBLICCODE_TAGS[verdict.get("state", "not-checked")] %}Official parser result for that codebase: <strong class="ds_tag ds_tag--{{ colour }}">{{ label }}</strong>{% if verdict.get("checked_at") and verdict.get("state") in ("valid", "invalid") %} (publiccode-parser-go {{ verdict.parser }}, {{ verdict.checked_at | long_datetime }}){% endif %}</p></div>
 </div>
 <div class="csr-pair">
 <section aria-labelledby="h-sol">

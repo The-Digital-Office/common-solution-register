@@ -40,10 +40,20 @@
 
 <div class="ds_layout__content">
 {% if hosted %}
+{% set h = entry.harvest %}
+{% if h.state == "failing" or h.state == "unavailable" %}
+<div class="ds_notification-message ds_notification-message--warning">
+<div class="ds_notification-message__body">
+<h2 class="ds_notification-message__title ds_h3">{% if h.state == "failing" %}Source failing validation since {{ h.failing_since | long_datetime }}{% else %}Source unavailable since {{ h.unavailable_since | long_datetime }}{% endif %}</h2>
+<p>This is the last valid version of the owner's <code>solution.yml</code>, harvested on {{ h.harvested_at | long_datetime }}. <a href="{{ root }}harvest/#{{ entry.id }}">See the harvest report</a>.</p>
+</div>
+</div>
+{% else %}
 <div class="ds_notification-panel ds_notification-panel--neutral">
 <h2 class="ds_notification-panel__title">Hosted by its owner</h2>
-<div class="ds_notification-panel__content"><p>This record is published from the owner's own <code>solution.yml</code>, which passed validation when the site was built.</p></div>
+<div class="ds_notification-panel__content"><p>This record is published from the owner's own <code>solution.yml</code>. It was last harvested on {{ h.harvested_at | long_datetime }} and passed validation.</p></div>
 </div>
+{% endif %}
 {% endif %}
 {% if demonstration %}
 <div class="ds_warning-text">
@@ -122,7 +132,7 @@
 <tr>
 <td>{% if cb.repository_url %}<a href="{{ cb.repository_url }}">{{ cb.repository_url | display_url }}</a> ({{ cb.visibility }}){% else %}Private repository{% endif %}
 {% if cb.role or cb.maintainers %}<br><span class="ds_hint-text">{% if cb.role %}{{ cb.role }}.{% endif %}{% if cb.maintainers %} Maintainers: {% for m in cb.maintainers %}{{ m.name }}{% if m.affiliation %}, {{ m.affiliation }}{% endif %}{{ "; " if not loop.last }}{% endfor %}{% endif %}</span>{% endif %}</td>
-<td>{% if cb.publiccode_url %}<a href="{{ cb.publiccode_url }}">publiccode.yml</a><br><strong class="ds_tag ds_tag--grey">Not yet checked</strong>{% else %}<strong class="ds_tag ds_tag--grey">None linked</strong>{% endif %}</td>
+<td>{% if cb.publiccode_url %}{% set verdict = site.register.state.get("publiccode", {}).get(cb.publiccode_url, {}) %}{% set label, colour = PUBLICCODE_TAGS[verdict.get("state", "not-checked")] %}<a href="{{ cb.publiccode_url }}">publiccode.yml</a><br><strong class="ds_tag ds_tag--{{ colour }}">{{ label }}</strong>{% if verdict.get("state") == "invalid" %}<br><span class="ds_hint-text">{% for m in verdict.messages if m.startswith("error") %}{{ m }}{{ "; " if not loop.last }}{% endfor %}</span>{% endif %}{% else %}<strong class="ds_tag ds_tag--grey">None linked</strong>{% endif %}</td>
 <td>{{ MAINTENANCE_LABELS[cb.maintenance] }}{% if cb.maintenance == "none" %}. No active maintenance.{% endif %}</td>
 <td>{{ cb.version or "Not stated" }}</td>
 </tr>
@@ -159,6 +169,7 @@
 {% if example %}{% call row("Last confirmed") %}{{ r.confirmation.last_confirmed | long_date }} (fictional){% endcall %}{% endif %}
 {% call row("Currency") %}{% if entry.currency == "current" %}Current: next confirmation due by {{ entry.next_due | long_date }}{% elif entry.currency == "due" %}Due for confirmation since {{ entry.next_due | long_date }}{% elif entry.currency == "stale" %}Stale: confirmation overdue since {{ entry.stale_from | long_date }}{% else %}Not confirmed by owner{% endif %}{% endcall %}
 {% call row("Hosting") %}{% if hosted %}Owner-hosted: <code>{{ entry.source }}</code>{% else %}Held in the register{% endif %}{% endcall %}
+{% if hosted %}{% call row("Last harvested") %}{{ entry.harvest.checked_at | long_datetime }}: {{ {"ok": "passed validation", "failing": "failing validation", "unavailable": "source unavailable"}.get(entry.harvest.state, "not harvested") }}{% endcall %}{% endif %}
 {% if entry.last_changed %}{% call row("Last changed") %}{{ entry.last_changed | long_date }}{% endcall %}{% endif %}
 {% if entry.merged_in %}{% call row("Registered in" if hosted else "Merged in") %}<a href="{{ config.repository_url }}/pull/{{ entry.merged_in }}">Merged in pull request #{{ entry.merged_in }}</a>{% endcall %}{% endif %}
 {% if related %}{% call row("Related") %}{% for e, rel in related %}<a href="{{ root }}assets/{{ e.id }}/">{{ e.data.name }}</a> ({{ RELATIONSHIP_LABELS[rel] }}){{ "; " if not loop.last }}{% endfor %}{% endcall %}{% endif %}

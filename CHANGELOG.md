@@ -37,6 +37,9 @@ and this project uses [Semantic Versioning](https://semver.org/spec/v2.0.0.html)
 - `js-yaml` 5.5.0, vendored with its licence and pinned hashes; `tools/vendor.py` refreshes any vendored package.
 - Draft form, part 2: validation against the schema in the browser with the vendored Ajv 8.17.1 (2020-12) runtime, plus rules R06 and R09, with an error summary and inline errors; Copy YAML, Download, Open as a GitHub issue (pre-filled, or download-and-attach when too long) and Send by email.
 - `csr validate` accepts the draft placeholder id `csr-NNNN` in files outside `records/`, with a warning.
+- Harvester (`csr harvest`): fetches each owner-hosted record's registered source over HTTPS within limits (R15), checks the owner match (R14), the allowed statuses (R16), the schema and rules, and each linked `publiccode.yml` with the official parser (R17), keeping the last valid copy, content hash and dates in a harvest state published at `api/v0/harvest-state.json`. `csr build --harvest` publishes from that state.
+- Harvest report page (`harvest/`), and harvest states on owner-hosted record pages.
+- `tools/install-publiccode-parser.py`: installs publiccode-parser-go v5.4.3 with verified checksums; the `Validate` job uses it.
 - Validate page (`validate/`): check a `solution.yml` or pointer by pasting it, uploading it or giving its URL, in the browser, against the schema and every rule that needs no network, with a results table giving the severity, rule, field, problem and fix for each finding.
 - The `Validate` job builds the site and uploads it as the `site-preview` artifact.
 
@@ -44,6 +47,7 @@ and this project uses [Semantic Versioning](https://semver.org/spec/v2.0.0.html)
 
 - `.gitignore` extended for Python, the built site and UI test tooling.
 - `publiccode.yml` completed: description, features, `softwareType: standalone/web` and categories.
+- `csr validate` and the harvest report describe schema problems in plain words, one per field, with the same wording as the draft form and validate page.
 
 ### Fixed
 
