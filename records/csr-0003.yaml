@@ -1,0 +1,64 @@
+# Demonstration record: compiled only from the public sources listed under
+# sources, and not confirmed by the owner. See docs/demonstration-sources.md.
+schema_version: "0.1"
+id: csr-0003
+record_status: demonstration
+name: ScotAccount
+summary: >-
+  A secure and simple way for people to prove who they are and that they are
+  eligible when they use public services online.
+purpose: >-
+  Lets people sign in to public services online using two-factor
+  authentication, verify their identity if a service requires it (by photo ID
+  or, for people without photographic ID, by security questions), and save
+  their digital identity to reuse with other public services. Two-factor
+  sign-in is available to public services as a stand-alone feature. Services
+  using it include Disclosure Scotland's online disclosure journey and the
+  Crown Office and Procurator Fiscal Service's Witness Gateway.
+asset_type: service
+owner:
+  organisation: Scottish Government
+  sector: scottish-government
+contact:
+  type: web-form
+  value: https://scotaccount.campaign.gov.scot/contact
+service_areas:
+  - corporate-and-cross-cutting
+capabilities:
+  - identity-and-access
+status: beta
+intended_adopters:
+  - scottish-government
+  - executive-agencies
+  - local-government
+  - nhs-scotland
+  - police-and-fire
+  - non-departmental-public-bodies
+terms_of_use:
+  type: not-publicly-stated
+adoption_route:
+  summary: >-
+    Contact the ScotAccount team to find out more and join the test
+    environment. Services that are already live or still in development can
+    join, including those that need only a simple sign-in.
+  url: https://scotaccount.campaign.gov.scot/contact
+charging:
+  applies: not-publicly-stated
+support:
+  summary: not-publicly-stated
+service_url: not-publicly-stated
+service_page_url: https://scotaccount.campaign.gov.scot/
+adopters:
+  - organisation: Disclosure Scotland
+    evidence: self-reported
+  - organisation: Crown Office and Procurator Fiscal Service
+    evidence: self-reported
+sources:
+  - url: https://blogs.gov.scot/digital/2025/07/16/scotaccount-transforming-public-services-in-scotland/
+    title: "ScotAccount: transforming public services in Scotland"
+    publisher: Scottish Government Digital blog
+    accessed: "2026-11-03"
+  - url: https://blogs.gov.scot/digital/2024/09/23/scotaccount-helping-more-people-to-access-public-services-online/
+    title: "ScotAccount – helping more people to access public services online"
+    publisher: Scottish Government Digital blog
+    accessed: "2026-11-03"

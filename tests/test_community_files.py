@@ -6,6 +6,7 @@ import shutil
 
 import pytest
 import yaml
+from helpers import drop_demonstrations
 
 from csr.schema import ROOT, load_yaml_file
 from csr.tools import dump, new_from_issue
@@ -65,6 +66,7 @@ def render(form_data, values):
 def test_an_issue_from_the_form_becomes_a_record(tmp_path):
     for name in ("records", "examples"):
         shutil.copytree(ROOT / name, tmp_path / name)
+    drop_demonstrations(tmp_path)
     record = load_yaml_file(ROOT / "tests/fixtures/schema/pass/minimal.yaml")
     record.update(id="csr-NNNN", record_status="owner-confirmed", name="Booking Component")
     body = render(form("suggest-asset.yml"), {"asset-name": "Booking Component", "organisation": "Example Council",

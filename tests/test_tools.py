@@ -5,6 +5,7 @@ import shutil
 
 import pytest
 import yaml
+from helpers import drop_demonstrations
 
 from csr import harvest
 from csr.config import load_config
@@ -27,6 +28,7 @@ def root(tmp_path):
         shutil.copytree(ROOT / name, tmp_path / name)
     for name in ("solution.yml", "publiccode.yml", "site.toml"):
         shutil.copy(ROOT / name, tmp_path / name)
+    drop_demonstrations(tmp_path)
     return tmp_path
 
 
