@@ -274,6 +274,10 @@ function validateDraft({ announceValid = true } = {}) {
   update();
   if (!validator) return true; // the validator could not load: let people continue
   const problems = check(validator, current.record, { today: today() });
+  if (correcting() && !current.answers.own) {
+    // Decides whether the correction confirms the record (the owner) or suggests a change to it (anyone else).
+    problems.unshift({ path: 'record_status', message: 'Select whether you are from the owning organisation' });
+  }
   if (problems.length) {
     showErrors(problems);
     return false;

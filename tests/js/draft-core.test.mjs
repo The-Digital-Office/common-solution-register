@@ -128,3 +128,32 @@ test('dates and contact types', () => {
   assert.equal(contactType('https://example.gov.uk/contact'), 'web-form');
   assert.equal(contactType('0300 123 4567'), 'service-desk');
 });
+
+test('a correction keeps the order of choices, adding new ones after them', () => {
+  const base = { id: 'csr-0001', record_status: 'owner-confirmed', capabilities: ['payments', 'data-and-analytics'],
+    service_areas: ['housing'], intended_adopters: ['local-government'],
+    confirmation: { last_confirmed: '2026-01-01', method: 'pull request', reference: 'r' } };
+  const record = build({ own: 'no', capabilities: ['data-and-analytics', 'notifications', 'payments'],
+    service_areas: ['housing'], intended_adopters: ['local-government'] }, base);
+  assert.deepEqual(record.capabilities, ['payments', 'data-and-analytics', 'notifications']);
+});
+
+test('a correction by the owner confirms the record today; by anyone else it changes no provenance', () => {
+  const confirmed = { id: 'csr-0001', record_status: 'owner-confirmed',
+    confirmation: { last_confirmed: '2026-01-01', method: 'pull request', reference: 'r' } };
+  assert.deepEqual(build({ own: 'yes' }, confirmed).confirmation,
+    { last_confirmed: '2026-11-02', method: 'draft form', reference: 'Submitted with the draft form' });
+  const suggested = build({ own: 'no' }, confirmed);
+  assert.equal(suggested.record_status, 'owner-confirmed');
+  assert.deepEqual(suggested.confirmation, confirmed.confirmation);
+  assert.equal(sections({ ...emptyAnswers(), own: 'no' }, confirmed).sources, false); // no sources needed
+  // A fictional example stays an example; its owner's correction confirms it today.
+  const example = { ...confirmed, id: 'csr-9001', record_status: 'example' };
+  assert.equal(build({ own: 'yes' }, example).record_status, 'example');
+  assert.equal(build({ own: 'yes' }, example).confirmation.last_confirmed, '2026-11-02');
+  // The owner confirming a demonstration entry makes it owner-confirmed; anyone else keeps it a demonstration.
+  const demonstration = { id: 'csr-0003', record_status: 'demonstration', sources: [{ url: 'https://s', title: 't', accessed: '2026-11-03' }] };
+  assert.equal(build({ own: 'yes' }, demonstration).record_status, 'owner-confirmed');
+  assert.equal(build({ own: 'no' }, demonstration).record_status, 'demonstration');
+  assert.equal(sections({ ...emptyAnswers(), own: 'no' }, demonstration).sources, true);
+});

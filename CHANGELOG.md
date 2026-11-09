@@ -72,6 +72,7 @@ and this project uses [Semantic Versioning](https://semver.org/spec/v2.0.0.html)
 - Draft form: after "Check my answers", the panel says what to do next and offers the GitHub issue, email and download options; a draft filled in from a record is sent as a correction to it (the correction issue form, with the record ID and the corrected YAML); "Start again" is "Clear and start again".
 - Records offered to the whole Scottish public sector (`csr-0001`, `csr-0003`, `csr-0004`, `csr-0005`, `csr-0006`, `csr-0008`) list `scottish-public-sector` under "Intended for" instead of every Scottish sector.
 - Draft form: on a correction, "Clear and start again" is replaced by "Discard edits", which goes back to the record. The correction issue form explains what "Are you from the owning organisation?" is used for.
+- Draft form corrections: "Are you from the owning organisation?" must be answered. The owner's correction confirms the record today (`confirmation.last_confirmed`), and turns a demonstration entry into an owner-confirmed one; anyone else's suggests a change without altering the record's provenance or confirmation (before, it turned the record into a demonstration entry needing sources). Service areas, capabilities and intended adopters keep the record's order.
 
 ### Fixed
 

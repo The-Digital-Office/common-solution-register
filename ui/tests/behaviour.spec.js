@@ -205,13 +205,24 @@ test('11b. A checked correction says what to do next, and its options work', asy
   await expect(page.locator('#name')).toHaveValue('Common Solution Register Demonstrator');
   await page.fill('#purpose', (await page.inputValue('#purpose')).replace('the Scottish Government short-life', 'the short-life'));
   await page.click('button[type="submit"]');
+  // The owner question decides whether the correction confirms the record, so it must be answered.
+  await expect(page.locator('#error-summary-list a')).toHaveText(['Select whether you are from the owning organisation']);
+  await tick(page, 'own-yes');
+  await page.click('button[type="submit"]');
   const valid = page.locator('#draft-valid');
   await expect(valid).toBeFocused();
   await expect(valid.locator('h2').first()).toHaveText('Your correction is ready to send');
   await expect(page.locator('#draft-valid-hosted')).toBeVisible(); // csr-0001 is hosted by its owner
   await expect(valid.locator('[data-handoff="issue"]')).toHaveAttribute('href', /template=suggest-correction\.yml/);
   const [download] = await Promise.all([page.waitForEvent('download'), valid.locator('[data-handoff="download"]').click()]);
-  expect(fs.readFileSync(await download.path(), 'utf8')).toContain('the short-life working group');
+  const corrected = fs.readFileSync(await download.path(), 'utf8');
+  expect(corrected).toContain('the short-life working group');
+  const d = new Date();
+  const today = `${d.getFullYear()}-${String(d.getMonth() + 1).padStart(2, '0')}-${String(d.getDate()).padStart(2, '0')}`;
+  expect(corrected).toContain(`last_confirmed: '${today}'`); // the owner confirmed it today
+  const original = fs.readFileSync(path.join(__dirname, 'fixtures', 'register', 'solution.yml'), 'utf8');
+  const listOf = (text) => text.match(/^capabilities:\n((?:  - .*\n)+)/m)[1];
+  expect(listOf(corrected)).toBe(listOf(original)); // in the record's own order
   await expect(valid).toBeVisible(); // still there after choosing an option
   await page.fill('#name', 'Changed again');
   await expect(valid).toBeHidden(); // a changed answer needs checking again
