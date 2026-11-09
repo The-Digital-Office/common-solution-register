@@ -4,7 +4,8 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>{% block title %}{{ title }}{% endblock %} - {{ config.title }}</title>
-{% block meta %}{% endblock %}
+{% if config.preview %}<meta name="robots" content="noindex, nofollow">
+{% endif %}{% block meta %}{% endblock %}
 <link rel="stylesheet" href="{{ root }}static/fonts.css?v={{ v }}">
 <link rel="stylesheet" href="{{ root }}static/vendor/sgds/{{ SGDS_VERSION }}/design-system.min.css">
 <link rel="stylesheet" href="{{ root }}static/csr.css?v={{ v }}">
