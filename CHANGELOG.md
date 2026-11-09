@@ -71,6 +71,7 @@ and this project uses [Semantic Versioning](https://semver.org/spec/v2.0.0.html)
 - "Scottish public sector" (`scottish-public-sector`) can be chosen under "Intended for"; it is an audience only, never an owning sector (R03).
 - Draft form: after "Check my answers", the panel says what to do next and offers the GitHub issue, email and download options; a draft filled in from a record is sent as a correction to it (the correction issue form, with the record ID and the corrected YAML); "Start again" is "Clear and start again".
 - Records offered to the whole Scottish public sector (`csr-0001`, `csr-0003`, `csr-0004`, `csr-0005`, `csr-0006`, `csr-0008`) list `scottish-public-sector` under "Intended for" instead of every Scottish sector.
+- Draft form: on a correction, "Clear and start again" is replaced by "Discard edits", which goes back to the record. The correction issue form explains what "Are you from the owning organisation?" is used for.
 
 ### Fixed
 
@@ -78,6 +79,7 @@ and this project uses [Semantic Versioning](https://semver.org/spec/v2.0.0.html)
 - R18 no longer also reports "not stated in public sources" as a bad address; that is R10's finding.
 - Windows: file names in messages use forward slashes (so `csr validate --base` no longer reports every edited record as a clash), every file the tools and the build write has LF line endings, and `.gitattributes` checks text files out with LF on every system. The Site workflow runs the tests on Windows too (`Tests on Windows`, not a required check).
 - Draft form: choosing a hand-off option no longer hides the "valid" panel, and the panel's heading is no longer scrolled out of view.
+- The `hidden` attribute hides design system buttons too.
 
 ### Removed
 

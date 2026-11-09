@@ -193,7 +193,7 @@ test('11. Copy YAML, Download, open as a GitHub issue, send by email', async ({ 
   expect(mailto.searchParams.get('subject')).toBe('Correction to csr-9001: Example: Council Payments Gateway');
   expect(mailto.searchParams.get('body').split('\n')).toHaveLength(2);
   // A new solution goes to the suggest-a-solution form.
-  await page.click('#draft-reset');
+  await page.goto('draft/');
   await page.fill('#name', 'Booking component');
   const fresh = new URL(await page.getAttribute('#draft-issue', 'href'));
   expect(fresh.searchParams.get('template')).toBe('suggest-asset.yml');
@@ -215,7 +215,13 @@ test('11b. A checked correction says what to do next, and its options work', asy
   await expect(valid).toBeVisible(); // still there after choosing an option
   await page.fill('#name', 'Changed again');
   await expect(valid).toBeHidden(); // a changed answer needs checking again
+  // Discarding a correction goes back to the record; there is no "start again" on a correction.
+  await expect(page.getByRole('button', { name: 'Clear and start again' })).toBeHidden();
+  await page.getByRole('link', { name: 'Discard edits' }).click();
+  await expect(page).toHaveURL(/assets\/csr-0001\/$/);
+  await page.goto('draft/');
   await expect(page.getByRole('button', { name: 'Clear and start again' })).toBeVisible();
+  await expect(page.getByRole('link', { name: 'Discard edits' })).toBeHidden();
 });
 
 test('12. Validate page: real validation in paste, upload and URL modes', async ({ page }) => {

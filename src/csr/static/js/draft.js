@@ -398,6 +398,11 @@ async function loadFrom(id) {
   link.textContent = `${base.name} (${id})`;
   link.href = `../assets/${id}/`;
   document.getElementById('draft-loaded').hidden = false;
+  // A correction is discarded by going back to the record, not by starting a new, blank draft.
+  const discard = document.getElementById('draft-discard');
+  discard.href = `../assets/${id}/`;
+  discard.hidden = false;
+  document.getElementById('draft-reset').hidden = true;
   changed();
 }
 
