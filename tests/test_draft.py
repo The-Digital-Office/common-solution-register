@@ -44,7 +44,9 @@ def test_every_taxonomy_term_is_offered(html):
                            ("intended_adopters", "sectors")):  # fmt: skip
         offered = re.findall(rf'name="{name}" type="checkbox" value="([^"]+)"', html)
         assert offered == taxonomies[taxonomy].ids
-    assert options_of(html, "sector") == taxonomies["sectors"].ids
+    # An audience-only term ("Scottish public sector") is offered under "Intended for", never as the owning sector.
+    assert options_of(html, "sector") == [t.id for t in taxonomies["sectors"].terms if not t.intended_adopters_only]
+    assert "scottish-public-sector" in taxonomies["sectors"].ids
 
 
 def test_conditional_sections_and_repeaters_are_present(html):

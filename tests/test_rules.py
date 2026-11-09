@@ -55,6 +55,13 @@ def test_r03_unknown_terms(minimal, context):
     ]
 
 
+def test_r03_an_audience_is_not_an_owning_sector(minimal, context):
+    minimal["intended_adopters"] = ["scottish-public-sector"]
+    assert rules(minimal, context) == []
+    minimal["owner"]["sector"] = "scottish-public-sector"
+    assert rules(minimal, context) == [("R03", "owner.sector")]
+
+
 def test_r03_terms_from_the_wrong_taxonomy(minimal, context):
     minimal["service_areas"] = ["payments"]
     assert rules(minimal, context) == [("R03", "service_areas[0]")]

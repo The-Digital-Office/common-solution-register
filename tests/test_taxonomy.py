@@ -8,6 +8,7 @@ from csr.taxonomy import TAXONOMIES, TAXONOMY_DIR, load_all, load_taxonomy
 
 EXPECTED = {
     "sectors": [
+        "scottish-public-sector",  # an audience only (added at the author's request, 9 November 2026)
         "scottish-government", "executive-agencies", "local-government", "nhs-scotland",
         "police-and-fire", "non-departmental-public-bodies", "further-and-higher-education",
         "uk-public-sector",

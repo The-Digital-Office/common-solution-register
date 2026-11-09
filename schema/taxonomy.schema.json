@@ -22,7 +22,11 @@
           "definition": { "type": "string", "minLength": 20, "maxLength": 300 },
           "synonyms": { "type": "array", "uniqueItems": true, "items": { "type": "string", "minLength": 2, "maxLength": 60 } },
           "status": { "enum": ["active", "deprecated"] },
-          "replaced_by": { "type": "string", "pattern": "^[a-z0-9]+(-[a-z0-9]+)*$" }
+          "replaced_by": { "type": "string", "pattern": "^[a-z0-9]+(-[a-z0-9]+)*$" },
+          "intended_adopters_only": {
+            "description": "The term describes an audience (intended_adopters), never an owning sector (owner.sector).",
+            "type": "boolean"
+          }
         }
       }
     }

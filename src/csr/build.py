@@ -244,12 +244,14 @@ def build(
     _reference_pages(site, root)
     _data_pages(site)
     form = draft_context()
-    form["sectors"] = [(t.id, t.label) for t in site.taxonomies["sectors"].terms]
+    # Owning sectors: an audience-only term ("Scottish public sector") cannot own a solution.
+    form["sectors"] = [(t.id, t.label) for t in site.taxonomies["sectors"].terms if not t.intended_adopters_only]
     site.page("draft/", "draft.html", nav="contribute", form=form)
     _harvest_page(site)
     site.page("validate/", "validate.html", nav="validate", checker={
         "schemas": {"asset": load_schema("asset"), "pointer": load_schema("pointer")},
-        "taxonomies": {name: [{"id": t.id, "status": t.status, "replaced_by": t.replaced_by} for t in tax.terms]
+        "taxonomies": {name: [{"id": t.id, "status": t.status, "replaced_by": t.replaced_by,
+                               "intended_adopters_only": t.intended_adopters_only} for t in tax.terms]
                        for name, tax in site.taxonomies.items()},
         "known_ids": sorted({e.id for e in register.entries} | {u.id for u in register.unpublished}),
         "max_bytes": config.harvest_max_bytes,
@@ -316,12 +318,18 @@ def _taxonomy_pages(site: Site, entries: list[Entry]) -> None:
     for name in TAXONOMIES:
         folder, _, heading, _ = TERM_PAGES[name]
         taxonomy = site.taxonomies[name]
-        counted = [(t, sum(_uses(e, name, t.id) for e in entries)) for t in taxonomy.terms]
+        owners = [t for t in taxonomy.terms if not t.intended_adopters_only]  # "By owning sector" lists owners only
+        counted = [(t, sum(_uses(e, name, t.id) for e in entries)) for t in owners]
         shown = counted if name == "sectors" else [(t, n) for t, n in counted if n]
         columns.append({"name": name, "folder": folder, "heading": heading, "terms": shown,
-                        "total": len(taxonomy.terms)})  # fmt: skip
+                        "total": len(owners)})  # fmt: skip
         for term in taxonomy.terms:
-            matching = [e for e in entries if _uses(e, name, term.id)]
+            kind = TERM_PAGES[name]
+            if term.intended_adopters_only:  # an audience: the records intended for it
+                matching = [e for e in entries if term.id in e.data["intended_adopters"]]
+                kind = (*kind[:3], ("is intended for this audience", "are intended for this audience"))
+            else:
+                matching = [e for e in entries if _uses(e, name, term.id)]
             together: dict[str, int] = {}
             for e in matching:
                 for other in _term_ids(e, name):
@@ -329,7 +337,7 @@ def _taxonomy_pages(site: Site, entries: list[Entry]) -> None:
                         together[other] = together.get(other, 0) + 1
             related = [taxonomy.get(t) for t, _ in sorted(together.items(), key=lambda kv: (-kv[1], kv[0]))]
             site.page(f"{folder}/{term.id}/", "term.html", nav="browse", taxonomy=taxonomy,
-                      kind=TERM_PAGES[name], term=term, entries=matching, related_terms=related)  # fmt: skip
+                      kind=kind, term=term, entries=matching, related_terms=related)  # fmt: skip
     site.page("browse/", "browse.html", nav="browse", columns=columns)
 
 

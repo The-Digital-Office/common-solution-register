@@ -84,6 +84,13 @@ def test_browse_counts(site):
     assert "All 14 service areas, with definitions" in html
 
 
+def test_the_audience_only_sector(site):
+    browse = read(site, "browse/index.html")
+    assert "sectors/scottish-public-sector/" not in browse  # not an owning sector
+    page = read(site, "sectors/scottish-public-sector/index.html")
+    assert "intended for this audience" in page
+
+
 def test_term_page(site):
     html = read(site, "capabilities/payments/index.html")
     assert "2 solutions provide this capability" in html
