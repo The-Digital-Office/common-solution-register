@@ -93,7 +93,7 @@ def _validate(root: Path, path: Path, today: dt.date) -> list[Finding]:
 
 def _write(root: Path, path: Path, data: dict[str, Any], header: str, today: dt.date, messages: list[str]) -> Outcome:
     path.parent.mkdir(parents=True, exist_ok=True)
-    path.write_text(header + dump(data), encoding="utf-8")
+    path.write_text(header + dump(data), encoding="utf-8", newline="\n")
     return Outcome(path, messages, _validate(root, path, today))
 
 
@@ -232,7 +232,7 @@ def import_new(root: Path, config: Config, location: str, *, fetcher=None, today
     header = (f"# Drafted with csr import-publiccode from {location} on {today.isoformat()}.\n"
               "# The solution fields are suggestions from the codebase's description: check each one.\n"
               "# Replace every TODO; validation rejects the record until they are gone.\n")  # fmt: skip
-    return _write(root, path, data, header, today, [f"Drafted {path.relative_to(root)}."] + _hints(pc))
+    return _write(root, path, data, header, today, [f"Drafted {path.relative_to(root).as_posix()}."] + _hints(pc))
 
 
 def _shorten(text: str, limit: int) -> str:
@@ -275,7 +275,7 @@ def move_to_source(root: Path, config: Config, record_id: str, url: str, *, fetc
         raise ToolError(f"the owner's file cannot be registered yet ({result.state}): {problems or 'not fetched'}")
     header = (f"# Owner-hosted record: the full descriptor is the owner's own solution.yml.\n"
               f"# Moved from a local record with csr move-to-source on {today.isoformat()}.\n")  # fmt: skip
-    path.write_text(header + dump(pointer.data), encoding="utf-8")
+    path.write_text(header + dump(pointer.data), encoding="utf-8", newline="\n")
     findings = check_record(read_file(path, in_register=True, root=root), context)
     return Outcome(path, [f"{record_id} now points to {url}; the next harvest publishes the owner's file."], findings)
 
@@ -297,7 +297,7 @@ def move_to_local(root: Path, config: Config, record_id: str, state: dict, *, to
     when = entry.get("harvested_at", "")[:10]
     header = (f"# Moved from owner hosting with csr move-to-local on {today.isoformat()}: the last valid version,\n"
               f"# harvested from {pointer['source']} on {when}.\n")  # fmt: skip
-    path.write_text(header + entry["last_valid"].lstrip("﻿"), encoding="utf-8")
+    path.write_text(header + entry["last_valid"].lstrip("﻿"), encoding="utf-8", newline="\n")
     return Outcome(path, [f"{record_id} is now a local record, from the version harvested on {when}."],
                    _validate(root, path, today))  # fmt: skip
 
@@ -342,7 +342,7 @@ def new_from_issue(root: Path, body: str, *, issue_url: str | None = None, today
     if issue_url and isinstance(confirmation, dict) and confirmation.get("reference") in (None, "", "Submitted with the draft form"):
         confirmation["reference"] = issue_url
     header = f"# From {issue_url or 'a suggest-asset issue'}, added with csr new --from-issue on {today.isoformat()}.\n"
-    messages = [f"Wrote {path.relative_to(root)}."]
+    messages = [f"Wrote {path.relative_to(root).as_posix()}."]
     if data.get("record_status") == "demonstration":
         messages.append("This is a demonstration entry: check every statement against its sources before merging.")
     elif data.get("record_status") == "owner-confirmed":

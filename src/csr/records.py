@@ -74,7 +74,7 @@ def read_file(path: Path, *, in_register: bool = False, root: Path | None = None
     """Read one file. Labels are relative to ``root`` (the working directory by default)."""
     base = root or Path.cwd()
     try:
-        label = str(path.resolve().relative_to(base.resolve()))
+        label = path.resolve().relative_to(base.resolve()).as_posix()
     except ValueError:
         label = str(path)
     try:

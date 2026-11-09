@@ -191,7 +191,8 @@ class Site:
         if isinstance(content, bytes):
             target.write_bytes(content)
         else:
-            target.write_text(content, encoding="utf-8")
+            # Always LF, so pages and files are the same whatever system builds them.
+            target.write_text(content, encoding="utf-8", newline="\n")
 
     def page(self, path: str, template: str, root: str | None = None, **context: Any) -> None:
         """Render a page. ``path`` ends in ``/`` (written as index.html) or ``.html``.
