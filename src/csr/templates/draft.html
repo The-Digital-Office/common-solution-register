@@ -66,9 +66,18 @@
 <h2 class="ds_error-summary__title" id="error-summary-title">There is a problem</h2>
 <ul class="ds_error-summary__list" id="error-summary-list"></ul>
 </div>
-<div class="ds_notification-panel" id="draft-valid" tabindex="-1" hidden>
-<h2 class="ds_notification-panel__title">Your solution.yml is valid</h2>
-<div class="ds_notification-panel__content"><p>Copy or download it below, then submit it or host it yourself.</p></div>
+<div class="ds_!_margin-bottom--8" id="draft-valid" tabindex="-1" aria-labelledby="draft-valid-title" hidden>
+<div class="ds_notification-panel">
+<h2 class="ds_notification-panel__title" id="draft-valid-title" data-new="Your solution.yml is valid" data-correction="Your correction is ready to send">Your solution.yml is valid</h2>
+</div>
+<p id="draft-valid-hosted" hidden>This record is hosted by its owner. If you are the owner, replace your hosted <code>solution.yml</code> with this one: the register publishes it at the next harvest. Otherwise, send it to the register as a correction.</p>
+<h2 class="ds_h3">Send it to the register</h2>
+<p>Nothing has been sent yet. Choose one:</p>
+<ul class="ds_no-bullets csr-handoff">
+<li><a href="{{ config.repository_url }}/issues/new?template=suggest-asset.yml" data-handoff="issue" target="_blank" rel="noopener">Open as a GitHub issue (opens in a new tab)</a> (needs a GitHub account)</li>
+{% if config.contact_mailbox %}<li><a href="mailto:{{ config.contact_mailbox }}" data-handoff="email">Send by email</a> (attach the file that downloads)</li>{% endif %}
+<li><button class="ds_link" type="button" data-handoff="download">Download solution.yml</button> to send another way, or to host it yourself</li>
+</ul>
 </div>
 
 <form id="draft-form" novalidate>
@@ -156,7 +165,7 @@
 
 <div class="csr-btns">
 <button class="ds_button" type="submit">Check my answers</button>
-<button class="ds_button ds_button--secondary" type="button" id="draft-reset">Start again</button>
+<button class="ds_button ds_button--secondary" type="button" id="draft-reset">Clear and start again</button>
 </div>
 </form>
 </div>
@@ -166,14 +175,14 @@
 <h2 class="ds_h3" id="yaml-title">Your solution.yml</h2>
 <pre class="csr-yaml" id="draft-yaml" aria-labelledby="yaml-title" tabindex="0"></pre>
 <div class="csr-btns">
-<button class="ds_button ds_button--small" type="button" id="draft-copy">Copy YAML</button>
-<button class="ds_button ds_button--small ds_button--secondary" type="button" id="draft-download">Download .yaml</button>
+<button class="ds_button ds_button--small" type="button" id="draft-copy" data-handoff="copy">Copy YAML</button>
+<button class="ds_button ds_button--small ds_button--secondary" type="button" id="draft-download" data-handoff="download">Download .yaml</button>
 </div>
 <p class="ds_hint-text" id="draft-handoff-status" role="status"></p>
 <h3 class="ds_h4">Submit it</h3>
 <ul>
-<li><a href="{{ config.repository_url }}/issues/new?template=suggest-asset.yml" id="draft-issue" target="_blank" rel="noopener">Open as a GitHub issue (opens in a new tab)</a> (needs a GitHub account)</li>
-<li>{% if config.contact_mailbox %}<a href="mailto:{{ config.contact_mailbox }}" id="draft-email">Send by email</a> (attach the downloaded file){% else %}Send by email: <span class="csr-pending">[To be completed before publication: the role mailbox (input I3)]</span>{% endif %}</li>
+<li><a href="{{ config.repository_url }}/issues/new?template=suggest-asset.yml" id="draft-issue" data-handoff="issue" target="_blank" rel="noopener">Open as a GitHub issue (opens in a new tab)</a> (needs a GitHub account)</li>
+<li>{% if config.contact_mailbox %}<a href="mailto:{{ config.contact_mailbox }}" id="draft-email" data-handoff="email">Send by email</a> (attach the downloaded file){% else %}Send by email: <span class="csr-pending">[To be completed before publication: the role mailbox (input I3)]</span>{% endif %}</li>
 <li><a href="{{ root }}about/#host">Host it yourself</a> and ask for it to be registered</li>
 </ul>
 </div>

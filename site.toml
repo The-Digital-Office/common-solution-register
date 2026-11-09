@@ -12,6 +12,8 @@ host_organisation = "The Digital Office for Scottish Local Government"
 # The host's logo in the footer, as a path in the built site; its alt text says
 # "Hosted for demonstration by" the host. Empty shows that sentence as text.
 host_logo = "static/host/digital-office-logo.svg"
+# Where the logo links to; empty for no link.
+host_url = "https://digitaloffice.scot/"
 # Input I3: the role mailbox for the site and emailed drafts (requested 3 November 2026).
 contact_mailbox = "solution-register@digitaloffice.scot"
 # Input I4: the feedback route. GitHub issues; people without a GitHub account

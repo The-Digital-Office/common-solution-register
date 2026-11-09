@@ -77,6 +77,7 @@ def test_every_page_has_the_layout(site):
         logo = re.search(r'<img class="ds_site-footer__org-logo" src="([^"]+)" alt="([^"]+)"', html)
         assert logo and logo[2] == "Hosted for demonstration by The Digital Office for Scottish Local Government", path
         assert logo[1].endswith("static/host/digital-office-logo.svg")
+        assert '<a class="ds_site-footer__org-link" href="https://digitaloffice.scot/"><img class="ds_site-footer__org-logo"' in html
 
 
 def test_the_footer_names_the_host_in_text_without_a_logo(tmp_path):

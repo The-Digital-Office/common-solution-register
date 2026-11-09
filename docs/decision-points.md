@@ -61,7 +61,7 @@ them to be reviewed as part of the demonstrator.
 | # | Choice | As built | Alternatives | What would change |
 |---|---|---|---|---|
 | DP-24 | The vocabularies | Three drafts for the SLWG to critique: 8 sectors, 14 service areas and 14 capabilities, each with a definition and synonyms (`taxonomy/`) | Align with existing vocabularies, such as the LGA/ESD lists or a Scottish Government taxonomy (specification 6.5) | The taxonomy files; existing records would need their terms mapped. Deprecating a term (`status: deprecated`) keeps old records valid with a warning (R04) |
-| DP-25 | Sectors | Seven Scottish sectors plus `uk-public-sector`, used for both the owner's sector and "Intended for" | Separate lists for owners and audiences; finer sectors (for example separate further and higher education) | The sector file and the records |
+| DP-25 | Sectors | Seven Scottish sectors plus `uk-public-sector`, used for both the owner's sector and "Intended for"; and `scottish-public-sector`, an audience for "Intended for" only (`intended_adopters_only`; R03 rejects it as an owner's sector), added 9 November 2026 | Separate lists for owners and audiences; finer sectors (for example separate further and higher education) | The sector file and the records |
 
 ## E. Validation rules
 

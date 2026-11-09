@@ -26,6 +26,7 @@ class Config:
     harvest_timeout_seconds: int = 10
     examples_as_of: dt.date | None = None
     host_logo: str = ""
+    host_url: str = ""
     publication: dict[str, str] = field(default_factory=dict)
 
     @property
@@ -54,6 +55,7 @@ def load_config(root: Path | None = None, base_url: str | None = None) -> Config
         default_branch=data.get("default_branch", "main"),
         host_organisation=data["host_organisation"],
         host_logo=data.get("host_logo", ""),
+        host_url=data.get("host_url", ""),
         contact_mailbox=data.get("contact_mailbox", ""),
         feedback_url=data.get("feedback_url", ""),
         due_after_months=currency.get("due_after_months", 11),

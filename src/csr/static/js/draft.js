@@ -153,7 +153,6 @@ function update() {
   if (record.id === 'csr-NNNN') yaml = yaml.replace(/^id: csr-NNNN$/m, 'id: csr-NNNN  # allocated when registered');
   preview.textContent = yaml;
   current = { answers, record, rows, yaml };
-  document.getElementById('draft-valid').hidden = true;
   updateIssueLink();
   return current;
 }
@@ -282,8 +281,12 @@ function validateDraft({ announceValid = true } = {}) {
   clearErrors();
   if (announceValid) {
     const valid = document.getElementById('draft-valid');
+    const title = document.getElementById('draft-valid-title');
+    title.textContent = correcting() ? title.dataset.correction : title.dataset.new;
+    document.getElementById('draft-valid-hosted').hidden = !(correcting() && base.hosting === 'owner-hosted');
     valid.hidden = false;
-    valid.focus();
+    valid.scrollIntoView({ block: 'start' });
+    valid.focus({ preventScroll: true });
   }
   return true;
 }
@@ -292,8 +295,19 @@ function validateDraft({ announceValid = true } = {}) {
 
 const statusMessage = (text) => { document.getElementById('draft-handoff-status').textContent = text; };
 
+/** True when the form was filled in from a record, so what is sent is a correction to it. */
+const correcting = () => Boolean(base.id);
+
 function issueUrl(withYaml) {
   const r = current.record;
+  if (correcting()) {
+    const params = new URLSearchParams({ template: 'suggest-correction.yml', title: `Correction: ${r.name || base.name} (${base.id})` });
+    params.set('record-id', base.id);
+    params.set('what-is-wrong', withYaml
+      ? `The corrected solution.yml, from the draft form:\n\n\`\`\`yaml\n${current.yaml}\`\`\`\n`
+      : 'The corrected solution.yml, from the draft form, is attached.');
+    return `${config.repository}/issues/new?${params}`;
+  }
   const params = new URLSearchParams({ template: 'suggest-asset.yml', title: `Suggest a solution: ${r.name || 'untitled'}` });
   params.set('asset-name', r.name || '');
   params.set('organisation', r.owner?.organisation || '');
@@ -303,11 +317,12 @@ function issueUrl(withYaml) {
 }
 
 function updateIssueLink() {
-  const link = document.getElementById('draft-issue');
-  if (!link) return;
   const full = issueUrl(true);
-  link.href = full.length <= ISSUE_URL_LIMIT ? full : issueUrl(false);
-  link.dataset.tooLong = full.length > ISSUE_URL_LIMIT ? 'true' : '';
+  const tooLong = full.length > ISSUE_URL_LIMIT;
+  for (const link of document.querySelectorAll('[data-handoff="issue"]')) {
+    link.href = tooLong ? issueUrl(false) : full;
+    link.dataset.tooLong = tooLong ? 'true' : '';
+  }
 }
 
 function download() {
@@ -335,29 +350,30 @@ async function copy() {
   }
 }
 
+/** Copy, download, GitHub issue and email, from the sidebar or from the "valid" panel. */
 function wireHandOff() {
-  document.getElementById('draft-copy').addEventListener('click', () => { if (validateDraft({ announceValid: false })) copy(); });
-  document.getElementById('draft-download').addEventListener('click', () => {
-    if (validateDraft({ announceValid: false })) { download(); statusMessage('Downloaded solution.yml.'); }
-  });
-  document.getElementById('draft-issue')?.addEventListener('click', (event) => {
+  document.addEventListener('click', (event) => {
+    const control = event.target.closest('[data-handoff]');
+    if (!control) return;
+    const action = control.dataset.handoff;
+    // The panel's options appear only once the draft is valid; check again in case it has changed since.
     if (!validateDraft({ announceValid: false })) { event.preventDefault(); return; }
-    if (event.currentTarget.dataset.tooLong) {
+    if (action === 'copy') copy();
+    if (action === 'download') { download(); statusMessage('Downloaded solution.yml.'); }
+    if (action === 'issue' && control.dataset.tooLong) {
       download();
       statusMessage('Your solution.yml is too long to include in the issue, so it has been downloaded. Attach it to the issue.');
     }
-  });
-  const email = document.getElementById('draft-email');
-  if (email) {
-    email.addEventListener('click', (event) => {
-      if (!validateDraft({ announceValid: false })) { event.preventDefault(); return; }
+    if (action === 'email') {
       download();
-      const subject = `${config.title}: ${current.record.name || 'a solution'}`;
-      const body = 'Please find my solution.yml attached.\nI have downloaded it from the draft form; please attach the downloaded file before sending.';
-      email.href = `mailto:${config.mailbox}?subject=${encodeURIComponent(subject)}&body=${encodeURIComponent(body)}`;
+      const name = current.record.name || 'a solution';
+      const subject = correcting() ? `Correction to ${base.id}: ${name}` : `${config.title}: ${name}`;
+      const body = (correcting() ? `Please find my corrected solution.yml for ${base.id} attached.` : 'Please find my solution.yml attached.')
+        + '\nI have downloaded it from the draft form; please attach the downloaded file before sending.';
+      control.href = `mailto:${config.mailbox}?subject=${encodeURIComponent(subject)}&body=${encodeURIComponent(body)}`;
       statusMessage('Downloaded solution.yml. Attach it to the email that opens.');
-    });
-  }
+    }
+  });
 }
 
 function reset() {
@@ -365,7 +381,7 @@ function reset() {
   form.reset();
   document.getElementById('draft-loaded').hidden = true;
   writeAnswers(emptyAnswers());
-  update();
+  changed();
 }
 
 async function loadFrom(id) {
@@ -382,16 +398,22 @@ async function loadFrom(id) {
   link.textContent = `${base.name} (${id})`;
   link.href = `../assets/${id}/`;
   document.getElementById('draft-loaded').hidden = false;
+  changed();
+}
+
+/** The answers changed: the "valid" panel no longer describes them. */
+function changed() {
+  document.getElementById('draft-valid').hidden = true;
   update();
 }
 
 if (form) {
-  form.addEventListener('input', update);
-  form.addEventListener('change', update);
+  form.addEventListener('input', changed);
+  form.addEventListener('change', changed);
   form.addEventListener('submit', (event) => { event.preventDefault(); validateDraft(); });
   form.addEventListener('click', (event) => {
     const add = event.target.closest('[data-add]');
-    if (add) { addItem(add.dataset.add, { focus: true }); update(); return; }
+    if (add) { addItem(add.dataset.add, { focus: true }); changed(); return; }
     const remove = event.target.closest('[data-remove]');
     if (remove) {
       const item = remove.closest('[data-item]');
@@ -401,7 +423,7 @@ if (form) {
       renumber(group);
       const next = items(group)[Math.min(index, items(group).length - 1)];
       next?.querySelector('input, select, textarea')?.focus();
-      update();
+      changed();
     }
   });
   document.getElementById('draft-reset').addEventListener('click', () => { clearErrors(); reset(); });

@@ -93,8 +93,10 @@ organisation.
 ## Corrections and removal
 
 - **Correct a record:** use **Suggest a correction** on its page, which opens
-  the draft form filled in from the record, or the **Suggest a correction**
-  issue form. On a demonstration record, the owner can use **Confirm or
+  the draft form filled in from the record. Change what is wrong, choose
+  **Check my answers**, then send the correction by GitHub issue or email:
+  nothing is sent until you do. Or use the **Suggest a correction** issue
+  form. On a demonstration record, the owner can use **Confirm or
   correct** under "Is this your service?".
 - **Remove a record:** if you are the owner, ask through **Is this your
   service?** on the record page, the issue form, or the register's mailbox.

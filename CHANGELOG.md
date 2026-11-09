@@ -67,12 +67,16 @@ and this project uses [Semantic Versioning](https://semver.org/spec/v2.0.0.html)
 - Record pages show a charging summary after "No charge" and "Not stated in public sources", not only when charges apply.
 - Specification 1.3: section 6.8 gives the banner wording as built (D1), and 5.2 lists the sixth demonstration record.
 - The footer shows the host's logo (the Digital Office's, as SVG) instead of the sentence "Hosted for demonstration by …", which becomes its alt text; `host_logo` in `site.toml` sets it, and empty restores the text. UI baselines remade.
+- The footer logo links to the host's website (`host_url` in `site.toml`).
+- "Scottish public sector" (`scottish-public-sector`) can be chosen under "Intended for"; it is an audience only, never an owning sector (R03).
+- Draft form: after "Check my answers", the panel says what to do next and offers the GitHub issue, email and download options; a draft filled in from a record is sent as a correction to it (the correction issue form, with the record ID and the corrected YAML); "Start again" is "Clear and start again".
 
 ### Fixed
 
 - Schema condition 1 required `sources` when `record_status` was missing; it now applies only to demonstration records.
 - R18 no longer also reports "not stated in public sources" as a bad address; that is R10's finding.
 - Windows: file names in messages use forward slashes (so `csr validate --base` no longer reports every edited record as a clash), every file the tools and the build write has LF line endings, and `.gitattributes` checks text files out with LF on every system. The Site workflow runs the tests on Windows too (`Tests on Windows`, not a required check).
+- Draft form: choosing a hand-off option no longer hides the "valid" panel, and the panel's heading is no longer scrolled out of view.
 
 ### Removed
 
