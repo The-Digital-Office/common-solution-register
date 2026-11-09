@@ -54,9 +54,12 @@ export function contactType(value) {
 export function sections(answers, base = {}) {
   const serviceLike = ['service', 'platform'].includes(answers.asset_type);
   const inUse = ['beta', 'live'].includes(answers.status);
+  // Condition 1 applies to a new suggestion by someone else, or to a demonstration entry. Someone
+  // outside the owner correcting a confirmed (or example) record only suggests a change to it.
+  const demonstration = answers.own === 'no' && (!base.id || base.record_status === 'demonstration');
   return {
-    unstated: answers.own === 'no', // condition 1: the sentinel is allowed
-    sources: answers.own === 'no', // condition 1
+    unstated: demonstration, // condition 1: the sentinel is allowed
+    sources: demonstration, // condition 1
     withdrawal: base.record_status === 'withdrawn', // condition 3: only when correcting a withdrawn record
     software: answers.asset_type === 'software', // condition 4
     interfaces: answers.asset_type === 'api' || (base.interfaces || []).length > 0, // condition 5
@@ -101,8 +104,14 @@ export function buildDraft(answers, { base = {}, order = [], today = '', schemaV
     return kept.map(([item]) => item);
   };
   const ownerConfirmed = answers.own === 'yes';
-  const recordStatus = show.withdrawal ? 'withdrawn' : answers.own === 'yes' ? 'owner-confirmed'
-    : answers.own === 'no' ? 'demonstration' : base.record_status;
+  let recordStatus;
+  if (show.withdrawal) recordStatus = 'withdrawn';
+  else if (!base.id) recordStatus = { yes: 'owner-confirmed', no: 'demonstration' }[answers.own];
+  // A correction keeps the record's provenance; the owner confirming a demonstration entry makes it theirs.
+  else recordStatus = ownerConfirmed && base.record_status === 'demonstration' ? 'owner-confirmed' : base.record_status;
+  // Choices keep the record's order, with new ones after them, so a correction changes only what was changed.
+  const inOrder = (chosen, previous = []) => [...previous.filter((v) => chosen.includes(v)),
+    ...chosen.filter((v) => !previous.includes(v))];
 
   record.schema_version = schemaVersion;
   record.id = base.id || 'csr-NNNN';
@@ -113,10 +122,10 @@ export function buildDraft(answers, { base = {}, order = [], today = '', schemaV
   record.asset_type = answers.asset_type;
   record.owner = compact({ organisation: trim(answers.owner), sector: answers.sector });
   record.contact = trim(answers.contact) ? { type: contactType(answers.contact), value: trim(answers.contact) } : undefined;
-  record.service_areas = [...answers.service_areas];
-  record.capabilities = [...answers.capabilities];
+  record.service_areas = inOrder(answers.service_areas, base.service_areas);
+  record.capabilities = inOrder(answers.capabilities, base.capabilities);
   record.status = answers.status;
-  record.intended_adopters = [...answers.intended_adopters];
+  record.intended_adopters = inOrder(answers.intended_adopters, base.intended_adopters);
 
   const termsRef = trim(answers.terms_ref);
   record.terms_of_use = answers.terms_type === SENTINEL
@@ -144,7 +153,8 @@ export function buildDraft(answers, { base = {}, order = [], today = '', schemaV
       url: trim(s.url), title: trim(s.title), publisher: trim(s.publisher), accessed: isoDate(s.accessed) || today,
     })), (s) => s.url || s.title);
   }
-  if (ownerConfirmed) {
+  if (ownerConfirmed && recordStatus !== 'withdrawn') {
+    // The owner confirms the record as it now stands: today.
     record.confirmation = { last_confirmed: today, method: 'draft form', reference: 'Submitted with the draft form' };
   } else if (recordStatus === base.record_status && base.confirmation) {
     record.confirmation = base.confirmation;

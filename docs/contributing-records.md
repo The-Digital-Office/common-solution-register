@@ -93,8 +93,9 @@ organisation.
 ## Corrections and removal
 
 - **Correct a record:** use **Suggest a correction** on its page, which opens
-  the draft form filled in from the record. Change what is wrong, choose
-  **Check my answers**, then send the correction by GitHub issue or email:
+  the draft form filled in from the record. Change what is wrong, say whether
+  you are from the owning organisation (if you are, the correction also
+  confirms the record as accurate today), choose **Check my answers**, then send the correction by GitHub issue or email:
   nothing is sent until you do. Or use the **Suggest a correction** issue
   form. On a demonstration record, the owner can use **Confirm or
   correct** under "Is this your service?".

@@ -28,12 +28,7 @@ capabilities:
   - identity-and-access
 status: beta
 intended_adopters:
-  - scottish-government
-  - executive-agencies
-  - local-government
-  - nhs-scotland
-  - police-and-fire
-  - non-departmental-public-bodies
+  - scottish-public-sector
 terms_of_use:
   type: not-publicly-stated
 adoption_route:

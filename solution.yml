@@ -31,13 +31,7 @@ capabilities:
   - collaboration-and-productivity
 status: in-development
 intended_adopters:
-  - scottish-government
-  - executive-agencies
-  - local-government
-  - nhs-scotland
-  - police-and-fire
-  - non-departmental-public-bodies
-  - further-and-higher-education
+  - scottish-public-sector
 terms_of_use:
   type: open-licence
   licence: MIT AND OGL-UK-3.0

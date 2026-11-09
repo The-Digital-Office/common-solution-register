@@ -1,7 +1,7 @@
 {% extends "base.html" %}
 {% block title %}Validate a solution.yml{% endblock %}
 {% block scripts %}<script src="{{ root }}static/vendor/ajv/8.17.1/ajv2020.min.js"></script>
-<script type="module" src="{{ root }}static/js/validate.js"></script>{% endblock %}
+<script type="module" src="{{ root }}static/js/validate.js?v={{ v }}"></script>{% endblock %}
 {% block main %}
 <main class="ds_layout ds_layout--article" id="main-content">
 <div class="ds_layout__header">

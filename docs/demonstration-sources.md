@@ -15,7 +15,7 @@ row. If a statement cannot be found, replace the value with the sentinel (in
 the four sentinel fields, `service_url` or `service_page_url`) or remove it,
 and note the change here. If a record cannot be sourced adequately, drop it.
 
-Sources were accessed and rechecked on 3 November 2026. Current owner-operated pages are cited where available. Items confirmed manually by the register author are identified as author verification.
+Sources were accessed and rechecked on 3 November 2026. On 9 November 2026, at the author's request, records that listed every Scottish sector under `intended_adopters` were changed to the single term `scottish-public-sector`, which means the same. Current owner-operated pages are cited where available. Items confirmed manually by the register author are identified as author verification.
 
 ## csr-0003 ScotAccount
 
@@ -144,7 +144,7 @@ Scottish Government's spatial data catalogue, spatialdata.gov.scot)
 | [x] | `service_areas` | corporate-and-cross-cutting, planning-and-building-standards | S2 | Classification by the register; S2 names planning applications and building standards datasets |
 | [x] | `capabilities` | mapping-and-location, data-and-analytics | S1 | "Scottish spatial data"; national datasets |
 | [x] | `status` | live | S1–S3 | The service is operating and taking registrations; confirmed live by the register author. |
-| [x] | `intended_adopters` | the six Scottish public sector sectors, and further and higher education | S2 | "Public Sector Organisations: These organisations and their members can access data once their Spatial Hub account is registered against the correct PSGA organisation"; "Academic Institutions within Scotland: These organisations and their members can access data via EDINA's DigiMap service" |
+| [x] | `intended_adopters` | `scottish-public-sector` (until 9 November 2026: the six Scottish public sector sectors, and further and higher education) | S2 | "Public Sector Organisations: These organisations and their members can access data once their Spatial Hub account is registered against the correct PSGA organisation"; "Academic Institutions within Scotland: These organisations and their members can access data via EDINA's DigiMap service" |
 | [x] | `terms_of_use` | service terms (the Terms and Conditions); OGL for open datasets; premium datasets by sector | S2, S3 | S2: "National Open Datasets: These datasets are shared under an Open Government Licence"; the premium access routes as above; "External Organisations/Users … can access data via our commercial partners" |
 | [x] | `adoption_route` | Free account; download or web service; ask to register the account against the PSGA organisation; data providers join an Organisation | S2, S3 | S3: "you must first have registered and logged in to a free Spatial Hub account. Then you can either download a copy of the data in a variety of formats or connect to a web service"; S2: "registered against the correct PSGA organisation. Please contact us to request this"; "If you think you may need to create an Organisation for providing data to the Spatial Hub, please contact us" |
 | [x] | `charging` | applies: not-publicly-stated; free account and open datasets; premium access through a PSGA organisation or commercial licence agreement | S2, S3 | The sources state that accounts and open datasets are free, but do not publish charges for commercial or premium access. |
@@ -216,7 +216,7 @@ in specification 5.2 (see the build plan's log for the decision).
 | [x] | `contact` | web form: the help page | S3 | Help page with a link to the contact form (author verification) |
 | [x] | `service_areas`, `capabilities` | corporate-and-cross-cutting; identity-and-access | — | Classification by the register |
 | [x] | `status` | live | S1 | "41 organisations are live with mygovscot myaccount" |
-| [x] | `intended_adopters` | the six Scottish public sector sectors | S1 | "For public service providers"; users include councils, NHS Lothian and Social Security Scotland. **Check** |
+| [x] | `intended_adopters` | `scottish-public-sector` (until 9 November 2026: the six Scottish public sector sectors) | S1 | "For public service providers"; users include councils, NHS Lothian and Social Security Scotland. **Check** |
 | [x] | `terms_of_use.type` | not-publicly-stated | S1 | Not stated |
 | [x] | `adoption_route.summary` | Offered as a toolkit in a variety of configurations; easy to integrate | S1 | "offered to organisations as a toolkit, which can be deployed in a variety of configurations to meet their needs and requirements and is proportionate to the services they provide"; "easy to integrate" |
 | [x] | `charging` | `applies: false`; free to use for public service providers | S1 | "For public service providers … free to use" |

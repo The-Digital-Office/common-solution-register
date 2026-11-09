@@ -46,6 +46,10 @@ body:
     id: owner
     attributes:
       label: Are you from the owning organisation?
+      description: >-
+        Your own statement; nothing checks it automatically. If yes, a maintainer
+        may make the change straight away, after checking who you are if needed.
+        If no, they check it with the owner, or against public sources, first.
       options:
         - "Yes"
         - "No"

@@ -273,3 +273,8 @@ html:not(.js-enabled) .csr-js-only {
   white-space: nowrap;
   word-break: normal;
 }
+
+/* The hidden attribute always hides, even on elements the design system gives a display value (such as .ds_button). */
+[hidden] {
+  display: none !important;
+}

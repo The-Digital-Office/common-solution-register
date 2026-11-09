@@ -31,13 +31,7 @@ capabilities:
   - data-and-analytics
 status: live
 intended_adopters:
-  - scottish-government
-  - executive-agencies
-  - local-government
-  - nhs-scotland
-  - police-and-fire
-  - non-departmental-public-bodies
-  - further-and-higher-education
+  - scottish-public-sector
 terms_of_use:
   type: service-terms
   url: https://data.spatialhub.scot/terms_and_condition

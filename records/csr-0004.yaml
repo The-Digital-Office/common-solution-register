@@ -27,12 +27,7 @@ capabilities:
   - content-and-publishing
 status: live
 intended_adopters:
-  - scottish-government
-  - executive-agencies
-  - local-government
-  - nhs-scotland
-  - police-and-fire
-  - non-departmental-public-bodies
+  - scottish-public-sector
 terms_of_use:
   type: open-licence
   licence: MIT

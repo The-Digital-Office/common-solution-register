@@ -73,7 +73,7 @@ def test_internal_links_resolve(site):
 
 def test_404_links_start_from_the_site_root(site):
     html = read(site, "404.html")
-    assert 'href="/register/static/csr.css"' in html and 'href="/register/browse/"' in html
+    assert 'href="/register/static/csr.css?v=' in html and 'href="/register/browse/"' in html
 
 
 def test_browse_counts(site):
@@ -89,6 +89,7 @@ def test_the_audience_only_sector(site):
     assert "sectors/scottish-public-sector/" not in browse  # not an owning sector
     page = read(site, "sectors/scottish-public-sector/index.html")
     assert "intended for this audience" in page
+    assert "../../assets/csr-0003/" in page  # ScotAccount is offered to the whole Scottish public sector
 
 
 def test_term_page(site):

@@ -2,7 +2,7 @@
 {% from "partials/tags.html" import record_tags with context %}
 {% set title = "Find a common solution" %}
 {% block title %}Find a common solution{% endblock %}
-{% block scripts %}<script type="module" src="{{ root }}static/js/search.js"></script>{% endblock %}
+{% block scripts %}<script type="module" src="{{ root }}static/js/search.js?v={{ v }}"></script>{% endblock %}
 {% set listed = entries | rejectattr("withdrawn") | list %}
 {% macro checkbox(id, label, count, group=none, value=none) %}
 <div class="ds_checkbox ds_checkbox--small">

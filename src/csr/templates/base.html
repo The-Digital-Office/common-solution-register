@@ -5,10 +5,10 @@
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>{% block title %}{{ title }}{% endblock %} - {{ config.title }}</title>
 {% block meta %}{% endblock %}
-<link rel="stylesheet" href="{{ root }}static/fonts.css">
+<link rel="stylesheet" href="{{ root }}static/fonts.css?v={{ v }}">
 <link rel="stylesheet" href="{{ root }}static/vendor/sgds/{{ SGDS_VERSION }}/design-system.min.css">
-<link rel="stylesheet" href="{{ root }}static/csr.css">
-<script type="module" src="{{ root }}static/js/init.js"></script>
+<link rel="stylesheet" href="{{ root }}static/csr.css?v={{ v }}">
+<script type="module" src="{{ root }}static/js/init.js?v={{ v }}"></script>
 {% block scripts %}{% endblock %}
 </head>
 <body>
