@@ -7,7 +7,7 @@
 {% endfor %}
 </ul>
 <div class="ds_site-footer__copyright"><p>Content available under the Open Government Licence v3.0. Code under the MIT licence.</p></div>
-<div class="ds_site-footer__org"><p>Hosted for demonstration by {{ config.host_organisation }}.</p></div>
+<div class="ds_site-footer__org">{% if config.host_logo %}<img class="ds_site-footer__org-logo" src="{{ root }}{{ config.host_logo }}" alt="Hosted for demonstration by {{ config.host_organisation }}" width="160" height="30">{% else %}<p>Hosted for demonstration by {{ config.host_organisation }}.</p>{% endif %}</div>
 </div>
 </div>
 </footer>

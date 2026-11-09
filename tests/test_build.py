@@ -68,11 +68,26 @@ def test_static_files_and_relative_links(site):
 
 def test_every_page_has_the_layout(site):
     for path in site.pages:
-        p = Parsed(page(site, path))
+        html = page(site, path)
+        p = Parsed(html)
         for cls in ("ds_skip-links", "ds_site-header", "ds_phase-banner", "ds_site-footer", "ds_site-navigation--mobile"):
             assert cls in p.classes, (path, cls)
         assert "This is not an official register." in " ".join(p.text)
-        assert "Hosted for demonstration by The Digital Office for Scottish Local Government." in p.text
+        # The host's logo, whose alt text says who hosts the demonstrator.
+        logo = re.search(r'<img class="ds_site-footer__org-logo" src="([^"]+)" alt="([^"]+)"', html)
+        assert logo and logo[2] == "Hosted for demonstration by The Digital Office for Scottish Local Government", path
+        assert logo[1].endswith("static/host/digital-office-logo.svg")
+
+
+def test_the_footer_names_the_host_in_text_without_a_logo(tmp_path):
+    import dataclasses
+
+    from csr.build import Site
+
+    config = dataclasses.replace(load_config(ROOT, base_url="http://localhost:8000/"), host_logo="")
+    html = Site(tmp_path, config, None, TODAY).env.get_template("partials/footer.html").render(config=config, root="", FOOTER=[])
+    assert "<p>Hosted for demonstration by The Digital Office for Scottish Local Government.</p>" in html
+    assert "<img" not in html
 
 
 def test_home_lists_records_without_javascript(site):
@@ -160,3 +175,10 @@ def test_a_charging_summary_is_shown_with_no_charge_and_not_stated(site):
     assert "No charge. Beta participants get access" in scotaccount
     spatial_hub = " ".join(Parsed(page(site, "assets/csr-0006/index.html")).text)
     assert "Charges Not stated in public sources . Accounts are free" in spatial_hub  # text nodes joined by spaces
+
+
+def test_the_host_logo_is_a_plain_svg():
+    svg = (ROOT / "src/csr/static/host/digital-office-logo.svg").read_text(encoding="utf-8")
+    assert "<svg" in svg and "<title>" in svg
+    for unsafe in ("<script", "href", "<image", "url(", "on"+"load"):
+        assert unsafe not in svg, unsafe

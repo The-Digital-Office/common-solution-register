@@ -66,6 +66,7 @@ and this project uses [Semantic Versioning](https://semver.org/spec/v2.0.0.html)
 - `csr validate` and the harvest report describe schema problems in plain words, one per field, with the same wording as the draft form and validate page.
 - Record pages show a charging summary after "No charge" and "Not stated in public sources", not only when charges apply.
 - Specification 1.3: section 6.8 gives the banner wording as built (D1), and 5.2 lists the sixth demonstration record.
+- The footer shows the host's logo (the Digital Office's, as SVG) instead of the sentence "Hosted for demonstration by …", which becomes its alt text; `host_logo` in `site.toml` sets it, and empty restores the text. UI baselines remade.
 
 ### Fixed
 
