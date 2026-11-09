@@ -1,7 +1,7 @@
 {% extends "base.html" %}
 {% block title %}Add a solution{% endblock %}
 {% block scripts %}<script src="{{ root }}static/vendor/ajv/8.17.1/ajv2020.min.js"></script>
-<script type="module" src="{{ root }}static/js/draft.js"></script>{% endblock %}
+<script type="module" src="{{ root }}static/js/draft.js?v={{ v }}"></script>{% endblock %}
 
 {% macro text(id, label, hint=none, type="text", placeholder=none, cls="ds_input", unstated=false) %}
 <div class="ds_question" data-question="{{ id }}">

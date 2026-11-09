@@ -73,7 +73,7 @@ def test_internal_links_resolve(site):
 
 def test_404_links_start_from_the_site_root(site):
     html = read(site, "404.html")
-    assert 'href="/register/static/csr.css"' in html and 'href="/register/browse/"' in html
+    assert 'href="/register/static/csr.css?v=' in html and 'href="/register/browse/"' in html
 
 
 def test_browse_counts(site):

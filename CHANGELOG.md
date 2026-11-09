@@ -81,6 +81,7 @@ and this project uses [Semantic Versioning](https://semver.org/spec/v2.0.0.html)
 - Windows: file names in messages use forward slashes (so `csr validate --base` no longer reports every edited record as a clash), every file the tools and the build write has LF line endings, and `.gitattributes` checks text files out with LF on every system. The Site workflow runs the tests on Windows too (`Tests on Windows`, not a required check).
 - Draft form: choosing a hand-off option no longer hides the "valid" panel, and the panel's heading is no longer scrolled out of view.
 - The `hidden` attribute hides design system buttons too.
+- Browsers no longer keep running old scripts after the site is rebuilt: the addresses of the site's own scripts and stylesheets, and the scripts' imports of each other, carry a version that changes with them.
 
 ### Removed
 

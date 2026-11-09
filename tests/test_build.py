@@ -62,7 +62,7 @@ def test_static_files_and_relative_links(site):
             continue
         html = page(site, path)
         depth = path.count("/")
-        assert f'href="{"../" * depth or "./"}static/csr.css"' in html
+        assert f'href="{"../" * depth or "./"}static/csr.css?v=' in html
         assert "http://localhost:8000" not in html  # all links relative
 
 
@@ -183,3 +183,15 @@ def test_the_host_logo_is_a_plain_svg():
     assert "<svg" in svg and "<title>" in svg
     for unsafe in ("<script", "href", "<image", "url(", "on"+"load"):
         assert unsafe not in svg, unsafe
+
+
+def test_the_site_s_own_files_are_fetched_again_when_they_change(site):
+    """Browsers cache scripts; their addresses carry a version that changes with them."""
+    from csr.build import static_version
+
+    v = static_version()
+    assert f'static/js/init.js?v={v}"' in page(site, "index.html") and f'static/js/search.js?v={v}"' in page(site, "index.html")
+    draft = (site.out / "static/js/draft.js").read_text(encoding="utf-8")
+    assert f"from './draft-core.js?v={v}'" in draft and f"from './record-check.js?v={v}'" in draft
+    assert "js-yaml/5.5.0/js-yaml.mjs'" in draft  # vendored files keep their versioned folders
+    assert re.fullmatch(r"[0-9a-f]{10}", v)

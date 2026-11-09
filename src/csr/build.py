@@ -3,6 +3,8 @@
 from __future__ import annotations
 
 import datetime as dt
+import hashlib
+import re
 import shutil
 from dataclasses import dataclass, field
 from pathlib import Path
@@ -170,12 +172,33 @@ def environment() -> Environment:
     return env
 
 
+def static_version() -> str:
+    """A short hash of the site's own static files (not the vendored ones, whose folders carry their
+    versions). Added to their addresses, so browsers fetch them again whenever they change."""
+    digest = hashlib.sha256()
+    for path in sorted(p for p in STATIC.rglob("*") if p.is_file() and "vendor" not in p.relative_to(STATIC).parts):
+        digest.update(path.relative_to(STATIC).as_posix().encode() + b"\0" + path.read_bytes())
+    return digest.hexdigest()[:10]
+
+
+#: A script's import of another of the site's scripts: from './name.js'.
+LOCAL_IMPORT = re.compile(r"(from\s+')(\./[\w-]+\.js)(')")
+
+
+def _version_imports(js_dir: Path, version: str) -> None:
+    """Add the version to the scripts' imports of each other, as the pages do for the scripts they load."""
+    for path in js_dir.glob("*.js"):
+        text = path.read_text(encoding="utf-8")
+        path.write_text(LOCAL_IMPORT.sub(rf"\g<1>\g<2>?v={version}\g<3>", text), encoding="utf-8", newline="\n")
+
+
 class Site:
     """Writes pages into the output directory with relative links."""
 
     def __init__(self, out: Path, config: Config, register: Register, today: dt.date) -> None:
         self.out = out
         self.env = environment()
+        self.env.globals["v"] = static_version()
         self.config = config
         self.register = register
         self.taxonomies = load_all()
@@ -235,6 +258,7 @@ def build(
     shutil.copytree(STATIC, out / "static")
 
     site = Site(out, config, register, today)
+    _version_imports(out / "static" / "js", site.env.globals["v"])
     listed = [e for e in register.entries if not e.withdrawn]
     site.page("", "index.html", nav="home", entries=register.entries, search_index=search_index(site))
     for entry in register.entries:
