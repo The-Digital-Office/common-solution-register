@@ -54,6 +54,7 @@ and this project uses [Semantic Versioning](https://semver.org/spec/v2.0.0.html)
 - Guides: `docs/adopting-this-demonstrator.md` (transfer or fork, files and settings to change), `docs/contributing-records.md` (the inclusion test and every contribution route, linked from the Contribute page), `docs/hosting-your-solution-yml.md` (owner hosting and the reusable workflow) and `docs/harvesting.md`.
 - `docs/maintenance.md`: maintainer commands, handling issues, maintaining records, removing content from history, dependency and vendored-file updates, and the runbook (monthly, on rule changes, on failures, yearly); `docs/publiccode-mapping.md` and `docs/github-free.md` (specification appendices A and B).
 - `docs/publication-checklist.md`: the author's steps before publication (inputs, the register's own record, courtesy notes with a suggested text, the manual keyboard and screen-reader check, sign-off, enabling Pages, sharing); a documentation table in the README; tests that the documents exist and their links resolve.
+- `preview` in `site.toml`: while true, every page asks search engines not to index it. On, for the preview published before the courtesy notes and sign-off.
 
 ### Changed
 

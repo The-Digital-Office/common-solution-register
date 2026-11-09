@@ -132,7 +132,10 @@ def main(argv: Sequence[str] | None = None) -> int:
         print(f"Built {len(result.pages)} pages into {result.out}.")
         for item in result.register.unpublished:
             print(f"Not published: {item.id} ({item.reason})")
-        pending = load_config(args.root, base_url=args.base_url).pending_publication_inputs
+        config = load_config(args.root, base_url=args.base_url)
+        if config.preview:
+            print("Preview: every page asks search engines not to index it (preview = true in site.toml).")
+        pending = config.pending_publication_inputs
         if pending:
             print("To be completed before publication (site.toml): " + ", ".join(pending))
         return 0

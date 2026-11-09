@@ -8,6 +8,12 @@ in 10.2). Nothing here needs code changes beyond small pull requests to
 Tick each item in a pull request that edits this file, or keep the record
 elsewhere and note where.
 
+**Preview first (decided 9 November 2026).** The author publishes the site as a
+preview before the courtesy notes, the manual accessibility check and sign-off:
+`preview = true` in `site.toml` asks search engines not to index any page
+(decision point DP-54), and `csr-0001` stays `in-development`. Step 6 can
+therefore come before steps 1 to 5; step 2 ends the preview.
+
 ## 1. Inputs
 
 - [ ] **Mailbox live (I3).** `solution-register@digitaloffice.scot` receives
@@ -42,8 +48,9 @@ elsewhere and note where.
 
 ## 2. The register's own record
 
-When the site is about to be published, `csr-0001` stops being in development.
-In `solution.yml`:
+When the site goes to beta, end the preview: set `preview = false` in
+`site.toml`, so search engines may list it. `csr-0001` stops being in
+development. In `solution.yml`:
 
 ```yaml
 status: beta

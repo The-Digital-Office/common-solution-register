@@ -195,3 +195,17 @@ def test_the_site_s_own_files_are_fetched_again_when_they_change(site):
     assert f"from './draft-core.js?v={v}'" in draft and f"from './record-check.js?v={v}'" in draft
     assert "js-yaml/5.5.0/js-yaml.mjs'" in draft  # vendored files keep their versioned folders
     assert re.fullmatch(r"[0-9a-f]{10}", v)
+
+
+def test_a_preview_asks_search_engines_not_to_index_it(site, tmp_path, monkeypatch):
+    import dataclasses
+
+    import csr.build
+
+    assert load_config(ROOT).preview  # published as a preview on 9 November 2026
+    for path in site.pages:
+        assert '<meta name="robots" content="noindex, nofollow">' in page(site, path), path
+    published = dataclasses.replace(load_config(ROOT, base_url="http://localhost:8000/"), preview=False)
+    monkeypatch.setattr(csr.build, "load_config", lambda root, base_url: published)
+    beta = build(ROOT, tmp_path / "site", base_url="http://localhost:8000/", today=TODAY)
+    assert 'name="robots"' not in page(beta, "index.html")
