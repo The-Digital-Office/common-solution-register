@@ -1,8 +1,15 @@
 # Sectors: who owns a solution (owner.sector) and who it is intended for
 # (intended_adopters). A draft for the short-life working group to critique.
+# A term marked intended_adopters_only describes an audience, not an owner.
 taxonomy: sectors
 version: "0.1"
 terms:
+  - id: scottish-public-sector
+    label: Scottish public sector
+    definition: The whole Scottish public sector. For solutions offered to every kind of Scottish public body, not to particular sectors; never an owning sector.
+    synonyms: [all Scottish public bodies, public sector in Scotland, whole public sector]
+    status: active
+    intended_adopters_only: true
   - id: scottish-government
     label: Scottish Government
     definition: The core Scottish Government, including its directorates.

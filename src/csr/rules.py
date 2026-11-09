@@ -105,6 +105,9 @@ def r03_r04_taxonomy(record: Record, context: Context) -> list[Finding]:
         if term is None:
             findings.append(error(record.label, "R03", path, f"'{value}' is not a term in taxonomy/{taxonomy_name}.yaml",
                                   f"Use one of: {', '.join(taxonomy.ids)}."))  # fmt: skip
+        elif path == "owner.sector" and term.intended_adopters_only:
+            findings.append(error(record.label, "R03", path, f"'{value}' describes who a solution is for, not who owns it",
+                                  "Use the owning organisation's own sector; list it under intended_adopters instead."))  # fmt: skip
         elif term.deprecated:
             fix = f"Use '{term.replaced_by}' instead." if term.replaced_by else "Choose a current term."
             findings.append(warning(record.label, "R04", path, f"'{value}' is a deprecated term", fix))

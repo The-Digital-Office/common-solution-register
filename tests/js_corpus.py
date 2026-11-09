@@ -31,6 +31,8 @@ def _variants(minimal: dict) -> dict[str, dict]:
         "R02 real record in example range": change(id="csr-9100", record_status="owner-confirmed",
                                                    name="Minimal Component"),  # fmt: skip
         "R03 unknown terms": change(service_areas=["parks", "housing"], owner__sector="local-govt"),
+        "R03 audience as owner": change(owner__sector="scottish-public-sector",
+                                         intended_adopters=["scottish-public-sector"]),
         "R05 unknown related": change(related_assets=[{"id": "csr-0404"}, {"id": "csr-0001"}]),
         "R06 future confirmation": change(confirmation__last_confirmed="2026-12-25"),
         "R07 personal contact": change(contact__value="jane.smith@example.gov.uk"),
@@ -67,7 +69,8 @@ def corpus() -> dict:
     return {
         "today": TODAY.isoformat(),
         "known_ids": known,
-        "taxonomies": {name: [{"id": t.id, "status": t.status, "replaced_by": t.replaced_by} for t in tax.terms]
+        "taxonomies": {name: [{"id": t.id, "status": t.status, "replaced_by": t.replaced_by,
+                               "intended_adopters_only": t.intended_adopters_only} for t in tax.terms]
                        for name, tax in load_all().items()},  # fmt: skip
         "shared_rules": sorted(SHARED_RULES),
         "records": out,

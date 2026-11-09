@@ -46,8 +46,13 @@ def test_suggest_asset_has_one_yaml_area_and_three_fields():
 def test_the_draft_form_prefills_the_suggest_asset_fields():
     script = (ROOT / "src/csr/static/js/draft.js").read_text(encoding="utf-8")
     prefilled = set(re.findall(r"params\.set\('([a-z-]+)'", script))
-    assert prefilled == {"asset-name", "organisation", "contact", "solution-yml"}
-    assert "template: 'suggest-asset.yml'" in script
+    assert prefilled == {"asset-name", "organisation", "contact", "solution-yml", "record-id", "what-is-wrong"}
+    # A new solution goes to suggest-asset; a correction to a record goes to suggest-correction.
+    ids = {name: {item["id"] for item in form(name)["body"] if "id" in item}
+           for name in ("suggest-asset.yml", "suggest-correction.yml")}  # fmt: skip
+    assert {"asset-name", "organisation", "contact", "solution-yml"} <= ids["suggest-asset.yml"]
+    assert {"record-id", "what-is-wrong"} <= ids["suggest-correction.yml"]
+    assert "template: 'suggest-asset.yml'" in script and "template: 'suggest-correction.yml'" in script
 
 
 def render(form_data, values):

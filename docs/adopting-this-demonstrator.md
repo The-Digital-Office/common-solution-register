@@ -47,6 +47,7 @@ from a copy. Make the same changes below in the fork.
 | `records/csr-0001.yaml` | The pointer's `source` and `expected_owner` |
 | `.github/CODEOWNERS` | Your maintainers, or an editors team ([`editorial-model.md`](editorial-model.md)) |
 | `src/csr/templates/partials/banner.html`, `about.html` | The banner and About wording: who hosts it, its status, and the working group context |
+| `src/csr/static/host/`, `host_logo` in `site.toml` | The footer logo is the Digital Office's, and not openly licensed: put your own logo there and set `host_logo` to its path and `host_url` to the address it links to, or set `host_logo = ""` to show "Hosted for demonstration by ‹host_organisation›" as text. The UI baselines then need remaking |
 | `schema/*.schema.json` | The `$id` addresses, which name the Pages site |
 | `.github/ISSUE_TEMPLATE/*.yml` | Links to the draft and validate pages, which name the Pages site |
 | `.github/workflows/validate-solution.yml` | The default `register-repository`, and the usage example in its comment |

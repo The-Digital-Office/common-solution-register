@@ -28,6 +28,8 @@ class Term:
     synonyms: tuple[str, ...] = ()
     status: str = "active"
     replaced_by: str | None = None
+    #: An audience for intended_adopters only, never an owning sector (owner.sector).
+    intended_adopters_only: bool = False
 
     @property
     def deprecated(self) -> bool:
@@ -71,6 +73,7 @@ def load_taxonomy(name: str, directory: Path = TAXONOMY_DIR) -> Taxonomy:
             synonyms=tuple(t["synonyms"]),
             status=t["status"],
             replaced_by=t.get("replaced_by"),
+            intended_adopters_only=t.get("intended_adopters_only", False),
         )
         for t in data["terms"]
     )

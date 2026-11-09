@@ -245,6 +245,9 @@ export function rules(record, context) {
     if (!term) {
       finding('R03', 'error', path, `"${value}" is not a term in the ${taxonomy.replace('-', ' ')} taxonomy`,
         'Use a term id from the taxonomy terms in the field reference.');
+    } else if (path === 'owner.sector' && term.intended_adopters_only) {
+      finding('R03', 'error', path, `"${value}" describes who a solution is for, not who owns it`,
+        "Use the owning organisation's own sector; list it under intended_adopters instead.");
     } else if (term.status === 'deprecated') {
       finding('R04', 'warning', path, `"${value}" is a deprecated term`,
         term.replaced_by ? `Use "${term.replaced_by}" instead.` : 'Choose a current term.');

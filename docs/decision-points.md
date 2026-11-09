@@ -61,7 +61,7 @@ them to be reviewed as part of the demonstrator.
 | # | Choice | As built | Alternatives | What would change |
 |---|---|---|---|---|
 | DP-24 | The vocabularies | Three drafts for the SLWG to critique: 8 sectors, 14 service areas and 14 capabilities, each with a definition and synonyms (`taxonomy/`) | Align with existing vocabularies, such as the LGA/ESD lists or a Scottish Government taxonomy (specification 6.5) | The taxonomy files; existing records would need their terms mapped. Deprecating a term (`status: deprecated`) keeps old records valid with a warning (R04) |
-| DP-25 | Sectors | Seven Scottish sectors plus `uk-public-sector`, used for both the owner's sector and "Intended for" | Separate lists for owners and audiences; finer sectors (for example separate further and higher education) | The sector file and the records |
+| DP-25 | Sectors | Seven Scottish sectors plus `uk-public-sector`, used for both the owner's sector and "Intended for"; and `scottish-public-sector`, an audience for "Intended for" only (`intended_adopters_only`; R03 rejects it as an owner's sector), added 9 November 2026 | Separate lists for owners and audiences; finer sectors (for example separate further and higher education) | The sector file and the records |
 
 ## E. Validation rules
 
@@ -110,7 +110,7 @@ appendix C). These interpretations were made in the build (S3 and later):
 
 | # | Choice | As built | Alternatives | What would change |
 |---|---|---|---|---|
-| DP-46 | Design system | The Scottish Government Design System 4.3.0, vendored, with a text-only header and no Scottish Government logo or brand assets; the About page says who hosts the demonstrator (decided 20 October 2026). Using it could be read as Scottish Government branding | GOV.UK Frontend, or the adopting body's own design system | The templates and the vendored files; the UI baselines would be remade |
+| DP-46 | Design system | The Scottish Government Design System 4.3.0, vendored, with a text-only header and no Scottish Government logo or brand assets; the About page says who hosts the demonstrator, and the footer shows the host's logo (decided 20 October 2026; logo added 9 November 2026). Using it could be read as Scottish Government branding | GOV.UK Frontend, or the adopting body's own design system | The templates and the vendored files; the UI baselines would be remade |
 | DP-47 | Banner | The long notice on the home page and a short one on every other page, as the wireframes show (D1, decided 3 November 2026) | The long notice everywhere | `src/csr/templates/partials/banner.html` and the baselines |
 | DP-48 | Fonts | Roboto and Roboto Mono served from the site itself; no font service is contacted (D5) | System fonts only | `static/fonts.css` and the baselines |
 | DP-49 | Architecture | A static site built by Python and published on GitHub Pages; JavaScript only for search, the draft form and the validate page; no server, cookies or analytics | A hosted application with a database, sign-in and editing | Almost everything; the record files, schema and taxonomy could be kept |

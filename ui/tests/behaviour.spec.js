@@ -180,16 +180,42 @@ test('11. Copy YAML, Download, open as a GitHub issue, send by email', async ({ 
   const [download] = await Promise.all([page.waitForEvent('download'), page.click('#draft-download')]);
   expect(download.suggestedFilename()).toBe('solution.yml');
   expect(fs.readFileSync(await download.path(), 'utf8')).toBe(yaml);
+  // Filled in from a record, so it is sent as a correction to that record.
   const issue = new URL(await page.getAttribute('#draft-issue', 'href'));
-  expect(issue.searchParams.get('template')).toBe('suggest-asset.yml');
-  expect(issue.searchParams.get('solution-yml')).toBe(yaml);
-  expect(issue.searchParams.get('asset-name')).toBe('Example: Council Payments Gateway');
+  expect(issue.searchParams.get('template')).toBe('suggest-correction.yml');
+  expect(issue.searchParams.get('record-id')).toBe('csr-9001');
+  expect(issue.searchParams.get('what-is-wrong')).toContain(yaml);
   await expect(page.locator('#draft-issue')).toHaveAttribute('target', '_blank');
   const [mailed] = await Promise.all([page.waitForEvent('download'), page.click('#draft-email').catch(() => {})]);
   expect(mailed.suggestedFilename()).toBe('solution.yml');
   const mailto = new URL(await page.getAttribute('#draft-email', 'href'));
   expect(mailto.pathname).toBe('solution-register@digitaloffice.scot');
+  expect(mailto.searchParams.get('subject')).toBe('Correction to csr-9001: Example: Council Payments Gateway');
   expect(mailto.searchParams.get('body').split('\n')).toHaveLength(2);
+  // A new solution goes to the suggest-a-solution form.
+  await page.click('#draft-reset');
+  await page.fill('#name', 'Booking component');
+  const fresh = new URL(await page.getAttribute('#draft-issue', 'href'));
+  expect(fresh.searchParams.get('template')).toBe('suggest-asset.yml');
+  expect(fresh.searchParams.get('asset-name')).toBe('Booking component');
+});
+
+test('11b. A checked correction says what to do next, and its options work', async ({ page }) => {
+  await page.goto('draft/?from=csr-0001');
+  await expect(page.locator('#name')).toHaveValue('Common Solution Register Demonstrator');
+  await page.fill('#purpose', (await page.inputValue('#purpose')).replace('the Scottish Government short-life', 'the short-life'));
+  await page.click('button[type="submit"]');
+  const valid = page.locator('#draft-valid');
+  await expect(valid).toBeFocused();
+  await expect(valid.locator('h2').first()).toHaveText('Your correction is ready to send');
+  await expect(page.locator('#draft-valid-hosted')).toBeVisible(); // csr-0001 is hosted by its owner
+  await expect(valid.locator('[data-handoff="issue"]')).toHaveAttribute('href', /template=suggest-correction\.yml/);
+  const [download] = await Promise.all([page.waitForEvent('download'), valid.locator('[data-handoff="download"]').click()]);
+  expect(fs.readFileSync(await download.path(), 'utf8')).toContain('the short-life working group');
+  await expect(valid).toBeVisible(); // still there after choosing an option
+  await page.fill('#name', 'Changed again');
+  await expect(valid).toBeHidden(); // a changed answer needs checking again
+  await expect(page.getByRole('button', { name: 'Clear and start again' })).toBeVisible();
 });
 
 test('12. Validate page: real validation in paste, upload and URL modes', async ({ page }) => {
