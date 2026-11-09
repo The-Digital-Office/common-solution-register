@@ -70,6 +70,7 @@ and this project uses [Semantic Versioning](https://semver.org/spec/v2.0.0.html)
 - The footer logo links to the host's website (`host_url` in `site.toml`).
 - "Scottish public sector" (`scottish-public-sector`) can be chosen under "Intended for"; it is an audience only, never an owning sector (R03).
 - Draft form: after "Check my answers", the panel says what to do next and offers the GitHub issue, email and download options; a draft filled in from a record is sent as a correction to it (the correction issue form, with the record ID and the corrected YAML); "Start again" is "Clear and start again".
+- Records offered to the whole Scottish public sector (`csr-0001`, `csr-0003`, `csr-0004`, `csr-0005`, `csr-0006`, `csr-0008`) list `scottish-public-sector` under "Intended for" instead of every Scottish sector.
 
 ### Fixed
 

@@ -33,12 +33,7 @@ capabilities:
   - mapping-and-location
 status: live
 intended_adopters:
-  - scottish-government
-  - executive-agencies
-  - local-government
-  - nhs-scotland
-  - police-and-fire
-  - non-departmental-public-bodies
+  - scottish-public-sector
 terms_of_use:
   type: other
   url: https://osg.scot/portal/pages/terms-conditions
