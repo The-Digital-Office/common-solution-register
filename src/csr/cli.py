@@ -198,8 +198,8 @@ def _tool(args: argparse.Namespace) -> int:
     for finding in outcome.findings:
         print(str(finding))
     errors = sum(1 for f in outcome.findings if f.severity == "error")
-    print(f"{outcome.path.relative_to(ROOT)}: {errors} error{'' if errors == 1 else 's'} to resolve before merging."
-          if errors else f"{outcome.path.relative_to(ROOT)} is valid.")  # fmt: skip
+    print(f"{outcome.path.relative_to(ROOT).as_posix()}: {errors} error{'' if errors == 1 else 's'} to resolve before merging."
+          if errors else f"{outcome.path.relative_to(ROOT).as_posix()} is valid.")  # fmt: skip
     return 0 if outcome.ok else 1
 
 
@@ -211,7 +211,7 @@ def _harvest(args: argparse.Namespace) -> int:
     state, results = harvest.run(ROOT, config, previous, now=now, fetcher=fetcher,
                                  only=set(args.only) if args.only else None)  # fmt: skip
     args.out.parent.mkdir(parents=True, exist_ok=True)
-    args.out.write_text(json.dumps(state, ensure_ascii=False, indent=2) + "\n", encoding="utf-8")
+    args.out.write_text(json.dumps(state, ensure_ascii=False, indent=2) + "\n", encoding="utf-8", newline="\n")
     print(note[0].upper() + note[1:] + ".")
     for result in results:
         where = " (from this repository)" if result.from_repository else ""

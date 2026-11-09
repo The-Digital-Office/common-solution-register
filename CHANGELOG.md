@@ -71,6 +71,7 @@ and this project uses [Semantic Versioning](https://semver.org/spec/v2.0.0.html)
 
 - Schema condition 1 required `sources` when `record_status` was missing; it now applies only to demonstration records.
 - R18 no longer also reports "not stated in public sources" as a bad address; that is R10's finding.
+- Windows: file names in messages use forward slashes (so `csr validate --base` no longer reports every edited record as a clash), every file the tools and the build write has LF line endings, and `.gitattributes` checks text files out with LF on every system. The Site workflow runs the tests on Windows too (`Tests on Windows`, not a required check).
 
 ### Removed
 

@@ -1,7 +1,7 @@
-# Normalise line endings in the repository, and always check out shell
-# scripts with LF endings so they run in bash on Windows (Git Bash) too.
-* text=auto
-*.sh text eol=lf
+# Normalise line endings in the repository, and check text files out with LF
+# endings on every system, Windows included. Records, harvested files and their
+# hashes, and the built site are then the same wherever they are made.
+* text=auto eol=lf
 
 # Vendored files are kept byte for byte, so their pinned hashes (R13) hold on
 # every platform.
