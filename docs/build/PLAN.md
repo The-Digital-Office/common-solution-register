@@ -4,7 +4,7 @@ The build is done in small sessions, one **slice** per session. Each slice is on
 
 ## Briefing
 
-- **What:** a demonstrator of a common solution register for the Scottish public sector, built for the Scottish Government short-life working group. Not an official register. Hosted by The Digital Office for Scottish Local Government.
+- **What:** a demonstrator of a common solution register for the Scottish public sector, built for the short-life working group. Not an official register. Hosted by The Digital Office for Scottish Local Government.
 - **Specification:** `docs/spec/Common-Solution-Register-Demonstrator-Specification.md` (v1.2). Section 1.1 defines solutions and codebases; 9.1 sets the authorship rules.
 - **Wireframes:** `ui/wireframes/` (normative UI requirements, spec 6.13); baseline images in `ui/baseline/`.
 - **Concepts:** a common solution is an owned offer of reuse, described by `solution.yml`; a codebase is source code, described by its own `publiccode.yml` and listed in a solution's `codebases`; datasets are linked through `open_data`, never listed.

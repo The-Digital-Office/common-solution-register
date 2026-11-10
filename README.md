@@ -1,7 +1,7 @@
 # common-solution-register
 
 A demonstrator of a common solution register for the Scottish public sector,
-built for the Scottish Government short-life working group (SLWG) on a common
+built for the short-life working group (SLWG) on a common
 solution register. It shows, with a working example, how public bodies could
 describe the solutions they offer to each other for reuse, how those
 descriptions are validated and published, and how owners can keep them current.

@@ -74,6 +74,7 @@ and this project uses [Semantic Versioning](https://semver.org/spec/v2.0.0.html)
 - Records offered to the whole Scottish public sector (`csr-0001`, `csr-0003`, `csr-0004`, `csr-0005`, `csr-0006`, `csr-0008`) list `scottish-public-sector` under "Intended for" instead of every Scottish sector.
 - Draft form: on a correction, "Clear and start again" is replaced by "Discard edits", which goes back to the record. The correction issue form explains what "Are you from the owning organisation?" is used for.
 - Draft form corrections: "Are you from the owning organisation?" must be answered. The owner's correction confirms the record today (`confirmation.last_confirmed`), and turns a demonstration entry into an owner-confirmed one; anyone else's suggests a change without altering the record's provenance or confirmation (before, it turned the record into a demonstration entry needing sources). Service areas, capabilities and intended adopters keep the record's order.
+- "The Scottish Government short-life working group" is now "the short-life working group" throughout (README, `solution.yml`, `publiccode.yml`, the specification, the build plan and the courtesy note).
 
 ### Fixed
 

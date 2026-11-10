@@ -203,7 +203,7 @@ test('11. Copy YAML, Download, open as a GitHub issue, send by email', async ({ 
 test('11b. A checked correction says what to do next, and its options work', async ({ page }) => {
   await page.goto('draft/?from=csr-0001');
   await expect(page.locator('#name')).toHaveValue('Common Solution Register Demonstrator');
-  await page.fill('#purpose', (await page.inputValue('#purpose')).replace('the Scottish Government short-life', 'the short-life'));
+  await page.fill('#purpose', (await page.inputValue('#purpose')).replace('search and browse example records', 'search and browse records'));
   await page.click('button[type="submit"]');
   // The owner question decides whether the correction confirms the record, so it must be answered.
   await expect(page.locator('#error-summary-list a')).toHaveText(['Select whether you are from the owning organisation']);
@@ -216,7 +216,7 @@ test('11b. A checked correction says what to do next, and its options work', asy
   await expect(valid.locator('[data-handoff="issue"]')).toHaveAttribute('href', /template=suggest-correction\.yml/);
   const [download] = await Promise.all([page.waitForEvent('download'), valid.locator('[data-handoff="download"]').click()]);
   const corrected = fs.readFileSync(await download.path(), 'utf8');
-  expect(corrected).toContain('the short-life working group');
+  expect(corrected).toContain('search and browse records');
   const d = new Date();
   const today = `${d.getFullYear()}-${String(d.getMonth() + 1).padStart(2, '0')}-${String(d.getDate()).padStart(2, '0')}`;
   expect(corrected).toContain(`last_confirmed: '${today}'`); // the owner confirmed it today
