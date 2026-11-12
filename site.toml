@@ -1,7 +1,10 @@
 # Site configuration (specification 6.3). A new host changes these values and
 # the repository settings listed in section 8 of the specification.
 
-title = "Common Solution Register: Demonstrator"
+title = "Common Solution Register"
+# The small line above the title in the header: who the register is for, not
+# who runs it (UI decision D37). Empty for none.
+header_line = "Scottish public sector"
 # A preview: every page asks search engines not to index it (a robots meta tag;
 # a robots.txt would be ignored, because this is a project site). Published as
 # a preview on 9 November 2026, before the courtesy notes and sign-off; set to

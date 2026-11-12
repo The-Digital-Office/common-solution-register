@@ -38,6 +38,7 @@ based_on:
 | 1.1 | 2 November 2026 | Adds reference implementations as a kind of codebase (1.1, `codebases[].kind`). Replaces the build plan in section 9 with an incremental, multi-session build strategy, with the slices and resume protocol in `docs/build/PLAN.md`. |
 | 1.2 | 2 November 2026 | Removes all tool attribution from the repository: no tool-specific instruction file, build sessions brief from `docs/build/PLAN.md`, and commits, pull requests and files carry the author's identity only (9.1). |
 | 1.3 | 3 November 2026 | Corrections after the build. 6.8: the banner wording follows the wireframes, a long notice on the home page and a short one elsewhere (UI decision D1). 5.2: a sixth demonstration record, mygovscot myaccount (decision point DP-07). |
+| 1.4 | 12 November 2026 | 6.13: a deliberate departure from the wireframes' look, decided by the author (UI decision D37). The header has a small "Scottish public sector" line above the title, which no longer includes "Demonstrator" (the banner still says it on every page); the main navigation is bold; a tinted band runs behind the breadcrumbs and page header; buttons are navy. `csr.css` may style these as well as the cases already listed. |
 
 
 ## 1. Purpose and context
@@ -480,7 +481,7 @@ The wireframes (the sources in `ui/wireframes/` and the 21 approved images in `u
 | Record page actions | Links only | Working links; Download solution.yml produces the record's file |
 | Mobile navigation | Not shown | The design system's mobile menu |
 
-**Known differences, deliberately:** the wireframes use a few local styles (`wf-` classes) for layout details the design system does not provide: tag rows, the fictional-example panel, the YAML preview and the statistics tiles on the currency page. The build keeps these in `csr.css`, which uses design system spacing, colour and type values, and is limited to those cases. The wireframes were drawn at 1280 pixels wide. The build must also work at 375 pixels (design system breakpoints), and is checked at both widths.
+**Known differences, deliberately:** the wireframes use a few local styles (`wf-` classes) for layout details the design system does not provide: tag rows, the fictional-example panel, the YAML preview and the statistics tiles on the currency page. The build keeps these in `csr.css`, which uses design system spacing, colour and type values, and is limited to those cases and to the header, page band and button colours of UI decision D37 (version 1.4). The wireframes were drawn at 1280 pixels wide. The build must also work at 375 pixels (design system breakpoints), and is checked at both widths.
 
 **Acceptance.**
 1. **Visual comparison.** Playwright screenshots each built page, at 1280 and 375 pixels wide, using the test fixture records that reproduce the wireframe content, and compares them with `ui/baseline/`. The 1280-pixel baselines start as the approved wireframe images. Differences above a small threshold fail the check, with a diff image. A deliberate change to the design updates the baseline in the same pull request, so the change is visible and reviewed.

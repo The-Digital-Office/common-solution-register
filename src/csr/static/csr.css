@@ -2,8 +2,9 @@
  * Common Solution Register: extensions to the Scottish Government Design
  * System, limited to the layout details it does not provide (specification
  * 6.13): tag rows, the fictional-example panel, unstated values, the actions
- * column, the results heading row, filters and wide tables. Values follow the
- * design system's spacing, colour and type.
+ * column, the results heading row, filters and wide tables; and the header,
+ * page band and button colours of UI decision D37. Values follow the design
+ * system's spacing, colour and type.
  */
 
 /* Code and YAML in Roboto Mono (static/fonts.css), so they look the same on every computer. */
@@ -277,4 +278,113 @@ html:not(.js-enabled) .csr-js-only {
 /* The hidden attribute always hides, even on elements the design system gives a display value (such as .ds_button). */
 [hidden] {
   display: none !important;
+}
+
+/*
+ * Header, page band and buttons (UI decision D37). The header has a small line
+ * saying who the register is for above a large title; the main navigation is
+ * bold, with a thicker bar under the current page. A tinted band runs the full
+ * width behind the breadcrumbs and the page header, so each page has a clear
+ * start. Buttons are navy: solid for the main action, outlined for the others.
+ */
+.csr-branding {
+  display: flex;
+  flex-direction: column;
+}
+
+.csr-branding__line {
+  color: #333;
+  font-size: 1rem;
+  font-weight: 700;
+  line-height: 1.5rem;
+}
+
+.csr-branding .ds_site-branding__title {
+  color: #002d54;
+  font-size: 1.5rem;
+  font-weight: 700;
+  line-height: 2rem;
+}
+
+.ds_site-branding {
+  padding: 1rem 0;
+}
+
+.ds_site-navigation__link,
+.ds_site-navigation .ds_site-navigation__link.ds_current:not(:focus) {
+  color: #002d54;
+  font-weight: 700;
+}
+
+@media (min-width: 48rem) {
+  .csr-branding .ds_site-branding__title {
+    font-size: 2rem;
+    line-height: 2.5rem;
+  }
+
+  .ds_site-branding {
+    padding: 1.5rem 0 1.25rem;
+  }
+
+  .ds_site-navigation__link {
+    padding-bottom: 1rem;
+    padding-top: 1rem;
+  }
+
+  .ds_site-navigation .ds_site-navigation__link.ds_current:not(:focus)::after {
+    height: 0.25rem;
+  }
+}
+
+.ds_phase-banner {
+  background: #fff;
+  border-bottom: 0.0625rem solid #ebebeb;
+  padding-bottom: 0.5rem;
+  padding-top: 0.5rem;
+}
+
+nav:has(> .ds_breadcrumbs),
+.ds_layout__header {
+  background: #ebf1f7;
+  box-shadow: 0 0 0 100vmax #ebf1f7;
+  clip-path: inset(0 -100vmax);
+}
+
+nav:has(> .ds_breadcrumbs) {
+  display: flow-root;
+}
+
+nav:has(> .ds_breadcrumbs) .ds_breadcrumbs {
+  margin-bottom: 0;
+}
+
+.ds_layout__header {
+  margin-bottom: 2rem;
+  padding: 1rem 0 0.5rem;
+}
+
+nav:has(> .ds_breadcrumbs) + .ds_layout .ds_layout__header {
+  padding-top: 0;
+}
+
+.ds_layout__header .ds_page-header__title {
+  color: #002d54;
+}
+
+.ds_button:not(.ds_button--secondary, .ds_button--cancel) {
+  background-color: #002d54;
+}
+
+.ds_button:not(.ds_button--secondary, .ds_button--cancel):hover {
+  background-color: #001a30;
+}
+
+.ds_button--secondary {
+  background-color: #fff;
+  color: #002d54;
+}
+
+.ds_button--secondary:hover:not(:focus) {
+  background-color: #ebf1f7;
+  color: #002d54;
 }

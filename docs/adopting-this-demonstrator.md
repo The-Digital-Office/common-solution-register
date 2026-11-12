@@ -41,7 +41,7 @@ from a copy. Make the same changes below in the fork.
 
 | File | Change |
 |---|---|
-| `site.toml` | `preview` (true asks search engines not to index the site), `title`, `base_url`, `state_url` (usually left empty), `repository_url`, `default_branch`, `host_organisation`, `contact_mailbox`, `feedback_url`, the currency thresholds, and every value under `[publication]` (data controller, Data Protection Officer, lawful basis, retention, feedback form, accessibility assessment and dates) |
+| `site.toml` | `preview` (true asks search engines not to index the site), `title`, `header_line` (the small line above the title in the header), `base_url`, `state_url` (usually left empty), `repository_url`, `default_branch`, `host_organisation`, `contact_mailbox`, `feedback_url`, the currency thresholds, and every value under `[publication]` (data controller, Data Protection Officer, lawful basis, retention, feedback form, accessibility assessment and dates) |
 | `publiccode.yml` | Organisation, maintainers and URLs |
 | `solution.yml` | The register's own record (`csr-0001`): owner, contact, `service_url`, `service_page_url`, documentation, codebase and `open_data` addresses, and `confirmation` |
 | `records/csr-0001.yaml` | The pointer's `source` and `expected_owner` |

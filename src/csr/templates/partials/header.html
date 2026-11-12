@@ -9,7 +9,7 @@
 <div class="ds_wrapper">
 <div class="ds_site-header__content">
 <div class="ds_site-branding">
-<a class="ds_site-branding__link" href="{{ root }}"><span class="ds_site-branding__title">{{ config.title }}</span></a>
+<a class="ds_site-branding__link csr-branding" href="{{ root }}">{% if config.header_line %}<span class="csr-branding__line">{{ config.header_line }}</span>{% endif %}<span class="ds_site-branding__title">{{ config.title }}</span></a>
 </div>
 <div class="ds_site-header__controls">
 <label aria-controls="mobile-navigation" class="ds_site-header__control js-toggle-menu" for="menu">
