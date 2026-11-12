@@ -70,9 +70,12 @@ def test_every_page_has_the_layout(site):
     for path in site.pages:
         html = page(site, path)
         p = Parsed(html)
-        for cls in ("ds_skip-links", "ds_site-header", "ds_phase-banner", "ds_site-footer", "ds_site-navigation--mobile"):
+        for cls in ("ds_skip-links", "ds_site-header", "csr-notice", "ds_site-footer", "ds_site-navigation--mobile"):
             assert cls in p.classes, (path, cls)
-        assert "This is not an official register." in " ".join(p.text)
+        assert "ds_phase-banner" not in p.classes  # replaced by the notice (W4)
+        # The same short notice on every page, home included (W4).
+        assert '<div class="csr-notice" role="region" aria-label="Demonstrator notice">' in html, path
+        assert "This is a demonstrator, not an official register. Inclusion does not mean endorsement." in " ".join(p.text), path
         # The host's logo, whose alt text says who hosts the demonstrator.
         logo = re.search(r'<img class="ds_site-footer__org-logo" src="([^"]+)" alt="([^"]+)"', html)
         assert logo and logo[2] == "Hosted for demonstration by The Digital Office for Scottish Local Government", path
