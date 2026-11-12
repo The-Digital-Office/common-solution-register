@@ -108,8 +108,9 @@ def test_home_lists_records_without_javascript(site):
 
 def test_record_page_structure(site):
     p = Parsed(page(site, "assets/csr-0001/index.html"))
-    assert p.h2[:8] == ["Hosted by its owner", "About this solution", "Owner and contact", "Classification",
+    assert p.h2[:8] == ["On this page", "About this solution", "Owner and contact", "Classification",
                         "Using this solution", "Codebases", "Open data", "About this record"]  # fmt: skip
+    assert "Help improve this record" in p.h2  # the band at the foot of the page
     assert "Owner-hosted" in p.text and "Confirmed by owner" in p.text and "Current" in p.text
     assert "solution.yml" in p.links and "../../draft/?from=csr-0001" in p.links
     assert "../../sectors/local-government/" in p.links
@@ -126,6 +127,50 @@ def test_example_record_notices(site):
     assert "Other states shown by examples" in p.h2
     assert "../../harvest/#csr-9007" in p.links
     assert ["Go to the service", "More information from the owner"] == [t for t in p.text if t.startswith(("Go to", "More info"))]
+
+
+def facts(html):
+    """The key facts grid as {label: value text}."""
+    grid = re.search(r'<dl class="csr-facts"[^>]*>(.*?)</dl>', html, re.S)[1]
+    return {k: re.sub(r"<[^>]+>", " ", v).split() for k, v in re.findall(r"<dt>(.*?)</dt><dd>(.*?)</dd>", grid)}
+
+
+def band(html):
+    """The page band: the header area of the record page."""
+    return re.search(r'<div class="ds_layout__header">(.*?)<div class="ds_layout__content">', html, re.S)[1]
+
+
+def test_record_summary_card(site):
+    hosted = page(site, "assets/csr-0001/index.html")
+    assert band(hosted).count('class="ds_tag') == 1 and "Confirmed by owner" in band(hosted)  # provenance only
+    assert list(facts(hosted)) == ["Owner", "Lifecycle status", "Last confirmed", "Currency", "Hosting", "Record"]
+    f = facts(hosted)
+    assert " ".join(f["Hosting"]).startswith("Owner-hosted Harvested") and "View as JSON" in " ".join(f["Record"])
+    assert " ".join(f["Last confirmed"]).endswith("By the owner, in their hosted solution.yml")
+    # No service address or owner's page: downloading the record is the one main action.
+    assert '<a class="ds_button" href="solution.yml"' in band(hosted)
+    assert "ds_layout__sidebar" not in hosted and "Report a problem" not in hosted
+    assert "Harvest history" in hosted
+
+    demo = page(site, "assets/csr-0003/index.html")
+    f = facts(demo)
+    assert "Sources checked" in f and "Last confirmed" not in f
+    assert " ".join(f["Currency"]) == "Not confirmed by owner Becomes current once the owner confirms it"
+    assert re.search(r'<a class="ds_button" href="[^"]+">Go to the service</a>', band(demo))
+    assert "ds_button--secondary" in band(demo) and "Is this your service?" in demo
+    assert "csr-owner" in demo and "Confirm or correct" in demo
+
+    example = page(site, "assets/csr-9003/index.html")
+    f = facts(example)
+    assert " ".join(f["Lifecycle status"]) == "Deprecated Since 31 March 2026"
+    assert " ".join(f["Currency"]) == "Stale Not confirmed for more than 12 months"
+
+
+def test_owner_hint_is_left_out_when_it_repeats_the_owner(site):
+    for path in site.pages:
+        if path.startswith("assets/") and path.endswith("index.html") and "csr-fact" in (html := page(site, path)):
+            owner = facts(html)["Owner"]
+            assert len(owner) < 2 or owner[: len(owner) // 2] != owner[len(owner) // 2 :], path
 
 
 def test_due_record(site):

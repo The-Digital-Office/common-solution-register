@@ -1,10 +1,10 @@
 /*
  * Common Solution Register: extensions to the Scottish Government Design
  * System, limited to the layout details it does not provide (specification
- * 6.13): tag rows, the fictional-example panel, unstated values, the actions
- * column, the results heading row, filters and wide tables; and the header,
- * page band and button colours of wireframe change W1. Values follow the design
- * system's spacing, colour and type.
+ * 6.13): tag rows, the fictional-example panel, unstated values, the results
+ * heading row, filters and wide tables; the header, page band and button
+ * colours of wireframe change W1; and the record page's summary card of W2.
+ * Values follow the design system's spacing, colour and type.
  */
 
 /* Code and YAML in Roboto Mono (static/fonts.css), so they look the same on every computer. */
@@ -47,18 +47,6 @@ samp,
 .csr-unstated {
   color: #5e5e5e;
   font-style: italic;
-}
-
-.csr-actions {
-  display: flex;
-  flex-direction: column;
-  gap: 0.75rem;
-  margin-bottom: 1.5rem;
-}
-
-.csr-actions .ds_button {
-  margin: 0;
-  width: 100%;
 }
 
 .csr-results-head {
@@ -387,4 +375,161 @@ nav:has(> .ds_breadcrumbs) + .ds_layout .ds_layout__header {
 .ds_button--secondary:hover:not(:focus) {
   background-color: #ebf1f7;
   color: #002d54;
+}
+
+/*
+ * Record page summary card (wireframe change W2): the main actions in the page
+ * band, a grid of key facts, the owner's panel on demonstration entries, an
+ * "On this page" list in place of the sidebar, and a band at the foot of the
+ * page asking for corrections. The body keeps a readable width.
+ */
+.csr-record .ds_layout__content {
+  grid-column: 1 / -1;
+}
+
+.csr-record .ds_page-header {
+  margin-bottom: 1rem;
+}
+
+.csr-record .csr-tags {
+  margin-bottom: 1rem;
+}
+
+.csr-record .ds_layout__header .csr-fiction {
+  margin-top: 1.5rem;
+}
+
+.csr-record.ds_layout {
+  margin-bottom: 3rem;
+}
+
+.csr-body {
+  max-width: 48rem;
+}
+
+.csr-hero-actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.75rem;
+  margin: 0 0 1.5rem;
+}
+
+.csr-hero-actions .ds_button {
+  margin: 0;
+}
+
+.csr-facts {
+  border-bottom: 0.0625rem solid #b3b3b3;
+  display: grid;
+  gap: 0 2rem;
+  grid-template-columns: minmax(0, 1fr);
+  margin: 0 0 2rem;
+}
+
+.csr-fact {
+  border-top: 0.0625rem solid #b3b3b3;
+  margin: 0;
+  padding: 1rem 0 1.25rem;
+}
+
+.csr-fact dt {
+  color: #333;
+  font-size: 0.875rem;
+  line-height: 1.5rem;
+  margin-bottom: 0.25rem;
+}
+
+.csr-fact dd {
+  color: #002d54;
+  font-weight: 700;
+  margin: 0;
+}
+
+.csr-fact__hint {
+  color: #5e5e5e;
+  display: block;
+  font-size: 0.875rem;
+  font-weight: 400;
+  line-height: 1.5rem;
+  margin-top: 0.25rem;
+}
+
+.csr-owner {
+  background: #f8f8f8;
+  border-left: 0.375rem solid #0065bd;
+  margin: 0 0 2rem;
+  padding: 1.25rem 1.5rem;
+}
+
+.csr-owner h2 {
+  margin-top: 0;
+}
+
+.csr-owner .csr-hero-actions {
+  align-items: center;
+  margin: 0;
+}
+
+.csr-onpage {
+  margin: 0 0 2rem;
+}
+
+.csr-onpage ul {
+  display: grid;
+  gap: 0.5rem 2rem;
+  grid-template-columns: minmax(0, 1fr);
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+
+.csr-onpage li {
+  margin: 0;
+}
+
+.csr-help {
+  background: #ebf1f7;
+  padding: 2.5rem 0;
+}
+
+.csr-help__inner {
+  align-items: center;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 1.25rem 2.5rem;
+  justify-content: space-between;
+}
+
+.csr-help h2 {
+  color: #002d54;
+  margin: 0 0 0.5rem;
+}
+
+.csr-help p {
+  margin: 0;
+  max-width: 38rem;
+}
+
+.csr-help .ds_button {
+  margin: 0;
+}
+
+@media (min-width: 48rem) {
+  .csr-facts,
+  .csr-onpage ul {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+}
+
+@media (min-width: 62rem) {
+  .csr-facts,
+  .csr-onpage ul {
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+  }
+}
+
+@media (max-width: 47.9375rem) {
+  .csr-hero-actions .ds_button {
+    width: 100%;
+  }
 }
