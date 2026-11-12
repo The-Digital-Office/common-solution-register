@@ -5,6 +5,9 @@
 {% set demonstration = r.record_status == "demonstration" %}
 {% set example = r.record_status == "example" %}
 {% set hosted = entry.hosting == "owner-hosted" %}
+{% set go = r.service_url and r.service_url != SENTINEL %}
+{% set more = r.service_page_url and r.service_page_url != SENTINEL %}
+{% set sector = site.term("sectors", r.owner.sector) %}
 {% set type_noun = TYPE_LABELS[r.asset_type] | lower if r.asset_type != "api" else "API" %}
 {% block title %}{{ r.name }}{% endblock %}
 {% block before_main %}
@@ -17,7 +20,7 @@
 </nav>
 {% endblock %}
 {% block main %}
-<main class="ds_layout ds_layout--article" id="main-content">
+<main class="ds_layout ds_layout--article csr-record" id="main-content">
 <div class="ds_layout__header">
 {% if example %}
 <div class="csr-fiction" role="note">
@@ -27,18 +30,33 @@
 <header class="ds_page-header">
 <span class="ds_page-header__label ds_content-label">{{ TYPE_LABELS[r.asset_type] }}</span>
 <h1 class="ds_page-header__title">{{ r.name }}</h1>
-<dl class="ds_page-header__metadata ds_metadata">
-<div class="ds_metadata__item"><dt class="ds_metadata__key">Owner</dt><dd class="ds_metadata__value">{{ r.owner.organisation }}</dd></div>
-<div class="ds_metadata__item"><dt class="ds_metadata__key">Status</dt><dd class="ds_metadata__value">{{ STATUS_LABELS[r.status] }}</dd></div>
-<div class="ds_metadata__item"><dt class="ds_metadata__key">Record</dt><dd class="ds_metadata__value">{{ entry.id }}</dd></div>
-</dl>
 </header>
-<div class="csr-tags">
-{{ record_tags(entry) }}
+{% if r.record_status in PROVENANCE_TAGS %}{% set label, colour = PROVENANCE_TAGS[r.record_status] %}
+<div class="csr-tags"><strong class="ds_tag ds_tag--{{ colour }}">{{ label }}</strong></div>
+{% endif %}
+<p class="ds_leader">{{ r.summary }}</p>
+{# One main action: the service, or else the owner's page about it, or else the record itself (wireframe change W2). #}
+<div class="csr-hero-actions">
+{% if go %}<a class="ds_button" href="{{ r.service_url }}">Go to the service</a>{% endif %}
+{% if more %}<a class="ds_button{% if go %} ds_button--secondary{% endif %}" href="{{ r.service_page_url }}">More information from the owner</a>{% endif %}
+<a class="ds_button{% if go or more %} ds_button--secondary{% endif %}" href="solution.yml" download="{{ entry.id }}.yml">Download solution.yml</a>
 </div>
 </div>
 
 <div class="ds_layout__content">
+<dl class="csr-facts" aria-label="Key facts">
+<div class="csr-fact"><dt>Owner</dt><dd>{{ r.owner.organisation }}{% if sector and sector.label != r.owner.organisation %}<span class="csr-fact__hint"><a href="{{ root }}sectors/{{ r.owner.sector }}/">{{ sector.label }}</a></span>{% endif %}</dd></div>
+<div class="csr-fact"><dt>Lifecycle status</dt><dd>{{ STATUS_LABELS[r.status] }}{% if r.status == "deprecated" and r.deprecation %}<span class="csr-fact__hint">Since {{ r.deprecation.date | long_date }}</span>{% endif %}</dd></div>
+{% if demonstration %}
+<div class="csr-fact"><dt>Sources checked</dt><dd>{% if r.sources %}{{ r.sources | map(attribute="accessed") | max | long_date }}{% else %}{{ unstated() }}{% endif %}<span class="csr-fact__hint">Compiled from the sources listed below</span></dd></div>
+{% else %}
+<div class="csr-fact"><dt>Last confirmed</dt><dd>{{ r.confirmation.last_confirmed | long_date }}<span class="csr-fact__hint">By the owner{% if hosted %}, in their hosted solution.yml{% endif %}</span></dd></div>
+{% endif %}
+<div class="csr-fact"><dt>Currency</dt><dd>{{ CURRENCY_TAGS[entry.currency][0] }}<span class="csr-fact__hint">{% if entry.currency == "current" %}Next confirmation due by {{ entry.next_due | long_date }}{% elif entry.currency == "due" %}Confirmation due since {{ entry.next_due | long_date }}{% elif entry.currency == "stale" %}Not confirmed for more than {{ config.stale_after_months }} months{% else %}Becomes current once the owner confirms it{% endif %}</span></dd></div>
+<div class="csr-fact"><dt>Hosting</dt><dd>{% if hosted %}Owner-hosted<span class="csr-fact__hint">Harvested {{ entry.harvest.checked_at | long_datetime }}: {{ {"ok": "passed validation", "failing": "failing validation", "unavailable": "source unavailable"}.get(entry.harvest.state, "not harvested") }}</span>{% else %}Held in the register<span class="csr-fact__hint">Changed through pull requests to the register</span>{% endif %}</dd></div>
+<div class="csr-fact"><dt>Record</dt><dd>{{ entry.id }}<span class="csr-fact__hint"><a href="{{ root }}api/v0/assets/{{ entry.id }}.json">View as JSON</a></span></dd></div>
+</dl>
+<div class="csr-body">
 {% if hosted %}
 {% set h = entry.harvest %}
 {% if h.state == "failing" or h.state == "unavailable" %}
@@ -47,11 +65,6 @@
 <h2 class="ds_notification-message__title ds_h3">{% if h.state == "failing" %}Source failing validation since {{ h.failing_since | long_datetime }}{% else %}Source unavailable since {{ h.unavailable_since | long_datetime }}{% endif %}</h2>
 <p>This is the last valid version of the owner's <code>solution.yml</code>, harvested on {{ h.harvested_at | long_datetime }}. <a href="{{ root }}harvest/#{{ entry.id }}">See the harvest report</a>.</p>
 </div>
-</div>
-{% else %}
-<div class="ds_notification-panel ds_notification-panel--neutral">
-<h2 class="ds_notification-panel__title">Hosted by its owner</h2>
-<div class="ds_notification-panel__content"><p>This record is published from the owner's own <code>solution.yml</code>. It was last harvested on {{ h.harvested_at | long_datetime }} and passed validation.</p></div>
 </div>
 {% endif %}
 {% endif %}
@@ -87,9 +100,32 @@
 </div>
 </div>
 {% endif %}
+{% if demonstration %}
+<div class="csr-owner">
+<h2 class="ds_h3">Is this your {{ type_noun }}?</h2>
+<p>You can confirm this entry, correct it, host it yourself, or ask for it to be removed.</p>
+<div class="csr-hero-actions">
+<a class="ds_button" href="{{ root }}draft/?from={{ entry.id }}">Confirm or correct</a>
+<a href="{{ root }}about/#removal">Ask for removal</a>
+</div>
+</div>
+{% endif %}
+<nav class="csr-onpage" aria-labelledby="onpage">
+<h2 class="ds_h3" id="onpage">On this page</h2>
+<ul>
+<li><a href="#about">About this solution</a></li>
+<li><a href="#owner">Owner and contact</a></li>
+<li><a href="#classification">Classification</a></li>
+<li><a href="#adopt">Using this solution</a></li>
+<li><a href="#technical">Codebases</a></li>
+{% if r.open_data %}<li><a href="#data">Open data</a></li>{% endif %}
+{% if r.sources %}<li><a href="#sources">Sources</a></li>{% endif %}
+<li><a href="#record">About this record</a></li>
+{% if example and other_examples %}<li><a href="#examples">Other states shown by examples</a></li>{% endif %}
+</ul>
+</nav>
 
-<h2>About this solution</h2>
-<p class="ds_leader">{{ r.summary }}</p>
+<h2 id="about">About this solution</h2>
 <p>{{ r.purpose }}</p>
 
 <h2 id="owner">Owner and contact</h2>
@@ -175,67 +211,30 @@
 {% if related %}{% call row("Related") %}{% for e, rel in related %}<a href="{{ root }}assets/{{ e.id }}/">{{ e.data.name }}</a> ({{ RELATIONSHIP_LABELS[rel] }}){{ "; " if not loop.last }}{% endfor %}{% endcall %}{% endif %}
 {% call row("Schema version") %}{{ r.schema_version }}{% endcall %}
 </dl>
-<hr>
-<p><a href="{{ root }}contribute/#corrections">Report a problem with this page</a></p>
-</div>
-
-<div class="ds_layout__sidebar">
-{% set go = r.service_url and r.service_url != SENTINEL %}
-{% set more = r.service_page_url and r.service_page_url != SENTINEL %}
-{% if go or more %}
-<aside class="ds_article-aside" aria-labelledby="aside-service">
-<h2 class="ds_h3" id="aside-service">Service links</h2>
-<div class="csr-actions">
-{% if go %}<a class="ds_button" href="{{ r.service_url }}">Go to the service</a>{% endif %}
-{% if more %}<a class="ds_button{% if go %} ds_button--secondary{% endif %}" href="{{ r.service_page_url }}">More information from the owner</a>{% endif %}
-</div>
-</aside>
-{% endif %}
-{% if demonstration %}
-<aside class="ds_article-aside" aria-labelledby="aside-owner">
-<h2 class="ds_h3" id="aside-owner">Is this your {{ type_noun }}?</h2>
-<p>You can confirm this entry, correct it, host it yourself, or ask for it to be removed.</p>
-<div class="csr-actions">
-<a class="ds_button" href="{{ root }}draft/?from={{ entry.id }}">Confirm or correct</a>
-<a class="ds_button ds_button--secondary" href="{{ root }}about/#removal">Ask for removal</a>
-</div>
-</aside>
-{% endif %}
-<aside class="ds_article-aside" aria-labelledby="aside-use">
-<h2 class="ds_h3" id="aside-use">Use this record</h2>
 <ul class="ds_no-bullets">
-<li><a href="solution.yml" download="{{ entry.id }}.yml">Download solution.yml</a></li>
-<li><a href="{{ root }}api/v0/assets/{{ entry.id }}.json">View as JSON</a></li>
-{% if not demonstration %}<li><a href="{{ root }}draft/?from={{ entry.id }}">Suggest a correction</a></li>{% endif %}
+{% if hosted %}<li><a href="{{ root }}harvest/#{{ entry.id }}">Harvest history</a></li>{% endif %}
+<li><a href="{{ entry.history_url }}">{{ "Registration history" if hosted else "Change history" }} on GitHub</a></li>
 </ul>
-</aside>
-<nav class="ds_contents-nav" aria-label="Contents">
-<h2 class="ds_contents-nav__title" id="contents">Contents</h2>
-<ul class="ds_contents-nav__list">
-<li class="ds_contents-nav__item"><a class="ds_contents-nav__link" href="#owner">Owner and contact</a></li>
-<li class="ds_contents-nav__item"><a class="ds_contents-nav__link" href="#classification">Classification</a></li>
-<li class="ds_contents-nav__item"><a class="ds_contents-nav__link" href="#adopt">Using this solution</a></li>
-<li class="ds_contents-nav__item"><a class="ds_contents-nav__link" href="#technical">Codebases</a></li>
-{% if r.open_data %}<li class="ds_contents-nav__item"><a class="ds_contents-nav__link" href="#data">Open data</a></li>{% endif %}
-{% if r.sources %}<li class="ds_contents-nav__item"><a class="ds_contents-nav__link" href="#sources">Sources</a></li>{% endif %}
-<li class="ds_contents-nav__item"><a class="ds_contents-nav__link" href="#record">About this record</a></li>
-</ul>
-</nav>
 {% if example and other_examples %}
-<aside class="ds_article-aside" aria-labelledby="aside-examples">
-<h2 class="ds_h3" id="aside-examples">Other states shown by examples</h2>
+
+<h2 id="examples">Other states shown by examples</h2>
 <ul class="ds_no-bullets">
 {% for label, href, record_id in other_examples %}
 <li><a href="{{ root }}{{ href }}">{{ label }} ({{ record_id }})</a></li>
 {% endfor %}
 </ul>
-</aside>
 {% endif %}
-<aside class="ds_article-aside" aria-labelledby="aside-history">
-<h2 class="ds_h3" id="aside-history">Record history</h2>
-{% if hosted %}<p><a href="{{ root }}harvest/#{{ entry.id }}">Harvest history</a></p>{% endif %}
-<p><a href="{{ entry.history_url }}">{{ "Registration history" if hosted else "Change history" }} on GitHub</a></p>
-</aside>
+</div>
 </div>
 </main>
+{% endblock %}
+{% block after_main %}
+<div class="csr-help">
+<div class="ds_wrapper">
+<div class="csr-help__inner">
+<div><h2>Help improve this record</h2><p>Tell us about anything missing, unclear or out of date.</p></div>
+<a class="ds_button" href="{{ root }}draft/?from={{ entry.id }}">Suggest a correction</a>
+</div>
+</div>
+</div>
 {% endblock %}

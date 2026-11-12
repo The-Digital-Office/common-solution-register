@@ -35,6 +35,33 @@ nav:has(>.ds_breadcrumbs)+.ds_layout .ds_layout__header{padding-top:0}
 .ds_button:not(.ds_button--secondary,.ds_button--cancel):hover{background-color:#001a30}
 .ds_button--secondary{background-color:#fff;color:#002d54}
 .ds_button--secondary:hover:not(:focus){background-color:#ebf1f7;color:#002d54}
+/* Record summary card and actions (wireframe change W2) */
+.wf-hero-actions{display:flex;flex-wrap:wrap;gap:.75rem;margin:0 0 1.5rem}
+.wf-hero-actions .ds_button{margin:0}
+.wf-facts{border-bottom:.0625rem solid #b3b3b3;display:grid;gap:0 2rem;grid-template-columns:minmax(0,1fr);margin:0 0 2rem}
+.wf-fact{border-top:.0625rem solid #b3b3b3;margin:0;padding:1rem 0 1.25rem}
+.wf-fact dt{color:#333;font-size:.875rem;line-height:1.5rem;margin-bottom:.25rem}
+.wf-fact dd{color:#002d54;font-weight:700;margin:0}
+.wf-fact__hint{color:#5e5e5e;display:block;font-size:.875rem;font-weight:400;line-height:1.5rem;margin-top:.25rem}
+.wf-owner{background:#f8f8f8;border-left:.375rem solid #0065bd;margin:0 0 2rem;padding:1.25rem 1.5rem}
+.wf-owner h2{margin-top:0}
+.wf-owner .wf-hero-actions{align-items:center;margin:0}
+.wf-onpage{margin:0 0 2rem}
+.wf-onpage ul{display:grid;gap:.5rem 2rem;grid-template-columns:minmax(0,1fr);list-style:none;margin:0;padding:0}
+.wf-onpage li{margin:0}
+.wf-help{background:#ebf1f7;padding:2.5rem 0}
+.wf-help__inner{align-items:center;display:flex;flex-wrap:wrap;gap:1.25rem 2.5rem;justify-content:space-between}
+.wf-help h2{color:#002d54;margin:0 0 .5rem}
+.wf-help p{margin:0;max-width:38rem}
+.wf-help .ds_button{margin:0}
+.ds_layout--article{margin-bottom:3rem}
+.ds_layout--article .ds_layout__content{grid-column:1/-1}
+.wf-body{max-width:48rem}
+.ds_layout__header .ds_page-header{margin-bottom:1rem}
+.wf-tags{margin-bottom:1rem}
+@media (min-width:48rem){.wf-facts,.wf-onpage ul{grid-template-columns:repeat(2,minmax(0,1fr))}}
+@media (min-width:62rem){.wf-facts,.wf-onpage ul{grid-template-columns:repeat(3,minmax(0,1fr))}}
+@media (max-width:47.9375rem){.wf-hero-actions .ds_button{width:100%}}
 </style>
 </helmet>
 <div>
@@ -64,27 +91,42 @@ nav:has(>.ds_breadcrumbs)+.ds_layout .ds_layout__header{padding-top:0}
 <header class="ds_page-header">
 <span class="ds_page-header__label ds_content-label">Service</span>
 <h1 class="ds_page-header__title">Common Solution Register Demonstrator</h1>
-<dl class="ds_page-header__metadata ds_metadata">
-<div class="ds_metadata__item"><dt class="ds_metadata__key">Owner</dt><dd class="ds_metadata__value">The Digital Office for Scottish Local Government</dd></div>
-<div class="ds_metadata__item"><dt class="ds_metadata__key">Status</dt><dd class="ds_metadata__value">In development</dd></div>
-<div class="ds_metadata__item"><dt class="ds_metadata__key">Record</dt><dd class="ds_metadata__value">csr-0001</dd></div>
-</dl>
 </header>
 <div class="wf-tags">
 <strong class="ds_tag ds_tag--green">Confirmed by owner</strong>
-<strong class="ds_tag ds_tag--teal">Current</strong>
-<strong class="ds_tag ds_tag--darkblue">Owner-hosted</strong>
+</div>
+<p class="ds_leader">A demonstrator of a register of digital solutions intended for reuse across Scottish public bodies.</p>
+<div class="wf-hero-actions">
+<a class="ds_button" href="Main.dc.html">Go to the service</a>
+<a class="ds_button ds_button--secondary" href="About.dc.html">More information from the owner</a>
+<a class="ds_button ds_button--secondary" href="Validate.dc.html">Download solution.yml</a>
 </div>
 </div>
 
 <div class="ds_layout__content">
-<div class="ds_notification-panel ds_notification-panel--neutral">
-<h2 class="ds_notification-panel__title">Hosted by its owner</h2>
-<div class="ds_notification-panel__content"><p>This record is published from the owner's own <code>solution.yml</code>. It was last harvested on [harvest date] and passed validation.</p></div>
-</div>
+<dl class="wf-facts" aria-label="Key facts">
+<div class="wf-fact"><dt>Owner</dt><dd>The Digital Office for Scottish Local Government<span class="wf-fact__hint"><a href="Term.dc.html">Local government</a></span></dd></div>
+<div class="wf-fact"><dt>Lifecycle status</dt><dd>In development</dd></div>
+<div class="wf-fact"><dt>Last confirmed</dt><dd>[date]<span class="wf-fact__hint">By the owner, in their hosted solution.yml</span></dd></div>
+<div class="wf-fact"><dt>Currency</dt><dd>Current<span class="wf-fact__hint">Next confirmation due by [date + 11 months]</span></dd></div>
+<div class="wf-fact"><dt>Hosting</dt><dd>Owner-hosted<span class="wf-fact__hint">Harvested [date and time]: passed validation</span></dd></div>
+<div class="wf-fact"><dt>Record</dt><dd>csr-0001<span class="wf-fact__hint"><a href="Data.dc.html">View as JSON</a></span></dd></div>
+</dl>
+<div class="wf-body">
+<nav class="wf-onpage" aria-labelledby="onpage">
+<h2 class="ds_h3" id="onpage">On this page</h2>
+<ul>
+<li><a href="#about">About this solution</a></li>
+<li><a href="#owner">Owner and contact</a></li>
+<li><a href="#classification">Classification</a></li>
+<li><a href="#adopt">Using this solution</a></li>
+<li><a href="#technical">Codebases</a></li>
+<li><a href="#data">Open data</a></li>
+<li><a href="#record">About this record</a></li>
+</ul>
+</nav>
 
-<h2>About this solution</h2>
-<p class="ds_leader">A demonstrator of a register of digital solutions intended for reuse across Scottish public bodies.</p>
+<h2 id="about">About this solution</h2>
 <p>[Purpose from solution.yml: helps public bodies discover intentionally reusable digital assets and make an initial assessment of whether, and how, to adopt them. Maintained as structured records from which a website, open API and bulk data extract are generated.]</p>
 
 <h2 id="owner">Owner and contact</h2>
@@ -136,44 +178,19 @@ nav:has(>.ds_breadcrumbs)+.ds_layout .ds_layout__header{padding-top:0}
 <div class="ds_summary-list__item"><dt class="ds_summary-list__key">Registered in</dt><dd class="ds_summary-list__value">Merged in pull request [#N]</dd></div>
 <div class="ds_summary-list__item"><dt class="ds_summary-list__key">Schema version</dt><dd class="ds_summary-list__value">0.1</dd></div>
 </dl>
-<hr>
-<p><a href="Contribute.dc.html">Report a problem with this page</a></p>
+<ul class="ds_no-bullets">
+<li><a href="Harvest.dc.html">Harvest history</a></li>
+<li><a href="Main.dc.html">Registration history on GitHub</a></li>
+</ul>
+</div>
 </div>
 
-<div class="ds_layout__sidebar">
-<aside class="ds_article-aside">
-<h2 class="ds_h3">Actions</h2>
-<div class="wf-actions">
-<a class="ds_button" href="Main.dc.html">Go to the service</a>
-<a class="ds_button ds_button--secondary" href="About.dc.html">More information from the owner</a>
-</div>
-<ul class="ds_no-bullets">
-<li><a href="Validate.dc.html">Download solution.yml</a></li>
-<li><a href="Data.dc.html">View as JSON</a></li>
-<li><a href="Draft.dc.html">Suggest a correction</a></li>
-</ul>
-<div>
-</div>
-</aside>
-<nav class="ds_contents-nav" aria-label="Contents">
-<h2 class="ds_contents-nav__title" id="contents">Contents</h2>
-<ul class="ds_contents-nav__list">
-<li class="ds_contents-nav__item"><a class="ds_contents-nav__link" href="#owner">Owner and contact</a></li>
-<li class="ds_contents-nav__item"><a class="ds_contents-nav__link" href="#classification">Classification</a></li>
-<li class="ds_contents-nav__item"><a class="ds_contents-nav__link" href="#adopt">Using this solution</a></li>
-<li class="ds_contents-nav__item"><a class="ds_contents-nav__link" href="#technical">Codebases</a></li>
-<li class="ds_contents-nav__item"><a class="ds_contents-nav__link" href="#data">Open data</a></li>
-<li class="ds_contents-nav__item"><a class="ds_contents-nav__link" href="#record">About this record</a></li>
-</ul>
-</nav>
-<aside class="ds_article-aside">
-<h2 class="ds_h3">Record history</h2>
-<p><a href="Harvest.dc.html">Harvest history</a></p>
-<p><a href="Main.dc.html">Registration history on GitHub</a></p>
-</aside>
-</div>
 </main>
 </div>
+<div class="wf-help"><div class="ds_wrapper"><div class="wf-help__inner">
+<div><h2>Help improve this record</h2><p>Tell us about anything missing, unclear or out of date.</p></div>
+<a class="ds_button" href="Draft.dc.html">Suggest a correction</a>
+</div></div></div>
 
 <footer class="ds_site-footer"><div class="ds_wrapper"><div class="ds_site-footer__content">
 <ul class="ds_site-footer__site-items">

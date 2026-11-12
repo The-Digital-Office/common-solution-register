@@ -368,7 +368,7 @@ def test_record_page_shows_the_parser_verdict(tmp_path):
     site = built(tmp_path, state)
     record = page(site, "assets/csr-0001/index.html")
     assert "Fails the official parser</strong><br><span class=\"ds_hint-text\">error: url: is required</span>" in record
-    assert "It was last harvested on 3 November 2026 at 06:00 UTC and passed validation." in record
+    assert "Harvested 3 November 2026 at 06:00 UTC: passed validation" in record  # the Hosting fact
     valid, _ = run(ROOT, CONFIG, empty_state(), now=DAY1, parser=parser_says())
     other = build(ROOT, tmp_path / "valid", today=dt.date(2026, 11, 20), state=valid)
     assert "Valid (official parser)" in page(other, "assets/csr-0001/index.html")
