@@ -25,14 +25,14 @@ initialises the components the site uses: the mobile site navigation, skip
 links and details. The header follows the design system's site header with
 its mobile menu control; its icons are inline SVG paths, because the design
 system's graphic assets are not vendored. Above the title it shows
-`header_line` from `site.toml` ("Scottish public sector"), and its look
-follows decision D37.
+`header_line` from `site.toml` ("Scottish public sector"), as the wireframes
+show since change W1.
 
 Local styles are in `src/csr/static/csr.css`, limited to the cases section
 6.13 allows: tag rows, the fictional-example panel, unstated values, the
 actions column, the results heading row, filters and wide tables; and the
-header, page band and button colours of decision D37. Wireframe
-`wf-` classes are renamed `csr-`.
+header, page band and button colours the wireframes have had since change W1.
+Wireframe `wf-` classes are renamed `csr-`.
 
 ## Tests
 
@@ -76,6 +76,17 @@ differently.
 | Validate | `validate.html` | `validate/` | S10 (`static/js/validate.js`, with `record-check.js`, Ajv and `js-yaml`) |
 | Harvest | `harvest.html` | `harvest/` | S11 (from the harvest state; `src/csr/harvest.py`) |
 
+## Changes to the wireframes
+
+A deliberate change to the design changes the wireframes first, so they stay
+the requirements the build is checked against. The author approves the
+rendered wireframes, then the build and its visual baselines follow. A
+difference found while building is a departure instead (next section).
+
+| # | Date | Wireframes | Change | Why |
+|---|---|---|---|---|
+| W1 | 12 November 2026 | All 19 | A small line, "Scottish public sector", above the title, which is now "Common Solution Register" in large bold navy, without "Demonstrator" (the banner still says it on every page, with its wording unchanged); bold navy navigation with a thicker bar under the current page; a compact white phase banner; a full-width tinted band behind the breadcrumbs and the page header, with navy page titles; navy primary buttons and navy-outlined secondary buttons. In the build, `header_line` in `site.toml` sets the line above the title. | Three thin grey strips of similar weight came before each page and nothing marked where it began. The line above the title says who the register is for without naming a body that runs it. First of three stages of a redesign; the record page and the home page follow. It was built first, as departure D37 (specification 1.4), and brought into the wireframes afterwards (specification 1.5). |
+
 ## Departures and the author's decisions
 
 Raised rather than resolved silently (section 6.13). **Decided by the author
@@ -89,14 +100,6 @@ on 3 November 2026**, before the visual baselines were approved (slice S14):
 | D5 | Changed: Roboto, the design system's typeface, and Roboto Mono for code are served from the site itself (`static/fonts.css`, `vendor/roboto/`, `vendor/roboto-mono/`); no font service is contacted. |
 | D19 | As built: all eight sectors under "Intended for". |
 | All others | Accepted as built. |
-
-**Decided by the author on 12 November 2026**, after the site was published as
-a preview, to give each page a clearer start (the first of three stages of a
-redesign; the record page and the home page follow):
-
-| # | Decision |
-|---|---|
-| D37 | Changed: the header, page band and buttons, as described in the table below. Specification 6.13 was updated to allow these local styles in version 1.4. |
 
 The table below records each departure as raised.
 
@@ -138,5 +141,4 @@ The table below records each departure as raised.
 | D34 | Landmarks and focus | Not shown | The phase banner is a named region ("Demonstrator notice"); each sidebar aside is named by its heading; code examples that scroll sideways can be focused with the keyboard | Found by axe-core in S14 |
 | D35 | Footer organisation | "Hosted for demonstration by [host organisation]." as text | The host's logo (`host_logo` in `site.toml`), using the design system's footer logo pattern, linked to the host's website (`host_url`); its alt text is that sentence, so screen readers still hear who hosts it. With `host_logo` empty, the text is shown | Author's feedback, 9 November 2026 |
 | D36 | Draft form after "Check my answers" | A green "valid" panel: "Copy or download it below, then submit it or host it yourself" | The panel scrolls fully into view and is followed by "Send it to the register", with the GitHub issue, email and download options themselves (the sidebar keeps them too), and says nothing has been sent yet. Filled in from a record ("Suggest a correction"), it says "Your correction is ready to send", the issue opens the correction form with the record ID and the corrected YAML, and the email subject names the record; for an owner-hosted record it tells the owner to update their own file. "Start again" is "Clear and start again" on a new draft; on a correction it is replaced by "Discard edits", a link back to the record. On a correction, "Are you from the owning organisation?" must be answered: Yes confirms the record today (and makes a demonstration entry owner-confirmed); No suggests a change without altering its provenance or confirmation. Choices keep the record's order | Author's feedback, 9 November 2026: after checking a correction, nothing seemed to happen, and nothing was sent |
-| D37 | Header, page band and buttons, every page | The design system's site header with the title "Common Solution Register: Demonstrator" in regular weight; a grey phase banner; the page header on white; the design system's blue buttons | A small line, "Scottish public sector" (`header_line` in `site.toml`), above the title "Common Solution Register" in large bold navy; bold navy navigation with a thicker bar under the current page; a compact white phase banner with the same wording, so "Demonstrator" is still on every page; a full-width tinted band behind the breadcrumbs and the page header, with navy page titles; navy primary buttons and navy-outlined secondary buttons | Three thin grey strips of similar weight came before each page and nothing marked where it began. The line above the title says who the register is for without naming a body that runs it. Decided by the author on 12 November 2026 |
 
