@@ -91,8 +91,8 @@ def test_the_footer_names_the_host_in_text_without_a_logo(tmp_path):
     assert "<img" not in html
 
 
-def test_home_lists_records_without_javascript(site):
-    html = page(site, "index.html")
+def test_the_finder_lists_records_without_javascript(site):
+    html = page(site, "solutions/index.html")
     p = Parsed(html)
     items = re.findall(r'<li class="ds_search-result" data-id="(csr-\d+)"( hidden)?>', html)
     shown = [i for i, hidden in items if not hidden]
@@ -104,6 +104,51 @@ def test_home_lists_records_without_javascript(site):
     assert f"{len(shown)} solutions" in p.text  # unpublished records are not listed at all
     assert "csr-js-only" in p.classes  # search, filters and sorting hidden without JavaScript
     assert "Confirmed by owner (2)" in p.text and "Software (0)" in p.text
+
+
+def test_home_page_introduces_the_register(site):
+    html = page(site, "index.html")
+    p = Parsed(html)
+    assert p.h2 == ["What is a common solution?", "Who is this register for?", "Recently updated", "Ways in",
+                    "Is your solution missing?"]  # fmt: skip
+    assert 'action="./solutions/" method="get"' in html  # the search goes to the finder
+    assert "./solutions/?sort=changed" in p.links and "./solutions/" in p.links
+    for anchor in ("h-capabilities", "h-sectors", "h-service-areas"):  # each lands on its Browse column
+        assert f"./browse/#{anchor}" in p.links and f'id="{anchor}"' in page(site, "browse/index.html")
+    assert "search.js" not in html and "csr-js-only" not in html  # the home page needs no script
+    listed = [e for e in site.register.entries if not e.withdrawn]
+    owners = {e.data["owner"]["organisation"] for e in listed}
+    assert f"{len(listed)} solutions from {len(owners)} owners" in p.text
+    assert html.count('<p class="csr-update">') == 3
+
+
+def test_recently_updated_rule():
+    from csr.build import recently_updated
+    from csr.register import Entry
+
+    def entry(id, confirmed=None, changed=None):
+        data = {"confirmation": {"last_confirmed": confirmed}} if confirmed else {}
+        return Entry(id=id, data=data, file="", text="", last_changed=dt.date.fromisoformat(changed) if changed else None)
+
+    entries = [
+        entry("a", confirmed="2026-10-01", changed="2026-09-01"),  # confirmed after its last change
+        entry("b", changed="2026-11-01"),  # changed (a demonstration entry: never confirmed)
+        entry("c", confirmed="2026-05-01", changed="2026-10-15"),  # changed after it was confirmed
+        entry("d"),  # no dates (built without git history): left out
+        entry("e", confirmed="2026-01-01"),
+    ]
+    assert [(e.id, what, str(when)) for e, what, when in recently_updated(entries)] == [
+        ("b", "changed", "2026-11-01"), ("c", "changed", "2026-10-15"), ("a", "confirmed", "2026-10-01"),
+    ]  # fmt: skip
+
+
+def test_the_finder_and_records_point_at_solutions(site):
+    record = Parsed(page(site, "assets/csr-0001/index.html"))
+    assert "../../solutions/" in record.links  # the "Solutions" breadcrumb
+    assert 'aria-current="page" href="../../solutions/">Find solutions' in page(site, "assets/csr-0001/index.html")
+    finder = page(site, "solutions/index.html")
+    assert 'aria-current="page" href="../solutions/">Find solutions' in finder
+    assert 'aria-current="page" href="./">Home' in page(site, "index.html")
 
 
 def test_record_page_structure(site):
@@ -235,7 +280,8 @@ def test_the_site_s_own_files_are_fetched_again_when_they_change(site):
     from csr.build import static_version
 
     v = static_version()
-    assert f'static/js/init.js?v={v}"' in page(site, "index.html") and f'static/js/search.js?v={v}"' in page(site, "index.html")
+    assert f'static/js/init.js?v={v}"' in page(site, "index.html")
+    assert f'static/js/search.js?v={v}"' in page(site, "solutions/index.html")
     draft = (site.out / "static/js/draft.js").read_text(encoding="utf-8")
     assert f"from './draft-core.js?v={v}'" in draft and f"from './record-check.js?v={v}'" in draft
     assert "js-yaml/5.5.0/js-yaml.mjs'" in draft  # vendored files keep their versioned folders

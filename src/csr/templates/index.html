@@ -1,124 +1,90 @@
 {% extends "base.html" %}
-{% from "partials/tags.html" import record_tags with context %}
-{% set title = "Find a common solution" %}
-{% block title %}Find a common solution{% endblock %}
-{% block scripts %}<script type="module" src="{{ root }}static/js/search.js?v={{ v }}"></script>{% endblock %}
-{% set listed = entries | rejectattr("withdrawn") | list %}
-{% macro checkbox(id, label, count, group=none, value=none) %}
-<div class="ds_checkbox ds_checkbox--small">
-<input class="ds_checkbox__input" id="{{ id }}" type="checkbox"{% if group %} data-group="{{ group }}" value="{{ value }}"{% endif %}>
-<label class="ds_checkbox__label" for="{{ id }}" data-label="{{ label }}">{{ label }}{% if count is not none %} ({{ count }}){% endif %}</label>
-</div>
-{% endmacro %}
-{% macro select(id, label, any_label, taxonomy, group) %}
-<div class="ds_question">
-<label class="ds_label" for="{{ id }}">{{ label }}</label>
-<div class="ds_select-wrapper">
-<select class="ds_select" id="{{ id }}" data-group="{{ group }}">
-<option value="">{{ any_label }}</option>
-{% for term in site.taxonomies[taxonomy].terms %}
-<option value="{{ term.id }}" data-label="{{ term.label }}">{{ term.label }}</option>
-{% endfor %}
-</select>
-<span class="ds_select-arrow" aria-hidden="true"></span>
-</div>
+{% set title = "Home" %}
+{% block title %}Home{% endblock %}
+{% macro way(title, text, href, link) %}
+<div>
+<h3>{{ title }}</h3>
+<p>{{ text }}</p>
+<a class="csr-arrow" href="{{ root }}{{ href }}">{{ link }}</a>
 </div>
 {% endmacro %}
 {% block main %}
-<main class="ds_layout ds_layout--search-results--filters" id="main-content">
+{# The home page as an introduction (wireframe change W3); the finder is at solutions/. #}
+<main class="csr-home" id="main-content">
 <div class="ds_layout__header">
 <header class="ds_page-header">
-<h1 class="ds_page-header__title">Find a common solution</h1>
+<h1 class="ds_page-header__title">Find reusable digital solutions for the Scottish public sector</h1>
 </header>
-<p class="ds_leader">Reusable digital services, platforms, components, APIs and standards for the Scottish public sector.</p>
-</div>
-
-<div class="ds_layout__content">
-<div class="ds_site-search csr-js-only">
-<form class="ds_site-search__form" role="search" action="{{ root }}" method="get">
-<label class="ds_label visually-hidden" for="q">Search solutions</label>
+<div class="ds_site-search">
+<form class="ds_site-search__form" role="search" action="{{ root }}solutions/" method="get">
+<label class="ds_label" for="q">Search the register</label>
 <div class="ds_input__wrapper ds_input__wrapper--has-icon">
 <input class="ds_input ds_site-search__input" id="q" name="q" type="search" placeholder="Search by name, purpose or keyword" autocomplete="off">
-<button class="ds_button" type="submit"><span class="visually-hidden">Search</span><svg class="ds_icon" aria-hidden="true" viewBox="0 0 24 24" width="24" height="24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><circle cx="10.5" cy="10.5" r="6.5"></circle><line x1="15.5" y1="15.5" x2="21" y2="21"></line></svg></button>
+<button class="ds_button" type="submit"><span class="visually-hidden">Search</span><svg class="ds_icon" aria-hidden="true" role="img" viewBox="0 0 24 24" width="24" height="24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><circle cx="10.5" cy="10.5" r="6.5"></circle><line x1="15.5" y1="15.5" x2="21" y2="21"></line></svg></button>
 </div>
 </form>
 </div>
+<p class="csr-home-stats">{{ solutions }} solution{{ "" if solutions == 1 else "s" }} from {{ owners }} owner{{ "" if owners == 1 else "s" }}</p>
+<a class="csr-arrow" href="{{ root }}solutions/">See all solutions</a>
 </div>
 
-<div class="ds_layout__sidebar">
-<section class="ds_search-filters csr-js-only" aria-labelledby="filters-title">
-<h2 class="ds_search-filters__title ds_h3" id="filters-title">Filter by</h2>
-
-<fieldset class="csr-filter">
-<legend class="ds_label">Provenance</legend>
-<div class="ds_checkboxes ds_field-group">
-{% for key, (label, colour) in PROVENANCE_TAGS.items() %}
-{{ checkbox("p-" ~ key, label, listed | selectattr("data.record_status", "equalto", key) | list | length, "provenance", key) }}
-{% endfor %}
-</div>
-</fieldset>
-
-<fieldset class="csr-filter">
-<legend class="ds_label">Asset type</legend>
-<div class="ds_checkboxes ds_field-group">
-{% for key, label in TYPE_LABELS.items() %}
-{{ checkbox("t-" ~ key, label, listed | selectattr("data.asset_type", "equalto", key) | list | length, "type", key) }}
-{% endfor %}
-</div>
-</fieldset>
-
-{{ select("f-sector", "Owning sector", "Any sector", "sectors", "sector") }}
-{{ select("f-area", "Service area", "Any service area", "service-areas", "area") }}
-{{ select("f-cap", "Capability", "Any capability", "capabilities", "capability") }}
-
-<fieldset class="csr-filter">
-<legend class="ds_label">Currency</legend>
-<div class="ds_checkboxes ds_field-group">
-{% for key, (label, colour) in CURRENCY_TAGS.items() %}
-{{ checkbox("c-" ~ key, label, listed | selectattr("currency", "equalto", key) | list | length, "currency", key) }}
-{% endfor %}
-</div>
-</fieldset>
-
-{{ checkbox("show-withdrawn", "Include withdrawn records", none) }}
-
-<button class="ds_button ds_button--secondary ds_button--small" type="button" id="clear-filters">Clear all filters</button>
+<div class="csr-band">
+<div class="csr-intro">
+<section aria-labelledby="what">
+<h2 id="what">What is a common solution?</h2>
+<p>A service, platform, component, API, standard or pattern that one public body offers for others to reuse, instead of each building its own.</p>
+<a class="csr-arrow" href="{{ root }}about/">How the register works</a>
+</section>
+<section class="csr-intro__who" aria-labelledby="who">
+<h2 id="who">Who is this register for?</h2>
+<p>If you plan, buy or build digital services in the Scottish public sector, it helps you find what already exists, who owns it and how to adopt it. If you own a solution, it is where you describe it.</p>
 </section>
 </div>
-
-<div class="ds_layout__list">
-<div class="csr-results-head">
-<h2 class="ds_search-results__title ds_h3" aria-live="polite">{{ listed | length }} solution{{ "" if listed | length == 1 else "s" }}</h2>
-<div class="ds_sort-options csr-js-only">
-<label class="ds_label" for="sort-by">Sort by</label>
-<div class="ds_select-wrapper">
-<select class="ds_select" id="sort-by"><option value="name">Name (A to Z)</option><option value="changed">Recently changed</option><option value="confirmed">Recently confirmed</option></select>
-<span class="ds_select-arrow" aria-hidden="true"></span>
-</div>
-</div>
 </div>
 
-<div class="visually-hidden" role="status" id="results-status"></div>
-<div class="ds_inset-text" id="no-results" hidden><div class="ds_inset-text__text">No solutions match. Try removing a filter or searching for a capability such as "payments".</div></div>
-
-<ol class="ds_search-results__list">
-{% for entry in entries %}
-{% set r = entry.data %}
-<li class="ds_search-result" data-id="{{ entry.id }}"{% if entry.withdrawn %} hidden{% endif %}>
-<h3 class="ds_search-result__title"><a class="ds_search-result__link" href="{{ root }}assets/{{ entry.id }}/">{{ r.name }}</a></h3>
-<p class="ds_search-result__summary">{{ r.summary }}</p>
-<dl class="ds_search-result__metadata ds_metadata ds_metadata--inline">
+{% if recent %}
+<section class="csr-section" aria-labelledby="recent">
+<h2 id="recent">Recently updated</h2>
+<p>Records recently confirmed or changed by their owners. Each record page has the full details.</p>
+<ul class="csr-recent">
+{% for entry, what, when in recent %}{% set r = entry.data %}
+<li>
+<h3><a href="{{ root }}assets/{{ entry.id }}/">{{ r.name }}</a></h3>
+{% if r.record_status in PROVENANCE_TAGS %}{% set label, colour = PROVENANCE_TAGS[r.record_status] %}<strong class="ds_tag ds_tag--{{ colour }}">{{ label }}</strong>{% endif %}
+<p class="csr-update">Update: {% if what == "confirmed" %}Confirmed by its owner on {{ when | long_date }}.{% else %}Changed on {{ when | long_date }}{% if entry.hosting == "owner-hosted" %} in the owner's hosted solution.yml{% endif %}.{% endif %}</p>
+<p>{{ r.summary }}</p>
+<dl class="ds_metadata ds_metadata--inline">
 <div class="ds_metadata__item"><dt class="ds_metadata__key">Owner</dt><dd class="ds_metadata__value">{{ r.owner.organisation }}</dd></div>
 <div class="ds_metadata__item"><dt class="ds_metadata__key">Type</dt><dd class="ds_metadata__value">{{ TYPE_LABELS[r.asset_type] }}</dd></div>
-<div class="ds_metadata__item"><dt class="ds_metadata__key">Status</dt><dd class="ds_metadata__value">{{ STATUS_LABELS[r.status] }}</dd></div>
 </dl>
-<div class="csr-tags">
-{{ record_tags(entry, show_status=false) }}
-</div>
 </li>
 {% endfor %}
-</ol>
-<script type="application/json" id="csr-search-index">{{ search_index | tojson }}</script>
+</ul>
+<a class="ds_button" href="{{ root }}solutions/?sort=changed">See all recent changes</a>
+</section>
+{% endif %}
+
+<div class="csr-band csr-band--tint">
+<h2>Ways in</h2>
+<div class="csr-ways">
+{{ way("Browse by capability", "Find solutions by what they do, such as payments, identity or forms.", "browse/#h-capabilities", "Browse capabilities") }}
+{{ way("Browse by sector", "See what each part of the public sector owns and offers for reuse.", "browse/#h-sectors", "Browse sectors") }}
+{{ way("Browse by service area", "Find solutions that support a service area, such as housing or social care.", "browse/#h-service-areas", "Browse service areas") }}
+{{ way("Add or correct a record", "Describe a solution your organisation offers for reuse, or suggest a correction.", "contribute/", "Contribute") }}
+{{ way("Validate a solution.yml", "Check a solution.yml against the schema before you submit or host it.", "validate/", "Validate a file") }}
+{{ way("Data and API", "Download the register as JSON or CSV, or use the read-only API.", "data/", "Use the data") }}
+{{ way("How records stay current", "Owners confirm their records every year. Find out what current, due and stale mean.", "currency/", "Currency rules") }}
+{{ way("Field reference", "What each field in a record means and which are required.", "reference/", "Read the field reference") }}
+{{ way("About this register", "Why the register exists, who built it and what it is not.", "about/", "About the register") }}
+</div>
+</div>
+
+<div class="csr-missing">
+<div>
+<h2>Is your solution missing?</h2>
+<p>If your organisation offers something other public bodies could reuse, you can describe it in a short form and send it for review, or host the record yourself.</p>
+</div>
+<a class="ds_button" href="{{ root }}contribute/">Add a solution</a>
 </div>
 </main>
 {% endblock %}

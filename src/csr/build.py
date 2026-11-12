@@ -79,7 +79,8 @@ RULE_LABELS = {
 }  # fmt: skip
 
 NAVIGATION = [
-    ("home", "Find solutions", ""),
+    ("home", "Home", ""),
+    ("solutions", "Find solutions", "solutions/"),
     ("browse", "Browse", "browse/"),
     ("contribute", "Contribute", "contribute/"),
     ("validate", "Validate", "validate/"),
@@ -260,7 +261,9 @@ def build(
     site = Site(out, config, register, today)
     _version_imports(out / "static" / "js", site.env.globals["v"])
     listed = [e for e in register.entries if not e.withdrawn]
-    site.page("", "index.html", nav="home", entries=register.entries, search_index=search_index(site))
+    owners = {e.data["owner"]["organisation"] for e in listed}
+    site.page("", "index.html", nav="home", recent=recently_updated(listed), solutions=len(listed), owners=len(owners))
+    site.page("solutions/", "solutions.html", nav="solutions", entries=register.entries, search_index=search_index(site))
     for entry in register.entries:
         _record_pages(site, entry)
     _taxonomy_pages(site, listed)
@@ -283,8 +286,31 @@ def build(
     return BuildResult(out=out, pages=site.pages, register=register)
 
 
+#: How many records the home page shows under "Recently updated" (DP-55).
+RECENT_COUNT = 3
+
+
+def recently_updated(entries: list[Entry], count: int = RECENT_COUNT) -> list[tuple[Entry, str, dt.date]]:
+    """The records most recently changed or confirmed, latest first, with what happened and when.
+
+    Withdrawn records are left out by the caller; fictional examples are included. A record with
+    neither date (a demonstration entry built without git history) is left out. Ties keep the
+    register's order.
+    """
+    dated = []
+    for entry in entries:
+        confirmed = (entry.data.get("confirmation") or {}).get("last_confirmed")
+        confirmed = dt.date.fromisoformat(str(confirmed)) if confirmed else None
+        changed = entry.last_changed
+        if confirmed and (not changed or confirmed >= changed):
+            dated.append((entry, "confirmed", confirmed))
+        elif changed:
+            dated.append((entry, "changed", changed))
+    return sorted(dated, key=lambda item: item[2], reverse=True)[:count]
+
+
 def search_index(site: Site) -> list[dict[str, Any]]:
-    """What the home page script needs for each record: its facets, dates and search text
+    """What the finder script needs for each record: its facets, dates and search text
     (name, summary, owner, purpose, id, type and the labels and synonyms of its terms)."""
     index = []
     for entry in site.register.entries:
@@ -519,7 +545,7 @@ def _record_pages(site: Site, entry: Entry) -> None:
     site.page(
         path,
         template,
-        nav="home",
+        nav="solutions",
         entry=entry,
         r=entry.data,
         related=[(e, rel) for e, rel in related if e],

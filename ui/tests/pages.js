@@ -11,7 +11,8 @@ const SAMPLE = [
 ].join('\n');
 
 const PAGES = [
-  { name: '01-home-and-search', path: '' },
+  { name: '01-home', path: '' },
+  { name: '01b-find-solutions', path: 'solutions/' },
   { name: '02-browse', path: 'browse/' },
   { name: '03-taxonomy-term', path: 'capabilities/identity-and-access/' },
   { name: '04-record-service-with-codebase', path: 'assets/csr-0001/' },

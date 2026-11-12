@@ -116,7 +116,7 @@ latest pull request.
 The automated tests (axe-core on every page and state, and the behaviour tests)
 pass, but they do not replace a person (specification 6.9: WCAG 2.2 AA, with a
 manual keyboard and screen-reader pass). Use the `site-preview` artifact or a
-local build (README). Check at least: the home page, a record page of each kind
+local build (README). Check at least: the home page, Find solutions, a record page of each kind
 (owner-hosted `csr-0001`, demonstration `csr-0003`, example `csr-9003`,
 withdrawn `csr-9005`), Browse, a term page, Contribute, the draft form and the
 validate page.
@@ -128,7 +128,7 @@ validate page.
       sensible order, and its focus is clearly visible.
 - [ ] The mobile menu (narrow the window to phone width) opens and closes with
       the keyboard.
-- [ ] Home page: type a search, choose filters and a sort order, and clear
+- [ ] Find solutions: type a search, choose filters and a sort order, and clear
       them, all from the keyboard.
 - [ ] Draft form: complete a record, submit it with errors, use the error
       summary links to reach each field, fix them, and use Copy YAML and
@@ -143,7 +143,7 @@ Safari on a Mac or iPhone):
       sense when listed (NVDA: Insert+F7; VoiceOver: the rotor).
 - [ ] Landmarks are announced: header, navigation, the demonstrator notice,
       main and footer.
-- [ ] Home page: the result count is announced after a search or filter.
+- [ ] Find solutions: the result count is announced after a search or filter.
 - [ ] Record page: tags (provenance, status, currency) and "Not stated in
       public sources" are read meaningfully.
 - [ ] Draft form: labels, hints and errors are read with each field, and the
@@ -155,7 +155,7 @@ Safari on a Mac or iPhone):
 
 - [ ] At 200% and 400% zoom (or 320 pixels wide), nothing is cut off and
       there is no scrolling sideways except in code examples.
-- [ ] With JavaScript turned off, the home page lists every record, and the
+- [ ] With JavaScript turned off, Find solutions lists every record, and the
       draft and validate pages say they need JavaScript.
 
 Record what you found, and fix or list each problem in the accessibility

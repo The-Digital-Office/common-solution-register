@@ -1,4 +1,4 @@
-// Home page search, filters and sort (specification 6.13, parity rows 1 to 6).
+// The finder's search, filters and sort (solutions/) (specification 6.13, parity rows 1 to 6).
 // Without JavaScript the page shows the full list; this script reveals the
 // filters and keeps the state in the URL so results can be shared.
 import {
