@@ -33,6 +33,34 @@ nav:has(>.ds_breadcrumbs)+.ds_layout .ds_layout__header{padding-top:0}
 .ds_button:not(.ds_button--secondary,.ds_button--cancel):hover{background-color:#001a30}
 .ds_button--secondary{background-color:#fff;color:#002d54}
 .ds_button--secondary:hover:not(:focus){background-color:#ebf1f7;color:#002d54}
+/* Record summary card and actions (wireframe change W2) */
+.wf-hero-actions{display:flex;flex-wrap:wrap;gap:.75rem;margin:0 0 1.5rem}
+.wf-hero-actions .ds_button{margin:0}
+.wf-facts{border-bottom:.0625rem solid #b3b3b3;display:grid;gap:0 2rem;grid-template-columns:minmax(0,1fr);margin:0 0 2rem}
+.wf-fact{border-top:.0625rem solid #b3b3b3;margin:0;padding:1rem 0 1.25rem}
+.wf-fact dt{color:#333;font-size:.875rem;line-height:1.5rem;margin-bottom:.25rem}
+.wf-fact dd{color:#002d54;font-weight:700;margin:0}
+.wf-fact__hint{color:#5e5e5e;display:block;font-size:.875rem;font-weight:400;line-height:1.5rem;margin-top:.25rem}
+.wf-owner{background:#f8f8f8;border-left:.375rem solid #0065bd;margin:0 0 2rem;padding:1.25rem 1.5rem}
+.wf-owner h2{margin-top:0}
+.wf-owner .wf-hero-actions{align-items:center;margin:0}
+.wf-onpage{margin:0 0 2rem}
+.wf-onpage ul{display:grid;gap:.5rem 2rem;grid-template-columns:minmax(0,1fr);list-style:none;margin:0;padding:0}
+.wf-onpage li{margin:0}
+.wf-help{background:#ebf1f7;padding:2.5rem 0}
+.wf-help__inner{align-items:center;display:flex;flex-wrap:wrap;gap:1.25rem 2.5rem;justify-content:space-between}
+.wf-help h2{color:#002d54;margin:0 0 .5rem}
+.wf-help p{margin:0;max-width:38rem}
+.wf-help .ds_button{margin:0}
+.ds_layout--article{margin-bottom:3rem}
+.ds_layout--article .ds_layout__content{grid-column:1/-1}
+.wf-body{max-width:48rem}
+.ds_layout__header .wf-fiction{margin-top:1.5rem}
+.ds_layout__header .ds_page-header{margin-bottom:1rem}
+.wf-tags{margin-bottom:1rem}
+@media (min-width:48rem){.wf-facts,.wf-onpage ul{grid-template-columns:repeat(2,minmax(0,1fr))}}
+@media (min-width:62rem){.wf-facts,.wf-onpage ul{grid-template-columns:repeat(3,minmax(0,1fr))}}
+@media (max-width:47.9375rem){.wf-hero-actions .ds_button{width:100%}}
 </style>
 </helmet>
 <div>
@@ -65,20 +93,28 @@ nav:has(>.ds_breadcrumbs)+.ds_layout .ds_layout__header{padding-top:0}
 <header class="ds_page-header">
 <span class="ds_page-header__label ds_content-label">Service</span>
 <h1 class="ds_page-header__title">Example: Legacy Waste Booking Service</h1>
-<dl class="ds_page-header__metadata ds_metadata">
-<div class="ds_metadata__item"><dt class="ds_metadata__key">Owner</dt><dd class="ds_metadata__value">Example Council</dd></div>
-<div class="ds_metadata__item"><dt class="ds_metadata__key">Status</dt><dd class="ds_metadata__value">Deprecated</dd></div>
-<div class="ds_metadata__item"><dt class="ds_metadata__key">Record</dt><dd class="ds_metadata__value">csr-9003</dd></div>
-</dl>
 </header>
 <div class="wf-tags">
 <strong class="ds_tag ds_tag--purple">Fictional example</strong>
-<strong class="ds_tag ds_tag--red">Stale</strong>
-<strong class="ds_tag ds_tag--orange">Deprecated</strong>
+</div>
+<p class="ds_leader">Fictional example of a deprecated service with migration guidance.</p>
+<div class="wf-hero-actions">
+<a class="ds_button" href="Record-Example.dc.html">Go to the service</a>
+<a class="ds_button ds_button--secondary" href="Record-Example.dc.html">More information from the owner</a>
+<a class="ds_button ds_button--secondary" href="Validate.dc.html">Download solution.yml</a>
 </div>
 </div>
 
 <div class="ds_layout__content">
+<dl class="wf-facts" aria-label="Key facts">
+<div class="wf-fact"><dt>Owner</dt><dd>Example Council<span class="wf-fact__hint"><a href="Term.dc.html">Local government</a></span></dd></div>
+<div class="wf-fact"><dt>Lifecycle status</dt><dd>Deprecated<span class="wf-fact__hint">Since 31 March 2026</span></dd></div>
+<div class="wf-fact"><dt>Last confirmed</dt><dd>2 September 2025<span class="wf-fact__hint">By the owner</span></dd></div>
+<div class="wf-fact"><dt>Currency</dt><dd>Stale<span class="wf-fact__hint">Not confirmed for more than 12 months</span></dd></div>
+<div class="wf-fact"><dt>Hosting</dt><dd>Held in the register<span class="wf-fact__hint">Changed through pull requests to the register</span></dd></div>
+<div class="wf-fact"><dt>Record</dt><dd>csr-9003<span class="wf-fact__hint"><a href="Data.dc.html">View as JSON</a></span></dd></div>
+</dl>
+<div class="wf-body">
 <div class="ds_notification-message ds_notification-message--warning">
 <div class="ds_notification-message__body">
 <h2 class="ds_notification-message__title ds_h3">This service is deprecated</h2>
@@ -92,9 +128,20 @@ nav:has(>.ds_breadcrumbs)+.ds_layout .ds_layout__header{padding-top:0}
 <p>The owner last confirmed it on 2 September 2025, more than 12 months ago. Check details with the owner before relying on them.</p>
 </div>
 </div>
+<nav class="wf-onpage" aria-labelledby="onpage">
+<h2 class="ds_h3" id="onpage">On this page</h2>
+<ul>
+<li><a href="#about">About this solution</a></li>
+<li><a href="#owner">Owner and contact</a></li>
+<li><a href="#adopt">Using this solution</a></li>
+<li><a href="#codebases">Codebases</a></li>
+<li><a href="#data">Open data</a></li>
+<li><a href="#record">About this record</a></li>
+<li><a href="#examples">Other states shown by examples</a></li>
+</ul>
+</nav>
 
-<h2>About this solution</h2>
-<p class="ds_leader">Fictional example of a deprecated service with migration guidance.</p>
+<h2 id="about">About this solution</h2>
 <p>Lets residents book bulky waste collections online. Being replaced by a reusable booking component.</p>
 
 <h2 id="owner">Owner and contact</h2>
@@ -131,36 +178,23 @@ nav:has(>.ds_breadcrumbs)+.ds_layout .ds_layout__header{padding-top:0}
 <div class="ds_summary-list__item"><dt class="ds_summary-list__key">Currency</dt><dd class="ds_summary-list__value">Stale: confirmation overdue since 2 September 2026</dd></div>
 <div class="ds_summary-list__item"><dt class="ds_summary-list__key">Related</dt><dd class="ds_summary-list__value"><a href="Record-Example.dc.html">Example: Hosted Booking Component</a> (replacement)</dd></div>
 </dl>
-<hr>
-<p><a href="Contribute.dc.html">Report a problem with this page</a></p>
-</div>
 
-<div class="ds_layout__sidebar">
-<aside class="ds_article-aside">
-<h2 class="ds_h3">Service links</h2>
-<p><a class="ds_button" href="Record-Example.dc.html">Go to the service</a></p>
-<p><a class="ds_button ds_button--secondary" href="Record-Example.dc.html">More information from the owner</a></p>
-</aside>
-<aside class="ds_article-aside">
-<h2 class="ds_h3">Use this record</h2>
-<ul class="ds_no-bullets">
-<li><a href="Validate.dc.html">Download solution.yml</a></li>
-<li><a href="Data.dc.html">View as JSON</a></li>
-<li><a href="Draft.dc.html">Suggest a correction</a></li>
-</ul>
-</aside>
-<aside class="ds_article-aside">
-<h2 class="ds_h3">Other states shown by examples</h2>
+<h2 id="examples">Other states shown by examples</h2>
 <ul class="ds_no-bullets">
 <li><a href="Main.dc.html">Due for confirmation (csr-9004)</a></li>
 <li><a href="Main.dc.html">API with interfaces (csr-9002)</a></li>
 <li><a href="Main.dc.html">Withdrawn (csr-9005)</a></li>
 <li><a href="Harvest.dc.html">Failing hosted source (csr-9007)</a></li>
 </ul>
-</aside>
 </div>
+</div>
+
 </main>
 </div>
+<div class="wf-help"><div class="ds_wrapper"><div class="wf-help__inner">
+<div><h2>Help improve this record</h2><p>Tell us about anything missing, unclear or out of date.</p></div>
+<a class="ds_button" href="Draft.dc.html">Suggest a correction</a>
+</div></div></div>
 
 <footer class="ds_site-footer"><div class="ds_wrapper"><div class="ds_site-footer__content">
 <ul class="ds_site-footer__site-items">
