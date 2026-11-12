@@ -5,7 +5,8 @@
   "launch": {"view": "canvas"},
   "pages": [],
   "boards": {
-    "Main.dc.html": {"x": 0, "y": 0, "w": 1280, "h": 1900, "title": "Home and search", "expand": "fill", "is_interactive": true},
+    "Main.dc.html": {"x": 0, "y": 0, "w": 1280, "h": 2600, "title": "Home", "expand": "fill"},
+    "Solutions.dc.html": {"x": 4080, "y": 0, "w": 1280, "h": 1900, "title": "Find solutions (the finder)", "expand": "fill", "is_interactive": true},
     "Browse.dc.html": {"x": 1360, "y": 0, "w": 1280, "h": 1500, "title": "Browse the taxonomy", "expand": "fill"},
     "Term.dc.html": {"x": 2720, "y": 0, "w": 1280, "h": 1300, "title": "Taxonomy term: Identity and access", "expand": "fill"},
     "Record-Hosted.dc.html": {"x": 0, "y": 2280, "w": 1280, "h": 2400, "title": "Record: service with its codebase, owner-hosted (csr-0001)", "expand": "fill"},
@@ -27,6 +28,7 @@
   },
   "order": [
     "Main.dc.html",
+    "Solutions.dc.html",
     "Browse.dc.html",
     "Term.dc.html",
     "Record-Hosted.dc.html",
@@ -54,7 +56,7 @@
     "row5": {"x": 0, "y": 11120, "text": "Currency and harvesting", "kind": "title1", "maxW": 2640},
     "row6": {"x": 0, "y": 13000, "text": "About and statutory pages", "kind": "title1", "maxW": 4000},
     "row7": {"x": 0, "y": 15780, "text": "Edge cases", "kind": "title1", "maxW": 2640},
-    "sticky-sgds": {"x": 4080, "y": 0, "w": 420, "text": "Styled with the Scottish Government Design System v4.3.0 stylesheet (MIT), unmodified. No Scottish Government logo or brand assets are used: the header carries a text title only.", "fill": "blue"},
+    "sticky-sgds": {"x": 5440, "y": 0, "w": 420, "text": "Styled with the Scottish Government Design System v4.3.0 stylesheet (MIT), unmodified. No Scottish Government logo or brand assets are used: the header carries a text title only.", "fill": "blue"},
     "sticky-content": {"x": 4080, "y": 2280, "w": 420, "text": "Values in [square brackets] on demonstration records are completed from cited public sources during the build. Example records are fictional and always named 'Example:'.", "fill": "teal"},
     "sticky-solutions": {"x": 4080, "y": 3100, "w": 480, "text": "Spec v1.0: a common solution is an owned offer of reuse; a codebase is code. solution.yml describes the solution and lists its codebases (each with its own publiccode.yml and maintenance type). open_data links to catalogues; datasets are not listed. csr-0001 is a service whose codebase is the register repository.", "fill": "purple"},
     "sticky-gaps": {"x": 4080, "y": 5060, "w": 560, "text": "Added in spec v0.7:\n1. Browse index page.\n2. Contribute page.\n3. Withdrawn record view and a 404 page.\n4. 'Report a problem with this page' on each record.\n5. Sorting of search results.\n6. Service address (service_url) and owner's service page (service_page_url), shown as 'Go to the service' and 'More information from the owner' on every record.", "fill": "green"}

@@ -8,7 +8,8 @@ const [projectDir, cssPath, outDir] = process.argv.slice(2);
 fs.mkdirSync(outDir, { recursive: true });
 
 const pages = [
-  ['01-home-and-search', 'Main.dc.html'],
+  ['01-home', 'Main.dc.html'],
+  ['01b-find-solutions', 'Solutions.dc.html'],
   ['02-browse', 'Browse.dc.html'],
   ['03-taxonomy-term', 'Term.dc.html'],
   ['04-record-service-with-codebase', 'Record-Hosted.dc.html'],
