@@ -4,7 +4,7 @@ The build is done in small sessions, one **slice** per session. Each slice is on
 
 ## Briefing
 
-- **What:** a demonstrator of a common solution register for the Scottish public sector, built for the Scottish Government short-life working group. Not an official register. Hosted by The Digital Office for Scottish Local Government.
+- **What:** a demonstrator of a common solution register for the Scottish public sector, built for the short-life working group. Not an official register. Hosted by The Digital Office for Scottish Local Government.
 - **Specification:** `docs/spec/Common-Solution-Register-Demonstrator-Specification.md` (v1.2). Section 1.1 defines solutions and codebases; 9.1 sets the authorship rules.
 - **Wireframes:** `ui/wireframes/` (normative UI requirements, spec 6.13); baseline images in `ui/baseline/`.
 - **Concepts:** a common solution is an owned offer of reuse, described by `solution.yml`; a codebase is source code, described by its own `publiccode.yml` and listed in a solution's `codebases`; datasets are linked through `open_data`, never listed.
@@ -571,3 +571,4 @@ Newest last. One line per checkpoint; a fuller entry when a session ends.
 - 2026-11-09 — The author's correction still showed the old capability order: the browser had kept the previous `draft-core.js` (a private window showed the right order). `csr build` now adds `?v=<hash of the site's own static files>` to their addresses in the pages and to the scripts' imports of each other (`static_version`, `_version_imports`); vendored files keep their versioned folders. `pytest` 387 passed; `npm run test:ui` 79 passed.
 - 2026-11-09 — #27 merged. **Author's decision:** publish on GitHub Pages now as a preview, with `csr-0001` still `in-development`; then courtesy notes, the manual keyboard and screen-reader check and sign-off. Added `preview` to `site.toml` (true): every page carries `<meta name="robots" content="noindex, nofollow">` (a `robots.txt` would be ignored on a project site); `csr build` says so. DP-54; publication checklist reordered (step 2 ends the preview). `pytest` 388 passed.
   - **Pull request title:** Publish as a preview that search engines do not index
+- 2026-11-09 — Preview pull request merged; Pages enabled; the site is live at https://the-digital-office.github.io/common-solution-register/. Author: no pagination on the home page for now (DP-55).

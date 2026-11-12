@@ -84,7 +84,7 @@ A suggested note, to adapt:
 > Subject: Your service in the common solution register demonstrator
 >
 > The Digital Office for Scottish Local Government has built a demonstrator of
-> a common solution register for the Scottish Government's short-life working
+> a common solution register for the short-life working
 > group on a common solution register. It is not an official register, and
 > inclusion does not mean endorsement.
 >
