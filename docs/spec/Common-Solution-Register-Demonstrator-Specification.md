@@ -42,6 +42,7 @@ based_on:
 | 1.5 | 12 November 2026 | 6.13: the wireframes now show the header, page band and buttons of version 1.4, so they are part of the requirements rather than a departure (wireframe change W1, which replaces UI decision D37). A deliberate design change updates the wireframes first. |
 | 1.6 | 12 November 2026 | 6.13: the record wireframes show the record page as a summary card, with one main action in the page band, a grid of key facts, "On this page" in place of the sidebar, and a band asking for corrections (wireframe change W2). |
 | 1.7 | 12 November 2026 | 6.8 and 6.13: the home page introduces the register, and the finder moves to `solutions/` as "Find solutions" (new Solutions wireframe); "Home" joins the main navigation (wireframe change W3, decision point DP-55). |
+| 1.8 | 12 November 2026 | 6.8: the demonstrator notice is one short text on every page, home included, shown as a warning notification message instead of a phase banner with a "Demonstrator" tag (wireframe change W4, decision point DP-47). |
 
 
 ## 1. Purpose and context
@@ -372,7 +373,7 @@ In the demonstrator, `CODEOWNERS` **requests** a review but nothing **enforces**
 | Accessibility statement, Privacy notice | `accessibility/`, `privacy/` | No |
 | API and extracts | `api/v0/…`, `data/register.json`, `data/register.csv` | n/a |
 
-Every page carries a "Demonstrator" banner with a link to give feedback, as the wireframes show. On the home page it says: *"Built for the Scottish public sector common solution register short-life working group. This is not an official register. Records are confirmed by their owner, compiled from public sources, or fictional examples. Inclusion does not mean endorsement."* Every other page says: *"This is not an official register. Inclusion does not mean endorsement."*
+Every page, the home page included, carries a demonstrator notice with a link to give feedback, as the wireframes show (wireframe change W4). It is the design system's warning notification message, under the header, and says: *"This is a demonstrator, not an official register. Inclusion does not mean endorsement."*
 
 **CSV:** nested objects use dotted column names; arrays of values are joined with `; `; arrays of objects are stored as compact JSON; UTF-8 with a header row.
 

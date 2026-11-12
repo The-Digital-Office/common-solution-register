@@ -4,7 +4,7 @@
  * 6.13): tag rows, the fictional-example panel, unstated values, the results
  * heading row, filters and wide tables; the header, page band and button
  * colours of wireframe change W1; the record page's summary card of W2; and
- * the home page sections of W3.
+ * the home page sections of W3; and the demonstrator notice of W4.
  * Values follow the design system's spacing, colour and type.
  */
 
@@ -325,11 +325,23 @@ html:not(.js-enabled) .csr-js-only {
   }
 }
 
-.ds_phase-banner {
+/* The demonstrator notice (wireframe change W4): a notification message under the header. */
+.csr-notice {
   background: #fff;
-  border-bottom: 0.0625rem solid #ebebeb;
-  padding-bottom: 0.5rem;
-  padding-top: 0.5rem;
+  padding: 1rem 0;
+}
+
+.csr-notice .ds_notification-message {
+  margin: 0;
+}
+
+.csr-notice .ds_notification-message__body {
+  padding-bottom: 0.75rem;
+  padding-top: 0.75rem;
+}
+
+.csr-notice p {
+  margin: 0;
 }
 
 nav:has(> .ds_breadcrumbs),
