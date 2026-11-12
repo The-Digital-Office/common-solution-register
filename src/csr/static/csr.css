@@ -3,7 +3,7 @@
  * System, limited to the layout details it does not provide (specification
  * 6.13): tag rows, the fictional-example panel, unstated values, the actions
  * column, the results heading row, filters and wide tables; and the header,
- * page band and button colours of UI decision D37. Values follow the design
+ * page band and button colours of wireframe change W1. Values follow the design
  * system's spacing, colour and type.
  */
 
@@ -281,7 +281,7 @@ html:not(.js-enabled) .csr-js-only {
 }
 
 /*
- * Header, page band and buttons (UI decision D37). The header has a small line
+ * Header, page band and buttons (wireframe change W1). The header has a small line
  * saying who the register is for above a large title; the main navigation is
  * bold, with a thicker bar under the current page. A tinted band runs the full
  * width behind the breadcrumbs and the page header, so each page has a clear

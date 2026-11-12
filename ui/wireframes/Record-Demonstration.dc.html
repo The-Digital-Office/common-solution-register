@@ -16,11 +16,29 @@ body{margin:0;font-family:Roboto,"Helvetica Neue",Helvetica,Arial,sans-serif}
 .wf-actions{display:flex;flex-direction:column;gap:12px}
 .wf-actions .ds_button{margin:0;width:100%}
 .wf-unstated{font-style:italic;color:#5e5e5e}
+/* Header, page band and buttons (wireframe change W1) */
+.wf-branding{display:flex;flex-direction:column}
+.wf-branding__line{color:#333;font-size:1rem;font-weight:700;line-height:1.5rem}
+.wf-branding .ds_site-branding__title{color:#002d54;font-size:1.5rem;font-weight:700;line-height:2rem}
+.ds_site-branding{padding:1rem 0}
+.ds_site-navigation__link,.ds_site-navigation .ds_site-navigation__link.ds_current:not(:focus){color:#002d54;font-weight:700}
+@media (min-width:48rem){.wf-branding .ds_site-branding__title{font-size:2rem;line-height:2.5rem}.ds_site-branding{padding:1.5rem 0 1.25rem}.ds_site-navigation__link{padding-bottom:1rem;padding-top:1rem}.ds_site-navigation .ds_site-navigation__link.ds_current:not(:focus)::after{height:.25rem}}
+.ds_phase-banner{background:#fff;border-bottom:.0625rem solid #ebebeb;padding-bottom:.5rem;padding-top:.5rem}
+nav:has(>.ds_breadcrumbs),.ds_layout__header{background:#ebf1f7;box-shadow:0 0 0 100vmax #ebf1f7;clip-path:inset(0 -100vmax)}
+nav:has(>.ds_breadcrumbs){display:flow-root}
+nav:has(>.ds_breadcrumbs) .ds_breadcrumbs{margin-bottom:0}
+.ds_layout__header{margin-bottom:2rem;padding:1rem 0 .5rem}
+nav:has(>.ds_breadcrumbs)+.ds_layout .ds_layout__header{padding-top:0}
+.ds_layout__header .ds_page-header__title{color:#002d54}
+.ds_button:not(.ds_button--secondary,.ds_button--cancel){background-color:#002d54}
+.ds_button:not(.ds_button--secondary,.ds_button--cancel):hover{background-color:#001a30}
+.ds_button--secondary{background-color:#fff;color:#002d54}
+.ds_button--secondary:hover:not(:focus){background-color:#ebf1f7;color:#002d54}
 </style>
 </helmet>
 <div>
 <header class="ds_site-header" role="banner">
-<div class="ds_wrapper"><div class="ds_site-header__content"><div class="ds_site-branding"><a class="ds_site-branding__link" href="Main.dc.html"><span class="ds_site-branding__title">Common Solution Register: Demonstrator</span></a></div></div></div>
+<div class="ds_wrapper"><div class="ds_site-header__content"><div class="ds_site-branding"><a class="ds_site-branding__link wf-branding" href="Main.dc.html"><span class="wf-branding__line">Scottish public sector</span><span class="ds_site-branding__title">Common Solution Register</span></a></div></div></div>
 <div class="ds_site-header__navigation"><div class="ds_wrapper"><nav class="ds_site-navigation" aria-label="Main navigation"><ul class="ds_site-navigation__list">
 <li class="ds_site-navigation__item"><a class="ds_site-navigation__link" href="Main.dc.html">Find solutions</a></li>
 <li class="ds_site-navigation__item"><a class="ds_site-navigation__link" href="Browse.dc.html">Browse</a></li>
