@@ -21,7 +21,11 @@ body{margin:0;font-family:Roboto,"Helvetica Neue",Helvetica,Arial,sans-serif}
 .ds_site-branding{padding:1rem 0}
 .ds_site-navigation__link,.ds_site-navigation .ds_site-navigation__link.ds_current:not(:focus){color:#002d54;font-weight:700}
 @media (min-width:48rem){.wf-branding .ds_site-branding__title{font-size:2rem;line-height:2.5rem}.ds_site-branding{padding:1.5rem 0 1.25rem}.ds_site-navigation__link{padding-bottom:1rem;padding-top:1rem}.ds_site-navigation .ds_site-navigation__link.ds_current:not(:focus)::after{height:.25rem}}
-.ds_phase-banner{background:#fff;border-bottom:.0625rem solid #ebebeb;padding-bottom:.5rem;padding-top:.5rem}
+/* Demonstrator notice as a notification message (wireframe change W4) */
+.wf-notice{background:#fff;padding:1rem 0}
+.wf-notice .ds_notification-message{margin:0}
+.wf-notice .ds_notification-message__body{padding-bottom:.75rem;padding-top:.75rem}
+.wf-notice p{margin:0}
 nav:has(>.ds_breadcrumbs),.ds_layout__header{background:#ebf1f7;box-shadow:0 0 0 100vmax #ebf1f7;clip-path:inset(0 -100vmax)}
 nav:has(>.ds_breadcrumbs){display:flow-root}
 nav:has(>.ds_breadcrumbs) .ds_breadcrumbs{margin-bottom:0}
@@ -47,7 +51,11 @@ nav:has(>.ds_breadcrumbs)+.ds_layout .ds_layout__header{padding-top:0}
 <li class="ds_site-navigation__item"><a class="ds_site-navigation__link" href="About.dc.html">About</a></li>
 </ul></nav></div></div>
 </header>
-<div class="ds_phase-banner"><div class="ds_wrapper"><p class="ds_phase-banner__content"><strong class="ds_tag ds_phase-banner__tag">Demonstrator</strong><span class="ds_phase-banner__text">This is not an official register. Inclusion does not mean endorsement. <a href="About.dc.html">Give feedback</a>.</span></p></div></div>
+<div class="wf-notice" role="region" aria-label="Demonstrator notice"><div class="ds_wrapper">
+<div class="ds_notification-message ds_notification-message--warning"><div class="ds_notification-message__body">
+<p>This is a demonstrator, not an official register. Inclusion does not mean endorsement. <a href="About.dc.html">Give feedback</a>.</p>
+</div></div>
+</div></div>
 
 <div class="ds_wrapper">
 <main class="ds_layout ds_layout--search-results" id="main-content">
