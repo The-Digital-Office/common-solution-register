@@ -10,8 +10,22 @@ const visible = (page) => page.$$eval('.ds_search-result:not([hidden])', (items)
 const heading = (page) => page.locator('.ds_search-results__title');
 const tick = (page, id) => page.click(`label[for="${id}"]`); // the design system draws its own checkbox over the input
 
-test('1. Search: name, summary, owner, purpose and synonyms; the query is kept in the address', async ({ page }) => {
+test('0. Home page: the search and "See all recent changes" open the finder', async ({ page }) => {
   await page.goto('');
+  await page.fill('#q', 'payments');
+  await page.press('#q', 'Enter');
+  await expect(page).toHaveURL(/solutions\/\?q=payments$/);
+  expect(await visible(page)).toEqual(['csr-9001', 'csr-9003']);
+  await page.goto('');
+  await page.click('text=See all recent changes');
+  await expect(page.locator('#sort-by')).toHaveValue('changed');
+  await page.goto('');
+  await page.click('text=Browse service areas');
+  await expect(page).toHaveURL(/browse\/#h-service-areas$/);
+});
+
+test('1. Search: name, summary, owner, purpose and synonyms; the query is kept in the address', async ({ page }) => {
+  await page.goto('solutions/');
   await page.fill('#q', 'payments');
   expect(await visible(page)).toEqual(['csr-9001', 'csr-9003']);
   await expect(page).toHaveURL(/\?q=payments$/);
@@ -25,13 +39,13 @@ test('1. Search: name, summary, owner, purpose and synonyms; the query is kept i
   expect(await visible(page)).toEqual(['csr-0100']);
   await page.fill('#q', 'gis'); // matches the start of words only, not "register"
   expect(await visible(page)).toEqual([]);
-  await page.goto('?q=booking'); // a shared link
+  await page.goto('solutions/?q=booking'); // a shared link
   await expect(page.locator('#q')).toHaveValue('booking');
   expect(await visible(page)).toEqual(['csr-9006', 'csr-9003']);
 });
 
 test('2. Provenance and asset-type filters, with counts', async ({ page }) => {
-  await page.goto('');
+  await page.goto('solutions/');
   await tick(page, 'p-owner-confirmed');
   expect(await visible(page)).toEqual(['csr-0001', 'csr-0002']);
   await expect(page.locator('label[for="t-pattern"]')).toHaveText('Pattern (1)');
@@ -43,7 +57,7 @@ test('2. Provenance and asset-type filters, with counts', async ({ page }) => {
 });
 
 test('3. Sector, service area, capability, currency and withdrawn filters, with counts', async ({ page }) => {
-  await page.goto('');
+  await page.goto('solutions/');
   await page.selectOption('#f-sector', 'executive-agencies');
   expect(await visible(page)).toEqual(['csr-9002', 'csr-0100']);
   await page.selectOption('#f-sector', '');
@@ -54,7 +68,7 @@ test('3. Sector, service area, capability, currency and withdrawn filters, with 
   await page.selectOption('#f-cap', 'payments');
   await tick(page, 'c-stale');
   expect(await visible(page)).toEqual(['csr-9003']);
-  await page.goto('');
+  await page.goto('solutions/');
   await expect(heading(page)).toHaveText('8 solutions');
   await tick(page, 'show-withdrawn');
   expect(await visible(page)).toContain('csr-9005');
@@ -62,7 +76,7 @@ test('3. Sector, service area, capability, currency and withdrawn filters, with 
 });
 
 test('4. Sort: name, recently changed, recently confirmed', async ({ page }) => {
-  await page.goto('');
+  await page.goto('solutions/');
   expect((await visible(page))[0]).toBe('csr-0001'); // name, A to Z
   await page.selectOption('#sort-by', 'confirmed');
   const ids = await visible(page);
@@ -74,11 +88,11 @@ test('4. Sort: name, recently changed, recently confirmed', async ({ page }) => 
 });
 
 test('5. Clear all filters; the result count is announced', async ({ page }) => {
-  await page.goto('?provenance=example&type=api');
+  await page.goto('solutions/?provenance=example&type=api');
   await expect(heading(page)).toHaveText('1 solution');
   await page.click('#clear-filters');
   await expect(heading(page)).toHaveText('8 solutions');
-  await expect(page).toHaveURL(/\/$/);
+  await expect(page).toHaveURL(/solutions\/$/);
   await page.fill('#q', 'zzzz');
   await expect(page.locator('#no-results')).toBeVisible();
   await expect(page.locator('#results-status')).toHaveText('0 solutions found');
@@ -87,7 +101,7 @@ test('5. Clear all filters; the result count is announced', async ({ page }) => 
 test.describe('6. Without JavaScript', () => {
   test.use({ javaScriptEnabled: false });
   test('the full list is shown and the filters are hidden', async ({ page }) => {
-    await page.goto('?q=payments');
+    await page.goto('solutions/?q=payments');
     expect(await visible(page)).toHaveLength(8);
     for (const control of ['.ds_search-filters', '#sort-by', '#q']) await expect(page.locator(control)).toBeHidden();
   });

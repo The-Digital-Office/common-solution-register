@@ -3,7 +3,8 @@
  * System, limited to the layout details it does not provide (specification
  * 6.13): tag rows, the fictional-example panel, unstated values, the results
  * heading row, filters and wide tables; the header, page band and button
- * colours of wireframe change W1; and the record page's summary card of W2.
+ * colours of wireframe change W1; the record page's summary card of W2; and
+ * the home page sections of W3.
  * Values follow the design system's spacing, colour and type.
  */
 
@@ -531,5 +532,155 @@ nav:has(> .ds_breadcrumbs) + .ds_layout .ds_layout__header {
 @media (max-width: 47.9375rem) {
   .csr-hero-actions .ds_button {
     width: 100%;
+  }
+}
+
+/*
+ * Home page as an introduction (wireframe change W3): the search band, the two
+ * introductions, "Recently updated", "Ways in" and "Is your solution missing?".
+ * Full-width bands use the same technique as the page band.
+ */
+.csr-home .ds_layout__header {
+  margin-bottom: 0;
+  padding: 2rem 0 2.5rem;
+}
+
+.csr-home .ds_page-header {
+  margin-bottom: 1.5rem;
+}
+
+.csr-home .ds_site-search {
+  max-width: 40rem;
+}
+
+.csr-home h2 {
+  color: #002d54;
+}
+
+.csr-home-stats {
+  margin: 0.5rem 0 1rem;
+}
+
+.csr-arrow {
+  font-weight: 700;
+}
+
+.csr-arrow::after {
+  content: " \2192";
+}
+
+.csr-band {
+  background: #f8f8f8;
+  box-shadow: 0 0 0 100vmax #f8f8f8;
+  clip-path: inset(0 -100vmax);
+  padding: 2.5rem 0;
+}
+
+.csr-band--tint {
+  background: #ebf1f7;
+  box-shadow: 0 0 0 100vmax #ebf1f7;
+}
+
+.csr-intro {
+  display: grid;
+  gap: 2rem 3rem;
+  grid-template-columns: minmax(0, 1fr);
+}
+
+.csr-intro h2,
+.csr-band > h2,
+.csr-missing h2 {
+  margin-top: 0;
+}
+
+.csr-intro__who {
+  border-top: 0.25rem solid #0065bd;
+  padding-top: 1.25rem;
+}
+
+.csr-section {
+  padding: 3rem 0 1rem;
+}
+
+.csr-section > h2 {
+  margin-top: 0;
+}
+
+.csr-recent {
+  list-style: none;
+  margin: 0 0 1.5rem;
+  padding: 0;
+}
+
+.csr-recent li {
+  border-top: 0.0625rem solid #b3b3b3;
+  margin: 0;
+  padding: 1.25rem 0 1.5rem;
+}
+
+.csr-recent li:last-child {
+  border-bottom: 0.0625rem solid #b3b3b3;
+}
+
+.csr-recent h3 {
+  margin: 0 0 0.5rem;
+}
+
+.csr-update {
+  background: #ebf1f7;
+  font-weight: 700;
+  margin: 0.75rem 0;
+  padding: 0.5rem 0.75rem;
+}
+
+.csr-ways {
+  display: grid;
+  gap: 2rem 2.5rem;
+  grid-template-columns: minmax(0, 1fr);
+}
+
+.csr-ways h3 {
+  color: #002d54;
+  margin: 0 0 0.5rem;
+}
+
+.csr-ways p {
+  margin: 0 0 0.5rem;
+}
+
+.csr-missing {
+  align-items: center;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 1.25rem 2.5rem;
+  justify-content: space-between;
+  padding: 2.5rem 0;
+}
+
+.csr-missing p {
+  margin: 0;
+  max-width: 38rem;
+}
+
+.csr-missing .ds_button {
+  margin: 0;
+}
+
+@media (min-width: 48rem) {
+  .csr-intro,
+  .csr-ways {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+
+  .csr-intro__who {
+    border-left: 0.25rem solid #0065bd;
+    border-top: 0;
+    padding: 0 0 0 1.5rem;
+  }
+}
+
+@media (min-width: 62rem) {
+  .csr-ways {
+    grid-template-columns: repeat(3, minmax(0, 1fr));
   }
 }

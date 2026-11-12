@@ -41,6 +41,7 @@ based_on:
 | 1.4 | 12 November 2026 | 6.13: a deliberate departure from the wireframes' look, decided by the author (UI decision D37). The header has a small "Scottish public sector" line above the title, which no longer includes "Demonstrator" (the banner still says it on every page); the main navigation is bold; a tinted band runs behind the breadcrumbs and page header; buttons are navy. `csr.css` may style these as well as the cases already listed. |
 | 1.5 | 12 November 2026 | 6.13: the wireframes now show the header, page band and buttons of version 1.4, so they are part of the requirements rather than a departure (wireframe change W1, which replaces UI decision D37). A deliberate design change updates the wireframes first. |
 | 1.6 | 12 November 2026 | 6.13: the record wireframes show the record page as a summary card, with one main action in the page band, a grid of key facts, "On this page" in place of the sidebar, and a band asking for corrections (wireframe change W2). |
+| 1.7 | 12 November 2026 | 6.8 and 6.13: the home page introduces the register, and the finder moves to `solutions/` as "Find solutions" (new Solutions wireframe); "Home" joins the main navigation (wireframe change W3, decision point DP-55). |
 
 
 ## 1. Purpose and context
@@ -352,8 +353,9 @@ In the demonstrator, `CODEOWNERS` **requests** a review but nothing **enforces**
 
 | Page | Path | Needs JavaScript |
 |---|---|---|
-| Home: search, facets, sorting (name, recently changed, recently confirmed), and the full list without JavaScript | `./` | No (enhanced by it) |
-| Record: **Go to the service**, **More information from the owner**, **Download solution.yml**, provenance, hosting, source and harvest state, **Suggest a correction** and **Report a problem with this page** | `assets/<id>/` | No |
+| Home: an introduction to the register, a search box that opens Find solutions, the three records most recently changed or confirmed (DP-55), and ways into the rest of the site | `./` | No |
+| Find solutions: search, facets, sorting (name, recently changed, recently confirmed), and the full list without JavaScript | `solutions/` | No (enhanced by it) |
+| Record: **Go to the service**, **More information from the owner**, **Download solution.yml**, provenance, hosting, source and harvest state, and **Suggest a correction** | `assets/<id>/` | No |
 | Withdrawn record: tombstone with withdrawal date, reason and any replacement; the ID and URL stay | `assets/<id>/` | No |
 | Browse: index of sectors, service areas and capabilities, with counts | `browse/` | No |
 | Taxonomy term | `service-areas/<id>/`, `capabilities/<id>/`, `sectors/<id>/` | No |
@@ -438,7 +440,7 @@ The harvester runs **daily and on demand**, and on every push to `main`, for **r
 
 ### 6.13 User interface requirements (from the wireframes)
 
-The wireframes (the sources in `ui/wireframes/` and the 21 approved images in `ui/baseline/`) are the **user interface requirements** for the build. Their files are committed to `ui/wireframes/`, and their approved screenshots to `ui/baseline/`. Where this specification and a wireframe disagree, the difference is raised with the author, not resolved silently.
+The wireframes (the sources in `ui/wireframes/` and the 22 approved images in `ui/baseline/`) are the **user interface requirements** for the build. Their files are committed to `ui/wireframes/`, and their approved screenshots to `ui/baseline/`. Where this specification and a wireframe disagree, the difference is raised with the author, not resolved silently.
 
 **What is normative:** page inventory and navigation; page layout (the design system's layout patterns); the components used and their order; headings, labels, hint and error text, button text, link text and banner wording; tags and their colours; which fields appear on each record page and in which section; and the interactions listed below.
 
@@ -449,6 +451,7 @@ The wireframes (the sources in `ui/wireframes/` and the 21 approved images in `u
 | Wireframe | Template | Built path |
 |---|---|---|
 | Main | `index.html` | `./` |
+| Solutions | `solutions.html` | `solutions/` |
 | Browse | `browse.html` | `browse/` |
 | Term | `term.html` | `sectors/`, `service-areas/`, `capabilities/<id>/` |
 | Record-Hosted, Record-Demonstration, Record-Example | `record.html` (one template; sections and notices vary by provenance, hosting, status and currency) | `assets/<id>/` |
