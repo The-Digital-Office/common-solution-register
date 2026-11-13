@@ -27,7 +27,7 @@ sets out the scope, design and build.
 | Anyone suggesting or correcting a record | [Contributing records](docs/contributing-records.md) |
 | Owners who want to host their own record | [Hosting your solution.yml](docs/hosting-your-solution-yml.md) |
 | The working group, and anyone taking the work forward | [Decision points](docs/decision-points.md), [Adopting this demonstrator](docs/adopting-this-demonstrator.md), [Editorial model](docs/editorial-model.md) |
-| Maintainers | [Maintenance and runbook](docs/maintenance.md), [Harvesting](docs/harvesting.md), [publiccode.yml mapping](docs/publiccode-mapping.md), [GitHub Free](docs/github-free.md), [UI requirements and tests](docs/ui-requirements.md), [Demonstration sources](docs/demonstration-sources.md) |
+| Maintainers | [Maintenance and runbook](docs/maintenance.md), [Harvesting](docs/harvesting.md), [publiccode.yml mapping](docs/publiccode-mapping.md), [DCAT, ADMS and SKOS mapping](docs/dcat-adms-mapping.md), [GitHub Free](docs/github-free.md), [UI requirements and tests](docs/ui-requirements.md), [Demonstration sources](docs/demonstration-sources.md) |
 | The author, before publishing | [Publication checklist](docs/publication-checklist.md) |
 
 ## Getting started

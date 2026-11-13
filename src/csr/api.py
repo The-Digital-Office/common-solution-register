@@ -200,6 +200,66 @@ def metadata(register: Register, config: Config, today: dt.date, sizes: dict[str
     }
 
 
+#: What each taxonomy is, for its SKOS concept scheme.
+SCHEME_TITLES = {
+    "sectors": "Sectors: who owns a common solution, and who it is intended for",
+    "service-areas": "Service areas that common solutions support",
+    "capabilities": "Capabilities that common solutions provide",
+}
+
+
+def _turtle(text: str) -> str:
+    """A Turtle string literal, in English."""
+    escaped = text.replace("\\", "\\\\").replace('"', '\\"').replace("\n", "\\n").replace("\r", "\\r")
+    return f'"{escaped}"@en'
+
+
+def taxonomy_skos(taxonomy: Taxonomy, config: Config) -> str:
+    """A taxonomy as a SKOS concept scheme in Turtle (decision point DP-58).
+
+    Each term is a concept whose URI is its page on the site (``<taxonomy>/<id>/``); the
+    scheme's URI is its column on the Browse page. Labels, synonyms and definitions become
+    preferred labels, alternative labels and definitions; a deprecated term is marked
+    deprecated and points to its replacement.
+    """
+    base = config.base_url
+    scheme = f"{base}browse/#h-{taxonomy.name}"
+    concept = lambda term_id: f"<{base}{taxonomy.name}/{term_id}/>"  # noqa: E731
+    lines = [
+        "@prefix skos: <http://www.w3.org/2004/02/skos/core#> .",
+        "@prefix dct: <http://purl.org/dc/terms/> .",
+        "@prefix owl: <http://www.w3.org/2002/07/owl#> .",
+        "",
+        f"<{scheme}> a skos:ConceptScheme ;",
+        f"    skos:prefLabel {_turtle(SCHEME_TITLES.get(taxonomy.name, taxonomy.name))} ;",
+        f"    dct:title {_turtle(SCHEME_TITLES.get(taxonomy.name, taxonomy.name))} ;",
+        f'    owl:versionInfo "{taxonomy.version}" ;',
+        f"    dct:license <{LICENCE['content_url']}> ;",
+        f"    dct:publisher {_turtle(config.host_organisation)} ;",
+        "    skos:hasTopConcept " + ", ".join(concept(t.id) for t in taxonomy.terms if not t.deprecated) + " .",
+    ]
+    for term in taxonomy.terms:
+        lines += [
+            "",
+            f"{concept(term.id)} a skos:Concept ;",
+            f"    skos:inScheme <{scheme}> ;",
+            f'    skos:notation "{term.id}" ;',
+            f"    skos:prefLabel {_turtle(term.label)} ;",
+            f"    skos:definition {_turtle(term.definition)} ;",
+        ]
+        lines += [f"    skos:altLabel {_turtle(s)} ;" for s in term.synonyms]
+        if term.intended_adopters_only:
+            lines.append(f"    skos:scopeNote {_turtle('An audience only: used for who a solution is intended for, never as the sector that owns it.')} ;")
+        if term.deprecated:
+            lines.append("    owl:deprecated true ;")
+            if term.replaced_by:
+                lines.append(f"    dct:isReplacedBy {concept(term.replaced_by)} ;")
+        else:
+            lines.append(f"    skos:topConceptOf <{scheme}> ;")
+        lines[-1] = lines[-1][:-2] + " ."
+    return "\n".join(lines) + "\n"
+
+
 def files(register: Register, taxonomies: dict[str, Taxonomy], config: Config, today: dt.date) -> dict[str, str]:
     """Every API and extract file, as path to content."""
     records = [record_json(e) for e in register.entries]
@@ -216,6 +276,7 @@ def files(register: Register, taxonomies: dict[str, Taxonomy], config: Config, t
             "assets": "assets.json",
             "asset": "assets/{id}.json",
             "taxonomy": {name: f"taxonomy/{name}.json" for name in taxonomies},
+            "taxonomy_skos": {name: f"taxonomy/{name}.ttl" for name in taxonomies},
             "schema": "schema/asset.schema.json",
             "pointer_schema": "schema/pointer.schema.json",
             "register_json": "../../data/register.json",
@@ -230,6 +291,7 @@ def files(register: Register, taxonomies: dict[str, Taxonomy], config: Config, t
         out[f"{API}assets/{record['id']}.json"] = dumps(record)
     for name, taxonomy in taxonomies.items():
         out[f"{API}taxonomy/{name}.json"] = dumps(taxonomy_json(taxonomy))
+        out[f"{API}taxonomy/{name}.ttl"] = taxonomy_skos(taxonomy, config)
     for name in ("asset", "pointer", "taxonomy"):
         out[f"{API}schema/{name}.schema.json"] = dumps(load_schema(name))
     out["data/register.json"] = dumps({"generated": generated, "licence": LICENCE,

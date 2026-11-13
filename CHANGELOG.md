@@ -56,6 +56,8 @@ and this project uses [Semantic Versioning](https://semver.org/spec/v2.0.0.html)
 - `docs/publication-checklist.md`: the author's steps before publication (inputs, the register's own record, courtesy notes with a suggested text, the manual keyboard and screen-reader check, sign-off, enabling Pages, sharing); a documentation table in the README; tests that the documents exist and their links resolve.
 - `preview` in `site.toml`: while true, every page asks search engines not to index it. On, for the preview published before the courtesy notes and sign-off.
 - `api/v0/metadata.json`: the register's open data (the dataset, `register.json` and `register.csv`) and its API, described with the UK Cross-Government Metadata Exchange Model, the UK government's DCAT-based model, so data catalogues can list them. `api/v0/index.json` and `data/register.json` link to it, the Data and API page explains it, and `first_published` in `site.toml` gives its issued date. Decision points DP-56 (ADMS-AP not adopted) and DP-57 (the UK model adopted, with one departure for the publisher).
+- The taxonomies in SKOS, the W3C standard for vocabularies: `api/v0/taxonomy/sectors.ttl`, `service-areas.ttl` and `capabilities.ttl`, with each term's page as its address, linked from `api/v0/index.json` and listed on the Data and API page (wireframe change W6). `tests/test_skos.py` parses them with `rdflib`, now a development dependency.
+- `docs/dcat-adms-mapping.md`: how each `solution.yml` field relates to DCAT and ADMS. Decision point DP-58: `solution.yml` stays the record format, with these standards as the publication layer.
 
 ### Changed
 

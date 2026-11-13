@@ -20,6 +20,8 @@ dependencies = [
 [project.optional-dependencies]
 dev = [
     "pytest==9.2.0",
+    # Parses the SKOS exports of the taxonomies in tests (DP-58).
+    "rdflib==7.1.4",
 ]
 
 [project.scripts]
