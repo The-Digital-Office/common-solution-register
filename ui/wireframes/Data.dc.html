@@ -97,7 +97,20 @@ nav:has(>.ds_breadcrumbs)+.ds_layout .ds_layout__header{padding-top:0}
 <tr><td><a href="Data.dc.html"><code>api/v0/taxonomy/capabilities.json</code></a></td><td>Taxonomy terms with definitions (also sectors and service areas)</td></tr>
 <tr><td><a href="Data.dc.html"><code>api/v0/schema/asset.schema.json</code></a></td><td>The JSON Schema</td></tr>
 <tr><td><a href="Harvest.dc.html"><code>api/v0/harvest-state.json</code></a></td><td>Each owner-hosted source: last harvest, state, content hash</td></tr>
+<tr><td><a href="#metadata"><code>api/v0/metadata.json</code></a></td><td>A description of this data and the API, for data catalogues (see <a href="#metadata">Metadata</a>)</td></tr>
 </tbody></table></div>
+
+<h2 id="metadata">Metadata</h2>
+<p>The register's open data is described in <a href="#metadata"><code>api/v0/metadata.json</code></a> using the <a href="https://co-cddo.github.io/ukgov-metadata-exchange-model/">UK Cross-Government Metadata Exchange Model</a>. This is the UK government's standard for describing data assets, based on the W3C's Data Catalog Vocabulary (DCAT). Data catalogues, such as the Cross-Government Data Marketplace, can read it to list this data.</p>
+<p>The file describes:</p>
+<ul>
+<li><strong>the dataset:</strong> every record in the register, its publisher, licence and contact, and that it is updated daily</li>
+<li><strong>two distributions:</strong> <code>register.json</code> and <code>register.csv</code>, with their format and size</li>
+<li><strong>a data service:</strong> this API, version 0, with the status Alpha</li>
+</ul>
+<p>Both <code>api/v0/index.json</code> and <code>data/register.json</code> link to it.</p>
+<p>The fields and their values follow the model, with one exception. The model takes the publisher and creator from its list of GOV.UK organisations, which does not include [host organisation], so the organisation is named in full instead.</p>
+<p>The metadata describes the data as a whole. Records are not described one by one: each record already follows the register's own schema.</p>
 
 <h2>Sample response</h2>
 <details class="ds_details" open="open">

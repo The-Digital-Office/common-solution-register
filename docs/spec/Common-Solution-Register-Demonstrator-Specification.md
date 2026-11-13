@@ -43,6 +43,7 @@ based_on:
 | 1.6 | 12 November 2026 | 6.13: the record wireframes show the record page as a summary card, with one main action in the page band, a grid of key facts, "On this page" in place of the sidebar, and a band asking for corrections (wireframe change W2). |
 | 1.7 | 12 November 2026 | 6.8 and 6.13: the home page introduces the register, and the finder moves to `solutions/` as "Find solutions" (new Solutions wireframe); "Home" joins the main navigation (wireframe change W3, decision point DP-55). |
 | 1.8 | 12 November 2026 | 6.8: the demonstrator notice is one short text on every page, home included, shown as a warning notification message instead of a phase banner with a "Demonstrator" tag (wireframe change W4, decision point DP-47). |
+| 1.9 | 13 November 2026 | 6.8: the register's open data and API are described in `api/v0/metadata.json` with the UK Cross-Government Metadata Exchange Model, and the Data and API page explains it (wireframe change W5, decision point DP-57). ADMS-AP is not adopted for describing individual solutions (DP-56). |
 
 
 ## 1. Purpose and context
@@ -365,7 +366,7 @@ In the demonstrator, `CODEOWNERS` **requests** a review but nothing **enforces**
 | Field reference | `reference/` | No |
 | `publiccode.yml` mapping | `reference/publiccode/` | No |
 | Draft a record | `draft/` | **Yes**, and the page says so |
-| Data and API: URLs with sample responses generated at build time; downloads | `data/` | No |
+| Data and API: URLs with sample responses generated at build time; downloads; the metadata that describes the data (`api/v0/metadata.json`, the UK Cross-Government Metadata Exchange Model, DP-57) | `data/` | No |
 | Currency summary | `currency/` | No |
 | Validate a `solution.yml` (paste, upload, or URL where the host allows cross-site fetches; raw GitHub files do) | `validate/` | **Yes**, and the page says so |
 | Harvest report: each registered endpoint, last harvest, state, errors | `harvest/` | No |

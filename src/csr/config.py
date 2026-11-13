@@ -29,6 +29,8 @@ class Config:
     host_url: str = ""
     #: The small line above the title in the header; empty for none.
     header_line: str = ""
+    #: When the site was first published (the metadata's "issued" date); None if not yet.
+    first_published: dt.date | None = None
     #: A preview: every page asks search engines not to index it.
     preview: bool = False
     publication: dict[str, str] = field(default_factory=dict)
@@ -61,6 +63,7 @@ def load_config(root: Path | None = None, base_url: str | None = None) -> Config
         host_logo=data.get("host_logo", ""),
         host_url=data.get("host_url", ""),
         header_line=data.get("header_line", ""),
+        first_published=dt.date.fromisoformat(str(data["first_published"])) if data.get("first_published") else None,
         preview=bool(data.get("preview", False)),
         contact_mailbox=data.get("contact_mailbox", ""),
         feedback_url=data.get("feedback_url", ""),
