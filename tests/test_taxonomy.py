@@ -13,9 +13,13 @@ EXPECTED = {
         "police-and-fire", "non-departmental-public-bodies", "further-and-higher-education",
         "uk-public-sector",
     ],
-    "service-areas": [
+    "service-areas": [  # the ESD Functions list's top level (DP-24, 13 November 2026), then version 0.1's terms
+        "administration-and-government", "advice-and-benefits", "business-and-employment",
+        "coastline-management", "community-safety", "environmental-protection", "health-and-social-care",
+        "housing", "leisure-and-culture", "licences-permits-and-permissions", "planning-and-building-control",
+        "schools-and-education", "transport-and-highways",
         "health-and-care", "social-care-and-social-work", "children-and-families",
-        "education-and-skills", "housing", "social-security-and-benefits", "revenues-and-tax",
+        "education-and-skills", "social-security-and-benefits", "revenues-and-tax",
         "justice-and-community-safety", "environment-and-waste", "planning-and-building-standards",
         "transport-and-roads", "economy-and-business", "culture-and-communities",
         "corporate-and-cross-cutting",

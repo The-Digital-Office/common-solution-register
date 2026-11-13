@@ -18,7 +18,7 @@ contact:
   type: web-form
   value: https://signin.example.gov.uk/contact
 service_areas:
-  - corporate-and-cross-cutting
+  - administration-and-government
 capabilities:
   - identity-and-access
 status: live

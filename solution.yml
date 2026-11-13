@@ -24,7 +24,7 @@ contact:
   type: role-mailbox
   value: solution-register@digitaloffice.scot
 service_areas:
-  - corporate-and-cross-cutting
+  - administration-and-government
 capabilities:
   - content-and-publishing
   - data-and-analytics

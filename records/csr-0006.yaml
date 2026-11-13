@@ -24,8 +24,8 @@ contact:
   type: web-form
   value: https://data.spatialhub.scot/contact_us
 service_areas:
-  - corporate-and-cross-cutting
-  - planning-and-building-standards
+  - administration-and-government
+  - planning-and-building-control
 capabilities:
   - mapping-and-location
   - data-and-analytics

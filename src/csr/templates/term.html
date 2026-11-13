@@ -24,8 +24,10 @@
 {% call row("Definition") %}{{ term.definition }}{% endcall %}
 {% if term.synonyms %}{% call row("Also known as") %}{{ term.synonyms | join("; ") }}{% endcall %}{% endif %}
 {% call row("Term ID") %}<code>{{ term.id }}</code>{% endcall %}
-{% call row("Status") %}{{ "Deprecated" if term.deprecated else "Active" }} (draft taxonomy v{{ taxonomy.version }}){% endcall %}
+{% call row("Status") %}{% if term.deprecated %}Deprecated{% if term.replaced_by %}: replaced by <a href="{{ root }}{{ taxonomy.name }}/{{ term.replaced_by }}/">{{ taxonomy.get(term.replaced_by).label }}</a>{% endif %}{% else %}Active{% endif %} ({{ "" if taxonomy.source else "draft " }}taxonomy v{{ taxonomy.version }}){% endcall %}
+{% if taxonomy.source and term.exact_match %}{% call row("Source") %}<a href="{{ term.exact_match }}">{{ term.label }}</a> in the <a href="{{ taxonomy.source.url }}">{{ taxonomy.source.title }}</a>{% endcall %}{% endif %}
 </dl>
+{% if taxonomy.source and term.exact_match %}<p class="ds_hint-text">{{ taxonomy.source.attribution }}</p>{% endif %}
 <p><a href="{{ config.repository_url }}/issues/new?title={{ ('Taxonomy: ' ~ term.id) | urlencode }}">Suggest a change to this term</a></p>
 </div>
 <div class="ds_layout__list">

@@ -372,7 +372,7 @@ def _taxonomy_pages(site: Site, entries: list[Entry]) -> None:
         counted = [(t, sum(_uses(e, name, t.id) for e in entries)) for t in owners]
         shown = counted if name == "sectors" else [(t, n) for t, n in counted if n]
         columns.append({"name": name, "folder": folder, "heading": heading, "terms": shown,
-                        "total": len(owners)})  # fmt: skip
+                        "total": len([t for t in owners if not t.deprecated])})  # fmt: skip
         for term in taxonomy.terms:
             kind = TERM_PAGES[name]
             if term.intended_adopters_only:  # an audience: the records intended for it

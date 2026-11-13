@@ -16,7 +16,7 @@
 <div class="ds_select-wrapper">
 <select class="ds_select" id="{{ id }}" data-group="{{ group }}">
 <option value="">{{ any_label }}</option>
-{% for term in site.taxonomies[taxonomy].terms %}
+{% for term in site.taxonomies[taxonomy].terms if not term.deprecated %}
 <option value="{{ term.id }}" data-label="{{ term.label }}">{{ term.label }}</option>
 {% endfor %}
 </select>

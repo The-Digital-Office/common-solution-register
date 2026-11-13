@@ -16,7 +16,7 @@ contact:
   type: role-mailbox
   value: digital.services@example.gov.uk
 service_areas:
-  - environment-and-waste
+  - environmental-protection
 capabilities:
   - booking-and-scheduling
   - payments

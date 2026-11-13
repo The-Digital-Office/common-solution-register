@@ -1,75 +1,176 @@
 # Service areas: the public services a solution supports (service_areas).
-# A draft for the short-life working group to critique.
+#
+# Since version 0.2 these are the top-level groups of the ESD Functions list,
+# maintained by the LG Inform Plus programme and published under the Open
+# Government Licence v3.0 (decision point DP-24). The labels are ESD's; each
+# term's exact_match is its ESD identifier, and its definition lists the groups
+# ESD places under it. ESD maps the Functions list to the Scottish Service List,
+# which many Scottish councils use. The register's first, made-up list (version
+# 0.1) is kept below as deprecated terms, each replaced by its ESD function, so
+# that old links and drafts still work.
 taxonomy: service-areas
-version: "0.1"
+version: "0.2"
+source:
+  title: Functions list (ESD standards)
+  url: https://standards.esd.org.uk/?uri=list%2Ffunctions
+  publisher: LG Inform Plus
+  licence: https://www.nationalarchives.gov.uk/doc/open-government-licence/version/3/
+  attribution: Contains the ESD Functions list, maintained by the LG Inform Plus programme, licensed under the Open Government Licence v3.0.
 terms:
+  - id: administration-and-government
+    label: Administration and Government
+    definition: In the ESD Functions list, democracy, registration, taxation, communications, consultations, complaints, data protection and freedom of information, policy and performance, and an organisation's internal operation.
+    synonyms: [corporate and cross-cutting, corporate services, back office, revenues and tax, council tax, democracy, registration]
+    status: active
+    exact_match: http://id.esd.org.uk/function/42
+  - id: advice-and-benefits
+    label: Advice and benefits
+    definition: In the ESD Functions list, advice and welfare rights, benefits, and grants and aid paid to people.
+    synonyms: [social security and benefits, benefits, welfare, welfare rights, grants]
+    status: active
+    exact_match: http://id.esd.org.uk/function/1
+  - id: business-and-employment
+    label: Business and employment
+    definition: In the ESD Functions list, business advice, support and grants, business rates, careers and employment, commercial property, health and safety at work, regeneration and trading standards.
+    synonyms: [economy and business, economic development, business support, trading standards, business rates, employability]
+    status: active
+    exact_match: http://id.esd.org.uk/function/6
+  - id: coastline-management
+    label: Coastline management
+    definition: In the ESD Functions list, the coastline, inland waterways, and ports and harbours.
+    synonyms: [coast, harbours, waterways]
+    status: active
+    exact_match: http://id.esd.org.uk/function/95
+  - id: community-safety
+    label: Community safety
+    definition: In the ESD Functions list, criminal justice, emergencies, fire safety, neighbourhood security and police services.
+    synonyms: [justice and community safety, justice, policing, fire and rescue, emergencies]
+    status: active
+    exact_match: http://id.esd.org.uk/function/16
+  - id: environmental-protection
+    label: Environmental protection
+    definition: In the ESD Functions list, waste management and recycling, environmental health, pollution control, street care and cleaning, parks and open spaces, conservation, countryside, animal welfare, and funerals and cremations.
+    synonyms: [environment and waste, waste, recycling, environmental health]
+    status: active
+    exact_match: http://id.esd.org.uk/function/30
+  - id: health-and-social-care
+    label: Health and social care
+    definition: In the ESD Functions list, health services, public health, adult services, children and families, care homes and supported housing, and community centres and facilities.
+    synonyms: [health and care, health, public health, social care and social work, social care, social work, children and families, early years]
+    status: active
+    exact_match: http://id.esd.org.uk/function/58
+  - id: housing
+    label: Housing
+    definition: In the ESD Functions list, council and community housing, homelessness and its prevention, housing advice, improvements and repairs, and homes in multiple occupation.
+    synonyms: [homelessness, tenancy, housing advice]
+    status: active
+    exact_match: http://id.esd.org.uk/function/66
+  - id: leisure-and-culture
+    label: Leisure and culture
+    definition: In the ESD Functions list, libraries, museums and galleries, arts and entertainment, events, sport and leisure, local history and heritage, and tourism.
+    synonyms: [culture and communities, libraries, leisure, sport, tourism]
+    status: active
+    exact_match: http://id.esd.org.uk/function/72
+  - id: licences-permits-and-permissions
+    label: Licences, permits and permissions
+    definition: In the ESD Functions list, licences, permits and consents, such as for alcohol and entertainment, food, gambling, animals, taxis and transport, building, and waste.
+    synonyms: [licensing, licences, permits]
+    status: active
+    exact_match: http://id.esd.org.uk/function/82
+  - id: planning-and-building-control
+    label: Planning and building control
+    definition: In the ESD Functions list, planning policy and services, development control, building control, and heritage and landscape.
+    synonyms: [planning and building standards, planning, building standards, building warrants]
+    status: active
+    exact_match: http://id.esd.org.uk/function/99
+  - id: schools-and-education
+    label: Schools and education
+    definition: In the ESD Functions list, schools, educational support, higher education, and adult education and lifelong learning.
+    synonyms: [education and skills, education, schools, learning]
+    status: active
+    exact_match: http://id.esd.org.uk/function/23
+  - id: transport-and-highways
+    label: Transport and highways
+    definition: In the ESD Functions list, highways, parking, public and community transport, cycling, footpaths, road safety and transport schemes.
+    synonyms: [transport and roads, roads, parking, travel]
+    status: active
+    exact_match: http://id.esd.org.uk/function/105
+  # The register's first list (version 0.1), replaced by the ESD functions above.
   - id: health-and-care
     label: Health and care
     definition: Healthcare, public health, and integrated health and social care services.
     synonyms: [health, public health, health and social care]
-    status: active
+    status: deprecated
+    replaced_by: health-and-social-care
   - id: social-care-and-social-work
     label: Social care and social work
     definition: Adult and children's social work, care assessment, and care and support services.
     synonyms: [social services, adult social care]
-    status: active
+    status: deprecated
+    replaced_by: health-and-social-care
   - id: children-and-families
     label: Children and families
     definition: Services for children, young people and families, including early years, child protection and family support.
     synonyms: [early years, youth services]
-    status: active
+    status: deprecated
+    replaced_by: health-and-social-care
   - id: education-and-skills
     label: Education and skills
     definition: Schools, further and higher education, training, and employability services.
     synonyms: [schools, learning, employability]
-    status: active
-  - id: housing
-    label: Housing
-    definition: Social housing, homelessness, housing advice, and private sector housing services.
-    synonyms: [homelessness, tenancy]
-    status: active
+    status: deprecated
+    replaced_by: schools-and-education
   - id: social-security-and-benefits
     label: Social security and benefits
     definition: Benefits, grants and financial support paid to people, and the advice that goes with them.
     synonyms: [benefits, welfare, grants]
-    status: active
+    status: deprecated
+    replaced_by: advice-and-benefits
   - id: revenues-and-tax
     label: Revenues and tax
     definition: Collecting taxes, rates and charges, such as council tax and non-domestic rates.
     synonyms: [council tax, business rates, revenues]
-    status: active
+    status: deprecated
+    replaced_by: administration-and-government
   - id: justice-and-community-safety
     label: Justice and community safety
     definition: Policing, fire and rescue, courts, community justice, licensing and community safety services.
     synonyms: [justice, community safety, licensing]
-    status: active
+    status: deprecated
+    replaced_by: community-safety
   - id: environment-and-waste
     label: Environment and waste
     definition: Waste collection and recycling, environmental health, and environmental protection.
     synonyms: [waste, recycling, environmental health]
-    status: active
+    status: deprecated
+    replaced_by: environmental-protection
   - id: planning-and-building-standards
     label: Planning and building standards
     definition: Development planning, planning applications, and building warrants and standards.
     synonyms: [planning, building control, building warrants]
-    status: active
+    status: deprecated
+    replaced_by: planning-and-building-control
   - id: transport-and-roads
     label: Transport and roads
     definition: Roads, parking, public transport, active travel and transport planning.
     synonyms: [roads, parking, travel]
-    status: active
+    status: deprecated
+    replaced_by: transport-and-highways
   - id: economy-and-business
     label: Economy and business
     definition: Business support, economic development, trading standards and procurement with suppliers.
     synonyms: [economic development, business support, trading standards]
-    status: active
+    status: deprecated
+    replaced_by: business-and-employment
   - id: culture-and-communities
     label: Culture and communities
     definition: Libraries, leisure, culture, heritage and community development.
     synonyms: [libraries, leisure, community engagement]
-    status: active
+    status: deprecated
+    replaced_by: leisure-and-culture
   - id: corporate-and-cross-cutting
     label: Corporate and cross-cutting
     definition: Services that support an organisation as a whole, or many service areas at once, such as finance, people, technology and customer service.
     synonyms: [corporate services, back office, cross-cutting]
-    status: active
+    status: deprecated
+    replaced_by: administration-and-government

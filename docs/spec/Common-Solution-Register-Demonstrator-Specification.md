@@ -45,6 +45,7 @@ based_on:
 | 1.8 | 12 November 2026 | 6.8: the demonstrator notice is one short text on every page, home included, shown as a warning notification message instead of a phase banner with a "Demonstrator" tag (wireframe change W4, decision point DP-47). |
 | 1.9 | 13 November 2026 | 6.8: the register's open data and API are described in `api/v0/metadata.json` with the UK Cross-Government Metadata Exchange Model, and the Data and API page explains it (wireframe change W5, decision point DP-57). ADMS-AP is not adopted for describing individual solutions (DP-56). |
 | 1.10 | 13 November 2026 | 6.8: the taxonomies are also published in SKOS (`api/v0/taxonomy/<name>.ttl`), and `docs/dcat-adms-mapping.md` maps each record field to DCAT and ADMS. `solution.yml` stays the record format, with these standards as the publication layer (decision point DP-58, wireframe change W6). |
+| 1.11 | 13 November 2026 | 6.5: the service areas are the top level of the ESD Functions list (version 0.2 of the taxonomy), with the made-up list of version 0.1 kept as deprecated terms; sectors and capabilities stay the register's own (decision points DP-24 and DP-25, wireframe change W7). |
 
 
 ## 1. Purpose and context
@@ -321,10 +322,10 @@ The validation rules are listed in appendix C and in `schema/README.md`. The fie
 ### 6.5 Taxonomy (draft for the SLWG to critique)
 
 - **Sectors:** `scottish-government`, `executive-agencies`, `local-government`, `nhs-scotland`, `police-and-fire`, `non-departmental-public-bodies`, `further-and-higher-education`, `uk-public-sector`.
-- **Service areas (14):** `health-and-care`, `social-care-and-social-work`, `children-and-families`, `education-and-skills`, `housing`, `social-security-and-benefits`, `revenues-and-tax`, `justice-and-community-safety`, `environment-and-waste`, `planning-and-building-standards`, `transport-and-roads`, `economy-and-business`, `culture-and-communities`, `corporate-and-cross-cutting`.
+- **Service areas (13):** the top level of the ESD Functions list (LG Inform Plus, Open Government Licence v3.0), adopted in version 0.2 (decision point DP-24): `administration-and-government`, `advice-and-benefits`, `business-and-employment`, `coastline-management`, `community-safety`, `environmental-protection`, `health-and-social-care`, `housing`, `leisure-and-culture`, `licences-permits-and-permissions`, `planning-and-building-control`, `schools-and-education`, `transport-and-highways`. Labels are ESD's, each term's `exact_match` is its ESD identifier, and the list's `source` gives the attribution the licence requires. The 13 terms of version 0.1 that changed are kept as `deprecated`, each `replaced_by` its ESD function.
 - **Capabilities (14):** `identity-and-access`, `payments`, `booking-and-scheduling`, `case-management`, `forms-and-transactions`, `notifications`, `document-and-records-management`, `integration-and-apis`, `data-and-analytics`, `mapping-and-location`, `content-and-publishing`, `cyber-security`, `information-governance`, `collaboration-and-productivity`.
 
-Each term has an `id`, `label`, `definition`, `synonyms[]` and `status`. `decision-points.md` notes the option of aligning with existing vocabularies, such as the LGA/ESD lists or any Scottish Government taxonomy.
+Each term has an `id`, `label`, `definition`, `synonyms[]` and `status`, and may have `replaced_by` and `exact_match`; a taxonomy adopted from another list has a `source`. Only active terms are offered on the draft form and as finder filters; deprecated terms stay valid with a warning (R04) and keep their pages. Sectors and capabilities remain the register's own drafts: no established list was found to adopt (DP-24, DP-25).
 
 ### 6.6 Contribution and feedback
 

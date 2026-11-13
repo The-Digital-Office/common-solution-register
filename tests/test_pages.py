@@ -80,8 +80,18 @@ def test_browse_counts(site):
     html = read(site, "browse/index.html")
     assert "Local government</a></h3><p class=\"ds_category-item__summary csr-count\">9 solutions" in html
     assert "Police and fire" in html  # every sector is listed, even with no solutions
-    assert "Health and care" not in html  # service areas and capabilities without solutions are not
-    assert "All 14 service areas, with definitions" in html
+    assert "Coastline management" not in html  # service areas and capabilities without solutions are not
+    assert "Health and care" not in html  # nor deprecated terms
+    assert "All 13 service areas, with definitions" in html  # active terms only
+    assert "LG Inform Plus" in html  # the attribution the ESD list's licence requires
+
+
+def test_an_adopted_term_names_its_source_and_a_replaced_term_its_replacement(site):
+    esd = read(site, "service-areas/environmental-protection/index.html")
+    assert 'href="http://id.esd.org.uk/function/30"' in esd and "LG Inform Plus" in esd
+    old = read(site, "service-areas/environment-and-waste/index.html")
+    assert "replaced by" in old and "../../service-areas/environmental-protection/" in old
+    assert "LG Inform Plus" not in old  # the register's own former term, not ESD's
 
 
 def test_the_audience_only_sector(site):

@@ -12,7 +12,7 @@ owner:
 contact:
   type: role-mailbox
   value: digital@example.gov.uk
-service_areas: [corporate-and-cross-cutting]
+service_areas: [administration-and-government]
 capabilities: [integration-and-apis]
 status: concept
 intended_adopters: [local-government]

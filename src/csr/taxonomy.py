@@ -30,6 +30,8 @@ class Term:
     replaced_by: str | None = None
     #: An audience for intended_adopters only, never an owning sector (owner.sector).
     intended_adopters_only: bool = False
+    #: The same concept in the list this taxonomy is adopted from, as a URI (skos:exactMatch).
+    exact_match: str | None = None
 
     @property
     def deprecated(self) -> bool:
@@ -43,6 +45,8 @@ class Taxonomy:
     name: str
     version: str
     terms: tuple[Term, ...] = field(default_factory=tuple)
+    #: The list it is adopted from, with the attribution its licence requires; None for the register's own.
+    source: dict | None = None
 
     def __contains__(self, term_id: object) -> bool:
         return any(term.id == term_id for term in self.terms)
@@ -74,10 +78,11 @@ def load_taxonomy(name: str, directory: Path = TAXONOMY_DIR) -> Taxonomy:
             status=t["status"],
             replaced_by=t.get("replaced_by"),
             intended_adopters_only=t.get("intended_adopters_only", False),
+            exact_match=t.get("exact_match"),
         )
         for t in data["terms"]
     )
-    return Taxonomy(name=data["taxonomy"], version=data["version"], terms=terms)
+    return Taxonomy(name=data["taxonomy"], version=data["version"], terms=terms, source=data.get("source"))
 
 
 @cache

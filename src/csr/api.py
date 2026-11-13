@@ -96,9 +96,11 @@ def taxonomy_json(taxonomy: Taxonomy) -> dict[str, Any]:
     return {
         "taxonomy": taxonomy.name,
         "version": taxonomy.version,
+        **({"source": taxonomy.source} if taxonomy.source else {}),
         "terms": [
             {"id": t.id, "label": t.label, "definition": t.definition, "synonyms": list(t.synonyms),
-             "status": t.status, **({"replaced_by": t.replaced_by} if t.replaced_by else {})}
+             "status": t.status, **({"replaced_by": t.replaced_by} if t.replaced_by else {}),
+             **({"exact_match": t.exact_match} if t.exact_match else {})}
             for t in taxonomy.terms
         ],
     }  # fmt: skip
@@ -220,7 +222,9 @@ def taxonomy_skos(taxonomy: Taxonomy, config: Config) -> str:
     Each term is a concept whose URI is its page on the site (``<taxonomy>/<id>/``); the
     scheme's URI is its column on the Browse page. Labels, synonyms and definitions become
     preferred labels, alternative labels and definitions; a deprecated term is marked
-    deprecated and points to its replacement.
+    deprecated and points to its replacement. A taxonomy adopted from another list (DP-24)
+    names it as its source, with the attribution its licence requires, and each term
+    points to the same concept there (skos:exactMatch).
     """
     base = config.base_url
     scheme = f"{base}browse/#h-{taxonomy.name}"
@@ -236,6 +240,8 @@ def taxonomy_skos(taxonomy: Taxonomy, config: Config) -> str:
         f'    owl:versionInfo "{taxonomy.version}" ;',
         f"    dct:license <{LICENCE['content_url']}> ;",
         f"    dct:publisher {_turtle(config.host_organisation)} ;",
+        *([f"    dct:source <{taxonomy.source['url']}> ;",
+           f"    dct:rights {_turtle(taxonomy.source['attribution'])} ;"] if taxonomy.source else []),
         "    skos:hasTopConcept " + ", ".join(concept(t.id) for t in taxonomy.terms if not t.deprecated) + " .",
     ]
     for term in taxonomy.terms:
@@ -247,6 +253,8 @@ def taxonomy_skos(taxonomy: Taxonomy, config: Config) -> str:
             f"    skos:prefLabel {_turtle(term.label)} ;",
             f"    skos:definition {_turtle(term.definition)} ;",
         ]
+        if term.exact_match:
+            lines.append(f"    skos:exactMatch <{term.exact_match}> ;")
         lines += [f"    skos:altLabel {_turtle(s)} ;" for s in term.synonyms]
         if term.intended_adopters_only:
             lines.append(f"    skos:scopeNote {_turtle('An audience only: used for who a solution is intended for, never as the sector that owns it.')} ;")

@@ -23,7 +23,7 @@ contact:
   type: web-form
   value: https://scotaccount.servicemanual.gov.scot/contact
 service_areas:
-  - corporate-and-cross-cutting
+  - administration-and-government
 capabilities:
   - identity-and-access
 status: beta
