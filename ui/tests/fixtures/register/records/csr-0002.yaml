@@ -22,7 +22,7 @@ contact:
   type: web-form
   value: https://github.com/The-Digital-Office/common-solution-register/issues
 service_areas:
-  - corporate-and-cross-cutting
+  - administration-and-government
 capabilities:
   - collaboration-and-productivity
 status: live

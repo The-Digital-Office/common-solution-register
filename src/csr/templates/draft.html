@@ -41,7 +41,7 @@
 <legend class="ds_label">{{ legend }}</legend>
 {% if hint %}<p class="ds_hint-text">{{ hint }}{% if definitions %} <a href="{{ root }}reference/#taxonomy">See definitions</a>.{% endif %}</p>{% endif %}
 <div class="ds_checkboxes ds_field-group">
-{% for term in terms %}
+{% for term in terms if not term.deprecated %}
 <div class="ds_checkbox ds_checkbox--small"><input class="ds_checkbox__input" id="{{ name }}-{{ term.id }}" name="{{ name }}" type="checkbox" value="{{ term.id }}"><label class="ds_checkbox__label" for="{{ name }}-{{ term.id }}">{{ term.label }}</label></div>
 {% endfor %}
 </div>

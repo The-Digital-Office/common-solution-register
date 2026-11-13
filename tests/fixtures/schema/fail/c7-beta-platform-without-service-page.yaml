@@ -16,7 +16,7 @@ contact:
   type: role-mailbox
   value: digital@example.gov.uk
 service_areas:
-- corporate-and-cross-cutting
+- administration-and-government
 capabilities:
 - integration-and-apis
 status: beta

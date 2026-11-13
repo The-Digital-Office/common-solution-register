@@ -15,7 +15,7 @@ contact:
   type: role-mailbox
   value: digital@example.gov.uk
 service_areas:
-  - education-and-skills
+  - schools-and-education
 capabilities:
   - forms-and-transactions
 status: deprecated

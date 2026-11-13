@@ -40,7 +40,7 @@ Sources were accessed and rechecked on 3 November 2026. On 9 November 2026, at t
 | [x] | `owner.organisation` | Scottish Government | S1, S2 | S1: "the Scottish Government's ScotAccount programme"; S2: "Programme Director for the Scottish Government's digital identity programme" |
 | [x] | `owner.sector` | scottish-government | S1 | As above |
 | [x] | `contact` | contact page https://scotaccount.servicemanual.gov.scot/contact | S3, S5 | S3: "get in touch with us" links to it; S5: "If you want to use ScotAccount you can get in touch with us via email" (scotaccount@gov.scot). The contact page is used, as demonstration contacts are public contact pages |
-| [x] | `service_areas` | corporate-and-cross-cutting | — | Classification by the register: a cross-cutting capability used by services in several areas |
+| [x] | `service_areas` | administration-and-government | — | Classification by the register: a cross-cutting capability used by services in several areas |
 | [x] | `capabilities` | identity-and-access | S1 | "prove who they are"; "Sign in"; "Verify their identity" |
 | [x] | `status` | beta | S3 | "ScotAccount is currently in beta." |
 | [x] | `intended_adopters` | government teams and public services in Scotland | S3 | To use ScotAccount in beta, adopters need to "work in a government team or public service in Scotland". |
@@ -75,7 +75,7 @@ author should look at it by hand.
 | [x] | `owner.organisation` | Scottish Government | S2, S3 | S2: "Copyright (c) Crown Copyright 2019"; S3: author "Scottish Government Digital Design system team" |
 | [x] | `owner.sector` | scottish-government | S3 | As above |
 | [x] | `contact` | web form: the repository's issues page | S3 | Package `bugs` address `https://github.com/scottish-government-design-system/design-system/issues`. S1 also gives the mailbox designsystem@gov.scot (used under `support`) |
-| [x] | `service_areas` | corporate-and-cross-cutting | — | Classification by the register |
+| [x] | `service_areas` | administration-and-government | — | Classification by the register |
 | [x] | `capabilities` | content-and-publishing | — | The taxonomy definition names design systems: "including design systems and content standards" |
 | [x] | `status` | live | S3 | Stable releases are published and the Design System is in active public use; confirmed live by the register author. |
 | [x] | `intended_adopters` | the wider Scottish public sector | S1, S3; author verification | S1 states "the Scottish Government and other Scottish public sector bodies"; scope confirmed by the register author. |
@@ -110,7 +110,7 @@ Scottish Government's spatial data catalogue, spatialdata.gov.scot)
 | [x] | `asset_type` | platform | — | Classification from specification 5.2 |
 | [x] | `owner` | Improvement Service, `local-government` | S1–S4 | Organisation "The Improvement Service" (the national improvement body for Scottish local government) |
 | [x] | `contact` | web form https://osg.scot/portal/pages/contact-Us | — | The portal's "Contact" link. The metadata gives the mailboxes gazcustomers@improvementservice.org.uk (S1, S2) and gazhelp@improvementservice.org.uk (S3, S4). **Check** the contact page works |
-| [x] | `service_areas` | corporate-and-cross-cutting | — | Classification by the register |
+| [x] | `service_areas` | administration-and-government | — | Classification by the register |
 | [x] | `capabilities` | data-and-analytics, mapping-and-location | — | Classification by the register: reference data; addresses and geographic data |
 | [x] | `status` | live | S1–S4 | Maintained daily, with web services and public search in operation; confirmed live by the register author. |
 | [x] | `intended_adopters` | PSGA members; commercial users through Ordnance Survey AddressBase products; limited public search | S1, S3, S5 | PSGA members can use the data; S3 states commercial availability through Ordnance Survey AddressBase products; limited public search was verified by the register author. |
@@ -141,7 +141,7 @@ Scottish Government's spatial data catalogue, spatialdata.gov.scot)
 | [x] | `asset_type` | platform | S1, S3 | "a platform"; "an online platform for hosting and publishing Scottish spatial data" |
 | [x] | `owner` | Improvement Service, `local-government` | S1, S3 | "Developed and maintained by the Improvement Service (IS)"; "We are the Improvement Service, operator of the Spatial Hub service." |
 | [x] | `contact` | web form https://data.spatialhub.scot/contact_us | S4 | "For any other queries, please get in touch using the following form" |
-| [x] | `service_areas` | corporate-and-cross-cutting, planning-and-building-standards | S2 | Classification by the register; S2 names planning applications and building standards datasets |
+| [x] | `service_areas` | administration-and-government, planning-and-building-control | S2 | Classification by the register; S2 names planning applications and building standards datasets |
 | [x] | `capabilities` | mapping-and-location, data-and-analytics | S1 | "Scottish spatial data"; national datasets |
 | [x] | `status` | live | S1–S3 | The service is operating and taking registrations; confirmed live by the register author. |
 | [x] | `intended_adopters` | `scottish-public-sector` (until 9 November 2026: the six Scottish public sector sectors, and further and higher education) | S2 | "Public Sector Organisations: These organisations and their members can access data once their Spatial Hub account is registered against the correct PSGA organisation"; "Academic Institutions within Scotland: These organisations and their members can access data via EDINA's DigiMap service" |
@@ -177,7 +177,7 @@ publicly documented charges.
 | [x] | `asset_type` | api | — | Classification from specification 5.2 |
 | [x] | `owner` | Government Digital Service, `uk-public-sector` | S1 | "GOV.UK Notify is built by the Government Digital Service" |
 | [x] | `contact` | web form https://www.notifications.service.gov.uk/support | S1 | "Contact us if you have a question or want to give feedback." (links to the support page) |
-| [x] | `service_areas` | corporate-and-cross-cutting | — | Classification by the register |
+| [x] | `service_areas` | administration-and-government | — | Classification by the register |
 | [x] | `capabilities` | notifications, integration-and-apis | S1, S2 | Emails, text messages and letters; "Integrate the GOV.UK Notify API" |
 | [x] | `status` | live | S1 | The operational service publishes current usage figures and pricing; confirmed live by the register author. |
 | [x] | `intended_adopters` | uk-public-sector, excluding universities | S4 | Only public sector organisations can accept the agreement. The eligibility page lists qualifying public-sector bodies and explicitly states that universities cannot use Notify. |
@@ -214,7 +214,7 @@ in specification 5.2 (see the build plan's log for the decision).
 | [x] | `asset_type` | service | — | Classification by the register, as for ScotAccount |
 | [x] | `owner` | Improvement Service, `local-government` | S2 | "Myaccount is run by the Improvement Service for local councils." |
 | [x] | `contact` | web form: the help page | S3 | Help page with a link to the contact form (author verification) |
-| [x] | `service_areas`, `capabilities` | corporate-and-cross-cutting; identity-and-access | — | Classification by the register |
+| [x] | `service_areas`, `capabilities` | administration-and-government; identity-and-access | — | Classification by the register |
 | [x] | `status` | live | S1 | "41 organisations are live with mygovscot myaccount" |
 | [x] | `intended_adopters` | `scottish-public-sector` (until 9 November 2026: the six Scottish public sector sectors) | S1 | "For public service providers"; users include councils, NHS Lothian and Social Security Scotland. **Check** |
 | [x] | `terms_of_use.type` | not-publicly-stated | S1 | Not stated |

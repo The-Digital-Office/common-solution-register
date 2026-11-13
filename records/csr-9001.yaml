@@ -16,8 +16,7 @@ contact:
   type: role-mailbox
   value: payments@example.gov.uk
 service_areas:
-  - revenues-and-tax
-  - corporate-and-cross-cutting
+  - administration-and-government
 capabilities:
   - payments
 status: live

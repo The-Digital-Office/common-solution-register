@@ -16,7 +16,7 @@ contact:
   type: service-desk
   value: https://support.example.gov.uk/benefits-api
 service_areas:
-  - social-security-and-benefits
+  - advice-and-benefits
 capabilities:
   - case-management
   - integration-and-apis

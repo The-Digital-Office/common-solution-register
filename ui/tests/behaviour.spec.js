@@ -61,7 +61,7 @@ test('3. Sector, service area, capability, currency and withdrawn filters, with 
   await page.selectOption('#f-sector', 'executive-agencies');
   expect(await visible(page)).toEqual(['csr-9002', 'csr-0100']);
   await page.selectOption('#f-sector', '');
-  await page.selectOption('#f-area', 'environment-and-waste');
+  await page.selectOption('#f-area', 'environmental-protection');
   expect(await visible(page)).toEqual(['csr-9006', 'csr-9003']);
   await page.selectOption('#f-area', '');
   await expect(page.locator('#f-cap option[value="payments"]')).toHaveText('Payments (2)');
@@ -164,9 +164,10 @@ test('8. Draft form validation: every field, with an error summary and inline er
   await expect(page.locator('#error-summary')).toBeHidden();
 });
 
-test('9. Draft form classification: every term, from the taxonomy', async ({ page }) => {
+test('9. Draft form classification: every active term, from the taxonomy', async ({ page }) => {
   await page.goto('draft/');
-  const terms = (name) => JSON.parse(fs.readFileSync(path.join(__dirname, '..', 'build', 'api', 'v0', 'taxonomy', `${name}.json`))).terms.map((t) => t.id);
+  const terms = (name) => JSON.parse(fs.readFileSync(path.join(__dirname, '..', 'build', 'api', 'v0', 'taxonomy', `${name}.json`)))
+    .terms.filter((t) => t.status !== 'deprecated').map((t) => t.id); // deprecated terms are not offered (DP-24)
   for (const [field, taxonomy] of [['service_areas', 'service-areas'], ['capabilities', 'capabilities'], ['intended_adopters', 'sectors']]) {
     expect(await page.$$eval(`input[name="${field}"]`, (inputs) => inputs.map((i) => i.value))).toEqual(terms(taxonomy));
   }

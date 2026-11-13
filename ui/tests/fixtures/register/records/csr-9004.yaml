@@ -17,7 +17,7 @@ contact:
   type: role-mailbox
   value: notifications@example.gov.uk
 service_areas:
-  - corporate-and-cross-cutting
+  - administration-and-government
 capabilities:
   - notifications
 status: beta

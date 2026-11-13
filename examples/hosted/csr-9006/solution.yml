@@ -16,8 +16,8 @@ contact:
   type: role-mailbox
   value: booking@example.gov.uk
 service_areas:
-  - environment-and-waste
-  - corporate-and-cross-cutting
+  - environmental-protection
+  - administration-and-government
 capabilities:
   - booking-and-scheduling
 status: live

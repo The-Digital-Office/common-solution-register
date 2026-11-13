@@ -33,7 +33,7 @@ contact:
   type: web-form
   value: https://signin.mygovscot.org/portal/pages/help
 service_areas:
-  - corporate-and-cross-cutting
+  - administration-and-government
 capabilities:
   - identity-and-access
 status: live

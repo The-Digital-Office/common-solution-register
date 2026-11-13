@@ -74,12 +74,16 @@
 <h2 id="taxonomy">Taxonomy terms</h2>
 {% for name, label in [("sectors", "Sectors"), ("service-areas", "Service areas"), ("capabilities", "Capabilities")] %}
 {% set taxonomy = site.taxonomies[name] %}
-<details class="ds_details" id="taxonomy-{{ name }}" data-module="ds-details"><summary class="ds_details__summary">{{ label }} ({{ taxonomy.terms | length }})</summary><div class="ds_details__text">
+{% set active = taxonomy.terms | rejectattr("deprecated") | list %}
+<details class="ds_details" id="taxonomy-{{ name }}" data-module="ds-details"><summary class="ds_details__summary">{{ label }} ({{ active | length }})</summary><div class="ds_details__text">
+{% if taxonomy.source %}<p>From the <a href="{{ taxonomy.source.url }}">{{ taxonomy.source.title }}</a>. {{ taxonomy.source.attribution }}</p>{% endif %}
 <dl class="ds_summary-list">
-{% for term in taxonomy.terms %}
+{% for term in active %}
 <div class="ds_summary-list__item"><dt class="ds_summary-list__key"><a href="{{ root }}{{ name }}/{{ term.id }}/">{{ term.label }}</a></dt><dd class="ds_summary-list__value">{{ term.definition }}{% if term.synonyms %} <span class="ds_hint-text">Also known as: {{ term.synonyms | join("; ") }}.</span>{% endif %}</dd></div>
 {% endfor %}
 </dl>
+{% set retired = taxonomy.terms | selectattr("deprecated") | list %}
+{% if retired %}<p class="ds_hint-text">Deprecated, and accepted with a warning (R04): {% for term in retired %}<a href="{{ root }}{{ name }}/{{ term.id }}/">{{ term.label }}</a>{% if term.replaced_by %} (now {{ taxonomy.get(term.replaced_by).label }}){% endif %}{{ "; " if not loop.last else "." }}{% endfor %}</p>{% endif %}
 </div></details>
 {% endfor %}
 

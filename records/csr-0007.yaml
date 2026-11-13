@@ -23,7 +23,7 @@ contact:
   type: web-form
   value: https://www.notifications.service.gov.uk/support
 service_areas:
-  - corporate-and-cross-cutting
+  - administration-and-government
 capabilities:
   - notifications
   - integration-and-apis

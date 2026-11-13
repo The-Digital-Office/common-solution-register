@@ -43,7 +43,7 @@ def test_every_taxonomy_term_is_offered(html):
     for name, taxonomy in (("service_areas", "service-areas"), ("capabilities", "capabilities"),
                            ("intended_adopters", "sectors")):  # fmt: skip
         offered = re.findall(rf'name="{name}" type="checkbox" value="([^"]+)"', html)
-        assert offered == taxonomies[taxonomy].ids
+        assert offered == [t.id for t in taxonomies[taxonomy].terms if not t.deprecated]  # deprecated terms are not offered
     # An audience-only term ("Scottish public sector") is offered under "Intended for", never as the owning sector.
     assert options_of(html, "sector") == [t.id for t in taxonomies["sectors"].terms if not t.intended_adopters_only]
     assert "scottish-public-sector" in taxonomies["sectors"].ids

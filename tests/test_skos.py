@@ -72,3 +72,21 @@ def test_the_api_index_links_to_the_skos_files(site):
     index = json.loads((site.out / "api/v0/index.json").read_text(encoding="utf-8"))
     for name, path in index["links"]["taxonomy_skos"].items():
         assert path == f"taxonomy/{name}.ttl" and (site.out / "api/v0" / path).exists()
+
+
+def test_service_areas_are_the_esd_functions():
+    """DP-24: the service areas are the ESD Functions list's top level, matched and attributed."""
+    taxonomy = load_all()["service-areas"]
+    config = load_config()
+    g = graph(taxonomy_skos(taxonomy, config))
+    scheme = rdflib.URIRef(f"{config.base_url}browse/#h-service-areas")
+    assert str(g.value(scheme, DCTERMS.source)) == taxonomy.source["url"]
+    assert "LG Inform Plus" in str(g.value(scheme, DCTERMS.rights))  # the attribution the licence requires
+    active = [t for t in taxonomy.terms if not t.deprecated]
+    assert len(active) == 13
+    for term in active:
+        c = rdflib.URIRef(f"{config.base_url}service-areas/{term.id}/")
+        assert str(g.value(c, SKOS.exactMatch)).startswith("http://id.esd.org.uk/function/")
+    for term in taxonomy.terms:
+        if term.deprecated:  # version 0.1's made-up terms, each replaced by an ESD function
+            assert term.replaced_by and not taxonomy.get(term.replaced_by).deprecated, term.id

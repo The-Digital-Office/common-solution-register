@@ -22,7 +22,7 @@ contact:
   type: web-form
   value: https://github.com/scottish-government-design-system/design-system/issues
 service_areas:
-  - corporate-and-cross-cutting
+  - administration-and-government
 capabilities:
   - content-and-publishing
 status: live
