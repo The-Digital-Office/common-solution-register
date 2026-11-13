@@ -1,5 +1,6 @@
 """The API and bulk extracts (specification 6.8): static JSON under api/v0/,
-and data/register.json and data/register.csv."""
+and data/register.json and data/register.csv, described in api/v0/metadata.json
+with the UK Cross-Government Metadata Exchange Model (DP-57)."""
 
 from __future__ import annotations
 
@@ -103,6 +104,102 @@ def taxonomy_json(taxonomy: Taxonomy) -> dict[str, Any]:
     }  # fmt: skip
 
 
+#: The UK Cross-Government Metadata Exchange Model (DP-57): what the register's
+#: open data is described with, and where its definition is.
+METADATA_MODEL = {
+    "name": "UK Cross-Government Metadata Exchange Model",
+    "url": "https://co-cddo.github.io/ukgov-metadata-exchange-model/",
+}
+#: The API is a demonstrator's version 0 (DP-50): ALPHA in the model's service statuses.
+SERVICE_STATUS = "ALPHA"
+
+
+def metadata(register: Register, config: Config, today: dt.date, sizes: dict[str, int]) -> dict[str, Any]:
+    """The register's open data described with the UK Cross-Government Metadata Exchange
+    Model (DCAT): the dataset, its two download files and the API that serves it.
+
+    Field names and values follow the model. One departure (DP-57): the model takes its
+    publisher and creator from a list of GOV.UK organisations, which does not include the
+    host, so the host organisation is given by name.
+    """
+    base = config.base_url
+    dataset_id = f"{base}data/"
+    api_id = f"{base}{API}"
+    changed = [e.last_changed for e in register.entries if e.last_changed]
+    modified = max(changed).isoformat() if changed else today.isoformat()
+    owner = config.host_organisation
+    common: dict[str, Any] = {
+        "licence": LICENCE["content_url"],
+        "accessRights": "OPEN",
+        "securityClassification": "OFFICIAL",
+        "publisher": owner,
+        "creator": [owner],
+        "modified": modified,
+    }
+    if config.contact_mailbox:
+        common["contactPoint"] = {"contactName": config.title, "email": config.contact_mailbox}
+    if config.first_published:
+        common["issued"] = config.first_published.isoformat()
+
+    def distribution(path: str, title: str, media_type: str, description: str) -> dict[str, Any]:
+        return {
+            "identifier": f"{base}{path}",
+            "type": "dcat:Distribution",
+            "title": title,
+            "description": description,
+            "downloadURL": f"{base}{path}",
+            "mediaType": media_type,
+            "byteSize": sizes[path],
+            "licence": LICENCE["content_url"],
+            "accessRights": "OPEN",
+            "modified": modified,
+            **({"issued": common["issued"]} if "issued" in common else {}),
+        }
+
+    return {
+        "model": METADATA_MODEL,
+        "dataset": {
+            "identifier": dataset_id,
+            "type": "dcat:Dataset",
+            "title": f"{config.title}: records",
+            "summary": "Digital solutions that public bodies offer to others in the Scottish public sector "
+                       "for reuse: owners, terms, how to adopt them and how current each record is.",
+            "description": "Every record in the register, with the fields the register derives (hosting, "
+                           "currency, last change). This is a demonstrator, not an official register: records "
+                           "are confirmed by their owner, compiled from public sources, or fictional examples, "
+                           "and each says which in record_status. Inclusion does not mean endorsement.",
+            "keyword": ["common solutions", "reuse", "digital services", "Scottish public sector"],
+            **common,
+            "version": today.isoformat(),
+            "updateFrequency": "freq:daily",
+            "distribution": [f"{base}data/register.json", f"{base}data/register.csv"],
+            "relatedResource": [api_id, config.repository_url],
+        },
+        "distributions": [
+            distribution("data/register.json", "register.json", "application/json",
+                         "Every record as JSON, with its derived fields."),
+            distribution("data/register.csv", "register.csv", "text/csv",
+                         "Every record as CSV (UTF-8), one row per record; nested fields use dotted column names."),
+        ],
+        "dataService": {
+            "identifier": api_id,
+            "type": "dcat:DataService",
+            "title": f"{config.title} API",
+            "summary": "Static JSON files: all records, one record, the taxonomies and the schema. No key or "
+                       "registration is needed.",
+            "description": "Version 0 of a read-only API made of static JSON files. It may change without notice; "
+                           "use record IDs, not URLs, as identifiers. index.json lists every file.",
+            **common,
+            "version": "0",
+            "endpointURL": api_id,
+            "endpointDescription": dataset_id,
+            "serviceType": "REST",
+            "serviceStatus": SERVICE_STATUS,
+            "servesData": [dataset_id],
+        },
+    }
+
+
 def files(register: Register, taxonomies: dict[str, Taxonomy], config: Config, today: dt.date) -> dict[str, str]:
     """Every API and extract file, as path to content."""
     records = [record_json(e) for e in register.entries]
@@ -123,6 +220,7 @@ def files(register: Register, taxonomies: dict[str, Taxonomy], config: Config, t
             "pointer_schema": "schema/pointer.schema.json",
             "register_json": "../../data/register.json",
             "register_csv": "../../data/register.csv",
+            "metadata": "metadata.json",
         },
         "notice": "Version 0: may change without notice. Use record ids, not URLs, as identifiers. "
                   "Every record has record_status, so demonstration and example records can be excluded.",
@@ -134,6 +232,9 @@ def files(register: Register, taxonomies: dict[str, Taxonomy], config: Config, t
         out[f"{API}taxonomy/{name}.json"] = dumps(taxonomy_json(taxonomy))
     for name in ("asset", "pointer", "taxonomy"):
         out[f"{API}schema/{name}.schema.json"] = dumps(load_schema(name))
-    out["data/register.json"] = dumps({"generated": generated, "licence": LICENCE, "assets": records})
+    out["data/register.json"] = dumps({"generated": generated, "licence": LICENCE,
+                                       "metadata": "../api/v0/metadata.json", "assets": records})  # fmt: skip
     out["data/register.csv"] = to_csv(records)
+    sizes = {path: len(content.encode("utf-8")) for path, content in out.items()}
+    out[API + "metadata.json"] = dumps(metadata(register, config, today, sizes))
     return out

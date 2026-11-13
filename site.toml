@@ -3,13 +3,16 @@
 
 title = "Common Solution Register"
 # The small line above the title in the header: who the register is for, not
-# who runs it (UI decision D37). Empty for none.
+# who runs it (wireframe change W1). Empty for none.
 header_line = "Scottish public sector"
 # A preview: every page asks search engines not to index it (a robots meta tag;
 # a robots.txt would be ignored, because this is a project site). Published as
 # a preview on 9 November 2026, before the courtesy notes and sign-off; set to
 # false when the site goes to beta (docs/publication-checklist.md).
 preview = true
+# When the site was first published; the "issued" date in the metadata that
+# describes its open data (api/v0/metadata.json, DP-57). Empty if not yet.
+first_published = "2026-11-09"
 base_url = "https://the-digital-office.github.io/common-solution-register/"
 # Where the harvester reads last-valid copies and hashes; empty means
 # <base_url>api/v0/harvest-state.json.

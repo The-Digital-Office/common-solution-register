@@ -38,7 +38,20 @@
 <tr><td><a href="{{ api }}taxonomy/capabilities.json"><code>api/v0/taxonomy/capabilities.json</code></a></td><td>Taxonomy terms with definitions (also <a href="{{ api }}taxonomy/sectors.json">sectors</a> and <a href="{{ api }}taxonomy/service-areas.json">service areas</a>)</td></tr>
 <tr><td><a href="{{ api }}schema/asset.schema.json"><code>api/v0/schema/asset.schema.json</code></a></td><td>The JSON Schema</td></tr>
 <tr><td><a href="{{ api }}harvest-state.json"><code>api/v0/harvest-state.json</code></a></td><td>Each owner-hosted source: last harvest, state, content hash</td></tr>
+<tr><td><a href="{{ api }}metadata.json"><code>api/v0/metadata.json</code></a></td><td>A description of this data and the API, for data catalogues (see <a href="#metadata">Metadata</a>)</td></tr>
 </tbody></table></div>
+
+<h2 id="metadata">Metadata</h2>
+<p>The register's open data is described in <a href="{{ api }}metadata.json"><code>api/v0/metadata.json</code></a> using the <a href="https://co-cddo.github.io/ukgov-metadata-exchange-model/">UK Cross-Government Metadata Exchange Model</a>. This is the UK government's standard for describing data assets, based on the W3C's Data Catalog Vocabulary (DCAT). Data catalogues, such as the Cross-Government Data Marketplace, can read it to list this data.</p>
+<p>The file describes:</p>
+<ul>
+<li><strong>the dataset:</strong> every record in the register, its publisher, licence and contact, and that it is updated daily</li>
+<li><strong>two distributions:</strong> <code>register.json</code> and <code>register.csv</code>, with their format and size</li>
+<li><strong>a data service:</strong> this API, version 0, with the status Alpha</li>
+</ul>
+<p>Both <code>api/v0/index.json</code> and <code>data/register.json</code> link to it.</p>
+<p>The fields and their values follow the model, with one exception. The model takes the publisher and creator from its list of GOV.UK organisations, which does not include {{ config.host_organisation }}, so the organisation is named in full instead.</p>
+<p>The metadata describes the data as a whole. Records are not described one by one: each record already follows the register's own schema.</p>
 
 <h2>Sample response</h2>
 <details class="ds_details" open="open" data-module="ds-details">
